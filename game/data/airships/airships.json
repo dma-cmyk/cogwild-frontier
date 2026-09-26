@@ -1,0 +1,11 @@
+[
+	{"id": "cargo_airship", "kind": "airship", "name": "Cargo Airship", "faction_type": "player", "labor": "none", "class_icon": "class_airship",
+		"flying": true, "altitude": 9.0,
+		"base": {"max_hp": 600, "armor": 3, "move_speed": 3.4, "vision": 20, "cargo": 100},
+		"energy_use": 0.4, "cost": {"wood": 160, "metal": 90, "gold": 60}, "build_time": 180,
+		"description": "Your founding ship. Explores from the sky and flies trade runs to discovered trade posts."},
+	{"id": "trader_airship", "kind": "airship", "name": "Merchant Airship", "faction_type": "merchant", "labor": "none",
+		"flying": true, "altitude": 9.5,
+		"base": {"max_hp": 500, "armor": 3, "move_speed": 3.0, "vision": 14, "cargo": 80},
+		"description": "League traders travelling between trade posts and friendly settlements."}
+]

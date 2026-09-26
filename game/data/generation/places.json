@@ -1,0 +1,242 @@
+{
+  "ruins": {
+    "prefix": [
+      "Whispering",
+      "Fallen",
+      "Old",
+      "Mossy",
+      "Silent",
+      "Clockwork"
+    ],
+    "core": [
+      "Archive",
+      "Steps",
+      "Hall",
+      "Observatory",
+      "Vault",
+      "Bridge"
+    ],
+    "suffix": [
+      "of Bells",
+      "in the Pines",
+      "at Dawn",
+      "of the First Road"
+    ]
+  },
+  "bandit_camp": {
+    "prefix": [
+      "Red",
+      "Dust",
+      "Ragged",
+      "Cinder",
+      "Black",
+      "Hidden"
+    ],
+    "core": [
+      "Spur",
+      "Camp",
+      "Knives",
+      "Hollow",
+      "Den",
+      "Cairn"
+    ],
+    "suffix": [
+      "Outpost",
+      "Hideaway",
+      "Camp",
+      "Ridge"
+    ]
+  },
+  "machine_outpost": {
+    "prefix": [
+      "Brass",
+      "Rust",
+      "Aether",
+      "Iron",
+      "Silent",
+      "Old"
+    ],
+    "core": [
+      "Relay",
+      "Spire",
+      "Foundry",
+      "Beacon",
+      "Array",
+      "Forge"
+    ],
+    "suffix": [
+      "Station",
+      "Node",
+      "Watch",
+      "Complex"
+    ]
+  },
+  "trade_post": {
+    "prefix": [
+      "Green",
+      "Open",
+      "Copper",
+      "Merry",
+      "Blue",
+      "Golden"
+    ],
+    "core": [
+      "Market",
+      "Wheel",
+      "Crossing",
+      "Kettle",
+      "Exchange",
+      "Road"
+    ],
+    "suffix": [
+      "Post",
+      "Junction",
+      "Hall",
+      "Rest"
+    ]
+  },
+  "wanderer_camp": {
+    "prefix": [
+      "Lantern",
+      "Warm",
+      "Quiet",
+      "Moss",
+      "Wayfarer",
+      "Cedar"
+    ],
+    "core": [
+      "Circle",
+      "Camp",
+      "Hearth",
+      "Grove",
+      "Rest",
+      "Ring"
+    ],
+    "suffix": [
+      "Camp",
+      "Haven",
+      "Glimmer",
+      "Meadow"
+    ]
+  },
+  "wreck": {
+    "prefix": [
+      "Broken",
+      "Fallen",
+      "Cloud",
+      "Brass",
+      "Drifting",
+      "Storm"
+    ],
+    "core": [
+      "Gull",
+      "Finch",
+      "Crown",
+      "Kettle",
+      "Wing",
+      "Skiff"
+    ],
+    "suffix": [
+      "Wreck",
+      "Landing",
+      "Grave",
+      "Reach"
+    ]
+  },
+  "crystal": {
+    "prefix": [
+      "Blue",
+      "Singing",
+      "Bright",
+      "Aether",
+      "Glassy",
+      "Star"
+    ],
+    "core": [
+      "Hollow",
+      "Garden",
+      "Grotto",
+      "Spine",
+      "Bloom",
+      "Cavern"
+    ],
+    "suffix": [
+      "Crags",
+      "Field",
+      "Mine",
+      "Glow"
+    ]
+  },
+  "ore_field": {
+    "prefix": [
+      "Iron",
+      "Copper",
+      "Red",
+      "Deep",
+      "Grey",
+      "Hammer"
+    ],
+    "core": [
+      "Ridge",
+      "Basin",
+      "Cut",
+      "Shelf",
+      "Quarry",
+      "Run"
+    ],
+    "suffix": [
+      "Field",
+      "Works",
+      "Dig",
+      "Heights"
+    ]
+  },
+  "region": {
+    "prefix": [
+      "Green",
+      "High",
+      "Sunlit",
+      "Misty",
+      "Amber",
+      "Frontier"
+    ],
+    "core": [
+      "Marches",
+      "Wilds",
+      "Reach",
+      "Valley",
+      "Terrace",
+      "Expanse"
+    ],
+    "suffix": [
+      "Province",
+      "Country",
+      "Range",
+      "Front"
+    ]
+  },
+  "settlement": {
+    "prefix": [
+      "Hearth",
+      "Blue",
+      "Copper",
+      "New",
+      "Lantern",
+      "Moss"
+    ],
+    "core": [
+      "Rest",
+      "Haven",
+      "Crossing",
+      "Hold",
+      "Meadow",
+      "Glen"
+    ],
+    "suffix": [
+      "Settlement",
+      "Town",
+      "Hearth",
+      "Post"
+    ]
+  }
+}

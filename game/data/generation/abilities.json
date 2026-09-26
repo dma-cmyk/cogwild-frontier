@@ -1,0 +1,120 @@
+{
+  "table": "abilities",
+  "entries": [
+    {
+      "id": "rallying_call",
+      "name": "Rallying Call",
+      "kind": "buff_allies",
+      "radius": 7.0,
+      "duration": 8.0,
+      "cooldown": 22.0,
+      "mods": {
+        "melee_damage_pct": 0.12,
+        "move_speed_pct": 0.08
+      },
+      "amount_pct": 0.12,
+      "trigger_hp": 0.0,
+      "shots": 0
+    },
+    {
+      "id": "steady_focus",
+      "name": "Steady Focus",
+      "kind": "buff_self",
+      "radius": 0.0,
+      "duration": 10.0,
+      "cooldown": 24.0,
+      "mods": {
+        "accuracy": 0.12,
+        "crit_chance": 0.08
+      },
+      "amount_pct": 0.12,
+      "trigger_hp": 0.0,
+      "shots": 0
+    },
+    {
+      "id": "field_dressing",
+      "name": "Field Dressing",
+      "kind": "heal_self",
+      "radius": 0.0,
+      "duration": 0.0,
+      "cooldown": 18.0,
+      "mods": {
+        "hp_regen_pct": 0.3
+      },
+      "amount_pct": 0.3,
+      "trigger_hp": 0.45,
+      "shots": 0
+    },
+    {
+      "id": "volley",
+      "name": "Volley",
+      "kind": "multi_shot",
+      "radius": 9.0,
+      "duration": 0.0,
+      "cooldown": 16.0,
+      "mods": {},
+      "amount_pct": 0.0,
+      "trigger_hp": 0.0,
+      "shots": 3
+    },
+    {
+      "id": "overclock",
+      "name": "Overclock",
+      "kind": "buff_self",
+      "radius": 0.0,
+      "duration": 7.0,
+      "cooldown": 26.0,
+      "mods": {
+        "attack_speed_pct": 0.2,
+        "energy_regen_pct": 0.2
+      },
+      "amount_pct": 0.2,
+      "trigger_hp": 0.0,
+      "shots": 0
+    },
+    {
+      "id": "hearthsong",
+      "name": "Hearthsong",
+      "kind": "buff_allies",
+      "radius": 6.0,
+      "duration": 12.0,
+      "cooldown": 30.0,
+      "mods": {
+        "hp_regen_pct": 0.08,
+        "energy_regen_pct": 0.1
+      },
+      "amount_pct": 0.1,
+      "trigger_hp": 0.0,
+      "shots": 0
+    },
+    {
+      "id": "scatterfire",
+      "name": "Scatterfire",
+      "kind": "multi_shot",
+      "radius": 11.0,
+      "duration": 0.0,
+      "cooldown": 20.0,
+      "mods": {
+        "accuracy": -0.05
+      },
+      "amount_pct": 0.0,
+      "trigger_hp": 0.0,
+      "shots": 5
+    },
+    {
+      "id": "iron_resolve",
+      "name": "Iron Resolve",
+      "kind": "buff_self",
+      "radius": 0.0,
+      "duration": 9.0,
+      "cooldown": 28.0,
+      "mods": {
+        "armor": 4,
+        "retreat_bias": -0.2
+      },
+      "amount_pct": 0.0,
+      "trigger_hp": 0.0,
+      "shots": 0
+    }
+  ]
+}

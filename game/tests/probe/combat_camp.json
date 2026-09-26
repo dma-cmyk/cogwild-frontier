@@ -1,0 +1,17 @@
+{"scene": "res://scenes/game.tscn", "frames": 1500, "seed": 11,
+ "events": [
+  {"frame": 20, "do": "scene.set_speed(4)"},
+  {"frame": 25, "do": "scene.dbg_attack_site('bandit_camp')"},
+  {"frame": 200, "do": "scene.focus_selection()"},
+  {"frame": 210, "screenshot": "march"},
+  {"frame": 400, "do": "scene.focus_selection()"},
+  {"frame": 410, "screenshot": "battle1"},
+  {"frame": 600, "do": "scene.focus_selection()"},
+  {"frame": 610, "screenshot": "battle2"},
+  {"frame": 900, "do": "scene.focus_selection()"},
+  {"frame": 910, "screenshot": "after"},
+  {"frame": 1480, "watch": "scene.world.counters", "label": "counters"},
+  {"frame": 1480, "watch": "scene.world.armory.size()", "label": "armory"},
+  {"frame": 1480, "watch": "scene.world.squads[0].state", "label": "squad"},
+  {"frame": 1490, "expect": "scene.world.counters.get('kills', 0) >= 3", "label": "the squad fought the camp"}
+ ]}

@@ -1,0 +1,39 @@
+{
+  "palettes": {
+    "frontier": {"primary":"#3a5da8","secondary":"#e9dcc0","accent":"#d9b04c","wood":"#8a5a34","glow":"#5bc8ff"},
+    "bandit": {"primary":"#b33a2e","secondary":"#4a3426","accent":"#8c4a2a","wood":"#7a6a55","glow":"#ff754a"},
+    "ancient": {"primary":"#a07a4a","secondary":"#5b6470","accent":"#ff6a2a","wood":"#333943","glow":"#ff6a2a"},
+    "merchant": {"primary":"#4f8a4b","secondary":"#efe3c2","accent":"#d9b04c","wood":"#8a6a4a","glow":"#ffd66b"},
+    "neutral": {"primary":"#8a6a4a","secondary":"#8d8f86","accent":"#3f8f8a","wood":"#6b5138","glow":"#8ce0d5"}
+  },
+  "roles": {
+    "settler":{"outfit":"tunic","headgear":"cap","accessory":"backpack","weapon":"none","offhand":"none"},
+    "mercenary":{"outfit":"coat","headgear":"helmet","accessory":"pauldron","weapon":"sword","offhand":"shield"},
+    "commander":{"outfit":"coat","headgear":"circlet","accessory":"cape","weapon":"sword","offhand":"buckler"},
+    "merchant":{"outfit":"robe","headgear":"wide_hat","accessory":"satchel","weapon":"none","offhand":"lantern"},
+    "engineer":{"outfit":"overalls","headgear":"goggles","accessory":"backpack","weapon":"wrench","offhand":"none"},
+    "explorer":{"outfit":"leathers","headgear":"cap","accessory":"backpack","weapon":"bow","offhand":"none"},
+    "scholar":{"outfit":"robe","headgear":"hood","accessory":"satchel","weapon":"staff","offhand":"book"},
+    "researcher":{"outfit":"coat","headgear":"goggles","accessory":"satchel","weapon":"pistol","offhand":"lantern"},
+    "farmer":{"outfit":"overalls","headgear":"wide_hat","accessory":"backpack","weapon":"hoe","offhand":"none"},
+    "woodcutter":{"outfit":"leathers","headgear":"cap","accessory":"backpack","weapon":"axe","offhand":"none"},
+    "miner":{"outfit":"leathers","headgear":"helmet","accessory":"lantern","weapon":"pickaxe","offhand":"none"},
+    "builder":{"outfit":"overalls","headgear":"helmet","accessory":"backpack","weapon":"hammer","offhand":"none"},
+    "guard":{"outfit":"tunic","headgear":"helmet","accessory":"pauldron","weapon":"sword","offhand":"shield"},
+    "archer":{"outfit":"leathers","headgear":"hood","accessory":"backpack","weapon":"bow","offhand":"none"},
+    "hunter":{"outfit":"leathers","headgear":"hood","accessory":"scarf","weapon":"bow","offhand":"none"},
+    "medic":{"outfit":"robe","headgear":"cap","accessory":"satchel","weapon":"staff","offhand":"lantern"},
+    "cook":{"outfit":"tunic","headgear":"cap","accessory":"satchel","weapon":"none","offhand":"none"},
+    "tinkerer":{"outfit":"overalls","headgear":"goggles","accessory":"pauldron","weapon":"wrench","offhand":"none"},
+    "trader":{"outfit":"coat","headgear":"wide_hat","accessory":"satchel","weapon":"pistol","offhand":"lantern"},
+    "bandit":{"outfit":"rags","headgear":"bandana","accessory":"scarf","weapon":"dagger","offhand":"none"},
+    "bandit_archer":{"outfit":"rags","headgear":"hood","accessory":"scarf","weapon":"crossbow","offhand":"none"},
+    "bandit_captain":{"outfit":"coat","headgear":"helmet","accessory":"cape","weapon":"mace","offhand":"buckler"}
+  },
+  "races": {
+    "human":{"skins":["#f0bd91","#c98762","#7b4b35","#f2d0ae"],"hair":["#3c2922","#6b422e","#b97842","#d8b46a"]},
+    "sylvan":{"skins":["#e3bc98","#ae8768","#f1d4b0"],"hair":["#35513f","#6b4933","#bb8a49","#d0b87a"]},
+    "stoutkin":{"skins":["#d7a57d","#b8754f","#edc197"],"hair":["#3b2a24","#70452f","#9b603d"]},
+    "vulpin":{"skins":["#cf8158","#9d583e","#e1a06e"],"hair":["#633b2c","#c16c3a","#e3b66e"]}
+  }
+}

@@ -1,0 +1,566 @@
+[
+  {
+    "id": "brave",
+    "name": "Brave",
+    "description": "Faces danger with a steady hand.",
+    "mods": {
+      "retreat_bias": -0.25
+    },
+    "weight": 1.2,
+    "tags": [
+      "courage"
+    ],
+    "conflicts": [
+      "timid"
+    ],
+    "polarity": "good"
+  },
+  {
+    "id": "cautious",
+    "name": "Cautious",
+    "description": "Checks every knot and shadow twice.",
+    "mods": {
+      "accuracy": 0.04,
+      "retreat_bias": 0.12
+    },
+    "weight": 1.0,
+    "tags": [
+      "careful"
+    ],
+    "conflicts": [
+      "reckless"
+    ],
+    "polarity": "good"
+  },
+  {
+    "id": "night_sight",
+    "name": "Night Sight",
+    "description": "Sees the road when the lamps burn low.",
+    "mods": {
+      "night_vision": 4,
+      "vision": 1
+    },
+    "weight": 0.9,
+    "tags": [
+      "sylvan"
+    ],
+    "conflicts": [],
+    "polarity": "good"
+  },
+  {
+    "id": "lucky",
+    "name": "Lucky",
+    "description": "Coincidences seem to find this settler.",
+    "mods": {
+      "loot_luck": 0.12,
+      "crit_chance": 0.03
+    },
+    "weight": 0.85,
+    "tags": [
+      "fortune"
+    ],
+    "conflicts": [],
+    "polarity": "good"
+  },
+  {
+    "id": "curious",
+    "name": "Curious",
+    "description": "Cannot resist a strange lever or old map.",
+    "mods": {
+      "vision": 1,
+      "xp_rate_pct": 0.08
+    },
+    "weight": 1.1,
+    "tags": [
+      "inquisitive"
+    ],
+    "conflicts": [
+      "absent_minded"
+    ],
+    "polarity": "good"
+  },
+  {
+    "id": "nature_lover",
+    "name": "Nature Lover",
+    "description": "Works gently with living things.",
+    "mods": {
+      "farm_speed_pct": 0.12,
+      "gather_speed_pct": 0.08
+    },
+    "weight": 1.0,
+    "tags": [
+      "nature"
+    ],
+    "conflicts": [
+      "steel_nerves"
+    ],
+    "polarity": "good"
+  },
+  {
+    "id": "tireless",
+    "name": "Tireless",
+    "description": "Keeps moving long after others sit down.",
+    "mods": {
+      "energy_max": 12,
+      "work_speed_pct": 0.1
+    },
+    "weight": 0.75,
+    "tags": [
+      "stamina"
+    ],
+    "conflicts": [
+      "lazy"
+    ],
+    "polarity": "good"
+  },
+  {
+    "id": "sharpshooter",
+    "name": "Sharpshooter",
+    "description": "Waits for the perfect shot.",
+    "mods": {
+      "accuracy": 0.08,
+      "ranged_damage_pct": 0.12
+    },
+    "weight": 0.65,
+    "tags": [
+      "ranged"
+    ],
+    "conflicts": [
+      "clumsy"
+    ],
+    "polarity": "good"
+  },
+  {
+    "id": "iron_stomach",
+    "name": "Iron Stomach",
+    "description": "Frontier stew is always good enough.",
+    "mods": {
+      "food_use_pct": -0.15,
+      "hp_regen_pct": 0.03
+    },
+    "weight": 0.8,
+    "tags": [
+      "hearty"
+    ],
+    "conflicts": [],
+    "polarity": "good"
+  },
+  {
+    "id": "steady_hands",
+    "name": "Steady Hands",
+    "description": "Fine work comes naturally.",
+    "mods": {},
+    "weight": 0.9,
+    "tags": [
+      "craft"
+    ],
+    "conflicts": [],
+    "polarity": "good"
+  },
+  {
+    "id": "quick_footed",
+    "name": "Quick-footed",
+    "description": "Darts between carts and trouble.",
+    "mods": {
+      "move_speed_pct": 0.1
+    },
+    "weight": 0.9,
+    "tags": [
+      "speed"
+    ],
+    "conflicts": [
+      "heavy_step"
+    ],
+    "polarity": "good"
+  },
+  {
+    "id": "kind_hearted",
+    "name": "Kind-hearted",
+    "description": "Never leaves a neighbor behind.",
+    "mods": {
+      "hp_regen_pct": 0.02,
+      "xp_rate_pct": 0.04
+    },
+    "weight": 1.0,
+    "tags": [
+      "kind"
+    ],
+    "conflicts": [],
+    "polarity": "good"
+  },
+  {
+    "id": "timid",
+    "name": "Timid",
+    "description": "Prefers a warm lantern to a loud battle.",
+    "mods": {
+      "retreat_bias": 0.28,
+      "melee_damage_pct": -0.08
+    },
+    "weight": 1.2,
+    "tags": [
+      "fearful"
+    ],
+    "conflicts": [
+      "brave"
+    ],
+    "polarity": "bad"
+  },
+  {
+    "id": "lazy",
+    "name": "Lazy",
+    "description": "Will nap beside a perfectly good task.",
+    "mods": {
+      "work_speed_pct": -0.18,
+      "energy_regen_pct": -0.08
+    },
+    "weight": 1.1,
+    "tags": [
+      "sloth"
+    ],
+    "conflicts": [
+      "tireless"
+    ],
+    "polarity": "bad"
+  },
+  {
+    "id": "clumsy",
+    "name": "Clumsy",
+    "description": "Drops a tool at the least convenient moment.",
+    "mods": {
+      "accuracy": -0.08,
+      "build_speed_pct": -0.08
+    },
+    "weight": 1.15,
+    "tags": [
+      "awkward"
+    ],
+    "conflicts": [
+      "sharpshooter"
+    ],
+    "polarity": "bad"
+  },
+  {
+    "id": "glutton",
+    "name": "Glutton",
+    "description": "The best ration is the next ration.",
+    "mods": {
+      "food_use_pct": 0.2,
+      "max_hp": 4
+    },
+    "weight": 1.0,
+    "tags": [
+      "appetite"
+    ],
+    "conflicts": [],
+    "polarity": "bad"
+  },
+  {
+    "id": "absent_minded",
+    "name": "Absent-minded",
+    "description": "Starts three jobs and finishes the interesting one.",
+    "mods": {
+      "accuracy": -0.03,
+      "xp_rate_pct": -0.04
+    },
+    "weight": 1.0,
+    "tags": [
+      "distracted"
+    ],
+    "conflicts": [
+      "curious"
+    ],
+    "polarity": "bad"
+  },
+  {
+    "id": "heavy_step",
+    "name": "Heavy Step",
+    "description": "Quiet approaches are not their specialty.",
+    "mods": {
+      "move_speed_pct": -0.08
+    },
+    "weight": 0.9,
+    "tags": [
+      "noisy"
+    ],
+    "conflicts": [
+      "quick_footed"
+    ],
+    "polarity": "bad"
+  },
+  {
+    "id": "frail",
+    "name": "Frail",
+    "description": "A lifetime of thin blankets left little reserve.",
+    "mods": {
+      "max_hp_pct": -0.12,
+      "carry": -2
+    },
+    "weight": 0.7,
+    "tags": [
+      "delicate"
+    ],
+    "conflicts": [],
+    "polarity": "bad"
+  },
+  {
+    "id": "hot_headed",
+    "name": "Hot-headed",
+    "description": "Answers insults before hearing the whole sentence.",
+    "mods": {
+      "melee_damage_pct": 0.1,
+      "retreat_bias": -0.1
+    },
+    "weight": 0.9,
+    "tags": [
+      "volatile"
+    ],
+    "conflicts": [
+      "calm"
+    ],
+    "polarity": "mixed"
+  },
+  {
+    "id": "calm",
+    "name": "Calm",
+    "description": "Keeps a level voice in a rattling machine.",
+    "mods": {
+      "attack_speed_pct": 0.05,
+      "retreat_bias": -0.05
+    },
+    "weight": 0.9,
+    "tags": [
+      "composed"
+    ],
+    "conflicts": [
+      "hot_headed"
+    ],
+    "polarity": "mixed"
+  },
+  {
+    "id": "workaholic",
+    "name": "Workaholic",
+    "description": "Measures a day by completed chores.",
+    "mods": {
+      "work_speed_pct": 0.16,
+      "food_use_pct": 0.1
+    },
+    "weight": 0.8,
+    "tags": [
+      "driven"
+    ],
+    "conflicts": [
+      "lazy"
+    ],
+    "polarity": "mixed"
+  },
+  {
+    "id": "soft_spoken",
+    "name": "Soft-spoken",
+    "description": "People lean closer when this one talks.",
+    "mods": {
+      "trade_pct": 0.08,
+      "melee_damage_pct": -0.04
+    },
+    "weight": 0.85,
+    "tags": [
+      "gentle"
+    ],
+    "conflicts": [],
+    "polarity": "mixed"
+  },
+  {
+    "id": "stubborn",
+    "name": "Stubborn",
+    "description": "Will repair the same hinge until it behaves.",
+    "mods": {
+      "build_speed_pct": 0.1,
+      "retreat_bias": -0.08
+    },
+    "weight": 0.9,
+    "tags": [
+      "grit"
+    ],
+    "conflicts": [],
+    "polarity": "mixed"
+  },
+  {
+    "id": "wanderlust",
+    "name": "Wanderlust",
+    "description": "The next ridge always looks promising.",
+    "mods": {
+      "move_speed_pct": 0.04
+    },
+    "weight": 1.0,
+    "tags": [
+      "restless"
+    ],
+    "conflicts": [],
+    "polarity": "flavor"
+  },
+  {
+    "id": "collector",
+    "name": "Collector",
+    "description": "Keeps unusual scraps in labelled pockets.",
+    "mods": {
+      "loot_luck": 0.04
+    },
+    "weight": 1.0,
+    "tags": [
+      "curious"
+    ],
+    "conflicts": [],
+    "polarity": "flavor"
+  },
+  {
+    "id": "whistler",
+    "name": "Whistler",
+    "description": "A tune follows every chore.",
+    "mods": {
+      "energy_regen_pct": 0.04
+    },
+    "weight": 1.0,
+    "tags": [
+      "cheerful"
+    ],
+    "conflicts": [],
+    "polarity": "flavor"
+  },
+  {
+    "id": "superstitious",
+    "name": "Superstitious",
+    "description": "Never steps over a coil of blue wire.",
+    "mods": {
+      "retreat_bias": 0.04
+    },
+    "weight": 0.9,
+    "tags": [
+      "odd"
+    ],
+    "conflicts": [],
+    "polarity": "flavor"
+  },
+  {
+    "id": "bird_friend",
+    "name": "Bird Friend",
+    "description": "Local crows deliver gossip for crumbs.",
+    "mods": {
+      "vision": 1
+    },
+    "weight": 0.9,
+    "tags": [
+      "nature"
+    ],
+    "conflicts": [],
+    "polarity": "flavor"
+  },
+  {
+    "id": "meticulous",
+    "name": "Meticulous",
+    "description": "Labels every bolt and seed packet.",
+    "mods": {
+      "build_speed_pct": 0.06
+    },
+    "weight": 0.8,
+    "tags": [
+      "careful"
+    ],
+    "conflicts": [
+      "reckless"
+    ],
+    "polarity": "good"
+  },
+  {
+    "id": "reckless",
+    "name": "Reckless",
+    "description": "Jumps first, then asks if there was a bridge.",
+    "mods": {
+      "melee_damage_pct": 0.12,
+      "retreat_bias": -0.2
+    },
+    "weight": 0.8,
+    "tags": [
+      "bold"
+    ],
+    "conflicts": [
+      "cautious",
+      "meticulous"
+    ],
+    "polarity": "mixed"
+  },
+  {
+    "id": "steel_nerves",
+    "name": "Steel Nerves",
+    "description": "Smoke, thunder, and alarms do not hurry them.",
+    "mods": {
+      "retreat_bias": -0.18,
+      "accuracy": 0.03
+    },
+    "weight": 0.7,
+    "tags": [
+      "brave"
+    ],
+    "conflicts": [
+      "nature_lover"
+    ],
+    "polarity": "good"
+  },
+  {
+    "id": "tinker_talent",
+    "name": "Tinker Talent",
+    "description": "Can make a useful thing from three useless things.",
+    "mods": {
+      "work_speed_pct": 0.06
+    },
+    "weight": 0.85,
+    "tags": [
+      "craft"
+    ],
+    "conflicts": [],
+    "polarity": "good"
+  },
+  {
+    "id": "sunny",
+    "name": "Sunny",
+    "description": "Finds a bright edge in every cloudbank.",
+    "mods": {
+      "hp_regen_pct": 0.02,
+      "xp_rate_pct": 0.03
+    },
+    "weight": 1.0,
+    "tags": [
+      "cheerful"
+    ],
+    "conflicts": [],
+    "polarity": "flavor"
+  },
+  {
+    "id": "scarred",
+    "name": "Scarred",
+    "description": "Old lessons show in every careful movement.",
+    "mods": {
+      "armor": 1,
+      "move_speed_pct": -0.03
+    },
+    "weight": 0.75,
+    "tags": [
+      "grit"
+    ],
+    "conflicts": [],
+    "polarity": "mixed"
+  },
+  {
+    "id": "bookish",
+    "name": "Bookish",
+    "description": "Carries a handbook for problems no one else noticed.",
+    "mods": {
+      "xp_rate_pct": 0.1,
+      "melee_damage_pct": -0.05
+    },
+    "weight": 0.85,
+    "tags": [
+      "scholar"
+    ],
+    "conflicts": [],
+    "polarity": "mixed"
+  }
+]

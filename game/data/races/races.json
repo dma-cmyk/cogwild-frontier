@@ -1,0 +1,116 @@
+[
+  {
+    "id": "human",
+    "name": "Human",
+    "plural": "Humans",
+    "description": "Adaptable settlers who turn every frontier into a home.",
+    "name_set": "human",
+    "playable": true,
+    "base": {
+      "max_hp": 100,
+      "move_speed": 2.25,
+      "vision": 9,
+      "carry": 20,
+      "energy": 100
+    },
+    "skill_bias": {
+      "construction": 2,
+      "trade": 2
+    },
+    "trait_weights": {
+      "curious": 1.2,
+      "brave": 1.0
+    },
+    "age_range": [
+      18,
+      68
+    ]
+  },
+  {
+    "id": "sylvan",
+    "name": "Sylvan",
+    "plural": "Sylvans",
+    "description": "Long-lived woodland folk with patient eyes and light feet.",
+    "name_set": "sylvan",
+    "playable": true,
+    "base": {
+      "max_hp": 92,
+      "move_speed": 2.5,
+      "vision": 11,
+      "carry": 17,
+      "energy": 108
+    },
+    "skill_bias": {
+      "scouting": 5,
+      "farming": 3,
+      "woodcutting": 3
+    },
+    "trait_weights": {
+      "night_sight": 2.0,
+      "nature_lover": 1.8,
+      "quick_footed": 1.4
+    },
+    "age_range": [
+      20,
+      140
+    ]
+  },
+  {
+    "id": "stoutkin",
+    "name": "Stoutkin",
+    "plural": "Stoutkin",
+    "description": "Broad-shouldered tunnelwrights with a fondness for brass and bread.",
+    "name_set": "stoutkin",
+    "playable": true,
+    "base": {
+      "max_hp": 118,
+      "move_speed": 2.0,
+      "vision": 8,
+      "carry": 26,
+      "energy": 96
+    },
+    "skill_bias": {
+      "mining": 5,
+      "engineering": 4,
+      "construction": 3
+    },
+    "trait_weights": {
+      "iron_stomach": 2.0,
+      "tireless": 1.5,
+      "stubborn": 1.4
+    },
+    "age_range": [
+      24,
+      96
+    ]
+  },
+  {
+    "id": "vulpin",
+    "name": "Vulpin",
+    "plural": "Vulpin",
+    "description": "Fox-eared wanderers famed for quick hands and quicker bargains.",
+    "name_set": "vulpin",
+    "playable": true,
+    "base": {
+      "max_hp": 88,
+      "move_speed": 2.6,
+      "vision": 10,
+      "carry": 18,
+      "energy": 105
+    },
+    "skill_bias": {
+      "trade": 5,
+      "scouting": 4,
+      "archery": 2
+    },
+    "trait_weights": {
+      "lucky": 1.8,
+      "soft_spoken": 1.4,
+      "wanderlust": 1.6
+    },
+    "age_range": [
+      18,
+      72
+    ]
+  }
+]

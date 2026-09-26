@@ -1,0 +1,103 @@
+class_name PortraitRenderer
+extends Node
+## One tiny private viewport/world is shared by a queued portrait render. The returned texture object
+## is updated in place after the next frame, so UI does not need a completion signal.
+
+var _viewport: SubViewport
+var _world: World3D
+var _queue: Array[Dictionary] = []
+var _cached: Dictionary = {}
+var _busy_key := ""
+var _busy_visual: UnitVisual
+var _busy_camera: Camera3D
+var _busy_size := 128
+
+func _ready() -> void:
+	_viewport = SubViewport.new()
+	_viewport.name = "PortraitViewport"
+	_viewport.transparent_bg = true
+	_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	_viewport.size = Vector2i(128, 128)
+	_world = World3D.new()
+	_viewport.world_3d = _world
+	add_child(_viewport)
+	var env := WorldEnvironment.new()
+	var environment := Environment.new()
+	environment.background_mode = Environment.BG_COLOR
+	environment.background_color = Color(0, 0, 0, 0)
+	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	environment.ambient_light_color = Color("#d9e4ef")
+	environment.ambient_light_energy = 1.15
+	env.environment = environment
+	_viewport.add_child(env)
+	var sun := DirectionalLight3D.new()
+	sun.rotation_degrees = Vector3(-35, 45, 0)
+	sun.light_color = Color("#fff0d4")
+	sun.light_energy = 1.4
+	_viewport.add_child(sun)
+	var rim := DirectionalLight3D.new()
+	rim.rotation_degrees = Vector3(-20, 225, 0)
+	rim.light_color = Color("#b3d4ff")
+	rim.light_energy = 0.8
+	_viewport.add_child(rim)
+
+func get_portrait(key: String, dna: Dictionary, size: int = 128) -> Texture2D:
+	if _cached.has(key):
+		return (_cached[key] as Dictionary)["texture"] as Texture2D
+	var blank := Image.create(size, size, false, Image.FORMAT_RGBA8)
+	blank.fill(Color(0, 0, 0, 0))
+	var texture := ImageTexture.create_from_image(blank)
+	_cached[key] = {"texture":texture, "dna":dna.duplicate(true), "size":size}
+	_queue.push_back({"key":key, "dna":dna.duplicate(true), "size":size})
+	return texture
+
+func invalidate(key: String) -> void:
+	_cached.erase(key)
+	for i in range(_queue.size() - 1, -1, -1):
+		if str(_queue[i].get("key", "")) == key: _queue.remove_at(i)
+
+func _process(_delta: float) -> void:
+	if _viewport == null: return
+	if not _busy_key.is_empty():
+		_capture_busy()
+		return
+	if _queue.is_empty(): return
+	_start_render(_queue.pop_front() as Dictionary)
+
+func _start_render(entry: Dictionary) -> void:
+	_busy_key = str(entry["key"])
+	_busy_size = int(entry["size"])
+	_viewport.size = Vector2i(_busy_size, _busy_size)
+	_busy_visual = UnitVisualFactory.create(entry["dna"] as Dictionary)
+	_viewport.add_child(_busy_visual)
+	MeshKit.apply_preview_material(_busy_visual)
+	var kind := str(entry["dna"].get("kind", "character"))
+	var h := _busy_visual.get_visual_height()
+	var target := _busy_visual.get_head_position()
+	_busy_camera = Camera3D.new()
+	_busy_camera.projection = Camera3D.PROJECTION_ORTHOGONAL
+	if kind == "character":
+		_busy_camera.size = 0.78
+		target.y -= 0.14
+	else:
+		_busy_camera.size = h * 0.95
+		if kind != "robot": target = Vector3(0, h * 0.5, 0)
+	_busy_camera.near = 0.05
+	_busy_camera.far = 30.0
+	_busy_camera.position = target + Vector3(1.5, 0.4, 2.0)
+	_viewport.add_child(_busy_camera)
+	_busy_camera.look_at(target, Vector3.UP)
+	_busy_camera.make_current()
+
+func _capture_busy() -> void:
+	var image := _viewport.get_texture().get_image()
+	if image == null or image.is_empty(): return
+	image.convert(Image.FORMAT_RGBA8)
+	var entry: Dictionary = _cached.get(_busy_key, {})
+	var texture: ImageTexture = entry.get("texture") as ImageTexture
+	if texture != null: texture.update(image)
+	if is_instance_valid(_busy_visual): _busy_visual.queue_free()
+	if is_instance_valid(_busy_camera): _busy_camera.queue_free()
+	_busy_visual = null
+	_busy_camera = null
+	_busy_key = ""

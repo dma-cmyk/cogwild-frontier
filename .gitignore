@@ -1,0 +1,5 @@
+# Godot cache
+game/.godot/
+*.tmp
+# local probe / capture output
+/tmp/

@@ -1,0 +1,10 @@
+{"scene": "res://scenes/game.tscn", "frames": 760, "seed": 7,
+ "events": [
+  {"frame": 10, "do": "scene.dbg_plan_building('windmill')"},
+  {"frame": 11, "do": "scene.dbg_plan_building('house', 8)"},
+  {"frame": 20, "do": "scene.set_speed(4)"},
+  {"frame": 740, "do": "scene.set_speed(1)"},
+  {"frame": 742, "do": "scene.focus_home()"},
+  {"frame": 755, "screenshot": "night"},
+  {"frame": 755, "watch": "scene.world.hour()", "label": "hour"}
+ ]}

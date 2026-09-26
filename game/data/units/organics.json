@@ -1,0 +1,13 @@
+[
+	{"id": "colonist", "kind": "character", "name": "Colonist", "faction_type": "player", "labor": "worker",
+		"description": "A member of your frontier company. Works when idle, fights when drafted into a squad."},
+	{"id": "bandit", "kind": "character", "name": "Bandit", "faction_type": "bandit", "role": "bandit", "labor": "soldier",
+		"level_hp": 8, "base": {"max_hp": 62}},
+	{"id": "bandit_archer", "kind": "character", "name": "Bandit Archer", "faction_type": "bandit", "role": "bandit_archer", "labor": "soldier",
+		"level_hp": 6, "base": {"max_hp": 60}},
+	{"id": "bandit_captain", "kind": "character", "name": "Bandit Captain", "faction_type": "bandit", "role": "bandit_captain", "labor": "soldier",
+		"named": "bandit_captain", "level_hp": 14, "base": {"max_hp": 125}},
+	{"id": "merchant", "kind": "character", "name": "Merchant", "faction_type": "merchant", "role": "trader", "labor": "none"},
+	{"id": "wanderer", "kind": "character", "name": "Wanderer", "faction_type": "wanderer", "role": "", "labor": "none",
+		"description": "A traveller camping in the wilds. Will join a settlement that treats them well."}
+]

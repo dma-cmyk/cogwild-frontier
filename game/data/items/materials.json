@@ -1,0 +1,145 @@
+{
+  "table": "materials",
+  "entries": [
+    {
+      "id": "scrap",
+      "name": "Scrap",
+      "color": "#70757a",
+      "secondary": "#3b4148",
+      "stat_mult": 0.72,
+      "value_mult": 0.55,
+      "level_min": 1,
+      "categories": [
+        "weapon",
+        "armor",
+        "tool",
+        "gadget",
+        "robot_part",
+        "airship_part"
+      ]
+    },
+    {
+      "id": "wood",
+      "name": "Ashwood",
+      "color": "#8a5a34",
+      "secondary": "#c18a50",
+      "stat_mult": 0.78,
+      "value_mult": 0.65,
+      "level_min": 1,
+      "categories": [
+        "weapon",
+        "armor",
+        "tool",
+        "airship_part"
+      ]
+    },
+    {
+      "id": "bronze",
+      "name": "Bronze",
+      "color": "#b87542",
+      "secondary": "#6c3f2b",
+      "stat_mult": 0.9,
+      "value_mult": 0.85,
+      "level_min": 1,
+      "categories": [
+        "weapon",
+        "armor",
+        "tool",
+        "gadget"
+      ]
+    },
+    {
+      "id": "iron",
+      "name": "Iron",
+      "color": "#78818a",
+      "secondary": "#3f474f",
+      "stat_mult": 1.0,
+      "value_mult": 1.0,
+      "level_min": 1,
+      "categories": [
+        "weapon",
+        "armor",
+        "tool",
+        "gadget",
+        "robot_part",
+        "airship_part"
+      ]
+    },
+    {
+      "id": "steel",
+      "name": "Steel",
+      "color": "#bcc6cb",
+      "secondary": "#52616c",
+      "stat_mult": 1.18,
+      "value_mult": 1.35,
+      "level_min": 2,
+      "categories": [
+        "weapon",
+        "armor",
+        "tool",
+        "gadget",
+        "robot_part",
+        "airship_part"
+      ]
+    },
+    {
+      "id": "brass",
+      "name": "Brass",
+      "color": "#d1a24c",
+      "secondary": "#77522b",
+      "stat_mult": 1.08,
+      "value_mult": 1.25,
+      "level_min": 2,
+      "categories": [
+        "gadget",
+        "robot_part",
+        "airship_part",
+        "artifact"
+      ]
+    },
+    {
+      "id": "crystal",
+      "name": "Aether Crystal",
+      "color": "#62d8dc",
+      "secondary": "#287d96",
+      "stat_mult": 1.3,
+      "value_mult": 1.8,
+      "level_min": 3,
+      "categories": [
+        "gadget",
+        "artifact",
+        "robot_part"
+      ]
+    },
+    {
+      "id": "obsidian",
+      "name": "Obsidian",
+      "color": "#272d3c",
+      "secondary": "#704d7d",
+      "stat_mult": 1.42,
+      "value_mult": 2.2,
+      "level_min": 4,
+      "categories": [
+        "weapon",
+        "armor",
+        "artifact"
+      ]
+    },
+    {
+      "id": "ancient_alloy",
+      "name": "Ancient Alloy",
+      "color": "#a07a4a",
+      "secondary": "#5b6470",
+      "stat_mult": 1.55,
+      "value_mult": 3.0,
+      "level_min": 5,
+      "categories": [
+        "weapon",
+        "armor",
+        "robot_part",
+        "airship_part",
+        "artifact"
+      ]
+    }
+  ]
+}

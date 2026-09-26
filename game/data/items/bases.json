@@ -1,0 +1,1360 @@
+[
+  {
+    "id": "dagger",
+    "name": "Dagger",
+    "category": "weapon",
+    "slot": "weapon",
+    "visual": "dagger",
+    "icon": "dagger",
+    "base_stats": {
+      "damage": 6,
+      "cooldown": 1.0,
+      "range": 1.4,
+      "kind": "melee",
+      "projectile": "none",
+      "accuracy": 0.85
+    },
+    "mods": {},
+    "materials": [
+      "iron",
+      "steel",
+      "obsidian"
+    ],
+    "value": 18,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "weapon"
+    ],
+    "name_nouns": [
+      "Dagger"
+    ]
+  },
+  {
+    "id": "sword",
+    "name": "Sword",
+    "category": "weapon",
+    "slot": "weapon",
+    "visual": "sword",
+    "icon": "sword",
+    "base_stats": {
+      "damage": 11,
+      "cooldown": 1.1,
+      "range": 1.6,
+      "kind": "melee",
+      "projectile": "none",
+      "accuracy": 0.82
+    },
+    "mods": {},
+    "materials": [
+      "iron",
+      "steel",
+      "obsidian"
+    ],
+    "value": 34,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "weapon"
+    ],
+    "name_nouns": [
+      "Sword"
+    ]
+  },
+  {
+    "id": "steel_sword",
+    "name": "Steel Sword",
+    "category": "weapon",
+    "slot": "weapon",
+    "visual": "sword",
+    "icon": "sword",
+    "base_stats": {
+      "damage": 14,
+      "cooldown": 1.05,
+      "range": 1.7,
+      "kind": "melee",
+      "projectile": "none",
+      "accuracy": 0.88
+    },
+    "mods": {},
+    "materials": [
+      "steel",
+      "ancient_alloy"
+    ],
+    "value": 58,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "weapon"
+    ],
+    "name_nouns": [
+      "Sword"
+    ]
+  },
+  {
+    "id": "axe",
+    "name": "Axe",
+    "category": "weapon",
+    "slot": "weapon",
+    "visual": "axe",
+    "icon": "axe",
+    "base_stats": {
+      "damage": 13,
+      "cooldown": 1.35,
+      "range": 1.5,
+      "kind": "melee",
+      "projectile": "none",
+      "accuracy": 0.74
+    },
+    "mods": {},
+    "materials": [
+      "wood",
+      "iron",
+      "steel"
+    ],
+    "value": 28,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "weapon"
+    ],
+    "name_nouns": [
+      "Axe"
+    ]
+  },
+  {
+    "id": "spear",
+    "name": "Spear",
+    "category": "weapon",
+    "slot": "weapon",
+    "visual": "spear",
+    "icon": "spear",
+    "base_stats": {
+      "damage": 10,
+      "cooldown": 1.2,
+      "range": 2.3,
+      "kind": "melee",
+      "projectile": "none",
+      "accuracy": 0.8
+    },
+    "mods": {},
+    "materials": [
+      "wood",
+      "iron",
+      "steel"
+    ],
+    "value": 30,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "weapon"
+    ],
+    "name_nouns": [
+      "Spear"
+    ]
+  },
+  {
+    "id": "bow",
+    "name": "Bow",
+    "category": "weapon",
+    "slot": "weapon",
+    "visual": "bow",
+    "icon": "bow",
+    "base_stats": {
+      "damage": 9,
+      "cooldown": 1.5,
+      "range": 9.0,
+      "kind": "ranged",
+      "projectile": "arrow",
+      "accuracy": 0.78
+    },
+    "mods": {},
+    "materials": [
+      "wood",
+      "iron",
+      "steel"
+    ],
+    "value": 31,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "weapon"
+    ],
+    "name_nouns": [
+      "Bow"
+    ]
+  },
+  {
+    "id": "crossbow",
+    "name": "Crossbow",
+    "category": "weapon",
+    "slot": "weapon",
+    "visual": "crossbow",
+    "icon": "crossbow",
+    "base_stats": {
+      "damage": 14,
+      "cooldown": 2.0,
+      "range": 10.0,
+      "kind": "ranged",
+      "projectile": "bolt",
+      "accuracy": 0.82
+    },
+    "mods": {},
+    "materials": [
+      "wood",
+      "iron",
+      "steel"
+    ],
+    "value": 45,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "weapon"
+    ],
+    "name_nouns": [
+      "Crossbow"
+    ]
+  },
+  {
+    "id": "hammer",
+    "name": "War Hammer",
+    "category": "weapon",
+    "slot": "weapon",
+    "visual": "hammer",
+    "icon": "hammer",
+    "base_stats": {
+      "damage": 16,
+      "cooldown": 1.65,
+      "range": 1.4,
+      "kind": "melee",
+      "projectile": "none",
+      "accuracy": 0.68
+    },
+    "mods": {},
+    "materials": [
+      "iron",
+      "steel"
+    ],
+    "value": 42,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "weapon"
+    ],
+    "name_nouns": [
+      "Hammer"
+    ]
+  },
+  {
+    "id": "mace",
+    "name": "Mace",
+    "category": "weapon",
+    "slot": "weapon",
+    "visual": "mace",
+    "icon": "mace",
+    "base_stats": {
+      "damage": 12,
+      "cooldown": 1.3,
+      "range": 1.4,
+      "kind": "melee",
+      "projectile": "none",
+      "accuracy": 0.76
+    },
+    "mods": {},
+    "materials": [
+      "bronze",
+      "iron",
+      "steel"
+    ],
+    "value": 29,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "weapon"
+    ],
+    "name_nouns": [
+      "Mace"
+    ]
+  },
+  {
+    "id": "rifle",
+    "name": "Frontier Rifle",
+    "category": "weapon",
+    "slot": "weapon",
+    "visual": "rifle",
+    "icon": "rifle",
+    "base_stats": {
+      "damage": 18,
+      "cooldown": 2.2,
+      "range": 14.0,
+      "kind": "ranged",
+      "projectile": "bullet",
+      "accuracy": 0.86
+    },
+    "mods": {},
+    "materials": [
+      "iron",
+      "steel",
+      "brass"
+    ],
+    "value": 72,
+    "weight": 1.0,
+    "level_min": 3,
+    "tags": [
+      "weapon"
+    ],
+    "name_nouns": [
+      "Rifle"
+    ]
+  },
+  {
+    "id": "staff",
+    "name": "Aether Staff",
+    "category": "weapon",
+    "slot": "weapon",
+    "visual": "staff",
+    "icon": "staff",
+    "base_stats": {
+      "damage": 8,
+      "cooldown": 1.7,
+      "range": 8.0,
+      "kind": "ranged",
+      "projectile": "none",
+      "accuracy": 0.8
+    },
+    "mods": {
+      "energy_regen_pct": 0.1
+    },
+    "materials": [
+      "wood",
+      "brass",
+      "crystal"
+    ],
+    "value": 48,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "weapon",
+      "artifact"
+    ],
+    "name_nouns": [
+      "Staff"
+    ]
+  },
+  {
+    "id": "wrench",
+    "name": "Workshop Wrench",
+    "category": "weapon",
+    "slot": "weapon",
+    "visual": "wrench",
+    "icon": "wrench",
+    "base_stats": {
+      "damage": 7,
+      "cooldown": 1.2,
+      "range": 1.4,
+      "kind": "melee",
+      "projectile": "none",
+      "accuracy": 0.8
+    },
+    "mods": {},
+    "materials": [
+      "iron",
+      "brass",
+      "steel"
+    ],
+    "value": 24,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "weapon",
+      "tool"
+    ],
+    "name_nouns": [
+      "Wrench"
+    ]
+  },
+  {
+    "id": "leather_vest",
+    "name": "Leather Vest",
+    "category": "armor",
+    "slot": "armor",
+    "visual": "vest",
+    "icon": "vest",
+    "base_stats": {
+      "armor": 2,
+      "max_hp": 8
+    },
+    "mods": {},
+    "materials": [
+      "wood",
+      "scrap",
+      "iron"
+    ],
+    "value": 22,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "armor"
+    ],
+    "name_nouns": [
+      "Vest"
+    ]
+  },
+  {
+    "id": "canvas_coat",
+    "name": "Canvas Coat",
+    "category": "armor",
+    "slot": "armor",
+    "visual": "coat",
+    "icon": "coat",
+    "base_stats": {
+      "armor": 3,
+      "max_hp": 12
+    },
+    "mods": {
+      "move_speed_pct": 0.02
+    },
+    "materials": [
+      "wood",
+      "scrap",
+      "iron"
+    ],
+    "value": 31,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "armor"
+    ],
+    "name_nouns": [
+      "Coat"
+    ]
+  },
+  {
+    "id": "patched_coat",
+    "name": "Patched Coat",
+    "category": "armor",
+    "slot": "armor",
+    "visual": "coat",
+    "icon": "coat",
+    "base_stats": {
+      "armor": 2,
+      "max_hp": 6
+    },
+    "mods": {
+      "retreat_bias": 0.06
+    },
+    "materials": [
+      "scrap",
+      "wood"
+    ],
+    "value": 15,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "armor"
+    ],
+    "name_nouns": [
+      "Coat"
+    ]
+  },
+  {
+    "id": "chain_mail",
+    "name": "Chain Mail",
+    "category": "armor",
+    "slot": "armor",
+    "visual": "plate",
+    "icon": "plate",
+    "base_stats": {
+      "armor": 7,
+      "max_hp": 18
+    },
+    "mods": {
+      "move_speed_pct": -0.04
+    },
+    "materials": [
+      "iron",
+      "steel"
+    ],
+    "value": 76,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "armor"
+    ],
+    "name_nouns": [
+      "Mail"
+    ]
+  },
+  {
+    "id": "plate_armor",
+    "name": "Plate Armor",
+    "category": "armor",
+    "slot": "armor",
+    "visual": "plate",
+    "icon": "plate",
+    "base_stats": {
+      "armor": 12,
+      "max_hp": 28
+    },
+    "mods": {
+      "move_speed_pct": -0.1
+    },
+    "materials": [
+      "steel",
+      "ancient_alloy"
+    ],
+    "value": 145,
+    "weight": 1.0,
+    "level_min": 4,
+    "tags": [
+      "armor"
+    ],
+    "name_nouns": [
+      "Plate"
+    ]
+  },
+  {
+    "id": "goggles",
+    "name": "Brass Goggles",
+    "category": "gadget",
+    "slot": "gadget",
+    "visual": "goggles",
+    "icon": "goggles",
+    "base_stats": {},
+    "mods": {
+      "vision": 2,
+      "night_vision": 2
+    },
+    "materials": [
+      "brass",
+      "iron",
+      "crystal"
+    ],
+    "value": 32,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "gadget"
+    ],
+    "name_nouns": [
+      "Goggles"
+    ]
+  },
+  {
+    "id": "scope",
+    "name": "Star Scope",
+    "category": "gadget",
+    "slot": "gadget",
+    "visual": "scope",
+    "icon": "scope",
+    "base_stats": {},
+    "mods": {
+      "vision": 4,
+      "accuracy": 0.06
+    },
+    "materials": [
+      "brass",
+      "crystal",
+      "steel"
+    ],
+    "value": 65,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "gadget"
+    ],
+    "name_nouns": [
+      "Scope"
+    ]
+  },
+  {
+    "id": "lantern",
+    "name": "Warm Lantern",
+    "category": "gadget",
+    "slot": "gadget",
+    "visual": "lantern",
+    "icon": "lantern",
+    "base_stats": {},
+    "mods": {
+      "night_vision": 4,
+      "vision": 1
+    },
+    "materials": [
+      "iron",
+      "brass",
+      "crystal"
+    ],
+    "value": 26,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "gadget"
+    ],
+    "name_nouns": [
+      "Lantern"
+    ]
+  },
+  {
+    "id": "signal_lantern",
+    "name": "Signal Lantern",
+    "category": "gadget",
+    "slot": "gadget",
+    "visual": "lantern",
+    "icon": "lantern",
+    "base_stats": {},
+    "mods": {
+      "vision": 2,
+      "night_vision": 3,
+      "energy_regen_pct": 0.06
+    },
+    "materials": [
+      "brass",
+      "crystal"
+    ],
+    "value": 54,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "gadget"
+    ],
+    "name_nouns": [
+      "Lantern"
+    ]
+  },
+  {
+    "id": "compass",
+    "name": "Brass Compass",
+    "category": "gadget",
+    "slot": "gadget",
+    "visual": "compass",
+    "icon": "compass",
+    "base_stats": {},
+    "mods": {
+      "vision": 1
+    },
+    "materials": [
+      "brass",
+      "iron"
+    ],
+    "value": 38,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "gadget"
+    ],
+    "name_nouns": [
+      "Compass"
+    ]
+  },
+  {
+    "id": "pickaxe",
+    "name": "Pickaxe",
+    "category": "tool",
+    "slot": "gadget",
+    "visual": "pickaxe",
+    "icon": "pickaxe",
+    "base_stats": {},
+    "mods": {
+      "gather_speed_pct": 0.15,
+      "carry": 2
+    },
+    "materials": [
+      "wood",
+      "iron",
+      "steel"
+    ],
+    "value": 25,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "tool",
+      "mining"
+    ],
+    "name_nouns": [
+      "Pickaxe"
+    ]
+  },
+  {
+    "id": "woodaxe",
+    "name": "Woodaxe",
+    "category": "tool",
+    "slot": "gadget",
+    "visual": "axe",
+    "icon": "axe",
+    "base_stats": {},
+    "mods": {
+      "gather_speed_pct": 0.15,
+      "carry": 2
+    },
+    "materials": [
+      "wood",
+      "iron",
+      "steel"
+    ],
+    "value": 24,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "tool",
+      "woodcutting"
+    ],
+    "name_nouns": [
+      "Woodaxe"
+    ]
+  },
+  {
+    "id": "hoe",
+    "name": "Field Hoe",
+    "category": "tool",
+    "slot": "gadget",
+    "visual": "hoe",
+    "icon": "hoe",
+    "base_stats": {},
+    "mods": {
+      "farm_speed_pct": 0.2
+    },
+    "materials": [
+      "wood",
+      "iron",
+      "steel"
+    ],
+    "value": 21,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "tool",
+      "farming"
+    ],
+    "name_nouns": [
+      "Hoe"
+    ]
+  },
+  {
+    "id": "toolkit",
+    "name": "Field Toolkit",
+    "category": "tool",
+    "slot": "gadget",
+    "visual": "gear",
+    "icon": "gear",
+    "base_stats": {},
+    "mods": {
+      "build_speed_pct": 0.15
+    },
+    "materials": [
+      "scrap",
+      "iron",
+      "brass"
+    ],
+    "value": 40,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "tool"
+    ],
+    "name_nouns": [
+      "Toolkit"
+    ]
+  },
+  {
+    "id": "wooden_shield",
+    "name": "Wooden Shield",
+    "category": "armor",
+    "slot": "armor",
+    "visual": "shield",
+    "icon": "shield",
+    "base_stats": {
+      "armor": 4,
+      "max_hp": 8
+    },
+    "mods": {
+      "move_speed_pct": -0.02
+    },
+    "materials": [
+      "wood",
+      "iron"
+    ],
+    "value": 26,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "armor"
+    ],
+    "name_nouns": [
+      "Shield"
+    ]
+  },
+  {
+    "id": "straw_hat",
+    "name": "Straw Hat",
+    "category": "armor",
+    "slot": "armor",
+    "visual": "helmet",
+    "icon": "helmet",
+    "base_stats": {
+      "armor": 1,
+      "max_hp": 2
+    },
+    "mods": {
+      "farm_speed_pct": 0.04
+    },
+    "materials": [
+      "wood"
+    ],
+    "value": 10,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "armor"
+    ],
+    "name_nouns": [
+      "Hat"
+    ]
+  },
+  {
+    "id": "scope_gadget",
+    "name": "Survey Scope",
+    "category": "gadget",
+    "slot": "gadget",
+    "visual": "scope",
+    "icon": "scope",
+    "base_stats": {},
+    "mods": {
+      "vision": 5
+    },
+    "materials": [
+      "brass",
+      "crystal"
+    ],
+    "value": 74,
+    "weight": 1.0,
+    "level_min": 3,
+    "tags": [
+      "gadget"
+    ],
+    "name_nouns": [
+      "Scope"
+    ]
+  },
+  {
+    "id": "servo_arm",
+    "name": "Servo Arm",
+    "category": "robot_part",
+    "slot": "robot_part",
+    "visual": "servo",
+    "icon": "servo",
+    "base_stats": {},
+    "mods": {
+      "build_speed_pct": 0.2,
+      "carry": 8
+    },
+    "materials": [
+      "scrap",
+      "iron",
+      "brass",
+      "ancient_alloy"
+    ],
+    "value": 95,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "robot_part"
+    ],
+    "name_nouns": [
+      "Servo"
+    ]
+  },
+  {
+    "id": "sensor_array",
+    "name": "Sensor Array",
+    "category": "robot_part",
+    "slot": "robot_part",
+    "visual": "sensor",
+    "icon": "sensor",
+    "base_stats": {},
+    "mods": {
+      "vision": 5,
+      "night_vision": 5,
+      "accuracy": 0.05
+    },
+    "materials": [
+      "brass",
+      "crystal",
+      "ancient_alloy"
+    ],
+    "value": 110,
+    "weight": 1.0,
+    "level_min": 3,
+    "tags": [
+      "robot_part"
+    ],
+    "name_nouns": [
+      "Sensor"
+    ]
+  },
+  {
+    "id": "power_core",
+    "name": "Aether Power Core",
+    "category": "robot_part",
+    "slot": "robot_part",
+    "visual": "core",
+    "icon": "core",
+    "base_stats": {},
+    "mods": {
+      "energy_max": 40,
+      "energy_regen_pct": 0.25
+    },
+    "materials": [
+      "brass",
+      "crystal",
+      "ancient_alloy"
+    ],
+    "value": 160,
+    "weight": 1.0,
+    "level_min": 4,
+    "tags": [
+      "robot_part",
+      "artifact"
+    ],
+    "name_nouns": [
+      "Core"
+    ]
+  },
+  {
+    "id": "propeller",
+    "name": "Brass Propeller",
+    "category": "airship_part",
+    "slot": "airship_part",
+    "visual": "propeller",
+    "icon": "propeller",
+    "base_stats": {},
+    "mods": {
+      "move_speed_pct": 0.14
+    },
+    "materials": [
+      "wood",
+      "brass",
+      "steel"
+    ],
+    "value": 85,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "airship_part"
+    ],
+    "name_nouns": [
+      "Propeller"
+    ]
+  },
+  {
+    "id": "engine",
+    "name": "Boiler Engine",
+    "category": "airship_part",
+    "slot": "airship_part",
+    "visual": "engine",
+    "icon": "engine",
+    "base_stats": {},
+    "mods": {
+      "energy_max": 20,
+      "energy_regen_pct": 0.2,
+      "move_speed_pct": 0.08
+    },
+    "materials": [
+      "iron",
+      "brass",
+      "steel"
+    ],
+    "value": 130,
+    "weight": 1.0,
+    "level_min": 3,
+    "tags": [
+      "airship_part"
+    ],
+    "name_nouns": [
+      "Engine"
+    ]
+  },
+  {
+    "id": "balloon_envelope",
+    "name": "Patchwork Envelope",
+    "category": "airship_part",
+    "slot": "airship_part",
+    "visual": "envelope",
+    "icon": "envelope",
+    "base_stats": {},
+    "mods": {
+      "carry": 18,
+      "move_speed_pct": 0.04
+    },
+    "materials": [
+      "wood",
+      "scrap",
+      "brass"
+    ],
+    "value": 90,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "airship_part"
+    ],
+    "name_nouns": [
+      "Envelope"
+    ]
+  },
+  {
+    "id": "idol",
+    "name": "Clockwork Idol",
+    "category": "artifact",
+    "slot": "gadget",
+    "visual": "idol",
+    "icon": "idol",
+    "base_stats": {},
+    "mods": {
+      "loot_luck": 0.2,
+      "xp_rate_pct": 0.12
+    },
+    "materials": [
+      "brass",
+      "crystal",
+      "ancient_alloy"
+    ],
+    "value": 180,
+    "weight": 1.0,
+    "level_min": 4,
+    "tags": [
+      "artifact"
+    ],
+    "name_nouns": [
+      "Idol"
+    ]
+  },
+  {
+    "id": "relic",
+    "name": "Old World Relic",
+    "category": "artifact",
+    "slot": "gadget",
+    "visual": "relic",
+    "icon": "relic",
+    "base_stats": {},
+    "mods": {
+      "vision": 3,
+      "energy_max": 20,
+      "xp_rate_pct": 0.2
+    },
+    "materials": [
+      "obsidian",
+      "crystal",
+      "ancient_alloy"
+    ],
+    "value": 240,
+    "weight": 1.0,
+    "level_min": 5,
+    "tags": [
+      "artifact"
+    ],
+    "name_nouns": [
+      "Relic"
+    ]
+  },
+  {
+    "id": "amulet",
+    "name": "Aether Amulet",
+    "category": "artifact",
+    "slot": "gadget",
+    "visual": "amulet",
+    "icon": "amulet",
+    "base_stats": {},
+    "mods": {
+      "hp_regen_pct": 0.08,
+      "energy_regen_pct": 0.12
+    },
+    "materials": [
+      "brass",
+      "crystal"
+    ],
+    "value": 140,
+    "weight": 1.0,
+    "level_min": 3,
+    "tags": [
+      "artifact"
+    ],
+    "name_nouns": [
+      "Amulet"
+    ]
+  },
+  {
+    "id": "tonic",
+    "name": "Sunroot Tonic",
+    "category": "consumable",
+    "slot": "none",
+    "visual": "tonic",
+    "icon": "tonic",
+    "base_stats": {},
+    "mods": {
+      "hp_regen_pct": 0.2
+    },
+    "materials": [
+      "wood",
+      "crystal"
+    ],
+    "value": 12,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "consumable"
+    ],
+    "name_nouns": [
+      "Tonic"
+    ]
+  },
+  {
+    "id": "ration",
+    "name": "Trail Ration",
+    "category": "consumable",
+    "slot": "none",
+    "visual": "ration",
+    "icon": "ration",
+    "base_stats": {},
+    "mods": {
+      "energy_regen_pct": 0.06,
+      "food_use_pct": -0.05
+    },
+    "materials": [
+      "wood"
+    ],
+    "value": 8,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "consumable"
+    ],
+    "name_nouns": [
+      "Ration"
+    ]
+  },
+  {
+    "id": "repair_kit",
+    "name": "Repair Kit",
+    "category": "consumable",
+    "slot": "none",
+    "visual": "repair_kit",
+    "icon": "repair_kit",
+    "base_stats": {},
+    "mods": {
+      "hp_regen_pct": 0.12,
+      "build_speed_pct": 0.08
+    },
+    "materials": [
+      "scrap",
+      "iron"
+    ],
+    "value": 20,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "consumable"
+    ],
+    "name_nouns": [
+      "Kit"
+    ]
+  },
+  {
+    "id": "medic_kit",
+    "name": "Medic Kit",
+    "category": "consumable",
+    "slot": "gadget",
+    "visual": "repair_kit",
+    "icon": "repair_kit",
+    "base_stats": {},
+    "mods": {
+      "hp_regen_pct": 0.24
+    },
+    "materials": [
+      "scrap",
+      "iron",
+      "brass"
+    ],
+    "value": 36,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "consumable",
+      "gadget"
+    ],
+    "name_nouns": [
+      "Kit"
+    ]
+  },
+  {
+    "id": "cookpot",
+    "name": "Camp Cookpot",
+    "category": "tool",
+    "slot": "gadget",
+    "visual": "gear",
+    "icon": "gear",
+    "base_stats": {},
+    "mods": {
+      "food_use_pct": -0.12,
+      "farm_speed_pct": 0.05
+    },
+    "materials": [
+      "iron",
+      "bronze"
+    ],
+    "value": 22,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "tool"
+    ],
+    "name_nouns": [
+      "Cookpot"
+    ]
+  },
+  {
+    "id": "field_book",
+    "name": "Field Book",
+    "category": "artifact",
+    "slot": "gadget",
+    "visual": "book",
+    "icon": "book",
+    "base_stats": {},
+    "mods": {
+      "xp_rate_pct": 0.18
+    },
+    "materials": [
+      "wood",
+      "scrap"
+    ],
+    "value": 44,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "artifact"
+    ],
+    "name_nouns": [
+      "Book"
+    ]
+  },
+  {
+    "id": "map",
+    "name": "Survey Map",
+    "category": "artifact",
+    "slot": "gadget",
+    "visual": "map",
+    "icon": "map",
+    "base_stats": {},
+    "mods": {
+      "vision": 3
+    },
+    "materials": [
+      "wood",
+      "brass"
+    ],
+    "value": 55,
+    "weight": 1.0,
+    "level_min": 2,
+    "tags": [
+      "artifact"
+    ],
+    "name_nouns": [
+      "Map"
+    ]
+  },
+  {
+    "id": "timber",
+    "name": "Timber Bundle",
+    "category": "resource",
+    "slot": "none",
+    "visual": "timber",
+    "icon": "timber",
+    "base_stats": {},
+    "mods": {
+      "carry": 4
+    },
+    "materials": [
+      "wood"
+    ],
+    "value": 6,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "resource"
+    ],
+    "name_nouns": [
+      "Timber"
+    ]
+  },
+  {
+    "id": "ingot",
+    "name": "Iron Ingot",
+    "category": "resource",
+    "slot": "none",
+    "visual": "ingot",
+    "icon": "ingot",
+    "base_stats": {},
+    "mods": {
+      "carry": 2
+    },
+    "materials": [
+      "iron",
+      "steel"
+    ],
+    "value": 14,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "resource"
+    ],
+    "name_nouns": [
+      "Ingot"
+    ]
+  },
+  {
+    "id": "shard",
+    "name": "Aether Shard",
+    "category": "resource",
+    "slot": "none",
+    "visual": "shard",
+    "icon": "shard",
+    "base_stats": {},
+    "mods": {
+      "energy_max": 5
+    },
+    "materials": [
+      "crystal"
+    ],
+    "value": 25,
+    "weight": 1.0,
+    "level_min": 3,
+    "tags": [
+      "resource"
+    ],
+    "name_nouns": [
+      "Shard"
+    ]
+  },
+  {
+    "id": "pelt",
+    "name": "Fox Pelt",
+    "category": "resource",
+    "slot": "none",
+    "visual": "pelt",
+    "icon": "pelt",
+    "base_stats": {},
+    "mods": {
+      "carry": 1
+    },
+    "materials": [
+      "wood"
+    ],
+    "value": 9,
+    "weight": 1.0,
+    "level_min": 1,
+    "tags": [
+      "resource"
+    ],
+    "name_nouns": [
+      "Pelt"
+    ]
+  }
+]

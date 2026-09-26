@@ -1,0 +1,12 @@
+{"scene": "res://scenes/game.tscn", "frames": 700,
+ "events": [
+  {"frame": 20, "do": "scene.set_speed(4)"},
+  {"frame": 25, "do": "scene.dbg_attack_site('bandit_camp')"},
+  {"frame": 330, "do": "scene.set_speed(1)"},
+  {"frame": 331, "do": "scene.dbg_focus_site('bandit_camp')"},
+  {"frame": 360, "screenshot": "battle_a"},
+  {"frame": 420, "screenshot": "battle_b"},
+  {"frame": 480, "screenshot": "battle_c"},
+  {"frame": 540, "screenshot": "battle_d"},
+  {"frame": 600, "screenshot": "battle_e"}
+ ]}

@@ -1,0 +1,117 @@
+{
+	"table": "qualities",
+	"entries": [
+		{
+			"id": "junk",
+			"name": "Junk",
+			"tier": 0,
+			"weight": 28.0,
+			"stat_mult": 0.62,
+			"value_mult": 0.45,
+			"affix_count": [
+				0,
+				0
+			],
+			"color": "#777b80",
+			"glow": 0.0
+		},
+		{
+			"id": "crude",
+			"name": "Crude",
+			"tier": 1,
+			"weight": 26.0,
+			"stat_mult": 0.78,
+			"value_mult": 0.65,
+			"affix_count": [
+				0,
+				1
+			],
+			"color": "#9a958c",
+			"glow": 0.0
+		},
+		{
+			"id": "common",
+			"name": "Common",
+			"tier": 2,
+			"weight": 25.0,
+			"stat_mult": 1.0,
+			"value_mult": 1.0,
+			"affix_count": [
+				0,
+				1
+			],
+			"color": "#e9dcc0",
+			"glow": 0.0
+		},
+		{
+			"id": "fine",
+			"name": "Fine",
+			"tier": 3,
+			"weight": 12.0,
+			"stat_mult": 1.18,
+			"value_mult": 1.35,
+			"affix_count": [
+				1,
+				1
+			],
+			"color": "#5fc56d",
+			"glow": 0.05
+		},
+		{
+			"id": "rare",
+			"name": "Rare",
+			"tier": 4,
+			"weight": 6.0,
+			"stat_mult": 1.42,
+			"value_mult": 1.9,
+			"affix_count": [
+				1,
+				2
+			],
+			"color": "#56a9e8",
+			"glow": 0.18
+		},
+		{
+			"id": "epic",
+			"name": "Epic",
+			"tier": 5,
+			"weight": 2.3,
+			"stat_mult": 1.72,
+			"value_mult": 2.8,
+			"affix_count": [
+				2,
+				3
+			],
+			"color": "#a274e8",
+			"glow": 0.34
+		},
+		{
+			"id": "legendary",
+			"name": "Legendary",
+			"tier": 6,
+			"weight": 0.6,
+			"stat_mult": 2.1,
+			"value_mult": 4.5,
+			"affix_count": [
+				3,
+				4
+			],
+			"color": "#d9b04c",
+			"glow": 0.62
+		},
+		{
+			"id": "anomalous",
+			"name": "Anomalous",
+			"tier": 7,
+			"weight": 0.1,
+			"stat_mult": 2.65,
+			"value_mult": 8.0,
+			"affix_count": [
+				2,
+				4
+			],
+			"color": "#e85ec5",
+			"glow": 0.9
+		}
+	]
+}

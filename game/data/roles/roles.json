@@ -1,0 +1,490 @@
+[
+  {
+    "id": "settler",
+    "name": "Settler",
+    "description": "A flexible new hand for any frontier task.",
+    "playable": true,
+    "combat_role": "none",
+    "class_icon": "class_worker",
+    "skill_bonus": {
+      "farming": 2,
+      "construction": 2
+    },
+    "starting_items": [
+      "dagger",
+      "ration",
+      "lantern"
+    ],
+    "work_pref": [
+      "gather",
+      "farm",
+      "build",
+      "haul"
+    ]
+  },
+  {
+    "id": "mercenary",
+    "name": "Mercenary",
+    "description": "A hired blade with practical field sense.",
+    "playable": true,
+    "combat_role": "melee",
+    "class_icon": "class_shield",
+    "skill_bonus": {
+      "melee": 8,
+      "scouting": 2
+    },
+    "starting_items": [
+      "sword",
+      "leather_vest",
+      "ration"
+    ],
+    "work_pref": [
+      "fight",
+      "explore",
+      "haul"
+    ]
+  },
+  {
+    "id": "commander",
+    "name": "Commander",
+    "description": "A leader who keeps squads moving together.",
+    "playable": true,
+    "combat_role": "support",
+    "class_icon": "class_commander",
+    "skill_bonus": {
+      "melee": 4,
+      "trade": 3,
+      "scouting": 3
+    },
+    "starting_items": [
+      "spear",
+      "leather_vest",
+      "signal_lantern"
+    ],
+    "work_pref": [
+      "fight",
+      "trade",
+      "explore"
+    ]
+  },
+  {
+    "id": "merchant",
+    "name": "Merchant",
+    "description": "A cheerful trader with a loaded wagon.",
+    "playable": true,
+    "combat_role": "support",
+    "class_icon": "class_merchant",
+    "skill_bonus": {
+      "trade": 10,
+      "cooking": 2
+    },
+    "starting_items": [
+      "wrench",
+      "canvas_coat",
+      "ration"
+    ],
+    "work_pref": [
+      "trade",
+      "haul",
+      "explore"
+    ]
+  },
+  {
+    "id": "engineer",
+    "name": "Engineer",
+    "description": "Builds bridges, boilers, and improbable gadgets.",
+    "playable": true,
+    "combat_role": "support",
+    "class_icon": "class_engineer",
+    "skill_bonus": {
+      "engineering": 9,
+      "construction": 6
+    },
+    "starting_items": [
+      "wrench",
+      "toolkit",
+      "goggles"
+    ],
+    "work_pref": [
+      "build",
+      "operate",
+      "haul"
+    ]
+  },
+  {
+    "id": "explorer",
+    "name": "Explorer",
+    "description": "Maps the wild beyond the last fence.",
+    "playable": true,
+    "combat_role": "ranged",
+    "class_icon": "class_scout",
+    "skill_bonus": {
+      "scouting": 10,
+      "archery": 4
+    },
+    "starting_items": [
+      "bow",
+      "leather_vest",
+      "compass"
+    ],
+    "work_pref": [
+      "explore",
+      "gather",
+      "fight"
+    ]
+  },
+  {
+    "id": "scholar",
+    "name": "Scholar",
+    "description": "Turns old ledgers into useful discoveries.",
+    "playable": true,
+    "combat_role": "support",
+    "class_icon": "class_engineer",
+    "skill_bonus": {
+      "engineering": 5,
+      "medicine": 5,
+      "scouting": 3
+    },
+    "starting_items": [
+      "staff",
+      "field_book",
+      "lantern"
+    ],
+    "work_pref": [
+      "operate",
+      "explore",
+      "trade"
+    ]
+  },
+  {
+    "id": "researcher",
+    "name": "Researcher",
+    "description": "Studies machines and aether with patient focus.",
+    "playable": true,
+    "combat_role": "support",
+    "class_icon": "class_engineer",
+    "skill_bonus": {
+      "engineering": 9,
+      "medicine": 3
+    },
+    "starting_items": [
+      "rifle",
+      "goggles",
+      "repair_kit"
+    ],
+    "work_pref": [
+      "operate",
+      "explore",
+      "build"
+    ]
+  },
+  {
+    "id": "farmer",
+    "name": "Farmer",
+    "description": "Keeps the fields green and the larder full.",
+    "playable": false,
+    "combat_role": "none",
+    "class_icon": "class_worker",
+    "skill_bonus": {
+      "farming": 10,
+      "cooking": 4
+    },
+    "starting_items": [
+      "hoe",
+      "straw_hat",
+      "ration"
+    ],
+    "work_pref": [
+      "farm",
+      "gather",
+      "haul"
+    ]
+  },
+  {
+    "id": "woodcutter",
+    "name": "Woodcutter",
+    "description": "Brings down timber and knows every trail.",
+    "playable": false,
+    "combat_role": "none",
+    "class_icon": "class_worker",
+    "skill_bonus": {
+      "woodcutting": 10,
+      "scouting": 3
+    },
+    "starting_items": [
+      "woodaxe",
+      "leather_vest",
+      "ration"
+    ],
+    "work_pref": [
+      "gather",
+      "haul",
+      "explore"
+    ]
+  },
+  {
+    "id": "miner",
+    "name": "Miner",
+    "description": "Digs deep for ore and old stories.",
+    "playable": false,
+    "combat_role": "melee",
+    "class_icon": "class_worker",
+    "skill_bonus": {
+      "mining": 11,
+      "construction": 3
+    },
+    "starting_items": [
+      "pickaxe",
+      "lantern",
+      "ration"
+    ],
+    "work_pref": [
+      "gather",
+      "haul",
+      "build"
+    ]
+  },
+  {
+    "id": "builder",
+    "name": "Builder",
+    "description": "Raises sturdy walls before supper.",
+    "playable": false,
+    "combat_role": "none",
+    "class_icon": "class_engineer",
+    "skill_bonus": {
+      "construction": 11,
+      "engineering": 3
+    },
+    "starting_items": [
+      "hammer",
+      "toolkit",
+      "ration"
+    ],
+    "work_pref": [
+      "build",
+      "haul",
+      "operate"
+    ]
+  },
+  {
+    "id": "guard",
+    "name": "Guard",
+    "description": "Stands between trouble and the hearth.",
+    "playable": false,
+    "combat_role": "melee",
+    "class_icon": "class_shield",
+    "skill_bonus": {
+      "melee": 9,
+      "scouting": 3
+    },
+    "starting_items": [
+      "spear",
+      "wooden_shield",
+      "ration"
+    ],
+    "work_pref": [
+      "fight",
+      "patrol",
+      "haul"
+    ]
+  },
+  {
+    "id": "archer",
+    "name": "Archer",
+    "description": "Keeps danger at the far end of the road.",
+    "playable": false,
+    "combat_role": "ranged",
+    "class_icon": "class_archer",
+    "skill_bonus": {
+      "archery": 10,
+      "scouting": 3
+    },
+    "starting_items": [
+      "bow",
+      "leather_vest",
+      "ration"
+    ],
+    "work_pref": [
+      "fight",
+      "patrol",
+      "explore"
+    ]
+  },
+  {
+    "id": "hunter",
+    "name": "Hunter",
+    "description": "Feeds a camp and reads the wind.",
+    "playable": false,
+    "combat_role": "ranged",
+    "class_icon": "class_archer",
+    "skill_bonus": {
+      "archery": 7,
+      "scouting": 8
+    },
+    "starting_items": [
+      "crossbow",
+      "leather_vest",
+      "ration"
+    ],
+    "work_pref": [
+      "gather",
+      "explore",
+      "fight"
+    ]
+  },
+  {
+    "id": "medic",
+    "name": "Medic",
+    "description": "Carries bandages and a calm word.",
+    "playable": false,
+    "combat_role": "support",
+    "class_icon": "class_medic",
+    "skill_bonus": {
+      "medicine": 12,
+      "scouting": 2
+    },
+    "starting_items": [
+      "staff",
+      "medic_kit",
+      "ration"
+    ],
+    "work_pref": [
+      "fight",
+      "explore",
+      "operate"
+    ]
+  },
+  {
+    "id": "cook",
+    "name": "Cook",
+    "description": "Turns humble roots into morale.",
+    "playable": false,
+    "combat_role": "none",
+    "class_icon": "class_worker",
+    "skill_bonus": {
+      "cooking": 12,
+      "farming": 3
+    },
+    "starting_items": [
+      "wrench",
+      "cookpot",
+      "ration"
+    ],
+    "work_pref": [
+      "farm",
+      "trade",
+      "haul"
+    ]
+  },
+  {
+    "id": "tinkerer",
+    "name": "Tinkerer",
+    "description": "Patches devices with cheerful disregard for manuals.",
+    "playable": false,
+    "combat_role": "support",
+    "class_icon": "class_engineer",
+    "skill_bonus": {
+      "engineering": 12,
+      "construction": 4
+    },
+    "starting_items": [
+      "wrench",
+      "goggles",
+      "repair_kit"
+    ],
+    "work_pref": [
+      "operate",
+      "build",
+      "gather"
+    ]
+  },
+  {
+    "id": "trader",
+    "name": "Trader",
+    "description": "Moves goods between distant camps.",
+    "playable": false,
+    "combat_role": "support",
+    "class_icon": "class_merchant",
+    "skill_bonus": {
+      "trade": 11,
+      "scouting": 3
+    },
+    "starting_items": [
+      "wrench",
+      "canvas_coat",
+      "compass"
+    ],
+    "work_pref": [
+      "trade",
+      "haul",
+      "explore"
+    ]
+  },
+  {
+    "id": "bandit",
+    "name": "Bandit",
+    "description": "A rough outlaw who knows the value of a shortcut.",
+    "playable": false,
+    "combat_role": "melee",
+    "class_icon": "class_scout",
+    "skill_bonus": {
+      "melee": 7,
+      "scouting": 4
+    },
+    "starting_items": [
+      "axe",
+      "patched_coat",
+      "ration"
+    ],
+    "work_pref": [
+      "fight",
+      "haul",
+      "explore"
+    ]
+  },
+  {
+    "id": "bandit_archer",
+    "name": "Bandit Archer",
+    "description": "A rooftop sharpshooter with patched fletching.",
+    "playable": false,
+    "combat_role": "ranged",
+    "class_icon": "class_archer",
+    "skill_bonus": {
+      "archery": 9,
+      "scouting": 5
+    },
+    "starting_items": [
+      "crossbow",
+      "patched_coat",
+      "ration"
+    ],
+    "work_pref": [
+      "fight",
+      "patrol",
+      "explore"
+    ]
+  },
+  {
+    "id": "bandit_captain",
+    "name": "Bandit Captain",
+    "description": "A bold raider who collects loyal troublemakers.",
+    "playable": false,
+    "combat_role": "melee",
+    "class_icon": "class_commander",
+    "skill_bonus": {
+      "melee": 12,
+      "trade": 3,
+      "scouting": 3
+    },
+    "starting_items": [
+      "steel_sword",
+      "patched_coat",
+      "scope"
+    ],
+    "work_pref": [
+      "fight",
+      "trade",
+      "patrol"
+    ]
+  }
+]

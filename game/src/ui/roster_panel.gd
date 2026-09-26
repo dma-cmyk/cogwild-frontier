@@ -1,0 +1,89 @@
+class_name RosterPanel
+extends PanelContainer
+## List of everyone in the company (squads, settlers, machines) with what they are doing.
+## Click a row to select and centre the camera.
+
+var g: Game
+var hud: Hud
+var _list: VBoxContainer
+var _sig := ""
+
+
+func setup(game: Game, h: Hud) -> void:
+	g = game
+	hud = h
+	name = "Roster"
+	add_theme_stylebox_override("panel", UiTheme.panel_box())
+	anchor_top = 1.0
+	anchor_bottom = 1.0
+	offset_left = 10
+	offset_right = 430
+	offset_top = -760
+	offset_bottom = -290
+	var v := UiTheme.vbox(6)
+	add_child(v)
+	var head := UiTheme.hbox(8)
+	head.add_child(UiTheme.title("Company", 22))
+	var sp := Control.new()
+	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	head.add_child(sp)
+	var close := UiTheme.button("", "ui_close")
+	close.pressed.connect(func() -> void: visible = false)
+	head.add_child(close)
+	v.add_child(head)
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	v.add_child(scroll)
+	_list = UiTheme.vbox(3)
+	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(_list)
+	visible = false
+
+
+func toggle() -> void:
+	visible = not visible
+	_sig = ""
+	refresh()
+
+
+func refresh() -> void:
+	if not visible:
+		return
+	var units: Array = g.world.unit_list.filter(func(u: Unit) -> bool: return u.is_player() and u.alive)
+	var sig := ""
+	for u: Unit in units:
+		sig += "%d:%s:%s;" % [u.id, str(u.job.get("type", "")), str(u.squad_id)]
+	if sig == _sig:
+		return
+	_sig = sig
+	for c in _list.get_children():
+		c.queue_free()
+	for group: Array in [["Squads", func(u: Unit) -> bool: return u.squad_id >= 0],
+			["Settlers", func(u: Unit) -> bool: return u.squad_id < 0 and u.is_person()],
+			["Machines", func(u: Unit) -> bool: return u.squad_id < 0 and u.is_machine()]]:
+		var members: Array = units.filter(group[1])
+		if members.is_empty():
+			continue
+		_list.add_child(UiTheme.label("%s (%d)" % [group[0], members.size()], 16, UiTheme.GOLD))
+		for u: Unit in members:
+			var b := Button.new()
+			b.focus_mode = Control.FOCUS_NONE
+			b.custom_minimum_size = Vector2(0, 40)
+			var h := UiTheme.hbox(6)
+			h.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			h.offset_left = 6
+			b.add_child(h)
+			h.add_child(UiTheme.icon(u.class_icon(), 26))
+			var nm := UiTheme.label("%s  Lv.%d" % [u.name, u.char_level()], 14, UiTheme.TEXT, UiTheme.bold_font)
+			nm.custom_minimum_size = Vector2(190, 0)
+			nm.clip_text = true
+			h.add_child(nm)
+			h.add_child(UiTheme.label(hud.info_panel._activity(u), 13, UiTheme.TEXT_DIM))
+			var uid := u.id
+			b.pressed.connect(func() -> void:
+				var uu := g.world.get_unit(uid)
+				if uu:
+					g.select_units([uid])
+					g.focus_pos(uu.pos))
+			_list.add_child(b)

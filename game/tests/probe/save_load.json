@@ -1,0 +1,13 @@
+{"scene": "res://scenes/game.tscn", "frames": 420, "seed": 11,
+ "events": [
+  {"frame": 20, "do": "scene.set_speed(4)"},
+  {"frame": 200, "key": "F5"},
+  {"frame": 205, "watch": "scene.world.tick_count", "label": "tick at save"},
+  {"frame": 206, "watch": "scene.world.population()", "label": "pop at save"},
+  {"frame": 260, "key": "F9"},
+  {"frame": 300, "watch": "scene.world.tick_count", "label": "tick after load"},
+  {"frame": 300, "expect": "scene.name == 'Game' and scene.world.population() >= 8 and scene.world.tick_count >= 300", "label": "loaded game running"},
+  {"frame": 380, "do": "scene.set_speed(4)"},
+  {"frame": 410, "expect": "scene.world.tick_count > 330", "label": "continues after load"},
+  {"frame": 412, "screenshot": "after_load"}
+ ]}

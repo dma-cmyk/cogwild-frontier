@@ -1,0 +1,480 @@
+{
+  "table": "affixes",
+  "entries": [
+    {
+      "id": "keen",
+      "name": "Keen",
+      "kind": "prefix",
+      "mods": {
+        "accuracy": 0.05
+      },
+      "categories": [
+        "weapon"
+      ],
+      "weight": 1.0,
+      "level_min": 1
+    },
+    {
+      "id": "brutal",
+      "name": "Brutal",
+      "kind": "prefix",
+      "mods": {
+        "melee_damage_pct": 0.14
+      },
+      "categories": [
+        "weapon"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "swift",
+      "name": "Swift",
+      "kind": "prefix",
+      "mods": {
+        "attack_speed_pct": 0.12
+      },
+      "categories": [
+        "weapon"
+      ],
+      "weight": 1.0,
+      "level_min": 1
+    },
+    {
+      "id": "steady",
+      "name": "Steady",
+      "kind": "prefix",
+      "mods": {
+        "accuracy": 0.08
+      },
+      "categories": [
+        "weapon",
+        "gadget"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "longshot",
+      "name": "Longshot",
+      "kind": "prefix",
+      "mods": {
+        "ranged_damage_pct": 0.16,
+        "vision": 1
+      },
+      "categories": [
+        "weapon"
+      ],
+      "weight": 1.0,
+      "level_min": 3
+    },
+    {
+      "id": "ember",
+      "name": "Ember",
+      "kind": "prefix",
+      "mods": {
+        "melee_damage_pct": 0.08,
+        "energy_regen_pct": 0.1
+      },
+      "categories": [
+        "weapon",
+        "artifact"
+      ],
+      "weight": 1.0,
+      "level_min": 3
+    },
+    {
+      "id": "sturdy",
+      "name": "Sturdy",
+      "kind": "prefix",
+      "mods": {
+        "armor": 2,
+        "max_hp": 8
+      },
+      "categories": [
+        "armor",
+        "robot_part"
+      ],
+      "weight": 1.0,
+      "level_min": 1
+    },
+    {
+      "id": "reinforced",
+      "name": "Reinforced",
+      "kind": "prefix",
+      "mods": {
+        "armor": 4
+      },
+      "categories": [
+        "armor",
+        "robot_part",
+        "airship_part"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "lightweight",
+      "name": "Lightweight",
+      "kind": "prefix",
+      "mods": {
+        "move_speed_pct": 0.08
+      },
+      "categories": [
+        "armor",
+        "tool",
+        "gadget"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "aether",
+      "name": "Aether",
+      "kind": "prefix",
+      "mods": {
+        "energy_max": 16,
+        "energy_regen_pct": 0.16
+      },
+      "categories": [
+        "gadget",
+        "artifact",
+        "robot_part"
+      ],
+      "weight": 1.0,
+      "level_min": 3
+    },
+    {
+      "id": "salvaged",
+      "name": "Salvaged",
+      "kind": "prefix",
+      "mods": {
+        "loot_luck": 0.08
+      },
+      "categories": [
+        "tool",
+        "gadget",
+        "robot_part"
+      ],
+      "weight": 1.0,
+      "level_min": 1
+    },
+    {
+      "id": "polished",
+      "name": "Polished",
+      "kind": "prefix",
+      "mods": {
+        "trade_pct": 0.1
+      },
+      "categories": [
+        "gadget",
+        "airship_part"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "field",
+      "name": "Field",
+      "kind": "prefix",
+      "mods": {
+        "vision": 2
+      },
+      "categories": [
+        "gadget",
+        "tool"
+      ],
+      "weight": 1.0,
+      "level_min": 1
+    },
+    {
+      "id": "deep",
+      "name": "Deep",
+      "kind": "prefix",
+      "mods": {
+        "gather_speed_pct": 0.12
+      },
+      "categories": [
+        "tool"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "farmer",
+      "name": "Farmer",
+      "kind": "prefix",
+      "mods": {
+        "farm_speed_pct": 0.14
+      },
+      "categories": [
+        "tool"
+      ],
+      "weight": 1.0,
+      "level_min": 1
+    },
+    {
+      "id": "clever",
+      "name": "Clever",
+      "kind": "prefix",
+      "mods": {
+        "build_speed_pct": 0.12
+      },
+      "categories": [
+        "tool",
+        "gadget"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "hearty",
+      "name": "Hearty",
+      "kind": "prefix",
+      "mods": {
+        "max_hp": 10,
+        "hp_regen_pct": 0.03
+      },
+      "categories": [
+        "consumable",
+        "armor"
+      ],
+      "weight": 1.0,
+      "level_min": 1
+    },
+    {
+      "id": "quiet",
+      "name": "Quiet",
+      "kind": "prefix",
+      "mods": {
+        "retreat_bias": -0.08,
+        "vision": 1
+      },
+      "categories": [
+        "armor",
+        "gadget"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "of_the_hawk",
+      "name": "of the Hawk",
+      "kind": "suffix",
+      "mods": {
+        "accuracy": 0.06,
+        "crit_chance": 0.04
+      },
+      "categories": [
+        "weapon"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "of_might",
+      "name": "of Might",
+      "kind": "suffix",
+      "mods": {
+        "melee_damage_pct": 0.1,
+        "max_hp": 6
+      },
+      "categories": [
+        "weapon"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "of_sparks",
+      "name": "of Sparks",
+      "kind": "suffix",
+      "mods": {
+        "energy_regen_pct": 0.2
+      },
+      "categories": [
+        "weapon",
+        "gadget",
+        "artifact"
+      ],
+      "weight": 1.0,
+      "level_min": 3
+    },
+    {
+      "id": "of_the_watch",
+      "name": "of the Watch",
+      "kind": "suffix",
+      "mods": {
+        "vision": 2,
+        "night_vision": 2
+      },
+      "categories": [
+        "gadget",
+        "armor"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "of_haste",
+      "name": "of Haste",
+      "kind": "suffix",
+      "mods": {
+        "move_speed_pct": 0.1
+      },
+      "categories": [
+        "armor",
+        "tool"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "of_mercy",
+      "name": "of Mercy",
+      "kind": "suffix",
+      "mods": {
+        "hp_regen_pct": 0.08
+      },
+      "categories": [
+        "gadget",
+        "artifact"
+      ],
+      "weight": 1.0,
+      "level_min": 3
+    },
+    {
+      "id": "of_bounty",
+      "name": "of Bounty",
+      "kind": "suffix",
+      "mods": {
+        "loot_luck": 0.14
+      },
+      "categories": [
+        "gadget",
+        "tool"
+      ],
+      "weight": 1.0,
+      "level_min": 3
+    },
+    {
+      "id": "of_trade",
+      "name": "of Trade",
+      "kind": "suffix",
+      "mods": {
+        "trade_pct": 0.14
+      },
+      "categories": [
+        "gadget",
+        "airship_part"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "of_roots",
+      "name": "of Roots",
+      "kind": "suffix",
+      "mods": {
+        "farm_speed_pct": 0.16,
+        "gather_speed_pct": 0.08
+      },
+      "categories": [
+        "tool",
+        "artifact"
+      ],
+      "weight": 1.0,
+      "level_min": 2
+    },
+    {
+      "id": "of_the_forge",
+      "name": "of the Forge",
+      "kind": "suffix",
+      "mods": {
+        "build_speed_pct": 0.14
+      },
+      "categories": [
+        "tool",
+        "robot_part",
+        "airship_part"
+      ],
+      "weight": 1.0,
+      "level_min": 3
+    },
+    {
+      "id": "of_warmth",
+      "name": "of Warmth",
+      "kind": "suffix",
+      "mods": {
+        "energy_max": 12,
+        "food_use_pct": -0.1
+      },
+      "categories": [
+        "armor",
+        "consumable"
+      ],
+      "weight": 1.0,
+      "level_min": 1
+    },
+    {
+      "id": "of_echoes",
+      "name": "of Echoes",
+      "kind": "suffix",
+      "mods": {
+        "xp_rate_pct": 0.15,
+        "vision": 1
+      },
+      "categories": [
+        "artifact",
+        "book"
+      ],
+      "weight": 1.0,
+      "level_min": 3
+    },
+    {
+      "id": "of_the_moon",
+      "name": "of the Moon",
+      "kind": "suffix",
+      "mods": {
+        "night_vision": 5,
+        "crit_chance": 0.05
+      },
+      "categories": [
+        "weapon",
+        "gadget",
+        "artifact"
+      ],
+      "weight": 1.0,
+      "level_min": 4
+    },
+    {
+      "id": "of_still_water",
+      "name": "of Still Water",
+      "kind": "suffix",
+      "mods": {
+        "accuracy": 0.1,
+        "retreat_bias": -0.05
+      },
+      "categories": [
+        "weapon",
+        "armor"
+      ],
+      "weight": 1.0,
+      "level_min": 4
+    },
+    {
+      "id": "of_oddity",
+      "name": "of Oddity",
+      "kind": "suffix",
+      "mods": {
+        "loot_luck": 0.3,
+        "food_use_pct": 0.15
+      },
+      "categories": [
+        "artifact"
+      ],
+      "weight": 1.0,
+      "level_min": 5
+    }
+  ]
+}

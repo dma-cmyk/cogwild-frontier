@@ -1,0 +1,58 @@
+{
+  "titles": [
+    {
+      "id": "trailblazer",
+      "name": "Trailblazer",
+      "stat": "tiles_explored",
+      "min": 40
+    },
+    {
+      "id": "hearthkeeper",
+      "name": "Hearthkeeper",
+      "stat": "days_survived",
+      "min": 20
+    },
+    {
+      "id": "wallwright",
+      "name": "Wallwright",
+      "stat": "built",
+      "min": 30
+    },
+    {
+      "id": "harvest_hand",
+      "name": "Harvest Hand",
+      "stat": "harvested",
+      "min": 50
+    },
+    {
+      "id": "timberwolf",
+      "name": "Timberwolf",
+      "stat": "chopped",
+      "min": 50
+    },
+    {
+      "id": "deepdelver",
+      "name": "Deepdelver",
+      "stat": "mined",
+      "min": 40
+    },
+    {
+      "id": "lucky_find",
+      "name": "Lucky Find",
+      "stat": "loot_found",
+      "min": 20
+    },
+    {
+      "id": "last_lantern",
+      "name": "Last Lantern",
+      "stat": "downed_survived",
+      "min": 3
+    },
+    {
+      "id": "roadwarden",
+      "name": "Roadwarden",
+      "stat": "kills",
+      "min": 25
+    }
+  ]
+}

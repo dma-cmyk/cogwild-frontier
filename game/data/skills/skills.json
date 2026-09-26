@@ -1,0 +1,68 @@
+[
+  {
+    "id": "melee",
+    "name": "Melee",
+    "description": "Close-quarters weapon skill.",
+    "category": "combat"
+  },
+  {
+    "id": "archery",
+    "name": "Archery",
+    "description": "Bows, bolts, and firearms.",
+    "category": "combat"
+  },
+  {
+    "id": "scouting",
+    "name": "Scouting",
+    "description": "Reading trails and spotting danger.",
+    "category": "field"
+  },
+  {
+    "id": "woodcutting",
+    "name": "Woodcutting",
+    "description": "Felling trees and preparing timber.",
+    "category": "work"
+  },
+  {
+    "id": "mining",
+    "name": "Mining",
+    "description": "Breaking stone and extracting ore.",
+    "category": "work"
+  },
+  {
+    "id": "farming",
+    "name": "Farming",
+    "description": "Growing food and tending soil.",
+    "category": "work"
+  },
+  {
+    "id": "construction",
+    "name": "Construction",
+    "description": "Building, repairing, and fortifying.",
+    "category": "work"
+  },
+  {
+    "id": "engineering",
+    "name": "Engineering",
+    "description": "Operating machines and delicate mechanisms.",
+    "category": "craft"
+  },
+  {
+    "id": "medicine",
+    "name": "Medicine",
+    "description": "Treating wounds and restoring spirits.",
+    "category": "support"
+  },
+  {
+    "id": "trade",
+    "name": "Trade",
+    "description": "Barter, appraisal, and negotiation.",
+    "category": "social"
+  },
+  {
+    "id": "cooking",
+    "name": "Cooking",
+    "description": "Making hearty meals from frontier stores.",
+    "category": "work"
+  }
+]

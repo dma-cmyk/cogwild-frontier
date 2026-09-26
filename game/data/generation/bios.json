@@ -1,0 +1,20 @@
+{
+  "quotes": [
+    "I have seen worse roads, and better breakfasts.",
+    "Give me a quiet morning and a useful task.",
+    "The frontier feels kinder when we share the load.",
+    "I can hear a loose gear from three rooms away.",
+    "There is always one more ridge worth seeing.",
+    "A warm lantern makes any ruin feel almost friendly.",
+    "I learned to mend things before I learned to complain.",
+    "If the kettle sings, the day cannot be all bad."
+  ],
+  "backstories": [
+    "{name} grew up among {race} families and learned {skill} from a patient {role}.",
+    "After a storm scattered {name}'s old camp, a {race} caravan gave them a place beside the hearth.",
+    "{name} followed a half-legible map to the frontier and stayed when the first settlement needed a {role}.",
+    "A quiet apprenticeship taught {name} that every broken thing has a story worth hearing.",
+    "When the old road closed, {name} chose the long way and found a new home among the settlers.",
+    "{name} once traded a treasured keepsake for a tool, then used that tool to help rebuild a village."
+  ]
+}

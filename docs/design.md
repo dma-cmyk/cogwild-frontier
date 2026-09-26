@@ -1,0 +1,106 @@
+# Cogwild Frontier — 設計メモ
+
+プレイしながら仕様を育てる前提の「現時点の正本」。細部はコードと `data/` が正。
+
+## 1. Game Brief
+
+| 項目 | 内容 |
+|---|---|
+| Pitch | 手続き生成された永続オープンワールドを、住民・部隊・ロボット・ドローン・飛行船に指示を出して開拓していく、RPG 要素のある自律型 RTS |
+| Core loop | 指示（ゾーン・建設・部隊命令・委任）→ 住民/部隊/機械が自律実行 → 資源・発見・戦利品・成長 → 開拓地の拡大と新しい地域 → 次の指示 |
+| 操作 | 左クリック選択・ドラッグ範囲選択・右クリック文脈命令（移動/攻撃/採取/交易）、コマンドバー（Move/Attack/Defend/Explore/Build/Gather/Patrol/Auto/Retreat）、WASD/端スクロール/ホイール/Q・E 回転、Space と `[` `]` で速度 |
+| 目的 | クリアなし。探索・開拓・育成・戦利品で「世界と自勢力が育つ」こと自体が目的 |
+| 勝敗 | 敗北条件なし（負傷→ダウン→回復/死亡、飢え、略奪などの後退はある） |
+| 主要システム | チャンク生成の永続世界 / 住民の自律ジョブ / 部隊と委任 AI / 戦闘・戦利品 / NPC 生成と成長 / 敵勢力・商人・移住の世界シミュレーション / セーブ・ロード |
+| 対象 | PC（Linux 開発機: Intel Iris Xe・1920×1080）、Godot 4.7.2 Mobile レンダラー、x1 で 60 FPS 目標 |
+| 段階 | Vertical Slice（遊べる核の確認） |
+| アート | 等角風の正射影カメラ（ピッチ −38°、ヨー 45°）、フラットシェーディングの低ポリ + 頂点カラー、暖色の光、青×クリーム×金の自勢力、赤の敵勢力 |
+
+## 2. 参考画像の分析と反映
+
+`docs/reference/visual_reference.png` から読み取ったもの:
+
+| 観点 | 画像 | 反映 |
+|---|---|---|
+| カメラ | 高めの等角俯瞰、奥に山と遠景 | 正射影・ピッチ −38°・既定ズーム 28 m（キャラ約 35 px/1080p）、Q/E で 90° 回転 |
+| 密度・比率 | 自然 6：建物 4、森と崖に囲まれた盆地に村 | 開始地点は森・川に近い平坦地を採点で選ぶ。段丘の崖、川、湖、森を生成 |
+| 建築 | 石の基礎・木骨の漆喰壁・青屋根、窓の灯り、旗、見張り台、飛行船ドック | 同じ語彙で建物を手続き生成（夜は窓が灯る） |
+| 生身とロボットの共存 | 麦わら帽の農民、盾の兵士、真鍮の二脚メカ、青く光る目のドローン | 村人・兵士に加え Work Bot / Walker / Scout・Repair Drone を最初から配置 |
+| 飛行船 | 青白ストライプの葉巻型気球＋木のゴンドラ | 初期の Cargo Airship（探索・交易・自動）、商人の緑の飛行船が来訪 |
+| 陣営色 | 自勢力は青旗、敵は赤旗と煙の工業基地 | 自勢力 = 選択色（既定は青）、盗賊 = 赤、古代機械 = 青銅＋橙の発光 |
+| UI | 上部資源バー（値と増減）、右上に日付と速度、左下ミニマップ＋縦ボタン、下中央に小隊パネル（肖像・Lv・HP/EN）とコマンドバー、右下にキャラ詳細（装備/特性/経歴） | ほぼ同じ配置で実装。肖像は 3D モデルからその場でレンダリング |
+| 霧 | 周縁の雲 | 未探索地は青灰の霧（全シェーダー共通のフォグテクスチャ） |
+
+意図的に変えた点: 絵画的なピクセルアートではなく 3D の低ポリにした（外見 DNA からの組み立て生成、夜の灯り、飛行ユニットの高さ、軽い GPU での性能のため）。
+
+## 3. 置いた仮定（未指定だった点）
+
+- UI 言語は参考画像と同じ英語（文字列は UI コードに集約。多言語化は未着手）。
+- 1 日 = x1 で 4 分（昼 14 h 相当 3 分、夜 1 分）。速度は Pause / x1 / x2 / x4。
+- 世界の広さは開始地点周辺 ±320 m（`data/generation/world.json` の `world_radius_chunks`）。チャンクは探索した方向に生成。
+- 敗北なし。ダウンした仲間は敵がいなければ 25 秒で負傷状態で起き上がり、敵に囲まれ続けると 70 秒で死亡。
+- 建設費は配置時に支払い、住民が倉庫から運んで建てる（キャンセルで返金）。
+- 部隊は最大 6 人（参考画像の 6/6）。
+- 自勢力の資源は全体共有（倉庫は配達先の意味のみ）。
+- 食料は毎朝 1 人 1（特性で増減、料理の技能で最大 25% 節約）。
+- AI API は任意（設定したときだけ文章を書き換える。§7）。ゲームは API なしで完結する。
+
+## 4. アーキテクチャ
+
+```mermaid
+flowchart LR
+  subgraph Data[data/ JSON]
+    D1[races roles traits skills]
+    D2[items qualities affixes materials]
+    D3[units robots airships buildings]
+    D4[generation: world names quirks bios titles abilities places appearance]
+  end
+  DB[(DB autoload)] --> Gen
+  Data --> DB
+  Gen[Generators: WorldGen NpcGen ItemGen NameGen NamedEnemyGen AppearanceGen] --> Sim
+  Sim[World sim: fixed 10 Hz tick\nColonyAI SquadAI Combat FactionAI Economy] -- signals --> View
+  View[WorldView ChunkView UnitView\nBuildingVisuals PropMeshes Vfx] --> Screen
+  Sim --> HUD[HUD / InfoPanel / SquadPanel / Minimap]
+  Input[InputController CameraRig] --> Sim
+  Sim <--> Save[SaveGame JSON]
+```
+
+- **シミュレーションと表示の分離**: `src/sim`・`src/world` はノードを持たない。表示は状態を読み、シグナルで差分を受ける。
+- **固定 tick（0.1 s）**: 速度は 1 フレームあたりの tick 数で変える。同じ seed と命令なら同じ結果（テストで確認）。
+- **決定的な生成**: 地形・資源・拠点配置は (seed, 座標) の純関数。セーブには「変更差分」（伐採・畑・基礎の整地・探索済みマップ）と全エンティティだけを保存。
+- **チャンク**: 32×32 m。探索したタイルの周囲 1 チャンクを先行生成。経路探索は AStarGrid2D（地形コスト付き、木は通過可・岩は不可）。
+- **LOD / 軽量化**: 遠い拠点の守備隊は休眠（日次の成長だけ進む）、飛行ユニットは経路探索なし、樹木・岩は MultiMesh、草花・橋は地形メッシュに結合、カメラから遠いチャンクは非表示、影距離 100 m。
+- **外見 DNA**: キャラ・ロボ・ドローン・飛行船・アイテムが JSON の DNA を持ち、同じ DNA から同じ形を再構築（`AppearanceGen` → `UnitVisualFactory` / `Icons.item_icon`）。
+
+## 5. 内容を増やすには（データ駆動）
+
+`DB` は `data/<category>/*.json` を全部読み、id が同じなら後のファイルが上書きする。ファイルを置くだけで追加できる。
+
+| 追加したいもの | 置き場所 | 形式 |
+|---|---|---|
+| 種族・役割・特性・技能 | `data/races` `data/roles` `data/traits` `data/skills` | id 付きオブジェクトの配列 |
+| アイテム土台・素材・品質・接辞 | `data/items`（`{"table": "materials", "entries": [...]}` など） | 同上 |
+| ユニット（人・ロボ・ドローン・飛行船） | `data/units` `data/robots` `data/airships` | `base` の能力値、`weapon`、`cost` 等 |
+| 建物 | `data/buildings` | `size` `cost` `work` `housing` `storage` 等（見た目は `BuildingVisuals` に型を追加） |
+| 名前・癖・経歴・称号・固有能力・地名 | `data/generation/*.json` | 文字列リスト / テンプレート |
+| 世界生成の規則 | `data/generation/world.json` | ノイズ周波数、植生密度、拠点の種類と距離 |
+
+## 6. 主要システムの挙動
+
+- **住民**: ゾーン（伐採・採掘・採集・畑）と建設現場・工房から候補を集め、優先度 × 技能 × 距離で選んで予約 → 実行 → 倉庫へ運搬。夜と疲労で家に帰って休む。技能は使うほど上がり（適性で速度が違う）、レベル・称号がつく。
+- **部隊**: Move / Attack（敵・拠点・地点）/ Defend / Explore（領域を調べ尽くして戦利品を拾い報告して帰還、強い拠点は避ける）/ Patrol / Escort / Retreat / Auto（本拠地防衛 → 回復 → 弱い拠点の掃討 → 探索 → 巡回）。撤退閾値を下回ると帰還して回復後に再開。
+- **機械**: Work Bot は住民と同じ仕事（休まない・電力消費）、Walker は部隊の重火力、Scout Drone は自動偵察、Repair Drone は回復、Cargo Airship は探索・交易・自動。工房で電力と金属から生産。
+- **世界**: 盗賊の拠点は巡回し、数日ごとに略奪隊を送り、3 日ごとに成長（テント増設・兵の追加）し、掃討後 6 日で再占拠されうる。機械拠点は歩哨を再建。商人の飛行船がドックに来て余剰を買い、品物を売る。空き家と食料があれば移住者が来る。放浪者の野営地に近づくと仲間になる。
+- **戦利品**: 品質 8 段階（junk〜anomalous）、大半は普通品。レア以上は光の柱と通知。
+
+## 7. 拡張点
+
+- **Optional AI Enrichment Layer**（`src/gen/ai_enrichment.gd`）: 生成器（Procedural Generator）が先に全文をローカル生成し、
+  その後ろに任意の書き換え層がある構成。OpenAI 互換の chat-completions エンドポイントを設定したときだけ、
+  新しく出会った人物の一言（bio）と経歴、珍しいアイテムのフレーバー文をバックグラウンドで書き換える。
+  書き換えるのは文章だけなので、シミュレーションの決定性とセーブ互換性は変わらない。未設定なら何もしない。
+  設定はコードに置かず、環境変数 `COGWILD_AI_ENDPOINT` / `COGWILD_AI_KEY` / `COGWILD_AI_MODEL` か
+  `user://ai_enrichment.cfg` の `[ai]` セクション（endpoint / key / model）。
+  テストはローカルのモックサーバー（`tests/mock_ai_server.py`）で実際に HTTP 往復して確認している。
+- **Named Enemy / Boss**: `NamedEnemyGen` が土台・装備・能力・特性・名前・戦利品を組み合わせて生成し、各野営地の頭目と機械拠点の Warden に使用中。固有能力の種類（buff_allies/buff_self/heal_self/multi_shot）はデータで追加できる。
+- **隊形・スタンス・優先目標**: `Squad` に `formation` / `stance` の欄があり、SquadAI の `_slot()` と `_engage()` が差し替え点。

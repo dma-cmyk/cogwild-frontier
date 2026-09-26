@@ -1,0 +1,128 @@
+{
+  "bandit": {
+    "first": [
+      "Red",
+      "Dust",
+      "Black",
+      "One-Eyed",
+      "Copper",
+      "Ragged",
+      "Quick",
+      "Old"
+    ],
+    "last": [
+      "Jackal",
+      "Sparrow",
+      "Crow",
+      "Marten",
+      "Fox",
+      "Boot",
+      "Rook",
+      "Coyote"
+    ],
+    "epithets": [
+      "of the Tollroad",
+      "the Campbreaker",
+      "of Three Knives",
+      "the Dust Baron",
+      "the Laughing Raider"
+    ]
+  },
+  "machine": {
+    "first": [
+      "KX",
+      "BR",
+      "OM",
+      "AE",
+      "RIV",
+      "SEN",
+      "VOR",
+      "M-7"
+    ],
+    "last": [
+      "Rivet",
+      "Kiln",
+      "Anchor",
+      "Gasket",
+      "Piston",
+      "Harrow",
+      "Beacon",
+      "Cog"
+    ],
+    "epithets": [
+      "the Unspooling",
+      "of the Red Glow",
+      "the Patient Engine",
+      "the Brass Warden",
+      "of the Last Foundry"
+    ]
+  },
+  "wanderer": {
+    "first": [
+      "Moss",
+      "Lantern",
+      "Quiet",
+      "Wayward",
+      "Cinder",
+      "Blue",
+      "Old"
+    ],
+    "last": [
+      "Walker",
+      "Mender",
+      "Sail",
+      "Peddler",
+      "Cartwright",
+      "Bell",
+      "Hearth"
+    ],
+    "epithets": [
+      "of the Long Road",
+      "the Camp Friend",
+      "of Seven Bridges",
+      "the Map-Keeper"
+    ]
+  },
+  "merchant": {
+    "first": [
+      "Green",
+      "Copper",
+      "Merry",
+      "Golden",
+      "Open",
+      "Bright"
+    ],
+    "last": [
+      "Wheel",
+      "Purse",
+      "Kettle",
+      "Ledger",
+      "Cart",
+      "Coffer"
+    ],
+    "epithets": [
+      "of Fair Bargains",
+      "the Caravan Star",
+      "of the Green Road"
+    ]
+  },
+  "player": {
+    "first": [
+      "Hearth",
+      "Blue",
+      "Kind",
+      "Steady"
+    ],
+    "last": [
+      "Banner",
+      "Keeper",
+      "Builder",
+      "Scout"
+    ],
+    "epithets": [
+      "of the New Dawn",
+      "the Hearthbound",
+      "of Open Country"
+    ]
+  }
+}

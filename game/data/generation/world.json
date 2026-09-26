@@ -1,0 +1,73 @@
+{
+	"chunk_size": 32,
+	"world_radius_chunks": 10,
+	"start_explore_radius": 24,
+	"start_flat_inner": 13,
+	"start_flat_outer": 21,
+	"terrain": {
+		"base_height": 2.4,
+		"continent_freq": 0.0045,
+		"continent_amp": 3.4,
+		"detail_freq": 0.05,
+		"detail_amp": 0.28,
+		"mountain_freq": 0.0065,
+		"mountain_threshold": 0.12,
+		"mountain_span": 0.55,
+		"mountain_amp": 11.0,
+		"terrace_step": 1.8,
+		"terrace_sharpness": 0.34,
+		"river_freq": 0.0034,
+		"river_warp": 28.0,
+		"river_core": 0.03,
+		"river_bank": 0.08,
+		"river_depth": -1.5,
+		"ford_freq": 0.022,
+		"ford_threshold": 0.25,
+		"ford_depth": -0.3,
+		"trail_freq": 0.0052,
+		"trail_width": 0.011,
+		"moisture_freq": 0.009,
+		"cliff_slope": 1.15,
+		"bridge_deck": 0.45
+	},
+	"vegetation": {
+		"forest_density": 0.46,
+		"meadow_tree_density": 0.035,
+		"rock_density": 0.018,
+		"highland_rock_density": 0.09,
+		"berry_density": 0.007,
+		"ore_threshold": 0.58,
+		"crystal_threshold": 0.8,
+		"grass_decor": 0.14,
+		"flower_decor": 0.06,
+		"reed_decor": 0.35
+	},
+	"sites": {
+		"cell_size": 64,
+		"cell_chance": 0.55,
+		"min_start_distance": 95,
+		"far_distance": 170,
+		"guaranteed": [
+			{"kind": "ore_field", "dist": [20, 30]},
+			{"kind": "ruins", "dist": [42, 60]},
+			{"kind": "wanderer_camp", "dist": [55, 78]},
+			{"kind": "bandit_camp", "dist": [80, 104]},
+			{"kind": "trade_post", "dist": [96, 130]},
+			{"kind": "crystal_grove", "dist": [85, 120]},
+			{"kind": "wreck", "dist": [115, 160]},
+			{"kind": "machine_outpost", "dist": [145, 190]}
+		],
+		"weights_near": {"ruins": 3, "wanderer_camp": 2, "ore_field": 2, "crystal_grove": 1, "bandit_camp": 2, "trade_post": 1, "wreck": 1},
+		"weights_far": {"ruins": 3, "bandit_camp": 3, "machine_outpost": 3, "trade_post": 1, "crystal_grove": 2, "wreck": 2, "wanderer_camp": 1},
+		"kinds": {
+			"ruins": {"flat_radius": 7, "faction": "", "icon": "poi_ruins"},
+			"bandit_camp": {"flat_radius": 9, "faction": "bandits", "icon": "poi_bandit"},
+			"machine_outpost": {"flat_radius": 10, "faction": "machines", "icon": "poi_machine"},
+			"trade_post": {"flat_radius": 9, "faction": "merchants", "icon": "poi_trade"},
+			"wanderer_camp": {"flat_radius": 5, "faction": "wanderers", "icon": "poi_wanderer"},
+			"wreck": {"flat_radius": 8, "faction": "", "icon": "poi_wreck"},
+			"crystal_grove": {"flat_radius": 0, "faction": "", "icon": "poi_crystal"},
+			"ore_field": {"flat_radius": 0, "faction": "", "icon": "poi_ore"}
+		}
+	}
+}

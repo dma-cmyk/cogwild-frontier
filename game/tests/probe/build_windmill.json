@@ -1,0 +1,14 @@
+{"scene": "res://scenes/game.tscn", "frames": 1300, "seed": 7,
+ "events": [
+  {"frame": 30, "mouse": "click", "pos": [1002, 837]},
+  {"frame": 40, "mouse": "click", "pos": [565, 680]},
+  {"frame": 46, "mouse": "move", "pos": [300, 440]},
+  {"frame": 50, "screenshot": "ghost"},
+  {"frame": 52, "mouse": "click", "pos": [300, 440]},
+  {"frame": 56, "expect": "scene.world.buildings_of('windmill', false).size() == 1", "label": "windmill site placed"},
+  {"frame": 60, "do": "scene.set_speed(4)"},
+  {"frame": 400, "screenshot": "construction"},
+  {"frame": 1200, "screenshot": "windmill_done"},
+  {"frame": 1250, "expect": "scene.world.buildings_of('windmill', true).size() == 1", "label": "windmill built by settlers"},
+  {"frame": 1250, "watch": "scene.world.economy.energy_balance_per_min()", "label": "energy balance"}
+ ]}
