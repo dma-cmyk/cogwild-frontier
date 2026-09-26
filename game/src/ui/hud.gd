@@ -87,6 +87,22 @@ func setup(game: Game) -> void:
 	for n: Dictionary in g.world.notifications.slice(maxi(0, g.world.notifications.size() - 3)):
 		add_note(n, 12.0)
 	Sfx.start_music()
+	Loc.language_changed.connect(_refresh_language)
+
+
+func _refresh_language() -> void:
+	_update_top()
+	_on_mode(g.input_ctl.mode)
+	info_panel.refresh(true)
+	squad_panel.refresh(true)
+	roster._sig = ""
+	roster.refresh()
+	_trade_count = -1
+	_update_trade()
+	if build_menu.visible:
+		build_menu._rebuild()
+	if pause_menu.visible:
+		pause_menu._rebuild()
 
 
 func is_mouse_over_ui() -> bool:
@@ -110,6 +126,7 @@ func _build_top_bar() -> void:
 	var crest := UiTheme.icon("ui_crest", 40)
 	h.add_child(crest)
 	var name_l := UiTheme.title(g.world.company_name, 20)
+	name_l.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED  # proper noun chosen by the player
 	name_l.custom_minimum_size = Vector2(180, 0)
 	name_l.clip_text = true
 	h.add_child(name_l)
@@ -119,7 +136,7 @@ func _build_top_bar() -> void:
 	pop.add_child(UiTheme.icon("res_pop", 28))
 	_pop_label = UiTheme.label("0/0", 20, UiTheme.TEXT, UiTheme.bold_font)
 	pop.add_child(_pop_label)
-	pop.tooltip_text = "Population / housing. New settlers arrive when there is free housing and food."
+	pop.tooltip_text = Loc.t("Population / housing. New settlers arrive when there is free housing and food.")
 	pop.mouse_filter = Control.MOUSE_FILTER_PASS
 	h.add_child(pop)
 	var en := UiTheme.hbox(4)
@@ -128,7 +145,7 @@ func _build_top_bar() -> void:
 	en.add_child(_energy_label)
 	_energy_rate = UiTheme.label("", 14, UiTheme.GOOD)
 	en.add_child(_energy_rate)
-	en.tooltip_text = "Energy powers robots, drones and airships. Windmills generate it; aether crystals store it."
+	en.tooltip_text = Loc.t("Energy powers robots, drones and airships. Windmills generate it; aether crystals store it.")
 	en.mouse_filter = Control.MOUSE_FILTER_PASS
 	h.add_child(en)
 	var spacer := Control.new()
@@ -142,14 +159,14 @@ func _build_top_bar() -> void:
 	h.add_child(_day_label)
 	var speeds := [[0, "ui_pause", "Pause (Space)"], [1, "ui_play", "Normal speed"], [2, "ui_fast", "Fast (x2)"], [4, "ui_faster", "Fastest (x4)"]]
 	for s: Array in speeds:
-		var b := UiTheme.button("", str(s[1]), str(s[2]))
+		var b := UiTheme.button("", str(s[1]), Loc.t(str(s[2])))
 		b.custom_minimum_size = Vector2(44, 40)
 		b.toggle_mode = true
 		var sp := int(s[0])
 		b.pressed.connect(func() -> void: g.set_speed(sp))
 		h.add_child(b)
 		_speed_buttons.append([sp, b])
-	var menu := UiTheme.button("", "ui_menu", "Menu (Esc)")
+	var menu := UiTheme.button("", "ui_menu", Loc.t("Menu (Esc)"))
 	menu.custom_minimum_size = Vector2(44, 40)
 	menu.pressed.connect(func() -> void: pause_menu.open())
 	h.add_child(menu)
@@ -158,9 +175,9 @@ func _build_top_bar() -> void:
 func _res_entry(r: String, icon_id: String) -> Control:
 	var h := UiTheme.hbox(4)
 	h.mouse_filter = Control.MOUSE_FILTER_PASS
-	h.tooltip_text = {"wood": "Wood — felled in logging zones", "stone": "Stone — quarried in mining zones",
+	h.tooltip_text = Loc.t(str({"wood": "Wood — felled in logging zones", "stone": "Stone — quarried in mining zones",
 		"ore": "Ore — mined, smelted into metal", "metal": "Metal — from the smelter and salvage",
-		"food": "Food — farms and berry bushes; everyone eats daily", "gold": "Gold — trade runs and loot"}.get(r, r)
+		"food": "Food — farms and berry bushes; everyone eats daily", "gold": "Gold — trade runs and loot"}.get(r, r)))
 	h.add_child(UiTheme.icon(icon_id, 28))
 	var v := UiTheme.label("0", 20, UiTheme.TEXT, UiTheme.bold_font)
 	v.custom_minimum_size = Vector2(48, 0)
@@ -193,7 +210,7 @@ func _update_top() -> void:
 	_energy_rate.text = "%+.0f" % eb if absf(eb) >= 0.5 else ""
 	_energy_rate.add_theme_color_override("font_color", UiTheme.GOOD if eb >= 0.0 else UiTheme.BAD)
 	var h := w.hour()
-	_day_label.text = "Day %d  %02d:%02d" % [w.day, int(h), int(fmod(h, 1.0) * 60.0)]
+	_day_label.text = Loc.t("Day %d  %02d:%02d") % [w.day, int(h), int(fmod(h, 1.0) * 60.0)]
 	_sun_icon.texture = Icons.get_icon("ui_moon" if w.is_night() else "ui_sun")
 
 
@@ -234,7 +251,10 @@ func add_note(n: Dictionary, life: float) -> void:
 	var h := UiTheme.hbox(8)
 	p.add_child(h)
 	h.add_child(UiTheme.icon(str(KIND_ICON.get(str(n.get("kind", "info")), "ui_bell")), 22))
-	var l := UiTheme.label(str(n.get("text", "")), 16, KIND_COLOR.get(str(n.get("kind", "info")), UiTheme.TEXT))
+	var l := UiTheme.label(Loc.message(n), 16, KIND_COLOR.get(str(n.get("kind", "info")), UiTheme.TEXT))
+	Loc.language_changed.connect(func() -> void:
+		if is_instance_valid(l):
+			l.text = Loc.message(n))
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	l.custom_minimum_size = Vector2(420, 0)
 	h.add_child(l)
@@ -288,7 +308,7 @@ func _build_command_bar() -> void:
 		var b := Button.new()
 		b.focus_mode = Control.FOCUS_NONE
 		b.custom_minimum_size = Vector2(62, 88)
-		b.tooltip_text = "%s (%s)\n%s" % [c[1], c[3], _cmd_help(id)]
+		b.tooltip_text = "%s (%s)\n%s" % [Loc.t(str(c[1])), c[3], Loc.t(_cmd_help(id))]
 		var v := UiTheme.vbox(2)
 		v.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		v.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -296,7 +316,7 @@ func _build_command_bar() -> void:
 		var ic := UiTheme.icon(str(c[2]), 40)
 		ic.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		v.add_child(ic)
-		var l := UiTheme.label(str(c[1]), 14)
+		var l := UiTheme.label(Loc.t(str(c[1])), 14)
 		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		v.add_child(l)
 		b.pressed.connect(func() -> void: command(id))
@@ -325,7 +345,7 @@ func command(id: String) -> void:
 			g.input_ctl.issue("retreat")
 		_:
 			if g.selected_units().is_empty():
-				add_note({"text": "Select a squad or unit first (click, drag, or keys 1–4).", "kind": "info"}, 3.0)
+				add_note({"text": Loc.t("Select a squad or unit first (click, drag, or keys 1–4)."), "kind": "info"}, 3.0)
 				return
 			g.input_ctl.set_mode("cmd:" + id)
 
@@ -382,10 +402,10 @@ func _build_trade_panel() -> void:
 	var v := UiTheme.vbox(6)
 	_trade_panel.add_child(v)
 	var head := UiTheme.hbox(8)
-	var t := UiTheme.title("Merchant airship at the dock", 20)
+	var t := UiTheme.title(Loc.t("Merchant airship at the dock"), 20)
 	t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(t)
-	var close := UiTheme.button("", "ui_close", "Hide the wares until the next visit")
+	var close := UiTheme.button("", "ui_close", Loc.t("Hide the wares until the next visit"))
 	close.pressed.connect(func() -> void: _trade_dismissed = g.world.factions.trader_id)
 	head.add_child(close)
 	v.add_child(head)
@@ -411,18 +431,18 @@ func _update_trade() -> void:
 		ic.custom_minimum_size = Vector2(40, 40)
 		ic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		h.add_child(ic)
-		var l := UiTheme.label("%s  (%s)" % [it.get("name", "?"), str(it.get("quality", "")).capitalize()], 16, Icons.quality_color(str(it.get("quality", "common"))))
+		var l := UiTheme.label("%s  (%s)" % [Loc.item_name(it), Loc.def_name("items/qualities", str(it.get("quality", "")))], 16, Icons.quality_color(str(it.get("quality", "common"))))
 		l.tooltip_text = "\n".join(ItemGen.describe(it))
 		l.mouse_filter = Control.MOUSE_FILTER_PASS
 		l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		h.add_child(l)
-		var b := UiTheme.button("Buy %d" % int(o["price"]), "res_gold")
+		var b := UiTheme.button(Loc.t("Buy %d") % int(o["price"]), "res_gold")
 		b.custom_minimum_size = Vector2(120, 36)
 		var idx := i
 		b.pressed.connect(func() -> void:
 			var err := g.world.factions.buy_offer(idx)
 			if err != "":
-				add_note({"text": err, "kind": "bad"}, 3.0)
+				add_note({"text": Loc.t(err), "kind": "bad"}, 3.0)
 			else:
 				Sfx.play(&"coin")
 			_trade_count = -1)
@@ -463,7 +483,7 @@ func _build_overlays() -> void:
 	_help.offset_bottom = 300
 	var v := UiTheme.vbox(4)
 	_help.add_child(v)
-	v.add_child(UiTheme.title("Controls", 26))
+	v.add_child(UiTheme.title(Loc.t("Controls"), 26))
 	for line: String in [
 		"Left click: select unit / squad / building / site     Drag: box-select",
 		"Right click: move · attack enemy or camp · gather resource · trade (airship on a trade post)",
@@ -477,17 +497,17 @@ func _build_overlays() -> void:
 		"Tip: give orders and watch — settlers work zones on their own, squads on Auto",
 		"defend, explore and clear weak camps, the drone scouts, the airship trades.",
 	]:
-		v.add_child(UiTheme.label(line, 17))
+		v.add_child(UiTheme.label(Loc.t(line), 17))
 
 
 func _on_mode(m: String) -> void:
 	var text := ""
 	if m.begins_with("cmd:"):
-		text = "%s: click a target  (right-click / Esc to cancel, Shift to keep)" % m.substr(4).capitalize()
+		text = Loc.t("%s: click a target  (right-click / Esc to cancel, Shift to keep)") % Loc.t(m.substr(4).capitalize())
 	elif m.begins_with("build:"):
-		text = "Place %s  (right-click / Esc to cancel, Shift to place several)" % DB.get_def("buildings", m.substr(6)).get("name", m.substr(6))
+		text = Loc.t("Place %s  (right-click / Esc to cancel, Shift to place several)") % Loc.def_name("buildings", m.substr(6))
 	elif m.begins_with("zone:"):
-		text = "Drag a rectangle to mark a %s zone  (right-click / Esc to cancel)" % m.substr(5)
+		text = Loc.t("Drag a rectangle to mark a %s zone  (right-click / Esc to cancel)") % Loc.t(m.substr(5))
 	_mode_hint.text = text
 
 
@@ -513,14 +533,14 @@ func _process(delta: float) -> void:
 		_box.size = ic.drag_rect.size / root.get_global_transform_with_canvas().get_scale()
 	var tip := ic.hover_info
 	if ic.mode.begins_with("build:") and ic.ghost_reason() != "":
-		tip = "Can't build: " + ic.ghost_reason()
+		tip = Loc.t("Can't build: %s") % Loc.t(ic.ghost_reason())
 	elif ic.mode.begins_with("zone:"):
 		var n := ic.zone_count(ic.mode.substr(5))
 		if n >= 0:
-			tip = "%d %s" % [n, "tiles" if ic.mode.ends_with("farm") else "resource nodes"]
+			tip = Loc.t("%d %s") % [n, Loc.t("tiles" if ic.mode.ends_with("farm") else "resource nodes")]
 	_tooltip_panel.visible = tip != "" and not is_mouse_over_ui()
 	if _tooltip_panel.visible:
-		_tooltip.text = tip
+		_tooltip.text = Loc.t(tip)
 		var mp := root.get_local_mouse_position()
 		_tooltip_panel.position = mp + Vector2(18, 22)
 		_tooltip_panel.size = Vector2.ZERO

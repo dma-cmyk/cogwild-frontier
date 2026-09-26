@@ -63,11 +63,20 @@ func test_output_schemas() -> void:
 		assert_true(DB.has_def("traits", str(trait_id)), "NPC trait exists")
 	assert_false(npc.has("appearance"), "NPC does not create appearance")
 	assert_true(_json_safe(npc), "NPC JSON-safe")
+	var quirk_doc: Dictionary = DB.raw("generation/quirks") as Dictionary
+	var bio_doc: Dictionary = DB.raw("generation/bios") as Dictionary
+	assert_eq(npc["quirk"], (quirk_doc["quirks"] as Array)[int(npc["quirk_i"])], "NPC quirk index reproduces English")
+	assert_eq(npc["bio"], (bio_doc["quotes"] as Array)[int(npc["bio_i"])], "NPC bio index reproduces English")
+	assert_eq(npc["backstory"], GenUtil.fill_template(str((bio_doc["backstories"] as Array)[int(npc["backstory_i"])]), npc["backstory_params"]), "NPC backstory metadata reproduces English")
 	var item := ItemGen.generate(_rng(2), {"base": "spear", "level": 3, "quality": "fine"})
 	for key: String in ["uid", "base", "name", "category", "slot", "quality", "level", "material", "stats", "mods", "value", "flavor", "unique", "visual", "appearance"]:
 		assert_true(item.has(key), "item key " + key)
 	assert_true(_mods_use_stat_keys(item["mods"] as Dictionary), "item mods use stat keys")
 	assert_true(_json_safe(item), "item JSON-safe")
+	var generated_affix_ids: Array[String] = []
+	for affix: Dictionary in item["affixes"]:
+		generated_affix_ids.append(str(affix.get("id", "")))
+	assert_eq(item["affix_ids"], generated_affix_ids, "item affix ids match selected affixes")
 	var enemy := NamedEnemyGen.generate(_rng(3), {"base": "bandit_captain", "level": 5, "tier": 2})
 	for key: String in ["name", "epithet", "full_name", "base", "level", "tier", "traits", "abilities", "equipment", "loot", "stat_mult", "bio"]:
 		assert_true(enemy.has(key), "enemy key " + key)
@@ -76,6 +85,9 @@ func test_output_schemas() -> void:
 	for ability: Variant in enemy["abilities"]:
 		assert_true(DB.has_def("generation/abilities", str(ability)), "enemy ability exists")
 	assert_true(_json_safe(enemy), "enemy JSON-safe")
+	var named_doc: Dictionary = DB.raw("generation/named") as Dictionary
+	var enemy_parts: Dictionary = named_doc["bandit"] as Dictionary
+	assert_eq(enemy["epithet"], (enemy_parts["epithets"] as Array)[int(enemy["epithet_i"])], "enemy epithet index reproduces English")
 
 func test_quality_distribution() -> void:
 	var rng := _rng(991)

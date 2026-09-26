@@ -1,0 +1,490 @@
+{
+ "table": "buildings",
+ "entries": [
+  {
+   "id": "bandit_hut",
+   "texture": "res://assets/sprites/buildings/bandit_hut.png",
+   "size_px": [
+    640,
+    591
+   ],
+   "base_w_px": 636.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 590.0,
+   "source": "b_bandit_hut",
+   "glow": "res://assets/sprites/buildings/bandit_hut_glow.png"
+  },
+  {
+   "id": "bandit_tent",
+   "texture": "res://assets/sprites/buildings/bandit_tent.png",
+   "size_px": [
+    640,
+    683
+   ],
+   "base_w_px": 638.0,
+   "base_cx_px": 320.5,
+   "base_bottom_px": 682.0,
+   "source": "b_bandit_tent"
+  },
+  {
+   "id": "bandit_tower",
+   "texture": "res://assets/sprites/buildings/bandit_tower.png",
+   "size_px": [
+    513,
+    1095
+   ],
+   "base_w_px": 513.0,
+   "base_cx_px": 256.0,
+   "base_bottom_px": 1094.0,
+   "source": "b_bandit_tower",
+   "glow": "res://assets/sprites/buildings/bandit_tower_glow.png"
+  },
+  {
+   "id": "campfire",
+   "texture": "res://assets/sprites/buildings/campfire.png",
+   "size_px": [
+    640,
+    658
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 657.0,
+   "source": "b_campfire",
+   "glow": "res://assets/sprites/buildings/campfire_glow.png",
+   "smoke_px": [
+    [
+     318,
+     380
+    ]
+   ]
+  },
+  {
+   "id": "construction",
+   "texture": "res://assets/sprites/buildings/construction.png",
+   "size_px": [
+    640,
+    585
+   ],
+   "base_w_px": 638.0,
+   "base_cx_px": 318.5,
+   "base_bottom_px": 584.0,
+   "source": "b_construction"
+  },
+  {
+   "id": "hearth@1",
+   "texture": "res://assets/sprites/buildings/hearth_1.png",
+   "size_px": [
+    640,
+    529
+   ],
+   "base_w_px": 623.0,
+   "base_cx_px": 324.0,
+   "base_bottom_px": 528.0,
+   "source": "b_hearth1",
+   "glow": "res://assets/sprites/buildings/hearth_1_glow.png",
+   "smoke_px": [
+    [
+     443,
+     20
+    ],
+    [
+     317,
+     387
+    ]
+   ]
+  },
+  {
+   "id": "hearth@2",
+   "texture": "res://assets/sprites/buildings/hearth_2.png",
+   "size_px": [
+    640,
+    664
+   ],
+   "base_w_px": 622.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 663.0,
+   "source": "b_hearth2",
+   "glow": "res://assets/sprites/buildings/hearth_2_glow.png"
+  },
+  {
+   "id": "hearth@3",
+   "texture": "res://assets/sprites/buildings/hearth_3.png",
+   "size_px": [
+    640,
+    799
+   ],
+   "base_w_px": 639.0,
+   "base_cx_px": 320.0,
+   "base_bottom_px": 798.0,
+   "source": "b_hearth3",
+   "glow": "res://assets/sprites/buildings/hearth_3_glow.png"
+  },
+  {
+   "id": "house",
+   "texture": "res://assets/sprites/buildings/house.png",
+   "size_px": [
+    640,
+    760
+   ],
+   "base_w_px": 576.0,
+   "base_cx_px": 330.5,
+   "base_bottom_px": 759.0,
+   "source": "b_house",
+   "glow": "res://assets/sprites/buildings/house_glow.png",
+   "smoke_px": [
+    [
+     490,
+     18
+    ]
+   ]
+  },
+  {
+   "id": "house@v1",
+   "texture": "res://assets/sprites/buildings/house_1.png",
+   "size_px": [
+    640,
+    573
+   ],
+   "base_w_px": 634.0,
+   "base_cx_px": 316.5,
+   "base_bottom_px": 572.0,
+   "source": "b_house2",
+   "glow": "res://assets/sprites/buildings/house_1_glow.png",
+   "smoke_px": [
+    [
+     467,
+     20
+    ]
+   ]
+  },
+  {
+   "id": "machine_block",
+   "texture": "res://assets/sprites/buildings/machine_block.png",
+   "size_px": [
+    640,
+    534
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 533.0,
+   "source": "b_machine_block",
+   "glow": "res://assets/sprites/buildings/machine_block_glow.png"
+  },
+  {
+   "id": "machine_foundry",
+   "texture": "res://assets/sprites/buildings/machine_foundry.png",
+   "size_px": [
+    640,
+    651
+   ],
+   "base_w_px": 634.0,
+   "base_cx_px": 318.5,
+   "base_bottom_px": 650.0,
+   "source": "b_machine_foundry",
+   "glow": "res://assets/sprites/buildings/machine_foundry_glow.png",
+   "smoke_px": [
+    [
+     370,
+     52
+    ],
+    [
+     462,
+     82
+    ]
+   ]
+  },
+  {
+   "id": "machine_spire",
+   "texture": "res://assets/sprites/buildings/machine_spire.png",
+   "size_px": [
+    640,
+    962
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 961.0,
+   "source": "b_machine_spire",
+   "glow": "res://assets/sprites/buildings/machine_spire_glow.png"
+  },
+  {
+   "id": "outpost",
+   "texture": "res://assets/sprites/buildings/outpost.png",
+   "size_px": [
+    640,
+    575
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 574.0,
+   "source": "b_outpost",
+   "glow": "res://assets/sprites/buildings/outpost_glow.png",
+   "smoke_px": [
+    [
+     460,
+     27
+    ],
+    [
+     207,
+     427
+    ]
+   ]
+  },
+  {
+   "id": "palisade",
+   "texture": "res://assets/sprites/buildings/palisade.png",
+   "size_px": [
+    324,
+    504
+   ],
+   "base_w_px": 323.0,
+   "base_cx_px": 162.0,
+   "base_bottom_px": 503.0,
+   "source": "walls"
+  },
+  {
+   "id": "ruin_arch",
+   "texture": "res://assets/sprites/buildings/ruin_arch.png",
+   "size_px": [
+    640,
+    897
+   ],
+   "base_w_px": 583.0,
+   "base_cx_px": 309.0,
+   "base_bottom_px": 896.0,
+   "source": "b_ruin_arch"
+  },
+  {
+   "id": "ruin_pillar",
+   "texture": "res://assets/sprites/buildings/ruin_pillar.png",
+   "size_px": [
+    406,
+    977
+   ],
+   "base_w_px": 406.0,
+   "base_cx_px": 202.5,
+   "base_bottom_px": 976.0,
+   "source": "b_ruin_pillar"
+  },
+  {
+   "id": "ruin_statue",
+   "texture": "res://assets/sprites/buildings/ruin_statue.png",
+   "size_px": [
+    455,
+    1070
+   ],
+   "base_w_px": 455.0,
+   "base_cx_px": 227.0,
+   "base_bottom_px": 1069.0,
+   "source": "b_ruin_statue"
+  },
+  {
+   "id": "ruin_vault",
+   "texture": "res://assets/sprites/buildings/ruin_vault.png",
+   "size_px": [
+    640,
+    605
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 604.0,
+   "source": "b_ruin_vault",
+   "glow": "res://assets/sprites/buildings/ruin_vault_glow.png"
+  },
+  {
+   "id": "ruin_wall",
+   "texture": "res://assets/sprites/buildings/ruin_wall.png",
+   "size_px": [
+    640,
+    931
+   ],
+   "base_w_px": 623.0,
+   "base_cx_px": 315.0,
+   "base_bottom_px": 930.0,
+   "source": "b_ruin_wall"
+  },
+  {
+   "id": "sky_dock",
+   "texture": "res://assets/sprites/buildings/sky_dock.png",
+   "size_px": [
+    589,
+    1157
+   ],
+   "base_w_px": 516.0,
+   "base_cx_px": 295.5,
+   "base_bottom_px": 1156.0,
+   "source": "b_sky_dock",
+   "glow": "res://assets/sprites/buildings/sky_dock_glow.png",
+   "mooring_h": 9.5
+  },
+  {
+   "id": "smelter",
+   "texture": "res://assets/sprites/buildings/smelter.png",
+   "size_px": [
+    640,
+    555
+   ],
+   "base_w_px": 632.0,
+   "base_cx_px": 322.5,
+   "base_bottom_px": 554.0,
+   "source": "b_smelter",
+   "glow": "res://assets/sprites/buildings/smelter_glow.png",
+   "smoke_px": [
+    [
+     417,
+     20
+    ]
+   ]
+  },
+  {
+   "id": "storehouse",
+   "texture": "res://assets/sprites/buildings/storehouse.png",
+   "size_px": [
+    640,
+    550
+   ],
+   "base_w_px": 614.0,
+   "base_cx_px": 321.5,
+   "base_bottom_px": 549.0,
+   "source": "b_storehouse",
+   "glow": "res://assets/sprites/buildings/storehouse_glow.png"
+  },
+  {
+   "id": "trade_hall",
+   "texture": "res://assets/sprites/buildings/trade_hall.png",
+   "size_px": [
+    640,
+    545
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 544.0,
+   "source": "b_trade_hall",
+   "glow": "res://assets/sprites/buildings/trade_hall_glow.png"
+  },
+  {
+   "id": "trade_mast",
+   "texture": "res://assets/sprites/buildings/trade_mast.png",
+   "size_px": [
+    524,
+    1239
+   ],
+   "base_w_px": 372.0,
+   "base_cx_px": 185.5,
+   "base_bottom_px": 1238.0,
+   "source": "b_trade_mast",
+   "mooring_h": 8.2
+  },
+  {
+   "id": "trade_stall",
+   "texture": "res://assets/sprites/buildings/trade_stall.png",
+   "size_px": [
+    640,
+    679
+   ],
+   "base_w_px": 585.0,
+   "base_cx_px": 334.0,
+   "base_bottom_px": 678.0,
+   "source": "b_trade_stall",
+   "glow": "res://assets/sprites/buildings/trade_stall_glow.png"
+  },
+  {
+   "id": "wall",
+   "texture": "res://assets/sprites/buildings/wall.png",
+   "size_px": [
+    381,
+    473
+   ],
+   "base_w_px": 380.0,
+   "base_cx_px": 189.5,
+   "base_bottom_px": 472.0,
+   "source": "walls"
+  },
+  {
+   "id": "wanderer_tent",
+   "texture": "res://assets/sprites/buildings/wanderer_tent.png",
+   "size_px": [
+    640,
+    586
+   ],
+   "base_w_px": 635.0,
+   "base_cx_px": 322.0,
+   "base_bottom_px": 585.0,
+   "source": "b_wanderer_tent",
+   "glow": "res://assets/sprites/buildings/wanderer_tent_glow.png"
+  },
+  {
+   "id": "watchtower",
+   "texture": "res://assets/sprites/buildings/watchtower.png",
+   "size_px": [
+    512,
+    1308
+   ],
+   "base_w_px": 493.0,
+   "base_cx_px": 256.0,
+   "base_bottom_px": 1307.0,
+   "source": "b_watchtower",
+   "glow": "res://assets/sprites/buildings/watchtower_glow.png"
+  },
+  {
+   "id": "windmill",
+   "texture": "res://assets/sprites/buildings/windmill.png",
+   "size_px": [
+    618,
+    1127
+   ],
+   "base_w_px": 595.0,
+   "base_cx_px": 297.0,
+   "base_bottom_px": 1126.0,
+   "source": "b_windmill",
+   "glow": "res://assets/sprites/buildings/windmill_glow.png",
+   "hub_px": [
+    456,
+    392
+   ],
+   "sails_m": 6.0
+  },
+  {
+   "id": "windmill_sails",
+   "texture": "res://assets/sprites/buildings/windmill_sails.png",
+   "size_px": [
+    640,
+    622
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 621.0,
+   "source": "props_sails"
+  },
+  {
+   "id": "workshop",
+   "texture": "res://assets/sprites/buildings/workshop.png",
+   "size_px": [
+    640,
+    467
+   ],
+   "base_w_px": 629.0,
+   "base_cx_px": 325.0,
+   "base_bottom_px": 466.0,
+   "source": "b_workshop",
+   "glow": "res://assets/sprites/buildings/workshop_glow.png",
+   "smoke_px": [
+    [
+     220,
+     20
+    ]
+   ]
+  },
+  {
+   "id": "wreck_airship",
+   "texture": "res://assets/sprites/buildings/wreck_airship.png",
+   "size_px": [
+    640,
+    412
+   ],
+   "base_w_px": 511.0,
+   "base_cx_px": 368.0,
+   "base_bottom_px": 411.0,
+   "source": "b_wreck_airship"
+  }
+ ]
+}

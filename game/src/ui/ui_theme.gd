@@ -33,6 +33,15 @@ static func theme() -> Theme:
 	title_font = load("res://assets/fonts/NotoSerif-Bold.ttf")
 	body_font = load("res://assets/fonts/NotoSans-Regular.ttf")
 	bold_font = load("res://assets/fonts/NotoSans-SemiBold.ttf")
+	var system := SystemFont.new()
+	system.font_names = PackedStringArray(["Noto Sans CJK JP"])
+	var regular: Font = load("res://assets/fonts/CogwildCJK-Regular.otf")
+	var bold: Font = load("res://assets/fonts/CogwildCJK-Bold.otf")
+	regular.fallbacks = [system]
+	bold.fallbacks = [system]
+	body_font.fallbacks = [regular]
+	bold_font.fallbacks = [bold]
+	title_font.fallbacks = [bold]
 	var t := Theme.new()
 	t.default_font = body_font
 	t.default_font_size = 18

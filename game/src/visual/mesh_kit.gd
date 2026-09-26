@@ -54,8 +54,12 @@ static func preview_material() -> ShaderMaterial:
 	return _preview_material
 
 
-## Applies preview_material() to every MeshInstance3D under node.
+## Applies preview_material() to every procedural MeshInstance3D under node; painted sprite units
+## get a fog-free copy of their own material instead.
 static func apply_preview_material(node: Node) -> void:
+	if node is SpriteUnitVisual:
+		(node as SpriteUnitVisual).use_preview_material()
+		return
 	if node is MeshInstance3D:
 		(node as MeshInstance3D).material_override = preview_material()
 	for c in node.get_children():

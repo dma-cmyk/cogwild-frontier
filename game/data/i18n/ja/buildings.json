@@ -1,0 +1,19 @@
+{
+	"hearth": {
+		"name": "集会所",
+		"description": "入植地の中心。物資を保管し、仲間が集まり、暖かな火で入植者が休む場所。",
+		"levels": [
+			{"level": 2, "name": "村役場"},
+			{"level": 3, "name": "町役場"}
+		]
+	},
+	"house": {"name": "住宅", "description": "入植者四人が暮らす居心地のよい家。住居を増やすと新たな入植者を呼び込める。"},
+	"storehouse": {"name": "倉庫", "description": "採集した物資の集積所。運搬の往復距離を短くする。"},
+	"smelter": {"name": "精錬所", "description": "入植者が炉を操作し、鉱石を金属に変える。"},
+	"windmill": {"name": "風車", "description": "ロボット、ドローン、飛行船のために電力を生み出す。"},
+	"workshop": {"name": "ロボット工房", "description": "金属と電力で作業ロボ、ドローン、ウォーカーを組み立てる。"},
+	"sky_dock": {"name": "飛行船ドック", "description": "飛行船の係留塔。交易商はドックのある入植地だけを訪れる。"},
+	"watchtower": {"name": "見張り塔", "description": "視界を広げ、襲撃者に矢を放つ。"},
+	"wall": {"name": "石壁", "description": "通行を遮る。ドラッグして連続配置できる。"},
+	"outpost": {"name": "前哨基地", "description": "故郷から離れた拠点。物資を保管でき、新たな範囲に建設できる。"}
+}

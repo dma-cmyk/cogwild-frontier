@@ -15,6 +15,10 @@ var w: World
 func _init(world: World) -> void:
 	w = world
 
+func _set_state(s: Squad, state: String, params: Dictionary = {}) -> void:
+	s.state = state
+	s.state_message = {"key": "sim.squad.state." + state.replace(": ", ".").replace(" ", "_"), "params": params}
+
 
 func members(s: Squad) -> Array:
 	var out: Array = []
@@ -85,13 +89,13 @@ func order_squad(s: Squad, order: Dictionary) -> void:
 			u.target_id = -1
 	match str(order.get("type", "")):
 		"move":
-			s.state = "moving"
+			_set_state(s, "moving")
 			_move_all(s, order["pos"])
 		"retreat":
-			s.state = "retreating"
+			_set_state(s, "retreating")
 			_move_all(s, w.home_pos())
 		"idle":
-			s.state = "holding"
+			_set_state(s, "holding")
 			s.mem["hold"] = center(s)
 	w.squads_changed.emit()
 
@@ -180,29 +184,29 @@ func tick() -> void:
 func _think(s: Squad) -> void:
 	var ms := members(s)
 	if ms.is_empty():
-		s.state = "down" if not s.members.is_empty() else "empty"
+		_set_state(s, "down" if not s.members.is_empty() else "empty")
 		return
 	var otype := str(s.order.get("type", "idle"))
 	if otype != "retreat" and hp_ratio(s) < s.retreat_threshold:
 		s.mem["resume"] = s.order.duplicate()
 		order_squad(s, {"type": "retreat"})
-		w.notify("%s is retreating to heal." % s.name, "bad", center(s), {"squad": s.id})
+		w.notify_key("sim.squad.retreating", {"squad_name": s.name}, "bad", center(s), {"squad": s.id})
 		return
 	match otype:
 		"idle":
-			s.state = "fighting" if _hold(s, s.mem.get("hold", w.home_pos()), 14.0) else "holding"
+			_set_state(s, "fighting" if _hold(s, s.mem.get("hold", w.home_pos()), 14.0) else "holding")
 		"move":
 			if _all_arrived(s):
 				s.mem["hold"] = s.order["pos"]
 				s.order = {"type": "idle"}
-				s.state = "holding"
+				_set_state(s, "holding")
 			elif _engage(s, center(s), 5.0):
-				s.state = "fighting"
+				_set_state(s, "fighting")
 		"attack":
 			_think_attack(s)
 		"defend":
 			var p: Vector2 = s.order["pos"]
-			s.state = "fighting" if _hold(s, p, float(s.order.get("radius", 10.0)) + 6.0) else "defending"
+			_set_state(s, "fighting" if _hold(s, p, float(s.order.get("radius", 10.0)) + 6.0) else "defending")
 		"explore":
 			_think_explore(s, s.order.get("pos", w.home_pos()), float(s.order.get("radius", EXPLORE_RADIUS)))
 		"patrol":
@@ -214,7 +218,7 @@ func _think(s: Squad) -> void:
 			var home := w.home_pos()
 			if _all_arrived(s) and center(s).distance_to(home) > 6.0:
 				_move_all(s, home)
-			s.state = "retreating"
+			_set_state(s, "retreating")
 			if center(s).distance_to(home) < 8.0 and hp_ratio(s) >= 0.85:
 				var resume: Dictionary = s.mem.get("resume", {"type": "idle"})
 				s.mem.erase("resume")
@@ -234,7 +238,7 @@ func _think_attack(s: Squad) -> void:
 			for u: Unit in members(s):
 				if u.is_armed() and u.target_id < 0:
 					u.target_id = t.id
-			s.state = "attacking"
+			_set_state(s, "attacking")
 			return
 		o.erase("target")
 		o["pos"] = anchor
@@ -255,11 +259,11 @@ func _think_attack(s: Squad) -> void:
 					best_d = d
 					anchor = e.pos
 	if _engage(s, center(s), 16.0):
-		s.state = "fighting"
+		_set_state(s, "fighting")
 		s.mem.erase("stuck")
 		return
 	if _collect_loot(s, 14.0):
-		s.state = "looting"
+		_set_state(s, "looting")
 		return
 	var c := center(s)
 	if c.distance_to(anchor) > 3.5:
@@ -272,14 +276,14 @@ func _think_attack(s: Squad) -> void:
 				s.mem["stuck"] = 0
 			s.mem["last_c"] = c
 			if int(s.mem.get("stuck", 0)) >= 6:
-				w.notify("%s can't find a way to the target and holds position." % s.name, "info", c, {"squad": s.id})
+				w.notify_key("sim.squad.path_blocked", {"squad_name": s.name}, "info", c, {"squad": s.id})
 				s.mem.erase("stuck")
 				order_squad(s, {"type": "idle"})
 				s.mem["hold"] = c
 				return
 			_move_all(s, anchor)
 			s.mem["moving_to"] = anchor
-		s.state = "advancing"
+		_set_state(s, "advancing")
 	elif not o.has("site"):
 		s.mem["hold"] = anchor
 		order_squad(s, {"type": "idle"})
@@ -293,7 +297,7 @@ func _think_patrol(s: Squad) -> void:
 		pts = [w.home_pos(), p]
 		s.order["points"] = pts
 	if _engage(s, center(s), 14.0):
-		s.state = "fighting"
+		_set_state(s, "fighting")
 		return
 	var i := int(s.mem.get("patrol_i", 1)) % pts.size()
 	var target: Vector2 = pts[i]
@@ -304,7 +308,7 @@ func _think_patrol(s: Squad) -> void:
 		_move_all(s, target)
 	elif _all_arrived(s):
 		_move_all(s, target)
-	s.state = "patrolling"
+	_set_state(s, "patrolling")
 
 
 func _think_escort(s: Squad) -> void:
@@ -313,11 +317,11 @@ func _think_escort(s: Squad) -> void:
 		order_squad(s, {"type": "idle"})
 		return
 	if _engage(s, t.pos, 10.0):
-		s.state = "fighting"
+		_set_state(s, "fighting")
 		return
 	if center(s).distance_to(t.pos) > 5.0 and (_all_arrived(s) or w.tick_count % 20 == 0):
 		_move_all(s, t.pos + Vector2(1.5, 1.5))
-	s.state = "escorting"
+	_set_state(s, "escorting")
 
 
 func _collect_loot(s: Squad, radius: float) -> bool:
@@ -349,10 +353,10 @@ func _collect_loot(s: Squad, radius: float) -> bool:
 func _think_explore(s: Squad, region: Vector2, radius: float) -> void:
 	var c := center(s)
 	if _engage(s, c, 12.0):
-		s.state = "fighting"
+		_set_state(s, "fighting")
 		return
 	if _collect_loot(s, 14.0):
-		s.state = "looting"
+		_set_state(s, "looting")
 		return
 	# open caches found on the way
 	var cache := _nearest_cache(c, region, radius)
@@ -360,31 +364,31 @@ func _think_explore(s: Squad, region: Vector2, radius: float) -> void:
 		var sc := Vector2(cache["center"]) + Vector2(0.5, 0.5)
 		if c.distance_to(sc) < 3.5:
 			w.factions.loot_site(int(cache["id"]), members(s)[0])
-			s.report.append("looted %s" % cache.get("name", "a cache"))
+			s.report.append({"key": "sim.report.cache_looted", "params": {"site_name": cache.get("name", "")}})
 		elif _all_arrived(s):
 			_move_all(s, sc)
-		s.state = "investigating"
+		_set_state(s, "investigating")
 		return
 	if s.mem.get("returning", false):
 		if c.distance_to(w.home_pos()) < 8.0:
 			_finish_expedition(s)
 		elif _all_arrived(s):
 			_move_all(s, w.home_pos())
-		s.state = "returning"
+		_set_state(s, "returning")
 		return
 	var target: Variant = s.mem.get("target")
 	if target is Vector2i and not w.is_explored(target) and not _all_arrived(s):
-		s.state = "exploring"
+		_set_state(s, "exploring")
 		return
 	var next := _pick_frontier(c, region, radius, strength(s))
 	if next.x == -99999:
 		s.mem["returning"] = true
 		_move_all(s, w.home_pos())
-		s.state = "returning"
+		_set_state(s, "returning")
 		return
 	s.mem["target"] = next
 	_move_all(s, Vector2(next) + Vector2(0.5, 0.5))
-	s.state = "exploring"
+	_set_state(s, "exploring")
 
 
 func _pick_frontier(from: Vector2, region: Vector2, radius: float, power: float) -> Vector2i:
@@ -440,9 +444,9 @@ func _nearest_cache(from: Vector2, region: Vector2, radius: float) -> Dictionary
 	return best
 
 
-func add_report(s: Squad, text: String) -> void:
-	if s and not s.report.has(text):
-		s.report.append(text)
+func add_report(s: Squad, message: Variant) -> void:
+	if s and not s.report.has(message):
+		s.report.append(message)
 
 
 func _mapped(s: Squad) -> int:
@@ -455,17 +459,16 @@ func _mapped(s: Squad) -> int:
 
 
 func _finish_expedition(s: Squad) -> void:
-	var summary := "%s returned home" % s.name
 	var mapped := _mapped(s) - int(s.mem.get("mapped0", _mapped(s)))
 	s.mem["mapped0"] = _mapped(s)
-	var parts: PackedStringArray = PackedStringArray(s.report.slice(0, 6))
+	var entries: Array = s.report.slice(0, 6)
 	if mapped > 0:
-		parts.append("mapped %d new tiles" % mapped)
-	if parts.is_empty():
-		summary += " — the drone and airship had already charted the area."
+		entries.append({"key": "sim.report.tiles_mapped", "params": {"count": mapped}})
+	if entries.is_empty():
+		w.notify_key("sim.squad.expedition_empty", {"squad_name": s.name}, "discover", w.home_pos(), {"squad": s.id})
 	else:
-		summary += ": " + ", ".join(parts) + "."
-	w.notify(summary, "discover", w.home_pos(), {"squad": s.id})
+		w.notify_key("sim.squad.expedition_report", {"squad_name": s.name,
+			"reports": {"list": entries, "separator": ", "}}, "discover", w.home_pos(), {"squad": s.id})
 	s.report.clear()
 	s.mem.erase("returning")
 	s.mem.erase("target")
@@ -485,13 +488,13 @@ func _think_auto(s: Squad) -> void:
 			break
 	if threat:
 		s.mem["sub"] = "defend"
-		s.state = "auto: defending home"
+		_set_state(s, "auto: defending home")
 		if not _engage(s, home, 34.0) and _all_arrived(s):
 			_move_all(s, threat.pos)
 		return
 	# 2. heal up when hurt
 	if hp_ratio(s) < 0.55:
-		s.state = "auto: resting"
+		_set_state(s, "auto: resting")
 		if center(s).distance_to(home) > 6.0 and _all_arrived(s):
 			_move_all(s, home)
 		return
@@ -509,7 +512,7 @@ func _think_auto(s: Squad) -> void:
 		var st: Dictionary = w.sites[target_site]
 		var anchor := Vector2(st["center"]) + Vector2(0.5, 0.5)
 		s.mem["sub"] = "attack"
-		s.state = "auto: attacking %s" % st.get("name", "camp")
+		_set_state(s, "auto: attacking", {"site_name": st.get("name", "")})
 		if _engage(s, center(s), 16.0):
 			return
 		if center(s).distance_to(anchor) > 4.0 and _all_arrived(s):
@@ -521,11 +524,11 @@ func _think_auto(s: Squad) -> void:
 		_think_explore(s, home, AUTO_RADIUS + w.day * 8.0)
 		if s.state == "returning" and s.mem.get("returning", false) and center(s).distance_to(home) < 8.0:
 			s.mem["sub"] = "patrol"
-		s.state = "auto: " + str(s.state)
+		_set_state(s, "auto: " + str(s.state), s.state_message.get("params", {}))
 		return
 	# 5. patrol around home
 	if _engage(s, center(s), 14.0):
-		s.state = "auto: fighting"
+		_set_state(s, "auto: fighting")
 		return
 	var ang := float(int(s.mem.get("patrol_i", 0))) * TAU / 6.0
 	var p := home + Vector2(cos(ang), sin(ang)) * 22.0
@@ -536,7 +539,7 @@ func _think_auto(s: Squad) -> void:
 				s.mem["sub"] = "explore"
 		else:
 			_move_all(s, p)
-	s.state = "auto: patrolling"
+	_set_state(s, "auto: patrolling")
 
 
 # --- individual units ----------------------------------------------------------------------
@@ -605,7 +608,7 @@ func _unit_explore(u: Unit, region: Vector2, radius: float) -> void:
 				o.erase("returning")
 				if str(o.get("type", "")) == "explore":
 					u.order = {"type": "dock"} if u.kind == "airship" else {}
-					w.notify("%s finished exploring and came home." % u.name, "discover", u.pos, {"unit": u.id})
+					w.notify_key("sim.squad.unit_explored", {"unit_name": u.name}, "discover", u.pos, {"unit": u.id})
 				else:
 					o["rest_until"] = w.tick_count + 600
 			else:
@@ -686,7 +689,7 @@ func _airship_trade(u: Unit) -> void:
 	var o := u.order
 	var sid := int(o.get("site", nearest_trade_post(u.pos)))
 	if sid < 0 or not w.sites.has(sid):
-		w.notify("No trade post known yet — explore to find one.", "info", u.pos)
+		w.notify_key("sim.trade.no_post", {}, "info", u.pos)
 		u.order = {"type": "dock"}
 		return
 	o["site"] = sid
@@ -709,10 +712,8 @@ func _airship_trade(u: Unit) -> void:
 		"home":
 			if not u.moving:
 				var r: Dictionary = o.get("result", {})
-				var parts: PackedStringArray = []
-				for k: String in r:
-					parts.append("%s%d %s" % ["+" if int(r[k]) >= 0 else "", int(r[k]), k])
-				w.notify("%s returned from %s: %s." % [u.name, st.get("name", "the market"), ", ".join(parts) if not parts.is_empty() else "no deals"], "good", u.pos, {"unit": u.id})
+				w.notify_key("sim.trade.run_returned", {"unit_name": u.name, "site_name": st.get("name", ""),
+					"resources": r}, "good", u.pos, {"unit": u.id})
 				if str(o.get("type", "")) == "trade":
 					u.order = {"type": "dock"}
 				else:

@@ -1,0 +1,77 @@
+{
+ "table": "terrain",
+ "entries": [
+  {
+   "id": "dirt",
+   "layer": 4,
+   "avg_color": [
+    0.4735,
+    0.3414,
+    0.2257
+   ]
+  },
+  {
+   "id": "farmland",
+   "layer": 6,
+   "avg_color": [
+    0.2692,
+    0.1659,
+    0.0987
+   ]
+  },
+  {
+   "id": "forest",
+   "layer": 2,
+   "avg_color": [
+    0.1962,
+    0.197,
+    0.0854
+   ]
+  },
+  {
+   "id": "grass",
+   "layer": 0,
+   "avg_color": [
+    0.2607,
+    0.499,
+    0.1419
+   ]
+  },
+  {
+   "id": "meadow",
+   "layer": 1,
+   "avg_color": [
+    0.3363,
+    0.518,
+    0.1278
+   ]
+  },
+  {
+   "id": "paved",
+   "layer": 7,
+   "avg_color": [
+    0.474,
+    0.4402,
+    0.3392
+   ]
+  },
+  {
+   "id": "rock",
+   "layer": 5,
+   "avg_color": [
+    0.4164,
+    0.4055,
+    0.3649
+   ]
+  },
+  {
+   "id": "sand",
+   "layer": 3,
+   "avg_color": [
+    0.8508,
+    0.7301,
+    0.5718
+   ]
+  }
+ ]
+}

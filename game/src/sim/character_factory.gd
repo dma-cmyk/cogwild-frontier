@@ -101,7 +101,9 @@ static func _machine_dna(rng: RandomNumberGenerator, kind: String, archetype: St
 		"airship":
 			return AppearanceGen.airship(rng, archetype, style, color)
 	var visual_arch := archetype if archetype in ["work_bot", "walker", "sentry", "turret", "hauler"] else "sentry"
-	return AppearanceGen.robot(rng, visual_arch, style, color)
+	var dna := AppearanceGen.robot(rng, visual_arch, style, color)
+	dna["unit"] = archetype  # painted art has its own sheet for special machines (machine_warden)
+	return dna
 
 
 static func make_machine(w: World, archetype: String, faction: String, pos: Vector2, level: int = 1) -> Unit:

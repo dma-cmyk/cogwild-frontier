@@ -1,0 +1,10 @@
+{
+	"work_bot": {"name": "作業ロボ", "description": "疲れ知らずの真鍮の働き手。電力で動き、眠らずに伐採、採掘、運搬、建設をこなす。"},
+	"walker": {"name": "ウォーカー", "description": "肩に砲を備えた二足歩行兵器。動きは遅いが頑丈で、範囲攻撃ができる。"},
+	"repair_drone": {"name": "修理ドローン", "description": "人も機械も癒やす空飛ぶ衛生兵。戦闘中、近くの味方を回復する。"},
+	"scout_drone": {"name": "偵察ドローン", "description": "高速で飛ぶ偵察機。自律探索し、発見したものを報告する。"},
+	"sentry": {"name": "暴走哨戒機"},
+	"turret": {"name": "古代の砲塔"},
+	"war_drone": {"name": "戦闘ドローン"},
+	"machine_warden": {"name": "機械の番人"}
+}

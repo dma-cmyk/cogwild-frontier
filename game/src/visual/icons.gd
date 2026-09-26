@@ -1,6 +1,7 @@
 class_name Icons
 extends RefCounted
-## SVG icon loader and deterministic item icon renderer.
+## SVG icon loader and deterministic item icon renderer. Item icons draw the painted inventory art
+## (SpriteLibrary "art/icons") inside the quality frame; shapes without a painting use the SVG glyph.
 
 const REQUIRED_IDS := [
 	"res_wood", "res_stone", "res_metal", "res_ore", "res_gold", "res_food", "res_energy", "res_pop",
@@ -39,8 +40,18 @@ static func item_icon(item: Dictionary, size: int = 64) -> Texture2D:
 	var key := "%s|%d|%s" % [uid, size, str(app)]
 	if _item_cache.has(key):
 		return _item_cache[key] as Texture2D
-	var svg := _item_svg(app)
-	var tex := _raster_svg(svg, size)
+	var painted := SpriteLibrary.icon_image(str(app.get("shape", "")), int(round(size * 0.82)))
+	var tex: Texture2D
+	if painted != null:
+		var frame := Image.new()
+		if frame.load_svg_from_string(_item_svg(app, false), float(size) / 64.0) != OK:
+			frame = Image.create(size, size, false, Image.FORMAT_RGBA8)
+		frame.convert(Image.FORMAT_RGBA8)
+		var at := Vector2i((frame.get_width() - painted.get_width()) / 2, (frame.get_height() - painted.get_height()) / 2)
+		frame.blend_rect(painted, Rect2i(Vector2i.ZERO, painted.get_size()), at)
+		tex = ImageTexture.create_from_image(frame)
+	else:
+		tex = _raster_svg(_item_svg(app), size)
 	_item_cache[key] = tex
 	return tex
 
@@ -65,7 +76,7 @@ static func _fallback_svg(id: String) -> String:
 	var c := Color.from_hsv(hue / 360.0, 0.45, 0.75).to_html(false)
 	return "<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'><path d='M6 6h52v52H6z' rx='8' fill='#1a1f2b' stroke='#d9b04c' stroke-width='3'/><path d='M18 44L32 16l14 28-14-7z' fill='#%s' stroke='#f1e3bd' stroke-width='3'/></svg>" % c
 
-static func _item_svg(app: Dictionary) -> String:
+static func _item_svg(app: Dictionary, with_glyph: bool = true) -> String:
 	var shape := str(app.get("shape", "orb"))
 	if not SHAPES.has(shape): shape = "orb"
 	var primary := _hex(app.get("primary", "#5a78a8"), "#5a78a8")
@@ -74,7 +85,7 @@ static func _item_svg(app: Dictionary) -> String:
 	var glow := clampf(float(app.get("glow", 0.0)), 0.0, 1.0)
 	var quality := str(app.get("quality", "common"))
 	var frame := quality_color(quality).to_html(false)
-	var glyph := _shape_svg(shape, primary, secondary, accent)
+	var glyph := _shape_svg(shape, primary, secondary, accent) if with_glyph else ""
 	# The halo sits above the backing, not hidden beneath its opaque centre.
 	var halo := "<defs><radialGradient id='halo'><stop stop-color='#%s' stop-opacity='%f'/><stop offset='1' stop-color='#%s' stop-opacity='0'/></radialGradient></defs><circle cx='32' cy='32' r='26' fill='url(#halo)'/>" % [accent, glow * 0.8, accent] if glow > 0.0 else ""
 	var ornate := "<path d='M5 16V5h11M48 5h11v11M5 48v11h11M48 59h11V48' fill='none' stroke='#%s' stroke-width='3'/><path d='M32 2l3 3-3 3-3-3zM32 56l3 3-3 3-3-3z' fill='#%s'/>" % [frame, frame] if quality in ["legendary", "anomalous"] else ""

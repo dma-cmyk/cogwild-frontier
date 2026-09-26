@@ -16,3 +16,4 @@ static func clear_all() -> void:
 	Icons._item_cache.clear()
 	Vfx._mats.clear()
 	Vfx._mesh = null
+	SpriteLibrary.clear_cache()

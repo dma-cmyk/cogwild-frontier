@@ -203,10 +203,22 @@ func _on_unit_changed(u: Unit) -> void:
 
 func _add_loot(bag: Dictionary) -> void:
 	var n := Node3D.new()
-	var mi := MeshInstance3D.new()
-	mi.mesh = PropMeshes.get_mesh("loot_bag", 0)
-	n.add_child(mi)
 	var tier := int(bag.get("tier", -1))
+	var painted := SpriteLibrary.icon_texture("loot_chest" if tier >= 3 else "loot_sack")
+	if painted != null:
+		var card := Sprite3D.new()
+		card.texture = painted
+		card.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		card.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
+		card.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+		card.shaded = true
+		card.pixel_size = 0.75 / float(painted.get_width())
+		card.offset = Vector2(0.0, painted.get_height() * 0.45)
+		n.add_child(card)
+	else:
+		var mi := MeshInstance3D.new()
+		mi.mesh = PropMeshes.get_mesh("loot_bag", 0)
+		n.add_child(mi)
 	if tier >= 3:
 		var k := MeshKit.new()
 		var col := Icons.quality_color(Combat.quality_for_tier(tier))

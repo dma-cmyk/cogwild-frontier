@@ -938,7 +938,8 @@ func pickup_loot(bag_id: int, by: Unit) -> Array:
 			by.counter_add("loot_found")
 		var q := DB.get_def("items/qualities", str(it.get("quality", "common")))
 		if int(q.get("tier", 0)) >= 4:
-			notify("%s found %s (%s)!" % [by.name if by else "Your people", it.get("name", "an item"), q.get("name", "")],
+			var loot_key := "sim.loot.rare_item" if by else "sim.loot.rare_item.people"
+			notify_key(loot_key, {"unit_name": by.name if by else "", "item": it, "quality": {"table": "items/qualities", "id": str(it.get("quality", "common"))}},
 				"loot", bag["pos"], {"item_uid": it["uid"], "tier": q.get("tier", 0)})
 	if int(bag["gold"]) > 0:
 		economy.add("gold", int(bag["gold"]))
@@ -949,6 +950,18 @@ func pickup_loot(bag_id: int, by: Unit) -> Array:
 
 
 # --- notifications -------------------------------------------------------------------------
+
+func notify_key(key: String, params: Dictionary = {}, kind: String = "info", pos: Variant = null, extra: Dictionary = {}) -> void:
+	var n := {"key": key, "params": params, "kind": kind, "day": day, "hour": hour(), "tick": tick_count}
+	if pos is Vector2:
+		n["pos"] = pos
+	for k: String in extra:
+		n[k] = extra[k]
+	notifications.append(n)
+	if notifications.size() > 80:
+		notifications.pop_front()
+	notified.emit(n)
+
 
 func notify(text: String, kind: String = "info", pos: Variant = null, extra: Dictionary = {}) -> void:
 	var n := {"text": text, "kind": kind, "day": day, "hour": hour(), "tick": tick_count}

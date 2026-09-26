@@ -1,0 +1,1412 @@
+[
+ {
+  "id": "chip_human_worker",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a human man with short messy brown hair, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. RIGHT HALF (columns 4-6): a human woman with shoulder-length chestnut hair, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_human_fighter",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a human man with short messy brown hair, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. RIGHT HALF (columns 4-6): a human woman with shoulder-length chestnut hair, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_human_ranger",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a human man with short messy brown hair, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. RIGHT HALF (columns 4-6): a human woman with shoulder-length chestnut hair, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_human_engineer",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a human man with short messy brown hair, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. RIGHT HALF (columns 4-6): a human woman with shoulder-length chestnut hair, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_human_scholar",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a human man with short messy brown hair, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. RIGHT HALF (columns 4-6): a human woman with shoulder-length chestnut hair, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_sylvan_worker",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Sylvan man (elf-like woodland folk with long pointed ears) with silver-blond hair, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. RIGHT HALF (columns 4-6): a Sylvan woman (elf-like woodland folk with long pointed ears) with long pale-green hair in a braid, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_sylvan_fighter",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Sylvan man (elf-like woodland folk with long pointed ears) with silver-blond hair, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. RIGHT HALF (columns 4-6): a Sylvan woman (elf-like woodland folk with long pointed ears) with long pale-green hair in a braid, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_sylvan_ranger",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Sylvan man (elf-like woodland folk with long pointed ears) with silver-blond hair, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. RIGHT HALF (columns 4-6): a Sylvan woman (elf-like woodland folk with long pointed ears) with long pale-green hair in a braid, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_sylvan_engineer",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Sylvan man (elf-like woodland folk with long pointed ears) with silver-blond hair, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. RIGHT HALF (columns 4-6): a Sylvan woman (elf-like woodland folk with long pointed ears) with long pale-green hair in a braid, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_sylvan_scholar",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Sylvan man (elf-like woodland folk with long pointed ears) with silver-blond hair, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. RIGHT HALF (columns 4-6): a Sylvan woman (elf-like woodland folk with long pointed ears) with long pale-green hair in a braid, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_stoutkin_worker",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a thick braided copper-red beard, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. RIGHT HALF (columns 4-6): a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with copper-red hair in two thick braids, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_stoutkin_fighter",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a thick braided copper-red beard, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. RIGHT HALF (columns 4-6): a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with copper-red hair in two thick braids, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_stoutkin_ranger",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a thick braided copper-red beard, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. RIGHT HALF (columns 4-6): a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with copper-red hair in two thick braids, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_stoutkin_engineer",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a thick braided copper-red beard, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. RIGHT HALF (columns 4-6): a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with copper-red hair in two thick braids, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_stoutkin_scholar",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a thick braided copper-red beard, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. RIGHT HALF (columns 4-6): a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with copper-red hair in two thick braids, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_vulpin_worker",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Vulpin man (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with orange hair, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. RIGHT HALF (columns 4-6): a Vulpin woman (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with long orange hair, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_vulpin_fighter",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Vulpin man (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with orange hair, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. RIGHT HALF (columns 4-6): a Vulpin woman (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with long orange hair, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_vulpin_ranger",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Vulpin man (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with orange hair, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. RIGHT HALF (columns 4-6): a Vulpin woman (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with long orange hair, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_vulpin_engineer",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Vulpin man (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with orange hair, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. RIGHT HALF (columns 4-6): a Vulpin woman (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with long orange hair, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_vulpin_scholar",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Vulpin man (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with orange hair, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. RIGHT HALF (columns 4-6): a Vulpin woman (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with long orange hair, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_bandit_a",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a human man bandit in a patched brown leather coat, a red bandana and a red scarf over the mouth, holding a rusty hand axe. RIGHT HALF (columns 4-6): a human woman bandit in a red hood and patched brown leather, holding a rusty hand axe. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_bandit_b",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a bandit crossbowman: a human man in a red hood and patched leather armour, holding a crossbow. RIGHT HALF (columns 4-6): a bandit captain: a big burly human man in a long red coat with a fur collar, a black tricorn hat and an eye patch, holding a heavy steel sword. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "props_trees_a",
+  "kind": "sheet",
+  "args": {
+   "subject": "Sprite sheet of 8 separate tree game assets: 4 tall dark green pine / fir trees of different heights and shapes, 2 round leafy oak trees, 1 slender white birch tree with yellow-green leaves, 1 dead leafless grey tree. Each tree complete from trunk base to top, upright, rich layered foliage, bright highlights on the upper left and deep shadowed needles.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "2 rows x 4 columns, every asset isolated in its own cell with generous empty space, nothing overlapping or touching the edges, seen from a high three-quarter isometric camera",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "props_trees_b",
+  "kind": "sheet",
+  "args": {
+   "subject": "Sprite sheet of 8 separate conifer tree game assets: dark green pines and firs of varied heights and shapes (2 tall, 3 medium, 3 small young firs), each complete from trunk base to top, upright, layered needles with bright highlights on the upper left.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "2 rows x 4 columns, every asset isolated in its own cell with generous empty space, nothing overlapping or touching the edges, seen from a high three-quarter isometric camera",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "props_rocks",
+  "kind": "sheet",
+  "args": {
+   "subject": "Sprite sheet of 8 separate rock game assets: 2 large grey boulders with moss patches, 2 small grey rocks, 2 iron ore rocks (dark grey rock with rusty orange-brown ore veins and metallic glints), 2 glowing cyan-blue aether crystal clusters growing out of rock.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "2 rows x 4 columns, every asset isolated in its own cell with generous empty space, nothing overlapping or touching the edges, seen from a high three-quarter isometric camera",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "props_plants",
+  "kind": "sheet",
+  "args": {
+   "subject": "Sprite sheet of 8 separate plant game assets: 2 round berry bushes with red berries, 2 leafy green bushes, 1 cut tree stump, 1 clump of cattail reeds, 1 clump of tall grass with small wildflowers, 1 small patch of colourful wildflowers.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "2 rows x 4 columns, every asset isolated in its own cell with generous empty space, nothing overlapping or touching the edges, seen from a high three-quarter isometric camera",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "props_sails",
+  "kind": "sheet",
+  "args": {
+   "subject": "Only the rotor of a windmill as a separate game sprite: four long wooden sail arms with cream canvas panels arranged in a perfect X around a small round wooden hub. No tower, no building, no cap, no roof, no ground, nothing else.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no shadows, no text",
+   "composition": "seen straight from the front, perfectly centred on the hub, all four sail tips fully visible with empty space around them",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "t_grass",
+  "kind": "texture",
+  "args": {
+   "subject": "Seamless tileable ground texture: lush green grass, fine grass blades, small clover, subtle lighter and darker patches.",
+   "style": "painterly pixel art like a modern high-resolution isometric strategy game, rich but soft detail",
+   "scene": "texture fills the entire image edge to edge, no objects, no borders, no text",
+   "composition": "straight top-down orthographic view, flat even lighting without cast shadows, uniform density so it tiles seamlessly",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "t_meadow",
+  "kind": "texture",
+  "args": {
+   "subject": "Seamless tileable ground texture: bright green meadow grass dotted with tiny yellow, white and purple wildflowers.",
+   "style": "painterly pixel art like a modern high-resolution isometric strategy game, rich but soft detail",
+   "scene": "texture fills the entire image edge to edge, no objects, no borders, no text",
+   "composition": "straight top-down orthographic view, flat even lighting without cast shadows, uniform density so it tiles seamlessly",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "t_forest",
+  "kind": "texture",
+  "args": {
+   "subject": "Seamless tileable ground texture: dark green forest floor of moss, fallen pine needles and tiny ferns with dark soil peeking through.",
+   "style": "painterly pixel art like a modern high-resolution isometric strategy game, rich but soft detail",
+   "scene": "texture fills the entire image edge to edge, no objects, no borders, no text",
+   "composition": "straight top-down orthographic view, flat even lighting without cast shadows, uniform density so it tiles seamlessly",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "t_sand",
+  "kind": "texture",
+  "args": {
+   "subject": "Seamless tileable ground texture: light river sand with small pebbles and gentle ripples.",
+   "style": "painterly pixel art like a modern high-resolution isometric strategy game, rich but soft detail",
+   "scene": "texture fills the entire image edge to edge, no objects, no borders, no text",
+   "composition": "straight top-down orthographic view, flat even lighting without cast shadows, uniform density so it tiles seamlessly",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "t_dirt",
+  "kind": "texture",
+  "args": {
+   "subject": "Seamless tileable ground texture: packed brown dirt ground with small pebbles, cracks and a few dry grass bits.",
+   "style": "painterly pixel art like a modern high-resolution isometric strategy game, rich but soft detail",
+   "scene": "texture fills the entire image edge to edge, no objects, no borders, no text",
+   "composition": "straight top-down orthographic view, flat even lighting without cast shadows, uniform density so it tiles seamlessly",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "t_rock",
+  "kind": "texture",
+  "args": {
+   "subject": "Seamless tileable ground texture: grey granite rock surface with cracks, small ledges, lichen and small moss patches.",
+   "style": "painterly pixel art like a modern high-resolution isometric strategy game, rich but soft detail",
+   "scene": "texture fills the entire image edge to edge, no objects, no borders, no text",
+   "composition": "straight top-down orthographic view, flat even lighting without cast shadows, uniform density so it tiles seamlessly",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "t_farmland",
+  "kind": "texture",
+  "args": {
+   "subject": "Seamless tileable ground texture: tilled dark brown soil in straight parallel furrows.",
+   "style": "painterly pixel art like a modern high-resolution isometric strategy game, rich but soft detail",
+   "scene": "texture fills the entire image edge to edge, no objects, no borders, no text",
+   "composition": "straight top-down orthographic view, flat even lighting without cast shadows, uniform density so it tiles seamlessly",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "t_paved",
+  "kind": "texture",
+  "args": {
+   "subject": "Seamless tileable ground texture: cobblestone pavement of rounded grey and tan stones with thin grass in the gaps.",
+   "style": "painterly pixel art like a modern high-resolution isometric strategy game, rich but soft detail",
+   "scene": "texture fills the entire image edge to edge, no objects, no borders, no text",
+   "composition": "straight top-down orthographic view, flat even lighting without cast shadows, uniform density so it tiles seamlessly",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_hearth1",
+  "kind": "building",
+  "args": {
+   "subject": "Town Hearth, a settlement's first meeting hall: a sturdy log-and-stone longhouse with a large stone fire pit glowing under an open front porch, crates and sacks of supplies, a notice board; frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_hearth2",
+  "kind": "building",
+  "args": {
+   "subject": "Village Hall: a larger two-storey hall with a stone ground floor and a small bell turret, a warm hearth glow at the open doors, supply crates; frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_hearth3",
+  "kind": "building",
+  "args": {
+   "subject": "Town Hall: a grand three-storey hall with a clock tower, many warm windows and wide stone steps; frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_house",
+  "kind": "building",
+  "args": {
+   "subject": "A single cozy two-storey cottage with a stone chimney, a flower box, a small wooden door with a lantern, a barrel and a few crates beside the door; frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_house2",
+  "kind": "building",
+  "args": {
+   "subject": "A single small one-storey cottage with a woodpile, a tiny vegetable patch, a stone chimney and a lantern by the door; frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_storehouse",
+  "kind": "building",
+  "args": {
+   "subject": "Storehouse: a long timber barn warehouse with big open double doors, stacks of crates, barrels, sacks and a hand cart outside; frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_smelter",
+  "kind": "building",
+  "args": {
+   "subject": "Smelter: a stone furnace workshop with a tall brick chimney, a glowing orange furnace mouth, an ore pile, an anvil and stacked metal ingots; frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_windmill",
+  "kind": "building",
+  "args": {
+   "subject": "Windmill tower WITHOUT sails: a round stone-and-timber windmill tower with a conical blue slate cap, only an empty round sail hub on its front face, a small door and flour sacks; frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_workshop",
+  "kind": "building",
+  "args": {
+   "subject": "Robot Workshop: a big steampunk timber-and-brick workshop with a large open garage door, brass gears, pipes and a small crane arm, a half-built brass robot on a work stand; frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_sky_dock",
+  "kind": "building",
+  "args": {
+   "subject": "Sky Dock: a tall wooden scaffold mooring tower with stairs and a landing platform on top, a docking mast with ropes and a lantern, a winch crane, NO airship; frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_watchtower",
+  "kind": "building",
+  "args": {
+   "subject": "Watchtower: a tall narrow wooden watchtower on a stone base with a lookout platform, a small blue roof, a torch; frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_outpost",
+  "kind": "building",
+  "args": {
+   "subject": "Outpost: a small fortified timber cabin with a short wooden palisade, a supply shed, a flag pole and a campfire; frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_construction",
+  "kind": "building",
+  "args": {
+   "subject": "Construction site: a square wooden scaffolding frame with ladders, stacked logs and cut stone blocks, rope, a wheelbarrow and tools, the square base staked out with string",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_mach_a",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a work bot: a chibi brass steampunk worker robot with a round glass dome head with one glowing blue eye, stubby legs, a riveted barrel body, a small claw arm and a drill arm. RIGHT HALF (columns 4-6): a walker: a bipedal brass and steel steampunk war mech with a round armoured body, a glowing blue eye slit, a cannon on its right shoulder and two sturdy bird-like legs. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_mach_b",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a scout drone: a small hovering brass drone with one big glowing blue lens and four small rotors, no legs. RIGHT HALF (columns 4-6): a repair drone: a small hovering white-and-brass drone with a green cross emblem, two little mechanical arms and four small rotors. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 hovering animation frames with rotor motion. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_mach_c",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a sentry: an ancient hostile guard robot of dark rusty iron and bronze with a glowing orange eye and a spear arm. RIGHT HALF (columns 4-6): a war drone: a hostile hovering machine of dark iron with a glowing red-orange eye, a small cannon underneath and four rotors. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "chip_mach_d",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a turret: a stationary ancient gun turret of dark iron on a round stone base with a glowing orange lens, its barrel pointing in the facing direction; its 3 frames are idle, charging glow and firing flash. RIGHT HALF (columns 4-6): a machine warden: a huge hunched ancient boss robot of dark iron and bronze with a glowing orange core in its chest and heavy fists. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "air_cargo",
+  "kind": "sheet",
+  "args": {
+   "subject": "Four views of the same steampunk airship for a cozy isometric fantasy RTS in a 2x2 grid: top-left facing left (side view), top-right facing right (side view), bottom-left flying toward the viewer (front three-quarter view), bottom-right flying away (rear three-quarter view). The airship has a large cream-and-blue striped gas balloon with brass ribs and a blue company emblem, a wooden ship-like gondola hanging below with round windows, a brass propeller at the back and small side fins.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "2 rows x 2 columns, every asset isolated in its own cell with generous empty space, nothing overlapping or touching the edges, seen from a high three-quarter isometric camera",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "air_trader",
+  "kind": "sheet",
+  "args": {
+   "subject": "Four views of the same steampunk airship for a cozy isometric fantasy RTS in a 2x2 grid: top-left facing left (side view), top-right facing right (side view), bottom-left flying toward the viewer (front three-quarter view), bottom-right flying away (rear three-quarter view). The airship has a large green-and-gold striped gas balloon with a golden coin emblem, a polished wooden merchant gondola with lanterns and cargo nets below, a brass propeller at the back.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "2 rows x 2 columns, every asset isolated in its own cell with generous empty space, nothing overlapping or touching the edges, seen from a high three-quarter isometric camera",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_human_worker",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a human man with short messy brown hair, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. RIGHT portrait: the character from the right half of Image 1 - a human woman with shoulder-length chestnut hair, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_human_worker.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_human_fighter",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a human man with short messy brown hair, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. RIGHT portrait: the character from the right half of Image 1 - a human woman with shoulder-length chestnut hair, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_human_fighter.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_human_ranger",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a human man with short messy brown hair, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. RIGHT portrait: the character from the right half of Image 1 - a human woman with shoulder-length chestnut hair, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_human_ranger.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_human_engineer",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a human man with short messy brown hair, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. RIGHT portrait: the character from the right half of Image 1 - a human woman with shoulder-length chestnut hair, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_human_engineer.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_human_scholar",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a human man with short messy brown hair, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. RIGHT portrait: the character from the right half of Image 1 - a human woman with shoulder-length chestnut hair, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_human_scholar.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_sylvan_worker",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Sylvan man (elf-like woodland folk with long pointed ears) with silver-blond hair, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. RIGHT portrait: the character from the right half of Image 1 - a Sylvan woman (elf-like woodland folk with long pointed ears) with long pale-green hair in a braid, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_sylvan_worker.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_sylvan_fighter",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Sylvan man (elf-like woodland folk with long pointed ears) with silver-blond hair, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. RIGHT portrait: the character from the right half of Image 1 - a Sylvan woman (elf-like woodland folk with long pointed ears) with long pale-green hair in a braid, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_sylvan_fighter.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_sylvan_ranger",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Sylvan man (elf-like woodland folk with long pointed ears) with silver-blond hair, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. RIGHT portrait: the character from the right half of Image 1 - a Sylvan woman (elf-like woodland folk with long pointed ears) with long pale-green hair in a braid, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_sylvan_ranger.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_sylvan_engineer",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Sylvan man (elf-like woodland folk with long pointed ears) with silver-blond hair, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. RIGHT portrait: the character from the right half of Image 1 - a Sylvan woman (elf-like woodland folk with long pointed ears) with long pale-green hair in a braid, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_sylvan_engineer.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_sylvan_scholar",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Sylvan man (elf-like woodland folk with long pointed ears) with silver-blond hair, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. RIGHT portrait: the character from the right half of Image 1 - a Sylvan woman (elf-like woodland folk with long pointed ears) with long pale-green hair in a braid, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_sylvan_scholar.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_stoutkin_worker",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a thick braided copper-red beard, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. RIGHT portrait: the character from the right half of Image 1 - a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with copper-red hair in two thick braids, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_stoutkin_worker.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_stoutkin_fighter",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a thick braided copper-red beard, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. RIGHT portrait: the character from the right half of Image 1 - a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with copper-red hair in two thick braids, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_stoutkin_fighter.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_stoutkin_ranger",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a thick braided copper-red beard, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. RIGHT portrait: the character from the right half of Image 1 - a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with copper-red hair in two thick braids, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_stoutkin_ranger.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_stoutkin_engineer",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a thick braided copper-red beard, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. RIGHT portrait: the character from the right half of Image 1 - a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with copper-red hair in two thick braids, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_stoutkin_engineer.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_stoutkin_scholar",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a thick braided copper-red beard, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. RIGHT portrait: the character from the right half of Image 1 - a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with copper-red hair in two thick braids, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_stoutkin_scholar.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_vulpin_worker",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Vulpin man (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with orange hair, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. RIGHT portrait: the character from the right half of Image 1 - a Vulpin woman (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with long orange hair, wearing a cream linen shirt, brown work trousers, a blue neckerchief, a leather tool belt and a straw hat, a small hand axe hanging at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_vulpin_worker.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_vulpin_fighter",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Vulpin man (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with orange hair, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. RIGHT portrait: the character from the right half of Image 1 - a Vulpin woman (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with long orange hair, wearing a blue tabard over light chainmail and a round steel helmet, holding a short sword and a round wooden shield with a blue emblem. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_vulpin_fighter.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_vulpin_ranger",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Vulpin man (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with orange hair, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. RIGHT portrait: the character from the right half of Image 1 - a Vulpin woman (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with long orange hair, wearing a green hooded cloak with the hood down, a leather tunic and a blue scarf, a short bow and a quiver on the back. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_vulpin_ranger.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_vulpin_engineer",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Vulpin man (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with orange hair, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. RIGHT portrait: the character from the right half of Image 1 - a Vulpin woman (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with long orange hair, wearing brown overalls over a blue shirt, brass goggles on the forehead and leather tool pouches, carrying a big steel wrench. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_vulpin_engineer.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_vulpin_scholar",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Vulpin man (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with orange hair, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. RIGHT portrait: the character from the right half of Image 1 - a Vulpin woman (fox-folk with large orange fox ears and a bushy orange fox tail with a white tip) with long orange hair, wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_vulpin_scholar.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_bandit_a",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a human man bandit in a patched brown leather coat, a red bandana and a red scarf over the mouth, holding a rusty hand axe. RIGHT portrait: the character from the right half of Image 1 - a human woman bandit in a red hood and patched brown leather, holding a rusty hand axe. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_bandit_a.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_bandit_b",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a bandit crossbowman: a human man in a red hood and patched leather armour, holding a crossbow. RIGHT portrait: the character from the right half of Image 1 - a bandit captain: a big burly human man in a long red coat with a fur collar, a black tricorn hat and an eye patch, holding a heavy steel sword. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "/home/dma/プロジェクト/cogwild-frontier/art_src/raw/chip_bandit_b.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "walls",
+  "kind": "building",
+  "args": {
+   "subject": "Sprite sheet of 2 separate wall segment game assets side by side: LEFT a short section of a bandit palisade made of four sharpened vertical logs lashed together with rope, RIGHT a short square block of grey stone castle wall with crenellations on top and a little moss. Each segment is a compact square block about as wide as it is tall, so many of them can be placed in a row.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, each segment's square footprint forms a small diamond at its bottom, the two segments separated by wide empty space, nothing touching the edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "keyart_title",
+  "kind": "keyart",
+  "args": {
+   "subject": "Wide key art for the title screen of a cozy frontier fantasy strategy game: a young timber-and-stone frontier settlement with deep-blue slate roofs and blue banners in a lush green valley, a cream-and-blue striped steampunk airship docked at a tall wooden mooring tower, a windmill, small settlers and a brass walker robot on a dirt road, dense dark pine forests, misty mountains and waterfalls in the distance, a bandit camp with red banners far away on a ridge",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, warm golden-hour light, saturated colours, atmospheric haze",
+   "scene": "late afternoon, soft clouds, sun low on the right",
+   "composition": "wide panoramic high three-quarter view, the settlement in the right half, calm open sky and forest in the left third for menu text, no text, no logo, no UI",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "icons_a",
+  "kind": "icons",
+  "args": {
+   "subject": "Sprite sheet of 12 separate painted fantasy RPG inventory icons in a 4 x 3 grid, in reading order: 1 a steel sword, 2 a dagger, 3 a hand axe, 4 a spear, 5 a wooden longbow, 6 a crossbow, 7 a war hammer, 8 a spiked mace, 9 a wooden wizard staff, 10 a brass rifle, 11 a brass pistol, 12 a steel wrench. Each icon shows exactly one object, large and centred in its own cell, slightly tilted three-quarter view, rich detail with bright highlights.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "4 columns x 3 rows evenly spaced grid, every icon isolated in its own cell with empty space around it, nothing touching the edges, no frames, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "icons_b",
+  "kind": "icons",
+  "args": {
+   "subject": "Sprite sheet of 12 separate painted fantasy RPG inventory icons in a 4 x 3 grid, in reading order: 1 a pickaxe, 2 a round wooden shield with a blue emblem, 3 a leather vest, 4 a long canvas coat, 5 a steel breastplate, 6 a steel helmet, 7 a pair of leather boots, 8 a pair of leather gloves, 9 a brass spyglass telescope, 10 a brass lantern with warm light, 11 a brass compass, 12 brass goggles. Each icon shows exactly one object, large and centred in its own cell, slightly tilted three-quarter view, rich detail with bright highlights.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "4 columns x 3 rows evenly spaced grid, every icon isolated in its own cell with empty space around it, nothing touching the edges, no frames, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "icons_c",
+  "kind": "icons",
+  "args": {
+   "subject": "Sprite sheet of 12 separate painted fantasy RPG inventory icons in a 4 x 3 grid, in reading order: 1 a brass gear cog, 2 a brass servo motor, 3 a brass sensor eye lens, 4 a glowing blue power core, 5 a riveted steel armour plate, 6 a small brass propeller, 7 a folded striped airship balloon canvas, 8 a small brass steam engine, 9 a glowing crystal orb, 10 a small golden idol statuette, 11 an ancient stone relic tablet with glowing runes, 12 a pendant amulet with a red gem. Each icon shows exactly one object, large and centred in its own cell, slightly tilted three-quarter view, rich detail with bright highlights.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "4 columns x 3 rows evenly spaced grid, every icon isolated in its own cell with empty space around it, nothing touching the edges, no frames, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "icons_d",
+  "kind": "icons",
+  "args": {
+   "subject": "Sprite sheet of 12 separate painted fantasy RPG inventory icons in a 4 x 3 grid, in reading order: 1 a gold ring with a blue gem, 2 a potion bottle of red tonic, 3 a wrapped travel ration of bread and cheese, 4 a leather repair kit with tools, 5 a glowing blue aether crystal shard, 6 a steel ingot, 7 a bundle of timber planks, 8 a folded fur pelt, 9 a leather-bound book, 10 a rolled parchment map, 11 a bundle of chopped logs, 12 a pile of cut grey stone blocks. Each icon shows exactly one object, large and centred in its own cell, slightly tilted three-quarter view, rich detail with bright highlights.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "4 columns x 3 rows evenly spaced grid, every icon isolated in its own cell with empty space around it, nothing touching the edges, no frames, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "icons_e",
+  "kind": "icons",
+  "args": {
+   "subject": "Sprite sheet of 12 separate painted fantasy RPG inventory icons in a 4 x 3 grid, in reading order: 1 a chunk of iron ore with rusty veins, 2 a stack of three metal ingots, 3 a small pile of gold coins, 4 a loaf of bread with wheat ears, 5 a glowing blue energy battery with a lightning bolt, 6 a brown loot sack, 7 a small wooden treasure chest, 8 a rolled scroll with a red seal, 9 a brass bell, 10 a red heart crystal, 11 a golden star medal, 12 a crossed hammer and wrench. Each icon shows exactly one object, large and centred in its own cell, slightly tilted three-quarter view, rich detail with bright highlights.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "4 columns x 3 rows evenly spaced grid, every icon isolated in its own cell with empty space around it, nothing touching the edges, no frames, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_bandit_tent",
+  "kind": "building",
+  "args": {
+   "subject": "Bandit tent: a patched red-and-brown canvas tent on a crude wooden frame, a red flag with a skull emblem, crates of stolen loot",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_bandit_hut",
+  "kind": "building",
+  "args": {
+   "subject": "Bandit hut: a ramshackle hut of rough logs and planks with a patched roof, red banners with a skull emblem, a weapon rack and loot sacks",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_bandit_tower",
+  "kind": "building",
+  "args": {
+   "subject": "Bandit lookout tower: a crude wooden tower of lashed logs with sharpened stakes, red banners and a burning torch",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_campfire",
+  "kind": "building",
+  "args": {
+   "subject": "A small campfire: a ring of stones with burning logs, a cooking spit and glowing embers",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_machine_spire",
+  "kind": "building",
+  "args": {
+   "subject": "Ancient machine spire: a tall dark iron and bronze obelisk with glowing orange runes, pipes and a red banner with a gear emblem",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_machine_block",
+  "kind": "building",
+  "args": {
+   "subject": "Ancient machine bunker: a squat armoured dark iron block with a glowing orange vent, rivets and red banners with a gear emblem",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_machine_foundry",
+  "kind": "building",
+  "args": {
+   "subject": "Ancient machine foundry: a large dark iron factory with two smokestacks, glowing orange furnace windows, pipes, gear emblems and red banners",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_trade_hall",
+  "kind": "building",
+  "args": {
+   "subject": "Trade post hall: a busy merchant hall of timber with green-and-gold striped awnings, crates of goods, barrels, scales and lanterns",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_trade_stall",
+  "kind": "building",
+  "args": {
+   "subject": "A small market stall with a green-and-gold striped awning and goods on the counter",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_trade_mast",
+  "kind": "building",
+  "args": {
+   "subject": "An airship mooring mast: a tall timber mast with a small platform, rope ladders and a green-and-gold flag",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_wanderer_tent",
+  "kind": "building",
+  "args": {
+   "subject": "A small weathered traveller's tent of beige canvas with a bedroll, a backpack and a cooking pot",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_ruin_arch",
+  "kind": "building",
+  "args": {
+   "subject": "A crumbling ancient stone archway overgrown with ivy and moss",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_ruin_pillar",
+  "kind": "building",
+  "args": {
+   "subject": "A single broken ancient stone pillar with ivy",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_ruin_wall",
+  "kind": "building",
+  "args": {
+   "subject": "A crumbling section of ancient stone wall overgrown with ivy",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_ruin_statue",
+  "kind": "building",
+  "args": {
+   "subject": "A weathered ancient stone statue of a robed figure on a pedestal, cracked and mossy",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_ruin_vault",
+  "kind": "building",
+  "args": {
+   "subject": "A sunken ancient stone vault entrance with stairs leading down, carved glowing blue runes and ivy",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_wreck_airship",
+  "kind": "building",
+  "args": {
+   "subject": "A crashed airship wreck: a torn deflated striped balloon draped over a broken wooden gondola hull half buried in the ground, scattered crates and a bent propeller",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1"
+  }
+ }
+]

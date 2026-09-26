@@ -144,29 +144,30 @@ func _describe_hover() -> String:
 		var u := hover_unit
 		var tag := ""
 		if g.world.hostile("player", u.faction):
-			tag = " [hostile]"
+			tag = " [" + Loc.t("hostile") + "]"
 		elif u.faction != "player":
-			tag = " [%s]" % u.faction
-		return "%s — %s Lv.%d%s" % [u.name, u.display_role(), u.char_level(), tag]
+			tag = " [%s]" % Loc.t(u.faction)
+		return "%s — %s Lv.%d%s" % [u.name, Loc.t(u.display_role()), u.char_level(), tag]
 	if hover_ground is Vector3:
 		var t := _tile_at(hover_ground)
 		if not g.world.is_explored(t):
-			return "Unexplored"
+			return Loc.t("Unexplored")
 		var b := g.world.building_at(t)
 		if b:
-			return "%s%s" % [b.display_name(), "" if b.is_built() else " (under construction %d%%)" % int(b.progress * 100)]
+			return "%s%s" % [Loc.def_name("buildings", b.type), "" if b.is_built() else Loc.t(" (under construction %d%%)") % int(b.progress * 100)]
 		var sid := site_at(t)
 		if sid >= 0:
 			var st: Dictionary = g.world.sites[sid]
-			return "%s — %s%s" % [st["name"], FactionAI.KIND_LABEL.get(st["kind"], st["kind"]), " (cleared)" if st.get("cleared", false) and st.get("hostile", false) else ""]
+			return "%s — %s%s" % [st["name"], Loc.t(str(FactionAI.KIND_LABEL.get(st["kind"], st["kind"]))), Loc.t(" (cleared)") if st.get("cleared", false) and st.get("hostile", false) else ""]
 		var r := g.world.res_at(t)
 		if r != Tiles.Res.NONE:
 			var info := Tiles.res_info(r)
-			return "%s (%d %s)" % [str(info["id"]).replace("_", " ").capitalize(), g.world.res_amount_at(t), info.get("yield", "")]
+			return Loc.t("%s (%d %s)") % [Loc.t(str(info["id"]).replace("_", " ").capitalize()), g.world.res_amount_at(t), Loc.t(str(info.get("yield", "")))]
 		if g.world.farm.has(t):
 			var f: Dictionary = g.world.farm[t]
-			return "Field: %s" % ["untilled", "tilled", "growing %d%%" % int(float(f["growth"]) * 100), "ripe"][int(f["stage"])]
-		return Tiles.NAMES[g.world.terrain_at(t)]
+			var stages := ["untilled", "tilled", "growing %d%%" % int(float(f["growth"]) * 100), "ripe"]
+			return Loc.t("Field: %s") % Loc.t(stages[int(f["stage"])])
+		return Loc.t(Tiles.NAMES[g.world.terrain_at(t)])
 	return ""
 
 
@@ -302,7 +303,7 @@ func _context_order(p: Vector2) -> void:
 		if not workers.is_empty():
 			for u: Unit in workers:
 				g.world.squad_ai.order_gather(u, t)
-			g.toast.emit("Gathering.", "info")
+			g.toast.emit(Loc.t("Gathering."), "info")
 			Sfx.play(&"ui_confirm")
 			return
 	issue("move", {"pos": Vector2(hover_ground.x, hover_ground.z)})
@@ -325,7 +326,7 @@ func _target_command(type: String, p: Vector2) -> void:
 			if target and target.is_player():
 				params = {"target": target.id}
 			else:
-				g.toast.emit("Pick one of your units to escort.", "bad")
+				g.toast.emit(Loc.t("Pick one of your units to escort."), "bad")
 				return
 		_:
 			if not (hover_ground is Vector3):
@@ -364,7 +365,7 @@ func issue(type: String, params: Dictionary = {}) -> void:
 	if params.has("pos"):
 		g.view.add_child(_order_marker(params["pos"], type))
 	Sfx.play(&"ui_confirm")
-	g.toast.emit("%s ordered." % ORDER_LABEL.get(type, type.capitalize()), "info")
+	g.toast.emit(Loc.t("%s ordered.") % Loc.t(str(ORDER_LABEL.get(type, type.capitalize()))), "info")
 
 
 func _order_marker(p: Vector2, type: String) -> Node3D:
@@ -438,19 +439,19 @@ func _place(type: String, keep: bool) -> void:
 				g.world.place_building("wall", t)
 				n += 1
 		_wall_start = null
-		g.toast.emit("%d wall segments planned." % n if n > 0 else "No room for walls there.", "info" if n > 0 else "bad")
+		g.toast.emit(Loc.t("%d wall segments planned.") % n if n > 0 else Loc.t("No room for walls there."), "info" if n > 0 else "bad")
 		if n > 0:
 			Sfx.play(&"build_place")
 		return
 	var o := _ghost_origin(type)
 	var reason := g.world.can_place(type, o)
 	if reason != "":
-		g.toast.emit(reason, "bad")
+		g.toast.emit(Loc.t(reason), "bad")
 		Sfx.play(&"ui_error")
 		return
 	var b := g.world.place_building(type, o)
 	Sfx.play(&"build_place")
-	g.toast.emit("%s: construction site placed. Settlers will haul materials and build it." % b.display_name(), "good")
+	g.toast.emit(Loc.t("%s: construction site placed. Settlers will haul materials and build it.") % Loc.def_name("buildings", type), "good")
 	if not keep and type != "wall":
 		set_mode("")
 
@@ -505,15 +506,15 @@ func _finish_zone(type: String) -> void:
 	zone_start = null
 	if type == "clear":
 		var n := g.world.remove_zones_in(r)
-		g.toast.emit("%d zone(s) removed." % n, "info")
+		g.toast.emit(Loc.t("%d zone(s) removed.") % n, "info")
 		return
 	if r.size.x * r.size.y > 900:
-		g.toast.emit("Zone too large (max 30×30).", "bad")
+		g.toast.emit(Loc.t("Zone too large (max 30×30)."), "bad")
 		return
 	var z := g.world.add_zone(type, r)
 	if z.is_empty():
-		g.toast.emit("Nothing to farm there — pick open grass.", "bad")
+		g.toast.emit(Loc.t("Nothing to farm there — pick open grass."), "bad")
 		Sfx.play(&"ui_error")
 	else:
-		g.toast.emit("%s zone designated. Idle workers will get to it." % type.capitalize(), "good")
+		g.toast.emit(Loc.t("%s zone designated. Idle workers will get to it.") % Loc.t(type.capitalize()), "good")
 		Sfx.play(&"ui_confirm")

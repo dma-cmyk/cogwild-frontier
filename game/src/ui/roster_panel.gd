@@ -23,7 +23,7 @@ func setup(game: Game, h: Hud) -> void:
 	var v := UiTheme.vbox(6)
 	add_child(v)
 	var head := UiTheme.hbox(8)
-	head.add_child(UiTheme.title("Company", 22))
+	head.add_child(UiTheme.title(Loc.t("Company"), 22))
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(sp)
@@ -65,7 +65,7 @@ func refresh() -> void:
 		var members: Array = units.filter(group[1])
 		if members.is_empty():
 			continue
-		_list.add_child(UiTheme.label("%s (%d)" % [group[0], members.size()], 16, UiTheme.GOLD))
+		_list.add_child(UiTheme.label("%s (%d)" % [Loc.t(str(group[0])), members.size()], 16, UiTheme.GOLD))
 		for u: Unit in members:
 			var b := Button.new()
 			b.focus_mode = Control.FOCUS_NONE

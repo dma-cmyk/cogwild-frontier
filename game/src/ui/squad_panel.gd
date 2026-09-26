@@ -36,7 +36,7 @@ func setup(game: Game, h: Hud) -> void:
 	var head := UiTheme.hbox(8)
 	v.add_child(head)
 	head.add_child(UiTheme.icon("ui_squad", 26))
-	_name = UiTheme.title("No squad", 20)
+	_name = UiTheme.title(Loc.t("No squad"), 20)
 	head.add_child(_name)
 	_count = UiTheme.label("", 18, UiTheme.TEXT_DIM)
 	head.add_child(_count)
@@ -53,8 +53,8 @@ func setup(game: Game, h: Hud) -> void:
 	var foot := UiTheme.hbox(8)
 	v.add_child(foot)
 	foot.add_child(UiTheme.icon("cmd_retreat", 20))
-	_slider_label = UiTheme.label("Retreat at 30%", 14, UiTheme.TEXT_DIM)
-	_slider_label.custom_minimum_size = Vector2(104, 0)
+	_slider_label = UiTheme.label(Loc.t("Retreat at %d%%") % 30, 14, UiTheme.TEXT_DIM)
+	_slider_label.custom_minimum_size = Vector2(130, 0)
 	foot.add_child(_slider_label)
 	_slider = HSlider.new()
 	_slider.min_value = 0.0
@@ -62,22 +62,22 @@ func setup(game: Game, h: Hud) -> void:
 	_slider.step = 0.05
 	_slider.custom_minimum_size = Vector2(96, 18)
 	_slider.focus_mode = Control.FOCUS_NONE
-	_slider.tooltip_text = "The squad falls back to the hearth when its total health drops below this."
+	_slider.tooltip_text = Loc.t("The squad falls back to the hearth when its total health drops below this.")
 	_slider.value_changed.connect(_on_threshold)
 	foot.add_child(_slider)
-	_add_btn = UiTheme.button("Add selected", "ui_people", "Draft the selected settlers or machines into this squad (max 6).")
+	_add_btn = UiTheme.button(Loc.t("Add selected"), "ui_people", Loc.t("Draft the selected settlers or machines into this squad (max 6)."))
 	_add_btn.custom_minimum_size = Vector2(0, 30)
 	_add_btn.pressed.connect(_on_add)
 	foot.add_child(_add_btn)
-	var esc := UiTheme.button("Escort", "cmd_escort", "Escort (Y): follow and protect one of your units — e.g. the airship or a work bot.")
+	var esc := UiTheme.button(Loc.t("Escort"), "cmd_escort", Loc.t("Escort (Y): follow and protect one of your units — e.g. the airship or a work bot."))
 	esc.custom_minimum_size = Vector2(0, 30)
 	esc.pressed.connect(func() -> void:
 		if g.selected_units().is_empty():
-			hud.add_note({"text": "Select a squad first.", "kind": "info"}, 3.0)
+			hud.add_note({"text": Loc.t("Select a squad first."), "kind": "info"}, 3.0)
 		else:
 			g.input_ctl.set_mode("cmd:escort"))
 	foot.add_child(esc)
-	var new_btn := UiTheme.button("New squad", "ui_squad", "Form a new squad from the selected units.")
+	var new_btn := UiTheme.button(Loc.t("New squad"), "ui_squad", Loc.t("Form a new squad from the selected units."))
 	new_btn.custom_minimum_size = Vector2(0, 30)
 	new_btn.pressed.connect(_on_new)
 	foot.add_child(new_btn)
@@ -96,7 +96,7 @@ func refresh(force: bool) -> void:
 	var s := _squad()
 	_rebuild_tabs(s)
 	if s == null:
-		_name.text = "No squad"
+		_name.text = Loc.t("No squad")
 		_count.text = ""
 		_state.text = ""
 		return
@@ -109,7 +109,7 @@ func refresh(force: bool) -> void:
 	_count.text = "%d/6" % s.members.size()
 	_state.text = _state_text(s)
 	_slider.set_value_no_signal(s.retreat_threshold)
-	_slider_label.text = "Retreat at %d%%" % int(s.retreat_threshold * 100)
+	_slider_label.text = Loc.t("Retreat at %d%%") % int(s.retreat_threshold * 100)
 	var focus := g.focus_unit()
 	for ref: Array in _card_refs:
 		var u := g.world.get_unit(int(ref[0]))
@@ -126,26 +126,29 @@ func refresh(force: bool) -> void:
 
 
 func _state_text(s: Squad) -> String:
+	if not s.state_message.is_empty():
+		return Loc.message(s.state_message)
 	var o := str(s.order.get("type", "idle"))
 	var st := s.state
 	if st == "" or st == "holding":
-		return "Holding position" if o == "idle" else o.capitalize()
-	return st.capitalize() if not st.begins_with("auto") else "Auto — " + st.substr(6)
+		return Loc.t("Holding position") if o == "idle" else Loc.t(o.capitalize())
+	return Loc.t(st.capitalize()) if not st.begins_with("auto") else Loc.t("Auto — ") + Loc.t(st.substr(6))
 
 
 func _rebuild_tabs(current: Squad) -> void:
 	var ids: Array = []
 	for s: Squad in g.world.squads:
 		ids.append(s.id)
-	if _tabs.get_meta("ids", []) == ids and _tabs.get_meta("cur", -1) == (current.id if current else -1):
+	if _tabs.get_meta("ids", []) == ids and _tabs.get_meta("cur", -1) == (current.id if current else -1) and _tabs.get_meta("language", "") == Loc.language:
 		return
 	_tabs.set_meta("ids", ids)
+	_tabs.set_meta("language", Loc.language)
 	_tabs.set_meta("cur", current.id if current else -1)
 	for c in _tabs.get_children():
 		c.queue_free()
 	for i in g.world.squads.size():
 		var s: Squad = g.world.squads[i]
-		var b := UiTheme.button("%d %s" % [i + 1, s.name.split(" ")[0]], "", "Select %s (key %d)" % [s.name, i + 1])
+		var b := UiTheme.button("%d %s" % [i + 1, s.name.split(" ")[0]], "", Loc.t("Select %s (key %d)") % [s.name, i + 1])
 		b.custom_minimum_size = Vector2(0, 28)
 		b.add_theme_font_size_override("font_size", 13)
 		if current and s.id == current.id:
@@ -169,7 +172,7 @@ func _rebuild_cards(s: Squad) -> void:
 		frame.add_theme_stylebox_override("panel", UiTheme.flat(Color(0.08, 0.11, 0.17, 0.95), 6, UiTheme.BORDER_DIM, 2))
 		frame.custom_minimum_size = Vector2(84, 116)
 		frame.mouse_filter = Control.MOUSE_FILTER_STOP
-		frame.tooltip_text = "%s — %s" % [u.name, u.display_role()]
+		frame.tooltip_text = "%s — %s" % [u.name, Loc.t(u.display_role())]
 		var v := UiTheme.vbox(2)
 		frame.add_child(v)
 		var pic := TextureRect.new()
@@ -204,7 +207,7 @@ func _on_threshold(v: float) -> void:
 	var s := _squad()
 	if s:
 		s.retreat_threshold = v
-		_slider_label.text = "Retreat at %d%%" % int(v * 100)
+		_slider_label.text = Loc.t("Retreat at %d%%") % int(v * 100)
 
 
 func _on_add() -> void:
@@ -216,7 +219,7 @@ func _on_add() -> void:
 		if u.squad_id < 0 and u.kind != "airship" and g.world.assign_to_squad(u, s):
 			g.world.combat.enlist(u)
 			n += 1
-	hud.add_note({"text": "%d joined %s." % [n, s.name] if n > 0 else "Select settlers or machines outside a squad first.", "kind": "info"}, 3.0)
+	hud.add_note({"key": "ui.squad.joined", "params": {"count": n, "name": s.name}, "kind": "info"} if n > 0 else {"text": Loc.t("Select settlers or machines outside a squad first."), "kind": "info"}, 3.0)
 	refresh(true)
 
 
@@ -226,7 +229,7 @@ func _on_new() -> void:
 		if u.kind != "airship":
 			picked.append(u)
 	if picked.is_empty():
-		hud.add_note({"text": "Select settlers or machines to form a squad.", "kind": "info"}, 3.0)
+		hud.add_note({"text": Loc.t("Select settlers or machines to form a squad."), "kind": "info"}, 3.0)
 		return
 	var s := g.world.create_squad()
 	for u: Unit in picked:
@@ -234,4 +237,4 @@ func _on_new() -> void:
 			g.world.combat.enlist(u)
 	g.world.squad_ai.order_squad(s, {"type": "idle"})
 	g.select_squad(s.id)
-	hud.add_note({"text": "%s formed." % s.name, "kind": "good"}, 3.0)
+	hud.add_note({"key": "ui.squad.formed", "params": {"name": s.name}, "kind": "good"}, 3.0)

@@ -1,0 +1,593 @@
+{
+ "table": "props",
+ "entries": [
+  {
+   "id": "berry_bush",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      1360,
+      262,
+      122,
+      112
+     ],
+     "anchor": [
+      61.4,
+      112
+     ],
+     "height_m": 0.9,
+     "source": "props_plants"
+    },
+    {
+     "rect": [
+      1486,
+      262,
+      110,
+      112
+     ],
+     "anchor": [
+      54.7,
+      112
+     ],
+     "height_m": 0.9,
+     "source": "props_plants"
+    }
+   ]
+  },
+  {
+   "id": "bush",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      1600,
+      262,
+      122,
+      112
+     ],
+     "anchor": [
+      61.4,
+      112
+     ],
+     "height_m": 0.95,
+     "source": "props_plants"
+    },
+    {
+     "rect": [
+      1726,
+      262,
+      118,
+      112
+     ],
+     "anchor": [
+      59.3,
+      112
+     ],
+     "height_m": 0.9,
+     "source": "props_plants"
+    }
+   ]
+  },
+  {
+   "id": "flowers",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      426,
+      458,
+      78,
+      64
+     ],
+     "anchor": [
+      39.2,
+      64
+     ],
+     "height_m": 0.35,
+     "source": "props_plants"
+    }
+   ]
+  },
+  {
+   "id": "grass_tuft",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      346,
+      458,
+      76,
+      80
+     ],
+     "anchor": [
+      37.6,
+      80
+     ],
+     "height_m": 0.55,
+     "source": "props_plants"
+    }
+   ]
+  },
+  {
+   "id": "ore_crystal",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      878,
+      262,
+      104,
+      128
+     ],
+     "anchor": [
+      52.5,
+      128
+     ],
+     "height_m": 1.1,
+     "source": "props_rocks"
+    },
+    {
+     "rect": [
+      986,
+      262,
+      126,
+      128
+     ],
+     "anchor": [
+      63.1,
+      128
+     ],
+     "height_m": 1.0,
+     "source": "props_rocks"
+    }
+   ]
+  },
+  {
+   "id": "ore_iron",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      1116,
+      262,
+      122,
+      112
+     ],
+     "anchor": [
+      60.9,
+      112
+     ],
+     "height_m": 0.8,
+     "source": "props_rocks"
+    },
+    {
+     "rect": [
+      1242,
+      262,
+      114,
+      112
+     ],
+     "anchor": [
+      57.0,
+      112
+     ],
+     "height_m": 0.8,
+     "source": "props_rocks"
+    }
+   ]
+  },
+  {
+   "id": "reeds",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      1848,
+      262,
+      98,
+      112
+     ],
+     "anchor": [
+      48.7,
+      112
+     ],
+     "height_m": 1.1,
+     "source": "props_plants"
+    }
+   ]
+  },
+  {
+   "id": "rock_large",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      616,
+      262,
+      132,
+      128
+     ],
+     "anchor": [
+      66.2,
+      128
+     ],
+     "height_m": 1.2,
+     "source": "props_rocks"
+    },
+    {
+     "rect": [
+      752,
+      262,
+      122,
+      128
+     ],
+     "anchor": [
+      60.8,
+      128
+     ],
+     "height_m": 1.1,
+     "source": "props_rocks"
+    }
+   ]
+  },
+  {
+   "id": "rock_small",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      2,
+      458,
+      120,
+      96
+     ],
+     "anchor": [
+      59.8,
+      96
+     ],
+     "height_m": 0.55,
+     "source": "props_rocks"
+    },
+    {
+     "rect": [
+      126,
+      458,
+      110,
+      96
+     ],
+     "anchor": [
+      55.1,
+      96
+     ],
+     "height_m": 0.5,
+     "source": "props_rocks"
+    }
+   ]
+  },
+  {
+   "id": "stump",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      240,
+      458,
+      102,
+      80
+     ],
+     "anchor": [
+      51.4,
+      80
+     ],
+     "height_m": 0.5,
+     "source": "props_plants"
+    }
+   ]
+  },
+  {
+   "id": "tree_birch",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      1812,
+      2,
+      120,
+      224
+     ],
+     "anchor": [
+      59.6,
+      224
+     ],
+     "height_m": 4.2,
+     "source": "props_trees_a"
+    }
+   ]
+  },
+  {
+   "id": "tree_dead",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      2,
+      262,
+      158,
+      192
+     ],
+     "anchor": [
+      78.7,
+      192
+     ],
+     "height_m": 3.3,
+     "source": "props_trees_a"
+    }
+   ]
+  },
+  {
+   "id": "tree_oak",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      1406,
+      2,
+      204,
+      224
+     ],
+     "anchor": [
+      101.8,
+      224
+     ],
+     "height_m": 3.8,
+     "source": "props_trees_a"
+    },
+    {
+     "rect": [
+      1614,
+      2,
+      194,
+      224
+     ],
+     "anchor": [
+      97.1,
+      224
+     ],
+     "height_m": 3.6,
+     "source": "props_trees_a"
+    }
+   ]
+  },
+  {
+   "id": "tree_pine",
+   "texture": "res://assets/sprites/props_atlas.png",
+   "atlas_size": [
+    2048,
+    1024
+   ],
+   "variants": [
+    {
+     "rect": [
+      2,
+      2,
+      164,
+      256
+     ],
+     "anchor": [
+      81.7,
+      256
+     ],
+     "height_m": 5.2,
+     "source": "props_trees_a"
+    },
+    {
+     "rect": [
+      170,
+      2,
+      138,
+      256
+     ],
+     "anchor": [
+      69.5,
+      256
+     ],
+     "height_m": 4.8,
+     "source": "props_trees_a"
+    },
+    {
+     "rect": [
+      312,
+      2,
+      166,
+      256
+     ],
+     "anchor": [
+      83.0,
+      256
+     ],
+     "height_m": 4.4,
+     "source": "props_trees_a"
+    },
+    {
+     "rect": [
+      482,
+      2,
+      126,
+      256
+     ],
+     "anchor": [
+      62.9,
+      256
+     ],
+     "height_m": 5.4,
+     "source": "props_trees_a"
+    },
+    {
+     "rect": [
+      612,
+      2,
+      138,
+      256
+     ],
+     "anchor": [
+      69.0,
+      256
+     ],
+     "height_m": 5.6,
+     "source": "props_trees_b"
+    },
+    {
+     "rect": [
+      754,
+      2,
+      164,
+      256
+     ],
+     "anchor": [
+      81.6,
+      256
+     ],
+     "height_m": 5.3,
+     "source": "props_trees_b"
+    },
+    {
+     "rect": [
+      922,
+      2,
+      144,
+      232
+     ],
+     "anchor": [
+      71.9,
+      232
+     ],
+     "height_m": 4.6,
+     "source": "props_trees_b"
+    },
+    {
+     "rect": [
+      1070,
+      2,
+      154,
+      232
+     ],
+     "anchor": [
+      76.7,
+      232
+     ],
+     "height_m": 4.4,
+     "source": "props_trees_b"
+    },
+    {
+     "rect": [
+      1228,
+      2,
+      174,
+      232
+     ],
+     "anchor": [
+      86.6,
+      232
+     ],
+     "height_m": 4.2,
+     "source": "props_trees_b"
+    },
+    {
+     "rect": [
+      164,
+      262,
+      146,
+      192
+     ],
+     "anchor": [
+      72.8,
+      192
+     ],
+     "height_m": 3.4,
+     "source": "props_trees_b"
+    },
+    {
+     "rect": [
+      314,
+      262,
+      136,
+      192
+     ],
+     "anchor": [
+      67.5,
+      192
+     ],
+     "height_m": 3.1,
+     "source": "props_trees_b"
+    },
+    {
+     "rect": [
+      454,
+      262,
+      158,
+      192
+     ],
+     "anchor": [
+      78.5,
+      192
+     ],
+     "height_m": 2.9,
+     "source": "props_trees_b"
+    }
+   ]
+  }
+ ]
+}

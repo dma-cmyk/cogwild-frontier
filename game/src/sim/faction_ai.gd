@@ -165,7 +165,7 @@ func loot_site(sid: int, by: Unit) -> void:
 	var items: Array = st.get("cache", [])
 	var bag := w.drop_loot(c + Vector2(0.3, 1.8), items, int(st.get("cache_gold", 0)))
 	st["cache"] = []
-	w.notify("%s opened the cache at %s." % [by.name if by else "Your people", st["name"]], "loot", c, {"site": sid})
+	w.notify_key("sim.site.cache_opened", {"unit_name": by.name if by else "", "site_name": st["name"]}, "loot", c, {"site": sid})
 	if not bag.is_empty() and by:
 		w.pickup_loot(int(bag["id"]), by)
 	w.site_changed.emit(sid)
@@ -184,25 +184,27 @@ func check_site_discovery(seers: Array) -> void:
 
 func _discover(st: Dictionary, by: Variant) -> void:
 	st["discovered"] = true
-	var label := str(KIND_LABEL.get(st["kind"], st["kind"]))
 	var who := ""
 	if by is Unit:
 		who = (by as Unit).name
 		(by as Unit).counter_add("sites_found")
 		if (by as Unit).squad_id >= 0:
-			w.squad_ai.add_report(w.get_squad((by as Unit).squad_id), "found %s" % st["name"])
-	var danger := ""
+			w.squad_ai.add_report(w.get_squad((by as Unit).squad_id), {"key": "sim.report.site_found", "params": {"site_name": st["name"]}})
+	var params := {"site_kind_id": str(st["kind"]), "site_name": st["name"], "unit_name": who,
+		"strength": int(site_strength(int(st["id"])))}
+	var key := "sim.site.discovered"
 	if bool(st["hostile"]) and not bool(st["cleared"]):
-		danger = " — hostile, strength %d" % int(site_strength(int(st["id"])))
-	w.notify("Discovered %s: %s%s%s" % [label, st["name"], danger, (" (by %s)" % who) if who != "" else ""], "discover",
-		Vector2(st["center"]), {"site": st["id"]})
+		key += ".hostile"
+	if who != "":
+		key += ".by_unit"
+	w.notify_key(key, params, "discover", Vector2(st["center"]), {"site": st["id"]})
 	w.site_changed.emit(int(st["id"]))
 
 
 func on_unit_spotted(u: Unit) -> void:
 	if str(u.order.get("type", "")) == "raid" and not _raid_announced.has(u.home_site):
 		_raid_announced[u.home_site] = true
-		w.notify("Raiders spotted approaching the settlement!", "bad", u.pos)
+		w.notify_key("sim.raid.spotted", {}, "bad", u.pos)
 
 
 func on_unit_killed(t: Unit, _attacker: Unit) -> void:
@@ -217,7 +219,7 @@ func on_unit_killed(t: Unit, _attacker: Unit) -> void:
 	st["cleared"] = true
 	st["cleared_day"] = w.day
 	w.counters["camps_cleared"] = int(w.counters.get("camps_cleared", 0)) + 1
-	w.notify("%s has been cleared!" % st["name"], "good", Vector2(st["center"]), {"site": st["id"]})
+	w.notify_key("sim.site.cleared", {"site_name": st["name"]}, "good", Vector2(st["center"]), {"site": st["id"]})
 	if not bool(st["looted"]) and not (st["cache"] as Array).is_empty():
 		var near: Unit = null
 		for u: Unit in w.units_near(Vector2(st["center"]), 30.0):
@@ -361,10 +363,7 @@ func _raider(u: Unit) -> void:
 						w.res[r] = int(w.res[r]) - amount
 						took[r] = amount
 				if not took.is_empty():
-					var parts: PackedStringArray = []
-					for k: String in took:
-						parts.append("%d %s" % [took[k], k])
-					w.notify("%s plundered %s and fled!" % [u.name, ", ".join(parts)], "bad", u.pos)
+					w.notify_key("sim.raid.plundered", {"unit_name": u.name, "resources": took}, "bad", u.pos)
 				u.order["phase"] = "flee"
 				w.move_unit(u, u.guard_pos)
 		"flee":
@@ -386,7 +385,7 @@ func _trader(u: Unit) -> void:
 				o["phase"] = "leave"
 				trade_offers.clear()
 				trader_id = -1
-				w.notify("%s cast off." % u.name, "info", u.pos)
+				w.notify_key("sim.trade.merchant_departed", {"unit_name": u.name}, "info", u.pos)
 				w.move_unit(u, o["exit"])
 		"leave":
 			if not u.moving:
@@ -414,8 +413,9 @@ func _recruit(u: Unit, st: Dictionary) -> void:
 	u.order = {}
 	u.visible = true
 	w.move_unit(u, w.home_pos())
-	var race := str(DB.get_def("races", str(u.character.get("race", ""))).get("name", ""))
-	w.notify("%s the %s %s met your people at %s and joined the company!" % [u.name, race, u.display_role(), st["name"]], "good", u.pos, {"unit": u.id})
+	w.notify_key("sim.site.wanderer_joined", {"unit_name": u.name,
+		"race": {"table": "races", "id": str(u.character.get("race", "")), "en": str(DB.get_def("races", str(u.character.get("race", ""))).get("name", ""))},
+		"role": {"table": "roles", "id": str(u.character.get("role", "")), "en": u.display_role()}, "site_name": st["name"]}, "good", u.pos, {"unit": u.id})
 	w.unit_changed.emit(u)
 
 
@@ -443,7 +443,7 @@ func on_new_day() -> void:
 			if sentries < 3 + int(st["level"]) / 2:
 				_spawn_guard(st, "sentry", c, w.rng)
 				if bool(st["discovered"]):
-					w.notify("The machines at %s rebuilt a sentry." % st["name"], "info", c, {"site": st["id"]})
+					w.notify_key("sim.site.sentry_rebuilt", {"site_name": st["name"]}, "info", c, {"site": st["id"]})
 	if w.day >= trader_day:
 		trader_day = w.day + 2 + w.rng.randi_range(0, 1)
 		_send_trader()
@@ -458,7 +458,7 @@ func _grow_camp(st: Dictionary) -> void:
 	var origin := Vector2i(int(floor(p.x)) - 1, int(floor(p.y)) - 1)
 	if w.add_site_structure(int(st["id"]), "bandit_tent", origin, Vector2i(2, 2)):
 		if bool(st["discovered"]):
-			w.notify("The bandits at %s are growing — they pitched a new tent." % st["name"], "bad", c, {"site": st["id"]})
+			w.notify_key("sim.site.bandit_camp_grew", {"site_name": st["name"]}, "bad", c, {"site": st["id"]})
 
 
 func _reoccupy(st: Dictionary) -> void:
@@ -471,7 +471,7 @@ func _reoccupy(st: Dictionary) -> void:
 	st["cache"] = ItemGen.loot(w.rng, int(st["level"]), 0.25, 2)
 	st["cache_gold"] = w.rng.randi_range(20, 60)
 	if bool(st["discovered"]):
-		w.notify("Bandits have reoccupied %s." % st["name"], "bad", c, {"site": st["id"]})
+		w.notify_key("sim.site.bandits_reoccupied", {"site_name": st["name"]}, "bad", c, {"site": st["id"]})
 	w.site_changed.emit(int(st["id"]))
 
 
@@ -490,7 +490,7 @@ func _launch_raid(st: Dictionary) -> void:
 		u.order = {"type": "raid", "phase": "march"}
 		w.move_unit(u, w.home_pos())
 	if bool(st["discovered"]):
-		w.notify("A raiding party left %s, heading for your settlement!" % st["name"], "bad", Vector2(st["center"]), {"site": st["id"]})
+		w.notify_key("sim.raid.launched", {"site_name": st["name"]}, "bad", Vector2(st["center"]), {"site": st["id"]})
 
 
 func _send_trader() -> void:
@@ -515,7 +515,7 @@ func _send_trader() -> void:
 	u.order = {"type": "trader", "phase": "arrive", "exit": from}
 	trader_id = u.id
 	w.move_unit(u, dock.center() + Vector2(4.5, -4.5))
-	w.notify("A merchant airship, %s, is on its way to your dock." % u.name, "info", from)
+	w.notify_key("sim.trade.merchant_arriving", {"unit_name": u.name}, "info", from)
 
 
 func _open_trade(u: Unit) -> void:
@@ -526,10 +526,7 @@ func _open_trade(u: Unit) -> void:
 		it["uid"] = w.new_id()
 		trade_offers.append({"item": it, "price": maxi(5, int(float(it.get("value", 10)) * 1.25))})
 	var result := trade(u)
-	var parts: PackedStringArray = []
-	for k: String in result:
-		parts.append("%s%d %s" % ["+" if int(result[k]) >= 0 else "", int(result[k]), k])
-	w.notify("%s docked. Traded %s. Wares on offer at the dock." % [u.name, ", ".join(parts) if not parts.is_empty() else "nothing"], "good", u.pos, {"trader": u.id})
+	w.notify_key("sim.trade.merchant_docked", {"unit_name": u.name, "resources": result}, "good", u.pos, {"trader": u.id})
 
 
 ## Buys an offered item with gold. Returns "" or a reason.
@@ -542,7 +539,7 @@ func buy_offer(index: int) -> String:
 	w.res["gold"] = int(w.res["gold"]) - int(o["price"])
 	w.armory.append(o["item"])
 	trade_offers.remove_at(index)
-	w.notify("Bought %s." % o["item"].get("name", "an item"), "loot")
+	w.notify_key("sim.trade.item_bought", {"item": o["item"]}, "loot")
 	return ""
 
 

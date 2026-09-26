@@ -26,7 +26,7 @@ static func create(seed: int, player: Dictionary = {}, company: String = "", col
 	_found_settlement(w)
 	_create_company(w, player)
 	w.refresh_fog_image()
-	w.notify("%s has landed. Build, explore and grow — or delegate and watch the frontier come alive." % w.company_name, "good", w.home_pos())
+	w.notify_key("sim.new_game.landed", {"company_name": w.company_name}, "good", w.home_pos())
 	return w
 
 

@@ -13,6 +13,7 @@ var order: Dictionary = {"type": "idle"}  # type + pos (Vector2) / target (int) 
 var stance := "aggressive"  # aggressive | defensive | passive (future formation/AI hooks)
 var retreat_threshold := 0.3  # retreat when squad HP ratio drops below this
 var state := "idle"  # what the squad is doing right now (for the HUD)
+var state_message: Dictionary = {"key": "sim.squad.state.idle", "params": {}}
 var mem: Dictionary = {}  # AI scratch data (explore target, patrol index, ...)
 var report: Array = []  # discoveries during the current expedition
 var formation := "loose"  # hook for a future formation editor
@@ -24,8 +25,8 @@ func color() -> Color:
 
 func to_dict() -> Dictionary:
 	return {"id": id, "name": name, "members": members, "order": Unit._vec_safe(order), "stance": stance,
-		"retreat_threshold": retreat_threshold, "state": state, "mem": Unit._vec_safe(mem), "report": report,
-		"formation": formation}
+		"retreat_threshold": retreat_threshold, "state": state, "state_message": state_message, "mem": Unit._vec_safe(mem),
+		"report": report, "formation": formation}
 
 
 static func from_dict(d: Dictionary) -> Squad:
@@ -38,6 +39,7 @@ static func from_dict(d: Dictionary) -> Squad:
 	s.stance = str(d.get("stance", "aggressive"))
 	s.retreat_threshold = float(d.get("retreat_threshold", 0.3))
 	s.state = str(d.get("state", "idle"))
+	s.state_message = d.get("state_message", {})
 	s.mem = Unit._vec_restore(d.get("mem", {}))
 	s.report = d.get("report", [])
 	s.formation = str(d.get("formation", "loose"))

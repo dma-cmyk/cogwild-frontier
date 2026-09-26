@@ -1,7 +1,9 @@
 class_name PortraitRenderer
 extends Node
-## One tiny private viewport/world is shared by a queued portrait render. The returned texture object
-## is updated in place after the next frame, so UI does not need a completion signal.
+## Portraits for the UI. Painted art first (SpriteLibrary: generated busts for people, the chip's
+## front frame for machines; follows the unit's current look, so re-equipping updates it). Units
+## without painted art get a render of the procedural model: one tiny private viewport/world is
+## shared by a queued render and the returned texture is updated in place after the next frame.
 
 var _viewport: SubViewport
 var _world: World3D
@@ -42,6 +44,9 @@ func _ready() -> void:
 	_viewport.add_child(rim)
 
 func get_portrait(key: String, dna: Dictionary, size: int = 128) -> Texture2D:
+	var painted := SpriteLibrary.portrait(dna)
+	if painted != null:
+		return painted
 	if _cached.has(key):
 		return (_cached[key] as Dictionary)["texture"] as Texture2D
 	var blank := Image.create(size, size, false, Image.FORMAT_RGBA8)
@@ -68,7 +73,7 @@ func _start_render(entry: Dictionary) -> void:
 	_busy_key = str(entry["key"])
 	_busy_size = int(entry["size"])
 	_viewport.size = Vector2i(_busy_size, _busy_size)
-	_busy_visual = UnitVisualFactory.create(entry["dna"] as Dictionary)
+	_busy_visual = UnitVisualFactory.create_mesh(entry["dna"] as Dictionary)
 	_viewport.add_child(_busy_visual)
 	MeshKit.apply_preview_material(_busy_visual)
 	var kind := str(entry["dna"].get("kind", "character"))

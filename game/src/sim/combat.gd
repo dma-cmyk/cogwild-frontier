@@ -155,14 +155,14 @@ func _fall(t: Unit, attacker: Unit) -> void:
 		t.state = Unit.State.DOWNED
 		t.downed_t = 0.0
 		w.colony.release(t)
-		w.notify("%s is down!" % t.name, "bad", t.pos, {"unit": t.id})
+		w.notify_key("sim.combat.unit_down", {"unit_name": t.name}, "bad", t.pos, {"unit": t.id})
 	else:
 		t.alive = false
 		t.state = Unit.State.DEAD
 		t.downed_t = 0.0
 		w.fx.emit(&"death_poof", w.world_pos(t), Color.WHITE)
 		if t.is_player():
-			w.notify("%s was destroyed." % t.name, "bad", t.pos)
+			w.notify_key("sim.combat.unit_destroyed", {"unit_name": t.name}, "bad", t.pos)
 			w.colony.release(t)
 		else:
 			_drop_loot(t, attacker)
@@ -204,7 +204,7 @@ func _update_rank(a: Unit) -> void:
 		if idx_new > idx_old:
 			a.character["rank"] = rank
 			if idx_new > 0:
-				w.notify("%s was promoted to %s." % [a.name, rank], "levelup", a.pos, {"unit": a.id})
+				w.notify_key("sim.combat.promoted", {"unit_name": a.name, "rank": rank}, "levelup", a.pos, {"unit": a.id})
 
 
 ## Rank on joining a squad.
@@ -264,12 +264,12 @@ func update_downed(u: Unit) -> void:
 		u.recompute_stats()
 		u.counter_add("downed_survived")
 		w.colony.check_titles(u)
-		w.notify("%s got back up, injured." % u.name, "info", u.pos, {"unit": u.id})
+		w.notify_key("sim.combat.recovered_injured", {"unit_name": u.name}, "info", u.pos, {"unit": u.id})
 	elif threat and u.downed_t >= DOWNED_BLEED_OUT:
 		u.alive = false
 		u.state = Unit.State.DEAD
 		u.downed_t = 0.0
-		w.notify("%s has died." % u.name, "bad", u.pos, {"unit": u.id})
+		w.notify_key("sim.combat.unit_died", {"unit_name": u.name}, "bad", u.pos, {"unit": u.id})
 
 
 func _towers() -> void:
@@ -358,7 +358,7 @@ func _abilities() -> void:
 			if used:
 				u.ability_cd[aid] = float(a.get("cooldown", 15.0))
 				if u.visible and not u.is_player():
-					w.notify("%s uses %s!" % [u.name, a.get("name", aid)], "bad", u.pos)
+					w.notify_key("sim.combat.ability_used", {"unit_name": u.name, "ability": {"table": "generation/abilities", "id": aid, "en": str(a.get("name", aid))}}, "bad", u.pos)
 
 
 func _pickup_loot() -> void:

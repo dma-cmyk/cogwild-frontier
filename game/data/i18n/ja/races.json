@@ -1,0 +1,6 @@
+{
+	"human": {"name": "人間", "plural": "人間", "description": "どんな辺境も故郷に変える、適応力に優れた入植者。"},
+	"sylvan": {"name": "シルヴァン", "plural": "シルヴァン", "description": "落ち着いた眼差しと軽い足取りを持つ、長命の森の民。"},
+	"stoutkin": {"name": "スタウトキン", "plural": "スタウトキン", "description": "真鍮とパンを愛する、肩幅の広い坑道職人の民。"},
+	"vulpin": {"name": "ヴァルピン", "plural": "ヴァルピン", "description": "手先の早さと、それを上回る商才で知られる狐耳の旅人。"}
+}

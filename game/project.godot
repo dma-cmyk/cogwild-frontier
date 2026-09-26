@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 DB="*res://src/core/db.gd"
 App="*res://src/core/app.gd"
 Sfx="*res://src/core/sfx.gd"
+Loc="*res://src/core/loc.gd"
 
 [display]
 

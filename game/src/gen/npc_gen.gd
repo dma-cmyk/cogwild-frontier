@@ -67,16 +67,22 @@ static func _traits(rng: RandomNumberGenerator, race: Dictionary) -> Array:
 			blocked[str(conflict)] = true
 	return selected
 
-static func _quip(rng: RandomNumberGenerator) -> String:
-	var doc: Dictionary = GenUtil.raw("generation/quirks", {"quirks": ["Keeps a careful watch."]}) as Dictionary
-	return str(GenUtil.pick(rng, doc.get("quirks", [])))
+static func _indexed_pick(rng: RandomNumberGenerator, values: Array, fallback: Array) -> Dictionary:
+	var options: Array = values if not values.is_empty() else fallback
+	var index := rng.randi_range(0, options.size() - 1)
+	return {"index": index, "text": str(options[index])}
 
-static func _bio(rng: RandomNumberGenerator, name: String, race: String, role: String, skill: String) -> Array[String]:
+static func _quip(rng: RandomNumberGenerator) -> Dictionary:
+	var doc: Dictionary = GenUtil.raw("generation/quirks", {"quirks": ["Keeps a careful watch."]}) as Dictionary
+	return _indexed_pick(rng, doc.get("quirks", []), ["Keeps a careful watch."])
+
+static func _bio(rng: RandomNumberGenerator, name: String, race: String, role: String, skill: String) -> Dictionary:
 	var doc: Dictionary = GenUtil.raw("generation/bios", {}) as Dictionary
-	var quote := str(GenUtil.pick(rng, doc.get("quotes", ["The road goes on."])))
-	var backstory_template := str(GenUtil.pick(rng, doc.get("backstories", ["{name} found a home on the frontier."])))
-	var backstory := GenUtil.fill_template(backstory_template, {"name": name, "race": race, "role": role, "skill": skill})
-	return [quote, backstory]
+	var quote := _indexed_pick(rng, doc.get("quotes", []), ["The road goes on."])
+	var backstory_template := _indexed_pick(rng, doc.get("backstories", []), ["{name} found a home on the frontier."])
+	var params := {"name": name, "race": race, "role": role, "skill": skill}
+	return {"quote": quote, "backstory": backstory_template, "params": params,
+		"text": GenUtil.fill_template(str(backstory_template["text"]), params)}
 
 static func _equipment(rng: RandomNumberGenerator, role: Dictionary, level: int) -> Dictionary:
 	var result: Dictionary = {"weapon": null, "armor": null, "gadget": null}
@@ -135,13 +141,13 @@ static func generate(rng: RandomNumberGenerator, opts: Dictionary) -> Dictionary
 		for skill: String in WORK_SKILLS:
 			skills[skill] = mini(int(skills[skill]), rng.randi_range(4, 20))
 	var trait_ids := _traits(rng, race)
-	var quirk := _quip(rng)
+	var quirk_data := _quip(rng)
 	var best_skill := "melee"
 	for skill: String in SKILLS:
 		if int(skills[skill]) > int(skills[best_skill]):
 			best_skill = skill
-	var bio := _bio(rng, str(person["full"]), race_id, role_id, best_skill)
+	var bio_data := _bio(rng, str(person["full"]), race_id, role_id, best_skill)
 	var age_range: Array = race.get("age_range", [18, 70])
 	var age := rng.randi_range(int(age_range[0]), int(age_range[1]))
 	var xp := maxi(0, (level - 1) * 100 + rng.randi_range(0, 80))
-	return {"name": person["full"], "given": person["given"], "family": person["family"], "nickname": "" if rng.randf() > 0.18 else str(GenUtil.pick(rng, (GenUtil.raw("generation/names", {}) as Dictionary).get("nicknames", []))), "race": race_id, "role": role_id, "gender": gender, "age": age, "level": level, "xp": xp, "skills": skills, "aptitude": aptitude, "traits": trait_ids, "quirk": quirk, "bio": bio[0], "backstory": bio[1], "equipment": _equipment(rng, role, level), "titles": [], "rank": "", "talent": talent}
+	return {"name": person["full"], "given": person["given"], "family": person["family"], "nickname": "" if rng.randf() > 0.18 else str(GenUtil.pick(rng, (GenUtil.raw("generation/names", {}) as Dictionary).get("nicknames", []))), "race": race_id, "role": role_id, "gender": gender, "age": age, "level": level, "xp": xp, "skills": skills, "aptitude": aptitude, "traits": trait_ids, "quirk": quirk_data["text"], "quirk_i": quirk_data["index"], "quirk_message": {"key": "gen.npc.quirk.%d" % int(quirk_data["index"])}, "bio": bio_data["quote"]["text"], "bio_i": bio_data["quote"]["index"], "bio_message": {"key": "gen.npc.bio.%d" % int(bio_data["quote"]["index"])}, "backstory": bio_data["text"], "backstory_i": bio_data["backstory"]["index"], "backstory_params": bio_data["params"], "backstory_message": {"key": "gen.npc.backstory.%d" % int(bio_data["backstory"]["index"]), "params": {"name": person["full"], "race": {"table": "races", "id": race_id, "en": race_id}, "role": {"table": "roles", "id": role_id, "en": role_id}, "skill": {"table": "skills", "id": best_skill, "en": best_skill}}}, "equipment": _equipment(rng, role, level), "titles": [], "rank": "", "talent": talent}

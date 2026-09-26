@@ -1,0 +1,13 @@
+{
+	"house": {"smoke_px": [[490, 18]]},
+	"house@v1": {"smoke_px": [[467, 20]]},
+	"hearth@1": {"smoke_px": [[443, 20], [317, 387]]},
+	"smelter": {"smoke_px": [[417, 20]]},
+	"workshop": {"smoke_px": [[220, 20]]},
+	"outpost": {"smoke_px": [[460, 27], [207, 427]]},
+	"campfire": {"smoke_px": [[318, 380]]},
+	"machine_foundry": {"smoke_px": [[370, 52], [462, 82]]},
+	"windmill": {"hub_px": [456, 392], "sails_m": 6.0},
+	"sky_dock": {"mooring_h": 9.5},
+	"trade_mast": {"mooring_h": 8.2}
+}

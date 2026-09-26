@@ -64,10 +64,12 @@ static func generate(rng: RandomNumberGenerator, opts: Dictionary) -> Dictionary
 	var parts := _parts(rng, faction)
 	var first := str(GenUtil.pick(rng, parts.get("first", ["Red"])))
 	var last := str(GenUtil.pick(rng, parts.get("last", ["Rook"])))
-	var epithet := str(GenUtil.pick(rng, parts.get("epithets", ["the Unquiet"])))
+	var epithet_values: Array = parts.get("epithets", ["the Unquiet"])
+	var epithet_i := rng.randi_range(0, epithet_values.size() - 1)
+	var epithet := str(epithet_values[epithet_i])
 	var full_name := first + " " + last
 	var stat_mult := {"max_hp": snappedf(1.0 + 0.45 * tier, 0.01), "damage": snappedf(1.0 + 0.3 * tier, 0.01)}
 	var loot_count := 2 + tier
 	var loot := ItemGen.loot(rng, level, 0.3 * tier, loot_count)
 	var bio := "%s is %s, a tier-%d threat whose trophies still smell of the road." % [full_name, epithet, tier]
-	return {"name": first, "epithet": epithet, "full_name": full_name, "base": base, "level": level, "tier": tier, "traits": _trait_ids(rng, tier), "abilities": _abilities(rng, tier), "equipment": _equipment(rng, base, level, tier), "loot": loot, "stat_mult": stat_mult, "bio": bio}
+	return {"name": first, "epithet": epithet, "epithet_i": epithet_i, "epithet_message": {"key": "gen.enemy.epithet.%s.%d" % [faction, epithet_i]}, "full_name": full_name, "base": base, "level": level, "tier": tier, "traits": _trait_ids(rng, tier), "abilities": _abilities(rng, tier), "equipment": _equipment(rng, base, level, tier), "loot": loot, "stat_mult": stat_mult, "bio": bio, "bio_message": {"key": "gen.enemy.bio", "params": {"name": full_name, "epithet": {"key": "gen.enemy.epithet.%s.%d" % [faction, epithet_i]}, "tier": tier}}}

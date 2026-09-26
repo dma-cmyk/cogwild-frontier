@@ -71,10 +71,11 @@ static func _quality(level: String) -> Dictionary:
 	var row := GenUtil.safe_def("items/qualities", level)
 	return row if not row.is_empty() else GenUtil.safe_def("items/qualities", "common")
 
-static func _format_name(rng: RandomNumberGenerator, base: Dictionary, material: Dictionary, quality: Dictionary, affixes: Array, unique: bool) -> String:
+static func _format_name(rng: RandomNumberGenerator, base: Dictionary, material: Dictionary, quality: Dictionary, affixes: Array, unique: bool) -> Dictionary:
 	if unique:
 		var names: Array[String] = ANOMALOUS_NAMES
-		return names[rng.randi_range(0, names.size() - 1)]
+		var unique_i := rng.randi_range(0, names.size() - 1)
+		return {"text": names[unique_i], "unique_i": unique_i}
 	var prefix := ""
 	var suffix := ""
 	for value: Variant in affixes:
@@ -87,13 +88,13 @@ static func _format_name(rng: RandomNumberGenerator, base: Dictionary, material:
 	var material_name := str(material.get("name", "Scrap"))
 	var quality_id := str(quality.get("id", "common"))
 	if quality_id == "junk":
-		return "Worn %s %s" % [material_name, noun]
+		return {"text": "Worn %s %s" % [material_name, noun], "template": "gen.item.name.junk"}
 	if quality_id == "crude":
-		return "Rusty %s" % noun
+		return {"text": "Rusty %s" % noun, "template": "gen.item.name.crude"}
 	var result := (prefix + " " if prefix != "" else "") + material_name + " " + noun
 	if suffix != "":
 		result += " " + suffix
-	return result
+	return {"text": result, "template": "gen.item.name.standard"}
 
 static func generate(rng: RandomNumberGenerator, opts: Dictionary) -> Dictionary:
 	var level := maxi(1, int(opts.get("level", 1)))
@@ -129,7 +130,7 @@ static func generate(rng: RandomNumberGenerator, opts: Dictionary) -> Dictionary
 	for key: Variant in mods.keys():
 		mods[key] = snappedf(float(mods[key]) * (0.92 + 0.08 * scale), 0.001)
 	var unique := quality_id == "anomalous"
-	var item_name := _format_name(rng, base, material, quality, affixes, unique)
+	var item_name_data := _format_name(rng, base, material, quality, affixes, unique)
 	var appearance := {
 		"kind": "item", "seed": rng.randi(), "shape": str(base.get("icon", "gear")),
 		"primary": str(material.get("color", "#777b80")), "secondary": str(material.get("secondary", "#3b4148")),
@@ -138,7 +139,11 @@ static func generate(rng: RandomNumberGenerator, opts: Dictionary) -> Dictionary
 	}
 	var value := maxi(1, int(round(float(base.get("value", 1)) * float(material.get("value_mult", 1.0)) * float(quality.get("value_mult", 1.0)) * (1.0 + 0.1 * level))))
 	var flavor := _flavor(base, material, quality, unique)
-	return {"uid": 0, "base": str(base.get("id", "")), "name": item_name, "category": str(base.get("category", "resource")), "slot": str(base.get("slot", "none")), "quality": quality_id, "level": level, "material": str(material.get("id", "scrap")), "stats": stats, "mods": mods, "value": value, "flavor": flavor, "unique": unique, "visual": str(base.get("visual", "")), "appearance": appearance, "affixes": affixes}
+	var affix_ids: Array[String] = []
+	for affix: Dictionary in affixes:
+		affix_ids.append(str(affix.get("id", "")))
+	var flavor_message := _flavor_message(base, material, quality, unique)
+	return {"uid": 0, "base": str(base.get("id", "")), "name": item_name_data["text"], "name_template": item_name_data.get("template", ""), "unique_i": item_name_data.get("unique_i", -1), "category": str(base.get("category", "resource")), "slot": str(base.get("slot", "none")), "quality": quality_id, "level": level, "material": str(material.get("id", "scrap")), "stats": stats, "mods": mods, "value": value, "flavor": flavor, "flavor_message": flavor_message, "unique": unique, "visual": str(base.get("visual", "")), "appearance": appearance, "affixes": affixes, "affix_ids": affix_ids}
 
 static func _flavor(base: Dictionary, material: Dictionary, quality: Dictionary, unique: bool) -> String:
 	if unique:
@@ -154,6 +159,19 @@ static func _flavor(base: Dictionary, material: Dictionary, quality: Dictionary,
 		return "A carefully made %s that catches the light like a promise." % noun
 	return "A dependable %s prepared from warm, practical %s." % [noun, mat]
 
+static func _flavor_message(base: Dictionary, material: Dictionary, quality: Dictionary, unique: bool) -> Dictionary:
+	if unique:
+		return {"key": "gen.item.flavor.unique"}
+	var quality_id := str(quality.get("id", "common"))
+	var key := "gen.item.flavor.standard"
+	if quality_id == "junk":
+		key = "gen.item.flavor.junk"
+	elif quality_id == "crude":
+		key = "gen.item.flavor.crude"
+	elif quality_id in ["rare", "epic", "legendary"]:
+		key = "gen.item.flavor.rare"
+	return {"key": key, "params": {"noun": {"table": "items", "id": str(base.get("id", "")), "en": str(base.get("name", "item")).to_lower()}, "material": {"table": "items/materials", "id": str(material.get("id", "scrap")), "en": str(material.get("name", "scrap")).to_lower()}}}
+
 static func loot(rng: RandomNumberGenerator, level: int, luck: float, count: int) -> Array:
 	var result: Array = []
 	for _i in range(maxi(0, count)):
@@ -162,16 +180,23 @@ static func loot(rng: RandomNumberGenerator, level: int, luck: float, count: int
 
 static func describe(item: Dictionary) -> PackedStringArray:
 	var lines := PackedStringArray()
-	lines.append("%s · Level %d" % [str(item.get("quality", "common")).capitalize(), int(item.get("level", 1))])
+	lines.append(Loc.t("gen.item.describe.level", {"quality": {"table": "items/qualities", "id": str(item.get("quality", "common")), "en": str(item.get("quality", "common")).capitalize()}, "level": int(item.get("level", 1))}))
 	var stats: Dictionary = item.get("stats", {})
 	for key: Variant in stats.keys():
 		if key in ["kind", "projectile"]:
 			continue
-		lines.append("%s: %s" % [str(key).replace("_", " ").capitalize(), str(stats[key])])
+		lines.append(Loc.t("%s: %s") % [_label("stat.", str(key), str(key).replace("_", " ").capitalize()), str(stats[key])])
 	var mods: Dictionary = item.get("mods", {})
 	for key: Variant in mods.keys():
 		var amount := float(mods[key])
 		var sign := "+" if amount >= 0.0 else ""
-		lines.append("%s%s %s" % [sign, str(snappedf(amount, 0.01)), str(key).replace("_", " ")])
-	lines.append(str(item.get("flavor", "")))
+		lines.append("%s%s %s" % [sign, str(snappedf(amount, 0.01)), _label("mod.", str(key), str(key).replace("_", " "))])
+	lines.append(Loc.generated(item, "flavor"))
 	return lines
+
+
+## Display label for a stat / modifier id: catalog key "<prefix><id>", English fallback.
+static func _label(prefix: String, id: String, english: String) -> String:
+	var key := prefix + id
+	var text := Loc.t(key)
+	return english if text == key else text

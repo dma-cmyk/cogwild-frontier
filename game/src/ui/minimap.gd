@@ -61,7 +61,7 @@ func setup(game: Game) -> void:
 			["ui_people", "Your people and machines", func() -> void: g.hud.roster.toggle()],
 			["ui_target", "Next discovered site", _next_site],
 			["ui_search", "Find an idle settler", _find_idle]]:
-		var btn := UiTheme.button("", str(b[0]), str(b[1]))
+		var btn := UiTheme.button("", str(b[0]), Loc.t(str(b[1])))
 		btn.custom_minimum_size = Vector2(44, 42)
 		btn.pressed.connect(b[2])
 		col.add_child(btn)
@@ -204,7 +204,7 @@ func _next_site() -> void:
 		if bool(st.get("discovered", false)):
 			list.append(st)
 	if list.is_empty():
-		g.hud.add_note({"text": "No sites discovered yet — send a squad or the drone exploring.", "kind": "info"}, 3.0)
+		g.hud.add_note({"text": Loc.t("No sites discovered yet — send a squad or the drone exploring."), "kind": "info"}, 3.0)
 		return
 	_site_cycle = (_site_cycle + 1) % list.size()
 	var st: Dictionary = list[_site_cycle]
@@ -218,4 +218,4 @@ func _find_idle() -> void:
 			g.select_units([u.id])
 			g.focus_pos(u.pos)
 			return
-	g.hud.add_note({"text": "Everyone is busy.", "kind": "good"}, 2.5)
+	g.hud.add_note({"text": Loc.t("Everyone is busy."), "kind": "good"}, 2.5)

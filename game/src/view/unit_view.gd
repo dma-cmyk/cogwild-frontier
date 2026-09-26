@@ -101,10 +101,15 @@ func setup(world: World, unit: Unit) -> void:
 	sync(1.0, 0.0)
 
 
+## What the painted-art lookup needs beyond DNA (see SpriteLibrary.chip_id).
+static func hints(unit: Unit) -> Dictionary:
+	return {"archetype": unit.archetype, "role": str(unit.character.get("role", "")), "named": not unit.named.is_empty()}
+
+
 func rebuild_visual() -> void:
 	if visual:
 		visual.queue_free()
-	visual = UnitVisualFactory.create(u.dna)
+	visual = UnitVisualFactory.create(u.dna, hints(u))
 	add_child(visual)
 	_dna_key = str(u.dna.hash())
 	_anim = -1

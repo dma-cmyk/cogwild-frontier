@@ -2,6 +2,34 @@
 
 起動: `./run.sh`（または `godot --path game`）。操作・遊び方は README、設計と仮定は `docs/design.md`。
 
+## 更新（2026-09-27）: 日本語対応と画像生成アート
+
+- **日本語 / 英語の切り替え**:
+  - 切り替え場所: タイトル画面右上の「Language / 言語」と、ゲーム中の Esc メニュー。
+  - 切り替えは即時に反映され、`user://settings.cfg` に保存されます。起動時に固定するなら `COGWILD_LANG=ja|en` または `--lang=`。
+  - 翻訳対象: UI 全体、通知（シミュレーション側は key と引数で保存するので、切り替えると過去の通知も訳し直されます）、データ表（種族・役割・特性・技能・アイテムの土台/素材/品質/接辞・建物・機械）、生成文（癖・一言・経歴・アイテムの説明文・頭目の異名）、アイテム名の日本語での組み立て。
+  - 英語: 表示は以前と一字一句同じです。人名・地名・会社名などの固有名詞は生成されたラテン文字のままです。
+  - フォント: Noto Sans CJK JP のサブセットを同梱しました。
+- **画像生成アート**（`docs/art_pipeline.md`）: 約 100 枚を生成し、`tools/art/process.py` で背景除去・切り出し・正規化してゲームに組み込みました。3D の地形・影・昼夜・カメラ回転はそのままで、絵をカメラ正対の板として置いています。
+  - **キャラチップ**: 4 種族 × 5 種類の見た目 × 男女 = 40 種に、盗賊 4 種を加えました。4 方向 × 3 コマの歩行で、攻撃・被弾・作業・ダウンはカードの動きで表現します。武器の持ち替えで見た目の種類が変わり、会社の色は絵の青だけを色相回転して反映します。
+  - **機械**: Work Bot・Walker・両ドローン・Sentry・Turret・War Drone・Machine Warden と、飛行船 2 種です。
+  - **肖像**: チップを入力画像にして同じ人物のバストアップを描かせました（44 枚）。
+  - **建物**: 全 30 種と集会所の 3 段階・家の差分・建設中の足場・壁です。各画素に奥行きがあるので、ユニットが建物の前後を正しく通ります。夜は窓の灯りが光り、風車の羽根は回り、煙突の位置から煙が出ます。
+  - **自然**: 木（針葉樹 12 種など）・岩・鉱石・結晶・茂み・切り株・葦・草花を風で揺らしています。地面は 8 種類のテクスチャを手描き風の境界で混ぜています。
+  - **その他**: アイテムと資源のアイコン 60 種、タイトル画面のキーアートです。
+- **テスト**: 画像アートの網羅（`test_painted_art.gd`）と翻訳の網羅（`test_i18n.gd`）を追加しました。全 34 件 PASS です。
+- **性能**（Iris Xe・1600×900）: 画像アートでは板の数は減りましたが、テクスチャの読み込みと重ね描きが増えました。
+  - 既定の拡大率では平均 14.4 ms（従来 11.0 ms）です。
+  - 最も引いた状態では 15.7 ms（ほぼ同じ）です。
+  - VRAM は約 215 MB です（テクスチャは BC7 圧縮）。
+
+面白い点・弱い点（見た目の変更後）:
+
+- 参考画像の「描き込まれた村」にかなり近づきました。窓が灯る夜、揺れる森、旗の立つ盗賊の野営地が、一目で何の場所か分かるようになりました。肖像も個性が出て、小隊パネルが楽しくなりました。
+- 人物は「種族 × 見た目 × 性別」の 44 種で表すので、同じ種類の住民は同じ絵になります（DNA の髪型・髪色の違いは絵に出ません）。
+- 生成画像の等角の角度（約 30°）とゲームのカメラ（38°）が少し違うため、建物がわずかに浅い角度に見えます。カメラを 90° 回すと、建物は同じ絵のまま（裏側を描いていない）です。
+- 攻撃・被弾は板の動きだけなので、戦闘の迫力はまだ弱いです。
+
 ## 実装した機能
 
 - **タイトルとキャラクター作成**: 名前・種族（Human / Sylvan / Stoutkin / Vulpin）・役割（8 種、固定クラスではなく初期能力と装備の出発点）・見た目（ランダム、髪型、髪色、性別）・会社名と旗の色・ワールドシード。3D プレビュー付き。
@@ -12,7 +40,7 @@
 - **戦闘**: 近接・射撃・投射物・範囲攻撃・会心・装甲、ダウン→回復（負傷）/死亡、戦利品袋（レア以上は光の柱）、名前付きの頭目が固有能力を使う。
 - **機械**: Work Bot（住民と同じ仕事、休まない、電力消費）、Walker（二脚の重火力）、Scout Drone（自動偵察）、Repair Drone（回復）、Cargo Airship（探索・交易・自動、飛行で地形を無視）。敵側に Sentry / Turret / War Drone / Machine Warden、商人の飛行船。
 - **世界の自律的な動き**: 盗賊の巡回・略奪隊・3 日ごとの拠点拡張（テント増設）・掃討後の再占拠、機械拠点の歩哨再建、商人の飛行船の来訪（余剰の買取と品物の販売）、空き家と食料による移住、放浪者の合流。遠い拠点は休眠して日次処理だけ（簡易シミュレーション）。
-- **生成された NPC / アイテム**: 技能 11 種・特性 36 種・癖 85 種・経歴テンプレート、才能の偏り（天才・凡人・戦闘だけ強い等）。アイテム 49 土台 × 素材 × 品質 8 段階 × 接辞 33 種、固有名の異常品。外見 DNA（人物・ロボ・ドローン・飛行船・アイテム）から形と肖像とアイコンを再構築。
+- **生成された NPC / アイテム**: 技能 11 種・特性 36 種・癖 85 種・経歴テンプレート、才能の偏り（天才・凡人・戦闘だけ強い等）。アイテム 49 土台 × 素材 × 品質 8 段階 × 接辞 33 種、固有名の異常品。外見 DNA（人物・ロボ・ドローン・飛行船・アイテム）から見た目・肖像・アイコンを決定（画像アートでは種族・装備・性別で絵を選ぶ）。
 - **セーブ/ロード**: 3 枠 + クイック（F5/F9）。seed・地形の変更差分・探索済みマップ・全ユニット（人物記録・DNA・装備・命令・AI 状態）・建物・小隊・拠点状態・戦利品・畑・ゾーン・乱数状態を JSON で保存。版番号と破損ファイルの検出。
 - **UI**: 上部の資源バー（増減/分）・人口/住宅・電力・日時・速度、通知（クリックで移動）、ミニマップ（探索範囲・味方/敵/拠点/カメラ枠、クリック移動、右クリック移動命令）、小隊パネル（肖像・クラス・Lv・HP/EN）、コマンドバー、詳細パネル（肖像・装備の付け替え・特性・技能・経歴・記録、建物の生産と拡張、拠点への攻撃/探索指示）、建設メニュー、ゾーンと優先度、交易パネル、名簿、ポーズメニュー、操作説明（F1）。
 - **昼夜・速度**: 1 日 4 分（x1）、夜は窓や街灯が灯る。Pause / x1 / x2 / x4。
@@ -76,11 +104,29 @@
 - 届かない拠点がある（上記）。開始地点付近の必須拠点は高さを揃えて配置し、川の浅瀬を増やして減らしている。
 - ユニット同士の押し合い（回避）はない。重なることがある。
 - セーブ/ロード後の継続は float の末尾誤差を除いて一致（完全なビット一致ではない）。
-- UI は英語のみ。
+- 画像アートの人物は 44 種の絵の使い回し。建物の絵は 1 方向のみ（カメラを回しても同じ面）。
 - 世界の広さは開始点から ±320 m（設定値）。
-- タイトル画面は背景が単色のグラデーション。
+- 生成画像の等角の角度（約 30°）とカメラ（38°）の差で、建物がわずかに浅く見える。
 
 ## 変更ファイル（新規プロジェクト。主要なもの）
+
+2026-09-27 の更新で追加・変更したもの:
+
+- 日本語対応:
+  - `game/src/core/loc.gd`（autoload `Loc`）
+  - `game/data/i18n/`（`ja.json`・`en.json`・`sim-*.json`・`gen-*.json`・`ja/**` のデータ表訳）
+  - `game/assets/fonts/CogwildCJK-*.otf` と `LICENSE-NotoCJK.txt`、`tools/subset_japanese_fonts.py`
+  - UI 全般（`game/src/ui/*.gd`、`game/src/view/{game,input_controller}.gd`）
+  - シミュレーションの通知の key 化（`game/src/sim/*.gd`）
+  - 生成器のテンプレート ID の保存（`game/src/gen/*.gd`）
+  - `game/tests/test_i18n.gd`
+- 画像生成アート:
+  - `tools/art/{make_prompts.py,process.py,overrides.json}`、`art_src/prompts.json`
+  - `game/assets/{sprites,portraits,textures,ui}/`、`game/data/art/*.json`
+  - `game/src/visual/{sprite_library.gd,sprite_unit_visual.gd}`、`game/src/visual/shaders/sprite_*.gdshader*`、`terrain.gdshader`
+  - `unit_visual_factory.gd`、`building_visual(s).gd`、`portrait_renderer.gd`、`icons.gd`、`mesh_kit.gd`
+  - `game/src/view/{chunk_view,unit_view,world_view}.gd`
+  - `game/tests/test_painted_art.gd`、`docs/art_pipeline.md`
 
 - `README.md`, `run.sh`, `.gitignore`, `docs/design.md`（設計・仮定・参考画像の分析）, `docs/contracts.md`（モジュール境界）, `docs/samples/`（生成サンプル）, `docs/screenshots/`
 - `game/project.godot`, `game/scenes/main.tscn`, `game/scenes/game.tscn`
@@ -99,6 +145,8 @@ Git: 新規リポジトリに初回コミット `e87e29b`（以降の修正は�
 
 ## スクリーンショット
 
-`docs/screenshots/`: `title.png`, `character_creation.png`, `settlement_day.png`, `night.png`, `trader_docked.png`,
-`exploration_report.png`, `bandit_camp.png`, `combat_retreat.png`, `build_menu.png`, `windmill_built_via_ui.png`,
-`world_overview_zoomed_out.png`, `machines.png`, `icons.png`, `world_map_seed11.png`、制作中の確認用は `docs/screenshots/dev/`。
+`docs/screenshots/`（画像生成アート）: `title.png`, `character_creation.png`, `settlement_day.png`（商人の交易パネル付き）, `settlement_evening.png`, `night.png`, `construction.png`, `windmill_built_via_ui.png`, `build_menu.png`（日本語）, `bandit_camp.png`, `combat_retreat.png`, `world_overview_zoomed_out.png`, `world_map_seed11.png`。
+
+`docs/screenshots/i18n/`: `ja_title.png`, `ja_creation.png`, `ja_new_game.png`, `ja_hud.png`, `ja_pause.png`, `en_hud.png`。
+
+旧・低ポリ表示の画面は `docs/screenshots/dev/lowpoly_*.png`、制作中の確認用も `docs/screenshots/dev/`。

@@ -594,7 +594,7 @@ func _complete(b: Building, by: Unit) -> void:
 	b.workers.clear()
 	w.building_changed.emit(b)
 	w.emit_fx(&"build_dust", b.center(), 0.3)
-	w.notify("%s completed." % b.display_name(), "good", b.center(), {"building": b.id})
+	w.notify_key("sim.colony.building_completed", {"building": {"table": "buildings", "id": b.type, "en": b.display_name()}, "level": b.level}, "good", b.center(), {"building": b.id})
 	_check_titles(by)
 
 
@@ -660,7 +660,7 @@ func _run_operate(u: Unit) -> void:
 					var door := Vector2(b.door_tile()) + Vector2(0.5, 0.5)
 					var m := CharacterFactory.make_machine(w, arch, "player", door)
 					w.emit_fx(&"level_up", door, 0.5, Color("#8fd8ff"))
-					w.notify("%s rolled out of the workshop: %s." % [str(ad.get("name", arch)), m.name], "good", door, {"unit": m.id})
+					w.notify_key("sim.colony.machine_built", {"machine": {"table": "robots" if DB.has_def("robots", arch) else "airships", "id": arch, "en": str(ad.get("name", arch))}, "unit_name": m.name}, "good", door, {"unit": m.id})
 					gain_xp(u, "engineering", 30.0)
 					w.building_changed.emit(b)
 					w.squad_ai.on_machine_built(m)
@@ -749,8 +749,7 @@ func gain_xp(u: Unit, skill_id: String, amount: float) -> void:
 		if skill_id == "scouting":
 			u.recompute_stats()
 		if cur % 10 == 0 and cur >= 30:
-			var sname := str(DB.get_def("skills", skill_id).get("name", skill_id.capitalize()))
-			w.notify("%s's %s reached %d." % [u.name, sname, cur], "info", u.pos, {"unit": u.id})
+			w.notify_key("sim.colony.skill_reached", {"unit_name": u.name, "skill": {"table": "skills", "id": skill_id, "en": str(DB.get_def("skills", skill_id).get("name", skill_id.capitalize()))}, "level": cur}, "info", u.pos, {"unit": u.id})
 	c["xp"] = float(c.get("xp", 0.0)) + gain
 	var new_level := 1 + int(sqrt(float(c["xp"]) / 80.0))
 	if new_level > int(c.get("level", 1)):
@@ -759,7 +758,7 @@ func gain_xp(u: Unit, skill_id: String, amount: float) -> void:
 		u.hp = float(u.stats["max_hp"])
 		u.push_fx(&"levelup")
 		w.emit_fx(&"level_up", u.pos, 0.2, Color("#ffd86b"))
-		w.notify("%s reached level %d!" % [u.name, new_level], "levelup", u.pos, {"unit": u.id})
+		w.notify_key("sim.colony.level_reached", {"unit_name": u.name, "level": new_level}, "levelup", u.pos, {"unit": u.id})
 	_check_titles(u)
 
 
@@ -772,11 +771,12 @@ func _check_titles(u: Unit) -> void:
 	var titles: Array = u.character.get_or_add("titles", [])
 	for t: Dictionary in doc.get("titles", []):
 		var name_: String = str(t.get("name", ""))
+		var title_id := str(t.get("id", ""))
 		if name_ == "" or titles.has(name_):
 			continue
 		if float(u.counters.get(str(t.get("stat", "")), 0.0)) >= float(t.get("min", 1)):
 			titles.append(name_)
-			w.notify("%s earned the title \"%s\"." % [u.name, name_], "levelup", u.pos, {"unit": u.id})
+			w.notify_key("sim.colony.title_earned", {"unit_name": u.name, "title": {"table": "generation/titles", "id": title_id, "en": name_}}, "levelup", u.pos, {"unit": u.id})
 
 
 func check_titles(u: Unit) -> void:

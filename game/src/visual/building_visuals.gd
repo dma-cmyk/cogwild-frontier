@@ -60,9 +60,13 @@ static func create(type_id: String, style: String, variant_seed: int, level: int
 		visual.set_moving(sails, Vector3(0, 0, 1))
 	var smoke: Array[Vector3] = fx["smoke"]
 	for i in smoke.size():
-		visual.add_smoke(_make_smoke(smoke[i], float(fx["smoke_scale"])))
+		visual.add_smoke(make_smoke(smoke[i], float(fx["smoke_scale"])))
 	if fx["light"] != null:
 		visual.add_light(_make_light(fx["light"], pal.glow, float(fx["light_range"])))
+	var picture := SpriteLibrary.building(id, lv, variant_seed)
+	if not picture.is_empty():
+		visual.set_sprite(picture, SpriteLibrary.building("construction"), 0.0,
+			SpriteLibrary.building("windmill_sails") if id == "windmill" else {})
 	return visual
 
 
@@ -229,7 +233,7 @@ static func _anchors(id: String, fp: Vector2i) -> Dictionary:
 	return out
 
 
-static func _make_smoke(pos: Vector3, scale: float) -> CPUParticles3D:
+static func make_smoke(pos: Vector3, scale: float) -> CPUParticles3D:
 	var smoke := CPUParticles3D.new()
 	smoke.name = "Smoke"
 	smoke.position = pos

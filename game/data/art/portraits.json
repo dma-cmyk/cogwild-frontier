@@ -1,0 +1,225 @@
+{
+ "table": "portraits",
+ "entries": [
+  {
+   "id": "bandit_archer",
+   "texture": "res://assets/portraits/bandit_archer.png",
+   "source": "portrait_bandit_b"
+  },
+  {
+   "id": "bandit_captain",
+   "texture": "res://assets/portraits/bandit_captain.png",
+   "source": "portrait_bandit_b"
+  },
+  {
+   "id": "bandit_f",
+   "texture": "res://assets/portraits/bandit_f.png",
+   "source": "portrait_bandit_a"
+  },
+  {
+   "id": "bandit_m",
+   "texture": "res://assets/portraits/bandit_m.png",
+   "source": "portrait_bandit_a"
+  },
+  {
+   "id": "human_engineer_f",
+   "texture": "res://assets/portraits/human_engineer_f.png",
+   "source": "portrait_human_engineer"
+  },
+  {
+   "id": "human_engineer_m",
+   "texture": "res://assets/portraits/human_engineer_m.png",
+   "source": "portrait_human_engineer"
+  },
+  {
+   "id": "human_fighter_f",
+   "texture": "res://assets/portraits/human_fighter_f.png",
+   "source": "portrait_human_fighter"
+  },
+  {
+   "id": "human_fighter_m",
+   "texture": "res://assets/portraits/human_fighter_m.png",
+   "source": "portrait_human_fighter"
+  },
+  {
+   "id": "human_ranger_f",
+   "texture": "res://assets/portraits/human_ranger_f.png",
+   "source": "portrait_human_ranger"
+  },
+  {
+   "id": "human_ranger_m",
+   "texture": "res://assets/portraits/human_ranger_m.png",
+   "source": "portrait_human_ranger"
+  },
+  {
+   "id": "human_scholar_f",
+   "texture": "res://assets/portraits/human_scholar_f.png",
+   "source": "portrait_human_scholar"
+  },
+  {
+   "id": "human_scholar_m",
+   "texture": "res://assets/portraits/human_scholar_m.png",
+   "source": "portrait_human_scholar"
+  },
+  {
+   "id": "human_worker_f",
+   "texture": "res://assets/portraits/human_worker_f.png",
+   "source": "portrait_human_worker"
+  },
+  {
+   "id": "human_worker_m",
+   "texture": "res://assets/portraits/human_worker_m.png",
+   "source": "portrait_human_worker"
+  },
+  {
+   "id": "stoutkin_engineer_f",
+   "texture": "res://assets/portraits/stoutkin_engineer_f.png",
+   "source": "portrait_stoutkin_engineer"
+  },
+  {
+   "id": "stoutkin_engineer_m",
+   "texture": "res://assets/portraits/stoutkin_engineer_m.png",
+   "source": "portrait_stoutkin_engineer"
+  },
+  {
+   "id": "stoutkin_fighter_f",
+   "texture": "res://assets/portraits/stoutkin_fighter_f.png",
+   "source": "portrait_stoutkin_fighter"
+  },
+  {
+   "id": "stoutkin_fighter_m",
+   "texture": "res://assets/portraits/stoutkin_fighter_m.png",
+   "source": "portrait_stoutkin_fighter"
+  },
+  {
+   "id": "stoutkin_ranger_f",
+   "texture": "res://assets/portraits/stoutkin_ranger_f.png",
+   "source": "portrait_stoutkin_ranger"
+  },
+  {
+   "id": "stoutkin_ranger_m",
+   "texture": "res://assets/portraits/stoutkin_ranger_m.png",
+   "source": "portrait_stoutkin_ranger"
+  },
+  {
+   "id": "stoutkin_scholar_f",
+   "texture": "res://assets/portraits/stoutkin_scholar_f.png",
+   "source": "portrait_stoutkin_scholar"
+  },
+  {
+   "id": "stoutkin_scholar_m",
+   "texture": "res://assets/portraits/stoutkin_scholar_m.png",
+   "source": "portrait_stoutkin_scholar"
+  },
+  {
+   "id": "stoutkin_worker_f",
+   "texture": "res://assets/portraits/stoutkin_worker_f.png",
+   "source": "portrait_stoutkin_worker"
+  },
+  {
+   "id": "stoutkin_worker_m",
+   "texture": "res://assets/portraits/stoutkin_worker_m.png",
+   "source": "portrait_stoutkin_worker"
+  },
+  {
+   "id": "sylvan_engineer_f",
+   "texture": "res://assets/portraits/sylvan_engineer_f.png",
+   "source": "portrait_sylvan_engineer"
+  },
+  {
+   "id": "sylvan_engineer_m",
+   "texture": "res://assets/portraits/sylvan_engineer_m.png",
+   "source": "portrait_sylvan_engineer"
+  },
+  {
+   "id": "sylvan_fighter_f",
+   "texture": "res://assets/portraits/sylvan_fighter_f.png",
+   "source": "portrait_sylvan_fighter"
+  },
+  {
+   "id": "sylvan_fighter_m",
+   "texture": "res://assets/portraits/sylvan_fighter_m.png",
+   "source": "portrait_sylvan_fighter"
+  },
+  {
+   "id": "sylvan_ranger_f",
+   "texture": "res://assets/portraits/sylvan_ranger_f.png",
+   "source": "portrait_sylvan_ranger"
+  },
+  {
+   "id": "sylvan_ranger_m",
+   "texture": "res://assets/portraits/sylvan_ranger_m.png",
+   "source": "portrait_sylvan_ranger"
+  },
+  {
+   "id": "sylvan_scholar_f",
+   "texture": "res://assets/portraits/sylvan_scholar_f.png",
+   "source": "portrait_sylvan_scholar"
+  },
+  {
+   "id": "sylvan_scholar_m",
+   "texture": "res://assets/portraits/sylvan_scholar_m.png",
+   "source": "portrait_sylvan_scholar"
+  },
+  {
+   "id": "sylvan_worker_f",
+   "texture": "res://assets/portraits/sylvan_worker_f.png",
+   "source": "portrait_sylvan_worker"
+  },
+  {
+   "id": "sylvan_worker_m",
+   "texture": "res://assets/portraits/sylvan_worker_m.png",
+   "source": "portrait_sylvan_worker"
+  },
+  {
+   "id": "vulpin_engineer_f",
+   "texture": "res://assets/portraits/vulpin_engineer_f.png",
+   "source": "portrait_vulpin_engineer"
+  },
+  {
+   "id": "vulpin_engineer_m",
+   "texture": "res://assets/portraits/vulpin_engineer_m.png",
+   "source": "portrait_vulpin_engineer"
+  },
+  {
+   "id": "vulpin_fighter_f",
+   "texture": "res://assets/portraits/vulpin_fighter_f.png",
+   "source": "portrait_vulpin_fighter"
+  },
+  {
+   "id": "vulpin_fighter_m",
+   "texture": "res://assets/portraits/vulpin_fighter_m.png",
+   "source": "portrait_vulpin_fighter"
+  },
+  {
+   "id": "vulpin_ranger_f",
+   "texture": "res://assets/portraits/vulpin_ranger_f.png",
+   "source": "portrait_vulpin_ranger"
+  },
+  {
+   "id": "vulpin_ranger_m",
+   "texture": "res://assets/portraits/vulpin_ranger_m.png",
+   "source": "portrait_vulpin_ranger"
+  },
+  {
+   "id": "vulpin_scholar_f",
+   "texture": "res://assets/portraits/vulpin_scholar_f.png",
+   "source": "portrait_vulpin_scholar"
+  },
+  {
+   "id": "vulpin_scholar_m",
+   "texture": "res://assets/portraits/vulpin_scholar_m.png",
+   "source": "portrait_vulpin_scholar"
+  },
+  {
+   "id": "vulpin_worker_f",
+   "texture": "res://assets/portraits/vulpin_worker_f.png",
+   "source": "portrait_vulpin_worker"
+  },
+  {
+   "id": "vulpin_worker_m",
+   "texture": "res://assets/portraits/vulpin_worker_m.png",
+   "source": "portrait_vulpin_worker"
+  }
+ ]
+}

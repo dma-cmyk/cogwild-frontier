@@ -3,3 +3,8 @@ game/.godot/
 *.tmp
 # local probe / capture output
 /tmp/
+
+# raw image-generation outputs (large; prompts live in art_src/prompts.json)
+art_src/raw/
+# throwaway Python environments
+tools/.fontenv/

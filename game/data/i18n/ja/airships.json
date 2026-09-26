@@ -1,0 +1,4 @@
+{
+	"cargo_airship": {"name": "貨物飛行船", "description": "開拓団を運んできた船。空から探索し、発見済みの交易所へ交易に向かう。"},
+	"trader_airship": {"name": "商用飛行船", "description": "交易所と友好的な入植地を巡る商人連盟の船。"}
+}

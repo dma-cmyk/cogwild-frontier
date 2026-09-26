@@ -1,0 +1,10 @@
+{
+	"junk": {"name": "ガラクタ"},
+	"crude": {"name": "粗末"},
+	"common": {"name": "普通"},
+	"fine": {"name": "良品"},
+	"rare": {"name": "レア"},
+	"epic": {"name": "エピック"},
+	"legendary": {"name": "伝説"},
+	"anomalous": {"name": "異常"}
+}

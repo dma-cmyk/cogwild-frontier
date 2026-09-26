@@ -113,19 +113,19 @@ func on_new_day() -> void:
 	if food >= eat:
 		w.res["food"] = food - eat
 		if w.hungry:
-			w.notify("Everyone has eaten well again.", "good")
+			w.notify_key("sim.economy.hunger_ended", {}, "good")
 		w.hungry = false
 	else:
 		w.res["food"] = 0
 		if not w.hungry:
-			w.notify("Food ran out! Settlers are hungry and work slower. Farm or forage more.", "bad")
+			w.notify_key("sim.economy.food_ran_out", {}, "bad")
 		w.hungry = true
 	for u: Unit in people:
 		if u.injured_days > 0.0:
 			u.injured_days = maxf(0.0, u.injured_days - 1.0)
 			if u.injured_days == 0.0:
 				u.recompute_stats()
-				w.notify("%s has recovered from their injuries." % u.name, "good", u.pos)
+				w.notify_key("sim.economy.injuries_recovered", {"unit_name": u.name}, "good", u.pos)
 		u.character["days"] = int(u.character.get("days", 0)) + 1
 		u.counters["days_survived"] = float(u.counters.get("days_survived", 0.0)) + 1.0
 	_immigration(people.size())
@@ -148,5 +148,5 @@ func _immigration(pop: int) -> void:
 			tile = Vector2i(w.home_pos())
 		var u := CharacterFactory.make_colonist(w, {"talent": ""}, Vector2(tile) + Vector2(0.5, 0.5))
 		w.move_unit(u, w.home_pos())
-		var race := str(DB.get_def("races", str(u.character.get("race", ""))).get("name", ""))
-		w.notify("A newcomer arrives: %s, %s %s." % [u.name, race, u.display_role()], "good", u.pos, {"unit": u.id})
+		w.notify_key("sim.economy.newcomer", {"unit_name": u.name,
+			"race": {"table": "races", "id": str(u.character.get("race", "")), "en": str(DB.get_def("races", str(u.character.get("race", ""))).get("name", ""))}, "role": {"table": "roles", "id": str(u.character.get("role", "")), "en": u.display_role()}}, "good", u.pos, {"unit": u.id})

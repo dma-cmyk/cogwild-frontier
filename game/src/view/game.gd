@@ -237,9 +237,9 @@ func dbg_attack_site(kind: String) -> int:
 func quick_save(slot: int) -> void:
 	var err := SaveGame.save(world, slot)
 	if err == "":
-		toast.emit("Saved (slot %s)." % ("quick" if slot == 0 else str(slot)), "good")
+		toast.emit(Loc.t("Saved (slot %s).") % Loc.t("quick" if slot == 0 else str(slot)), "good")
 	else:
-		toast.emit("Save failed: " + err, "bad")
+		toast.emit(Loc.t("Save failed: %s") % Loc.t(err), "bad")
 
 
 func focus_home() -> void:

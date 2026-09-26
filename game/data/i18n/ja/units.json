@@ -1,0 +1,8 @@
+{
+	"colonist": {"name": "入植者", "description": "開拓団の一員。平時は働き、小隊に編入されると戦う。"},
+	"bandit": {"name": "盗賊"},
+	"bandit_archer": {"name": "盗賊弓兵"},
+	"bandit_captain": {"name": "盗賊隊長"},
+	"merchant": {"name": "商人"},
+	"wanderer": {"name": "放浪者", "description": "荒野で野営する旅人。親切に接してくれる入植地に加わる。"}
+}

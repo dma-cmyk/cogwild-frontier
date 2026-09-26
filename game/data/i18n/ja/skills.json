@@ -1,0 +1,13 @@
+{
+	"melee": {"name": "近接", "description": "近接武器を扱う技術。"},
+	"archery": {"name": "射撃", "description": "弓、クロスボウ、銃の扱い。"},
+	"scouting": {"name": "偵察", "description": "足跡を読み、危険を見つける技術。"},
+	"woodcutting": {"name": "伐採", "description": "木を伐り、木材を切り出す技術。"},
+	"mining": {"name": "採掘", "description": "岩を砕き、鉱石を掘り出す技術。"},
+	"farming": {"name": "農業", "description": "食料を育て、土を手入れする技術。"},
+	"construction": {"name": "建設", "description": "建築、修繕、防備の強化。"},
+	"engineering": {"name": "工学", "description": "機械や精密な仕掛けを扱う技術。"},
+	"medicine": {"name": "医術", "description": "傷を治療し、気力を取り戻す技術。"},
+	"trade": {"name": "交易", "description": "物々交換、鑑定、交渉の技術。"},
+	"cooking": {"name": "料理", "description": "辺境の食材で滋味豊かな食事を作る技術。"}
+}

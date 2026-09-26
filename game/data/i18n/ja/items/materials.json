@@ -1,0 +1,11 @@
+{
+	"scrap": {"name": "廃材"},
+	"wood": {"name": "トネリコ材"},
+	"bronze": {"name": "青銅"},
+	"iron": {"name": "鉄"},
+	"steel": {"name": "鋼"},
+	"brass": {"name": "真鍮"},
+	"crystal": {"name": "エーテル結晶"},
+	"obsidian": {"name": "黒曜石"},
+	"ancient_alloy": {"name": "古代合金"}
+}

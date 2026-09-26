@@ -47,7 +47,7 @@ func _rebuild() -> void:
 		c.queue_free()
 	_cost_labels.clear()
 	if tab == "build":
-		_box.add_child(UiTheme.title("Build", 22))
+		_box.add_child(UiTheme.title(Loc.t("Build"), 22))
 		var grid := GridContainer.new()
 		grid.columns = 3
 		grid.add_theme_constant_override("h_separation", 6)
@@ -60,14 +60,14 @@ func _rebuild() -> void:
 			var b := Button.new()
 			b.focus_mode = Control.FOCUS_NONE
 			b.custom_minimum_size = Vector2(250, 64)
-			b.tooltip_text = "%s\n%s" % [d.get("name", id), d.get("description", "")]
+			b.tooltip_text = "%s\n%s" % [Loc.def_name("buildings", id), Loc.def_text("buildings", id, "description")]
 			var h := UiTheme.hbox(6)
 			h.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			h.offset_left = 6
 			b.add_child(h)
 			h.add_child(UiTheme.icon("bld_" + id, 40))
 			var v := UiTheme.vbox(0)
-			v.add_child(UiTheme.label(str(d.get("name", id)), 15, UiTheme.TEXT, UiTheme.bold_font))
+			v.add_child(UiTheme.label(Loc.def_name("buildings", id), 15, UiTheme.TEXT, UiTheme.bold_font))
 			var cl := UiTheme.label(_cost(d.get("cost", {})), 13, UiTheme.TEXT_DIM)
 			v.add_child(cl)
 			_cost_labels.append([cl, d.get("cost", {})])
@@ -76,28 +76,28 @@ func _rebuild() -> void:
 				visible = false
 				g.input_ctl.set_mode("build:" + id))
 			grid.add_child(b)
-		_box.add_child(UiTheme.label("Settlers haul the materials and build on their own. Walls: drag a line.", 13, UiTheme.TEXT_DIM))
+		_box.add_child(UiTheme.label(Loc.t("Settlers haul the materials and build on their own. Walls: drag a line."), 13, UiTheme.TEXT_DIM))
 	else:
-		_box.add_child(UiTheme.title("Gather & work", 22))
+		_box.add_child(UiTheme.title(Loc.t("Gather & work"), 22))
 		var zones := UiTheme.hbox(6)
 		_box.add_child(zones)
 		for z: Array in ZONES:
-			var b := UiTheme.button(str(z[1]), str(z[2]), str(z[3]))
+			var b := UiTheme.button(Loc.t(str(z[1])), str(z[2]), Loc.t(str(z[3])))
 			b.custom_minimum_size = Vector2(0, 44)
 			var zid := str(z[0])
 			b.pressed.connect(func() -> void:
 				visible = false
 				g.input_ctl.set_mode("zone:" + zid))
 			zones.add_child(b)
-		_box.add_child(UiTheme.label("Work priorities", 16, UiTheme.GOLD))
+		_box.add_child(UiTheme.label(Loc.t("Work priorities"), 16, UiTheme.GOLD))
 		for p: Array in PRIORITIES:
 			var row := UiTheme.hbox(4)
-			var l := UiTheme.label(str(p[1]), 15)
+			var l := UiTheme.label(Loc.t(str(p[1])), 15)
 			l.custom_minimum_size = Vector2(170, 0)
 			row.add_child(l)
 			var key := str(p[0])
 			for lv in 4:
-				var b := UiTheme.button(LEVEL_NAMES[lv])
+				var b := UiTheme.button(Loc.t(LEVEL_NAMES[lv]))
 				b.custom_minimum_size = Vector2(84, 30)
 				b.add_theme_font_size_override("font_size", 13)
 				if int(g.world.priorities.get(key, 2)) == lv:
@@ -114,7 +114,7 @@ func _rebuild() -> void:
 func _cost(cost: Dictionary) -> String:
 	var parts := []
 	for k: String in cost:
-		parts.append("%d %s" % [int(cost[k]), k])
+		parts.append("%d %s" % [int(cost[k]), Loc.t(k)])
 	return ", ".join(PackedStringArray(parts))
 
 
