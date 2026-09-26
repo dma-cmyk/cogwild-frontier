@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Settings="*res://src/core/settings.gd"
 DB="*res://src/core/db.gd"
 App="*res://src/core/app.gd"
 Sfx="*res://src/core/sfx.gd"

@@ -8,3 +8,5 @@ game/.godot/
 art_src/raw/
 # throwaway Python environments
 tools/.fontenv/
+# web export, downloaded export templates, probe captures
+build/

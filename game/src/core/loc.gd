@@ -9,10 +9,14 @@ var english: Dictionary = {}
 var definitions: Dictionary = {}
 
 func _ready() -> void:
-	for file: String in ["ja.json", "sim-ja.json", "gen-ja.json"]:
-		japanese.merge(_json(ROOT + file), true)
-	for file: String in ["en.json", "sim-en.json", "gen-en.json"]:
-		english.merge(_json(ROOT + file), true)
+	# "ja.json" / "en.json" plus any "<topic>-ja.json" / "<topic>-en.json" catalog.
+	var files := Array(DirAccess.get_files_at(ROOT))
+	files.sort()
+	for file: String in files:
+		if file == "ja.json" or file.ends_with("-ja.json"):
+			japanese.merge(_json(ROOT + file), true)
+		elif file == "en.json" or file.ends_with("-en.json"):
+			english.merge(_json(ROOT + file), true)
 	_load_definitions(ROOT + "ja", "")
 	var ja := Translation.new()
 	ja.locale = "ja"
@@ -24,9 +28,9 @@ func _ready() -> void:
 		en.add_message(key, str(english[key]))
 	TranslationServer.add_translation(ja)
 	TranslationServer.add_translation(en)
-	var cfg := ConfigFile.new()
-	cfg.load("user://settings.cfg")
-	var chosen: String = str(cfg.get_value("general", "language", "ja" if OS.get_locale_language() == "ja" else "en"))
+	var chosen: String = str(Settings.get_value("general/language"))
+	if not chosen in ["en", "ja"]:
+		chosen = "ja" if OS.get_locale_language() == "ja" else "en"
 	var override := OS.get_environment("COGWILD_LANG")
 	if override in ["en", "ja"]:
 		chosen = override
@@ -61,10 +65,7 @@ func set_language(value: String, persist: bool = true) -> void:
 	language = value if value in ["en", "ja"] else "en"
 	TranslationServer.set_locale(language)
 	if persist:
-		var cfg := ConfigFile.new()
-		cfg.load("user://settings.cfg")
-		cfg.set_value("general", "language", language)
-		cfg.save("user://settings.cfg")
+		Settings.set_value("general/language", language)
 	language_changed.emit()
 
 func t(key_or_english: String, params: Dictionary = {}) -> String:
