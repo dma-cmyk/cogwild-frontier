@@ -84,6 +84,10 @@ func _ready() -> void:
 		_art_progress.position = Vector2(24, viewport_size.y - 62)
 		add_child(_art_progress)
 		WebArt.progress_changed.connect(_show_art_progress)
+		# rebuild the preview and the look count ("Look 1/2") when the extra race art arrives
+		WebArt.art_arrived.connect(func() -> void:
+			if _create.visible and not _char.is_empty():
+				_apply_look())
 		_show_art_progress(WebArt.progress())
 	var language: HBoxContainer = Loc.language_selector()
 	language.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
@@ -461,8 +465,9 @@ func _show_preview(dna: Dictionary) -> void:
 
 ## Frames the whole figure: taller or wider bodies (centaur, minotaur) get a larger ortho window.
 func _fit_preview_camera(figure_height: float) -> void:
-	var target_y := 0.62 * figure_height / 1.55
-	_preview_cam.size = 1.9 * maxf(1.0, figure_height / 1.55) + 0.15
+	# centre on the middle of the figure (hat included) with margin above and the base disc below
+	var target_y := figure_height * 0.52
+	_preview_cam.size = figure_height * 1.55
 	_preview_cam.look_at_from_position(Vector3(2.2, 1.9 + target_y - 0.62, 2.6), Vector3(0, target_y, 0))
 
 

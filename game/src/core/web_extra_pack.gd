@@ -121,9 +121,9 @@ func _download(version: String) -> void:
 	if url.is_empty():
 		_finish_without_pack()
 		return
-	var partial := _cache_path(version) + ".part"
-	_remove_file(partial)
-	_pack_request.download_file = partial
+	# The body is kept in memory and written with FileAccess: on the web, HTTPRequest's
+	# download_file into user:// (IndexedDB) read back as an empty file when the request completed.
+	_pack_request.download_file = ""
 	var err := _pack_request.request(url + _pack_name(version))
 	if err != OK:
 		_warn("could not request the art pack (%s)" % error_string(err))
@@ -146,31 +146,27 @@ func _process(_delta: float) -> void:
 
 
 func _on_pack_completed(result: int, response_code: int, _headers: PackedStringArray,
-		_body: PackedByteArray) -> void:
+		body: PackedByteArray) -> void:
 	_downloading = false
 	set_process(false)
 	var version := str(_manifest.get("version", ""))
-	var partial := _cache_path(version) + ".part"
 	if result != HTTPRequest.RESULT_SUCCESS or response_code != 200:
-		_remove_file(partial)
 		_warn("art pack request failed (HTTP %d, result %d)" % [response_code, result])
 		_finish_without_pack()
 		return
-	# Browser-backed user:// writes can report their final length one callback late. The HTTP layer
-	# already verified status and resource-pack mount verifies the PCK header; reject only empty files.
-	if _file_size(partial) <= 0:
-		_remove_file(partial)
+	if body.is_empty():
 		_warn("the downloaded art pack is empty")
 		_finish_without_pack()
 		return
 	var cached := _cache_path(version)
 	_remove_file(cached)
-	if DirAccess.rename_absolute(partial, cached) != OK:
-		# Storing it failed (no quota?); mount the download in place and fetch it again next visit.
-		if not _mount(partial):
-			_remove_file(partial)
-			_finish_without_pack()
+	var file := FileAccess.open(cached, FileAccess.WRITE)
+	if file == null:
+		_warn("could not store the art pack (%s)" % error_string(FileAccess.get_open_error()))
+		_finish_without_pack()
 		return
+	file.store_buffer(body)
+	file.close()
 	if not _mount(cached):
 		_remove_file(cached)
 		_finish_without_pack()
@@ -213,11 +209,6 @@ func _set_progress(ratio: float) -> void:
 func _remove_file(path: String) -> void:
 	if FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
-
-
-func _file_size(path: String) -> int:
-	var file := FileAccess.open(path, FileAccess.READ)
-	return file.get_length() if file != null else -1
 
 
 func _warn(message: String) -> void:
