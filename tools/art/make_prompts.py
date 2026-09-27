@@ -125,10 +125,141 @@ def additional_worker_variants(race: str) -> list:
 	return [(4, V4_APPEARANCE[race], ADDITIONAL_WORKER_LOOK),
 		(5, V5_APPEARANCE[race], ADDITIONAL_WORKER_V5_LOOK)]
 
+# --- mythic races (round 5): Greek and Japanese folklore peoples, playable and village folk ---------
+# v1 uses LOOKS, v2 uses V2_LOOKS. Avoid blue/teal/cyan on bodies: only the company cloth is blue.
+NEW_RACES = {
+	"minotaur": ("a Minotaur man (towering bull-headed folk: a brown bull head with long curved ivory horns, a brass nose ring, a shaggy dark mane, broad furry shoulders, a tufted bull tail and cloven hooves)",
+		"a Minotaur woman (bull folk with short curved ivory horns, floppy cow ears, a tufted cow tail, dark brown wavy hair, a strong build and cloven hooves)"),
+	"centaur": ("a Centaur man (human upper body joined at the waist to the full body of a chestnut horse with four legs and a dark tail) with a short black beard and long dark hair",
+		"a Centaur woman (human upper body joined at the waist to the full body of a dappled grey horse with four legs and a pale tail) with long ash-blond hair in a braid"),
+	"harpy": ("a Harpy man (bird folk: large tawny-brown feathered wings instead of arms with small clawed hands at the wrist joints, scaly yellow bird legs with talons) with short dark-brown feather hair",
+		"a Harpy woman (bird folk: large pale-gold feathered wings instead of arms with small clawed hands at the wrist joints, scaly yellow bird legs with talons) with long white-and-amber feathery hair"),
+	"lamia": ("a Lamia man (serpent folk: human upper body and a long thick emerald-green snake tail instead of legs, green scales on the cheeks and forearms, slit golden eyes) with black hair tied back",
+		"a Lamia woman (serpent folk: human upper body and a long thick crimson snake tail with gold bands instead of legs, scales on the cheeks, slit golden eyes) with long black hair"),
+	"oni": ("an Oni man (Japanese ogre folk: crimson-red skin, two short ivory horns on the forehead, small tusks, wild black hair and a big muscular build)",
+		"an Oni woman (Japanese ogre folk: coral-red skin, a single ivory horn on the forehead, small fangs, long black hair in a high ponytail and an athletic build)"),
+	"tengu": ("a Tengu man (Japanese crow folk: a glossy black crow head with a strong yellow beak, black feathered wings folded on the back, clawed hands and bird feet, a small black tokin cap)",
+		"a Tengu woman (Japanese crow folk: a human face with a small red mask marking, long black hair with crow feathers, black feathered wings folded on the back and bird-clawed feet)"),
+}
+NEW_RACES_V2 = {
+	"minotaur": ("a Minotaur man (bull-headed folk: a black bull head with long sweeping horns, a silver nose ring, a scarred snout, black fur, a tufted tail and cloven hooves)",
+		"a Minotaur woman (bull folk with curved dark horns, cow ears, a tufted tail, cream-white hair in a thick braid, freckles and cloven hooves)"),
+	"centaur": ("a Centaur man (human upper body joined at the waist to the body of a black horse with white socks) with a shaved head and a braided brown beard",
+		"a Centaur woman (human upper body joined at the waist to the body of a palomino horse with a cream tail) with short auburn curls and freckles"),
+	"harpy": ("a Harpy man (bird folk: ash-brown and white hawk-patterned wings instead of arms with small clawed hands at the wrist joints, talons) with short speckled feather hair",
+		"a Harpy woman (bird folk: crimson and gold parrot-like wings instead of arms with small clawed hands at the wrist joints, talons) with long red feather hair"),
+	"lamia": ("a Lamia man (serpent folk: human upper body and a long sand-gold snake tail with brown diamond markings instead of legs, a hooded cobra frill, slit amber eyes) with a shaved head",
+		"a Lamia woman (serpent folk: human upper body and a long emerald-and-cream snake tail instead of legs, slit golden eyes) with long black hair and gold ornaments"),
+	"oni": ("an Oni man (Japanese ogre folk: ochre-yellow skin, one thick horn, tusks and a wild white mane)",
+		"an Oni woman (Japanese ogre folk: rosy-pink skin, two small curved horns, fangs and short black bob hair)"),
+	"tengu": ("a Tengu man (Japanese mountain goblin folk: a human face with a long red nose, white shaggy hair and beard, large black-feathered wings on the back)",
+		"a Tengu woman (Japanese crow folk: a black crow head with a sharp beak and a feathered crest, glossy black wings on the back, bird feet)"),
+}
+NEW_RACE_BODY = {
+	"minotaur": "Hats and helmets have holes for the horns; hooves instead of shoes.",
+	"centaur": "Adapt every outfit to the centaur body: clothing only on the human upper body, the four horse legs bare with hooves, a small royal-blue saddle blanket on the horse back.",
+	"harpy": "Adapt every outfit to the harpy body: no sleeves, the feathered wings grow from the shoulders, bare scaly bird legs with talons, no shoes.",
+	"lamia": "Adapt every outfit to the serpent body: clothing only on the human upper body, no trousers or shoes, the long bare snake tail coils slightly behind.",
+	"oni": "Hats and helmets leave room for the horns.",
+	"tengu": "The black wings stay folded on the back over the outfit; bird-clawed feet instead of shoes.",
+}
+NEW_RACE_FRAMES = {
+	"centaur": "trotting frames: front legs stepping forward, standing, hind legs stepping forward",
+	"lamia": "slithering frames: tail curving left, tail straight, tail curving right",
+}
+NEW_RACE_REFERENCE = ("Use Image 1 only as style, pixel density, chibi proportion and sprite-sheet layout reference; draw the "
+	"new characters described here, a different race. Keep only the royal-blue company cloth accent blue for shader hue "
+	"rotation; avoid other blue, teal or cyan areas.")
+
+# Fourth look for the non-worker outfits of the original races (the worker look already has v4/v5).
+NONWORKER_V4_APPEARANCE = {
+	"human": {
+		"fighter": ("a broad human man with a shaved head, a thick black beard and a scarred eyebrow", "a tall human woman with a long black ponytail and a determined look"),
+		"ranger": ("a lean human man with shoulder-length sandy hair and stubble", "a human woman with short copper curls and freckles"),
+		"engineer": ("a stocky older human man with grey mutton-chop sideburns", "a young human woman with a dark bob and soot on her cheek"),
+		"scholar": ("a thin elderly human man with a long white beard and spectacles", "a middle-aged human woman with grey-streaked brown hair in a bun"),
+	},
+	"sylvan": {
+		"fighter": ("a Sylvan man with long pointed ears and a long black braid", "a Sylvan woman with long pointed ears and short silver hair"),
+		"ranger": ("a Sylvan man with long pointed ears and auburn hair with leaf ornaments", "a Sylvan woman with long pointed ears and golden hair in a side braid"),
+		"engineer": ("a Sylvan man with long pointed ears, cropped dark-green hair and a brass monocle", "a Sylvan woman with long pointed ears and pink hair in twin buns"),
+		"scholar": ("an old Sylvan man with long pointed ears, a long silver beard and a circlet", "a Sylvan woman with long pointed ears, very long white hair and a circlet"),
+	},
+	"stoutkin": {
+		"fighter": ("a stocky Stoutkin man with a forked black beard and a mohawk", "a sturdy Stoutkin woman with fiery orange hair in a thick braid and a scar"),
+		"ranger": ("a stocky Stoutkin man with a brown beard tied with leather cords", "a sturdy Stoutkin woman with ash-blond braids and freckles"),
+		"engineer": ("a stocky Stoutkin man with a soot-grey beard and welding marks", "a sturdy Stoutkin woman with short black hair and a brass ear cuff"),
+		"scholar": ("an old stocky Stoutkin man with a long white beard tucked into his belt", "an old sturdy Stoutkin woman with silver hair in a crown braid and spectacles"),
+	},
+	"vulpin": {
+		"fighter": ("a Vulpin man with tall fox ears, a russet tail with white tip and a black topknot", "a Vulpin woman with fox ears, a russet tail with white tip and a short silver bob"),
+		"ranger": ("a Vulpin man with fox ears, a russet tail with cream tip and messy cream hair", "a Vulpin woman with fox ears, a russet tail with cream tip and a long dark braid"),
+		"engineer": ("a Vulpin man with fox ears, a russet tail with cream tip and spiky dark-red hair", "a Vulpin woman with fox ears, a russet tail with cream tip and orange pigtails"),
+		"scholar": ("an old Vulpin man with fox ears, a greying tail and a long wispy beard", "a Vulpin woman with fox ears, a russet tail and long black hair with a jade hairpin"),
+	},
+}
+V4_LOOKS = {
+	"fighter": "wearing a royal-blue company surcoat over a dark leather brigandine and a steel open-faced helm, holding a short sword and a kite shield with a cream emblem",
+	"ranger": "wearing a forest-green leather jerkin, a brown hooded half-cape and a royal-blue company arm band, carrying a short bow and a quiver",
+	"engineer": "wearing a rust-orange work apron over a cream shirt with rolled sleeves, a royal-blue company neck scarf and brass goggles on the forehead, carrying a steel wrench",
+	"scholar": "wearing a dark-green long coat with brass buttons, a royal-blue company stole and a leather satchel, holding a wooden staff with a small hanging lantern",
+}
+
+# Race villages: one dwelling (3x3 footprint) and one central hall (5x5) per race. Village colours
+# avoid blue so they never read as the player's company.
+VILLAGE_BUILDINGS = {
+	"human": ("a rustic farmhouse cottage of an independent human hamlet: whitewashed walls, a thick straw thatch roof, a small vegetable garden, a hay cart, red and ochre cloth",
+		"an independent human village longhouse meeting hall: a long timber hall with a thatched roof, carved gable ends, a bell post and a small well in front, red and ochre banners"),
+	"sylvan": ("a Sylvan treehouse dwelling: a small round wooden cottage built around the trunk of a great living tree, a curved leaf-shingle roof, glowing moss lanterns, a rope ladder, green-and-silver pennants",
+		"a Sylvan moot hall: an elegant hall woven from living trees and arched branches, leaf canopies, carved wooden pillars, glowing green lanterns, green-and-silver banners"),
+	"stoutkin": ("a Stoutkin hill house: a squat stone house half dug into a grassy mound, a round heavy door with brass fittings, a stone chimney and copper pipes",
+		"a Stoutkin forge hall: a massive carved stone hall with a great arched doorway, brass gears, a glowing forge chimney, copper-and-brick banners"),
+	"vulpin": ("a Vulpin cottage: a cozy wooden cottage with a curved orange-tiled roof, paper lanterns, a round window and wind chimes",
+		"a Vulpin market hall: a lively wooden pavilion with sweeping orange-tiled roofs, hanging paper lanterns, stacked trade goods, orange-and-cream banners"),
+	"minotaur": ("a Minotaur stone house: a heavy dry-stone house with a flat slab roof, a bull skull over the doorway, crimson and bronze cloth",
+		"a Minotaur labyrinth hall: a massive ancient Greek style stone hall with thick columns, a maze pattern carved on the walls, a great bronze bull statue by the entrance, crimson banners"),
+	"centaur": ("a Centaur hide tent: a large round tent of stretched hides on long poles, painted horse motifs, a hitching post and a bow rack, green-and-ochre streamers",
+		"a Centaur council lodge: a very large ring of hide tents around a tall carved wooden totem pole with horse heads, a fire pit, green-and-ochre banners"),
+	"harpy": ("a Harpy nest hut: a giant woven twig-and-feather nest hut perched on a rocky outcrop, a round entrance, hanging shiny trinkets, gold-and-brown feathers",
+		"a Harpy roost tower: a tall rocky spire topped by a huge woven nest, wooden perches, hanging charms and gold streamers"),
+	"lamia": ("a Lamia reed pavilion: a round stone-based pavilion with a reed roof beside a small pool, carved serpent pillars, emerald-and-gold cloth",
+		"a Lamia serpent temple: a white marble temple with coiled serpent statues, a small reflecting pool, emerald-and-gold banners and incense smoke"),
+	"oni": ("an Oni mountain lodge: a rough timber house with a heavy thatched roof, a shimenawa rope with paper streamers over the door, a huge iron club leaning by the door, red-and-black cloth",
+		"an Oni war hall: a large Japanese timber hall with a curved dark tile roof, a big red gate in front, stone lanterns, a glowing forge, red-and-black banners"),
+	"tengu": ("a Tengu mountain hermitage: a small Japanese wooden shrine hut on stilts with a steep cedar-bark roof, paper charms, a stone lantern, black-and-red streamers",
+		"a Tengu pagoda: a tall narrow three-tier Japanese pagoda on a rocky base with red railings, black-feather ornaments, wind chimes, black-and-red banners"),
+}
+
+
+def new_race_chip(race: str, look: str, version: int) -> dict:
+	male, female = (NEW_RACES if version == 1 else NEW_RACES_V2)[race]
+	outfit = (LOOKS if version == 1 else V2_LOOKS)[look]
+	frames = NEW_RACE_FRAMES.get(race, "walking frames: left foot forward, standing, right foot forward")
+	reference = f"chip_human_{look}" if version == 1 else f"chip_{race}_{look}"
+	args = chip_args(f"{male}, {outfit}", f"{female}, {outfit}", frames, reference, NEW_RACE_REFERENCE)
+	args["subject"] += " " + NEW_RACE_BODY[race]
+	return args
+
+
+def new_race_portrait(race: str, look: str, version: int) -> dict:
+	male, female = (NEW_RACES if version == 1 else NEW_RACES_V2)[race]
+	outfit = (LOOKS if version == 1 else V2_LOOKS)[look]
+	cid = f"chip_{race}_{look}" + ("" if version == 1 else f"_v{version}")
+	return portrait_args(cid, f"{male}, {outfit}", f"{female}, {outfit}")
+
+
+def village_building_args(race: str, hall: bool) -> dict:
+	home, hall_text = VILLAGE_BUILDINGS[race]
+	size = ("a large central village hall filling a 5 x 5 tile square footprint" if hall
+		else "a single small dwelling on a 3 x 3 tile square footprint")
+	return building_args(f"{hall_text if hall else home}; {size}, no blue anywhere")
+
+
+
 
 
 def chip_args(left: str, right: str, frames: str = "walking frames: left foot forward, standing, right foot forward",
-		reference: str = "") -> dict:
+		reference: str = "", ref_note: str = "") -> dict:
 	subject = ("Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. "
 		f"LEFT HALF (columns 1-3): {left}. RIGHT HALF (columns 4-6): {right}. "
 		"Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. "
@@ -140,8 +271,8 @@ def chip_args(left: str, right: str, frames: str = "walking frames: left foot fo
 		"composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
 		"aspect_ratio": "3:2", "image_size": "1536x1024", "model": MODEL}
 	if reference:
-		args["subject"] += (" Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. "
-			"Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.")
+		args["subject"] += " " + (ref_note or ("Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. "
+			"Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas."))
 		args["input"] = [{"path": f"art_src/raw/{reference}.webp"}]
 	return args
 
@@ -391,6 +522,23 @@ def build() -> list:
 						"args": portrait_args(f"{cid}_v{version}", v_left, v_right)})
 	out.append({"id": "portrait_bandit_a", "kind": "portrait", "args": portrait_args("chip_bandit_a", *bandit_a)})
 	out.append({"id": "portrait_bandit_b", "kind": "portrait", "args": portrait_args("chip_bandit_b", *bandit_b)})
+	for race in NEW_RACES:
+		for look in LOOKS:
+			for version in (1, 2):
+				suffix = "" if version == 1 else f"_v{version}"
+				out.append({"id": f"chip_{race}_{look}{suffix}", "kind": "chip", "args": new_race_chip(race, look, version)})
+				out.append({"id": f"portrait_{race}_{look}{suffix}", "kind": "portrait", "args": new_race_portrait(race, look, version)})
+	for race, looks in NONWORKER_V4_APPEARANCE.items():
+		for look, (male, female) in looks.items():
+			cid = f"chip_{race}_{look}_v4"
+			left, right = f"{male}, {V4_LOOKS[look]}", f"{female}, {V4_LOOKS[look]}"
+			out.append({"id": cid, "kind": "chip", "args": chip_args(left, right, reference=f"chip_{race}_{look}")})
+			out.append({"id": f"portrait_{race}_{look}_v4", "kind": "portrait", "args": portrait_args(cid, left, right)})
+	for race in VILLAGE_BUILDINGS:
+		out.append({"id": f"b_v_{race}_home", "kind": "building", "args": village_building_args(race, False)})
+		out.append({"id": f"b_v_{race}_hall", "kind": "building", "args": village_building_args(race, True)})
+		out.append({"id": f"b_v_{race}_hall_back", "kind": "building_back",
+			"args": building_back_args(f"b_v_{race}_hall", "entrance, statues and front banners")})
 	return sorted(out, key=_priority)
 
 
