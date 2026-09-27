@@ -177,8 +177,9 @@ func _build_create() -> void:
 	var viewport_size := App.screen_size()
 	var form_width := 640.0 if viewport_size.x >= 700.0 else 500.0
 	var big_preview := viewport_size.x >= 1300.0 and viewport_size.y >= 720.0
-	# the founder preview stays beside the form whenever both fit (phones in landscape too);
-	# only the form scrolls, so the character stays in view while choosing
+	# the founder preview stays beside the form whenever both fit (phones in landscape too); only
+	# the form scrolls, so the character stays in view. A drag on the preview side also scrolls the
+	# form, because on phones the form's buttons swallow the finger's drag.
 	var show_preview := viewport_size.x >= form_width + 18.0 + 300.0 + 48.0
 	var h := UiTheme.hbox(18)
 	_create.add_child(h)
@@ -307,19 +308,21 @@ func _build_create() -> void:
 	start.pressed.connect(_start)
 	brow.add_child(start)
 	form.add_child(brow)
-	var right_scroll := ScrollContainer.new()
-	right_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	right_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
-	right_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	right_scroll.visible = show_preview
-	h.add_child(right_scroll)
 	var right := UiTheme.vbox(8)
 	right.custom_minimum_size = Vector2(360.0 if big_preview else 300.0, 0)
-	right_scroll.add_child(right)
+	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	right.visible = show_preview
+	right.mouse_filter = Control.MOUSE_FILTER_STOP
+	right.gui_input.connect(func(event: InputEvent) -> void:
+		var motion := event as InputEventMouseMotion
+		if motion != null and (motion.button_mask & MOUSE_BUTTON_MASK_LEFT) != 0:
+			scroll.scroll_vertical -= int(motion.relative.y))
+	h.add_child(right)
 	var svc := SubViewportContainer.new()
 	svc.custom_minimum_size = Vector2(360, 360) if big_preview else Vector2(220, 220)
 	svc.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	svc.stretch = true
+	svc.mouse_filter = Control.MOUSE_FILTER_PASS
 	right.add_child(svc)
 	_preview_vp = SubViewport.new()
 	_preview_vp.own_world_3d = true
@@ -353,6 +356,7 @@ func _build_create() -> void:
 	_summary.add_theme_font_size_override("normal_font_size", 16 if big_preview else 13)
 	_summary.add_theme_font_size_override("italics_font_size", 16 if big_preview else 13)
 	_summary.add_theme_color_override("default_color", UiTheme.TEXT)
+	_summary.mouse_filter = Control.MOUSE_FILTER_PASS
 	right.add_child(_summary)
 
 
