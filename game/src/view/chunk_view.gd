@@ -70,7 +70,7 @@ static func water_material() -> ShaderMaterial:
 	return _water_mat
 
 
-func setup(world: World, chunk: ChunkData) -> void:
+func setup(world: World, chunk: ChunkData, immediate: bool = false) -> void:
 	w = world
 	ch = chunk
 	name = "Chunk_%d_%d" % [ch.cx, ch.cz]
@@ -81,16 +81,21 @@ func setup(world: World, chunk: ChunkData) -> void:
 	props_root = Node3D.new()
 	props_root.name = "Props"
 	add_child(props_root)
-	rebuild_terrain()
-	rebuild_props()
+	await rebuild_terrain(immediate)
+	if not immediate:
+		await get_tree().process_frame
+	if is_inside_tree():
+		rebuild_props()
 
 
 ## Rebuild whatever changed since the last build.
 func refresh() -> void:
 	if ch.version != built_version:
-		rebuild_terrain()
+		await rebuild_terrain()
 	if ch.res_version != built_res_version:
-		rebuild_props()
+		await get_tree().process_frame
+		if is_inside_tree():
+			rebuild_props()
 
 
 # --- terrain ------------------------------------------------------------------------------
@@ -104,7 +109,9 @@ func _tile_type(t: Vector2i) -> int:
 	return tt
 
 
-func rebuild_terrain() -> void:
+func rebuild_terrain(immediate: bool = false) -> void:
+	var profile := World.profile_chunks()
+	var prep_start_usec: int = Time.get_ticks_usec() if profile else 0
 	_terrain_build_generation += 1
 	var build_generation: int = _terrain_build_generation
 	var terrain_version: int = ch.version
@@ -126,6 +133,10 @@ func rebuild_terrain() -> void:
 			tl[k] = int(TILE_LAYER[tt])
 			tj[k] = 0.95 + RngUtil.hash01(w.seed, t.x, t.y, 91) * 0.1
 			tcol[k] = Tiles.COLORS[tt]
+	if not immediate:
+		await get_tree().process_frame
+		if not is_inside_tree() or build_generation != _terrain_build_generation or ch.version != terrain_version:
+			return
 	# per grid vertex: tint (linear) and two RGBA weight sets for the 8 layers
 	var vn := (S + 1) * (S + 1)
 	var vt := PackedColorArray()
@@ -157,6 +168,14 @@ func rebuild_terrain() -> void:
 			vw0[i] = Color(wts[0], wts[1], wts[2], wts[3])
 			vw1[i] = Color(wts[4], wts[5], wts[6], wts[7])
 			vcol[i] = col
+		if not immediate and (z + 1) % TERRAIN_ROWS_PER_SLICE == 0:
+			await get_tree().process_frame
+			if not is_inside_tree() or build_generation != _terrain_build_generation or ch.version != terrain_version:
+				return
+	if profile:
+		print("PERF_TERRAIN_PREP key=(%d,%d) ms=%.2f" % [ch.cx, ch.cz, (Time.get_ticks_usec() - prep_start_usec) / 1000.0])
+	var slice_start_usec: int = Time.get_ticks_usec() if profile else 0
+	var slice_first_row := 0
 	var use_layers := bool(terrain_material().get_shader_parameter("use_layers"))
 	_rock_tint = not use_layers
 	var verts := PackedVector3Array()
@@ -191,10 +210,19 @@ func rebuild_terrain() -> void:
 			else:
 				vi = _tri(buf, vi, p00, p01, p10, i00, i01, i10, vt_, vw0, vw1, cliff)
 				vi = _tri(buf, vi, p10, p01, p11, i10, i01, i11, vt_, vw0, vw1, cliff)
-		if (z + 1) % TERRAIN_ROWS_PER_SLICE == 0 and z + 1 < S:
+		if not immediate and (z + 1) % TERRAIN_ROWS_PER_SLICE == 0 and z + 1 < S:
+			if profile:
+				print("PERF_TERRAIN_ROWS key=(%d,%d) rows=%d-%d ms=%.2f" % [
+					ch.cx, ch.cz, slice_first_row, z, (Time.get_ticks_usec() - slice_start_usec) / 1000.0])
 			await get_tree().process_frame
 			if not is_inside_tree() or build_generation != _terrain_build_generation or ch.version != terrain_version:
 				return
+			slice_first_row = z + 1
+			slice_start_usec = Time.get_ticks_usec() if profile else 0
+	if profile:
+		print("PERF_TERRAIN_ROWS key=(%d,%d) rows=%d-%d ms=%.2f" % [
+			ch.cx, ch.cz, slice_first_row, S - 1, (Time.get_ticks_usec() - slice_start_usec) / 1000.0])
+	var finalize_start_usec: int = Time.get_ticks_usec() if profile else 0
 	var mesh := ArrayMesh.new()
 	var arrays := []
 	arrays.resize(Mesh.ARRAY_MAX)
@@ -212,6 +240,8 @@ func rebuild_terrain() -> void:
 	terrain_mi.mesh = mesh
 	_rebuild_water()
 	built_version = terrain_version
+	if profile:
+		print("PERF_TERRAIN_FINAL key=(%d,%d) ms=%.2f" % [ch.cx, ch.cz, (Time.get_ticks_usec() - finalize_start_usec) / 1000.0])
 
 
 ## Appends one terrain triangle (points counter-clockwise seen from above) in Godot's clockwise
@@ -376,6 +406,8 @@ func _rebuild_water() -> void:
 # --- props ---------------------------------------------------------------------------------
 
 func rebuild_props() -> void:
+	var profile := World.profile_chunks()
+	var props_start_usec: int = Time.get_ticks_usec() if profile else 0
 	built_res_version = ch.res_version
 	for c in props_root.get_children():
 		c.queue_free()
@@ -457,6 +489,8 @@ func rebuild_props() -> void:
 		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if prop in SHADOW_PROPS else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		props_root.add_child(mmi)
 	_build_cards(cards)
+	if profile:
+		print("PERF_PROPS key=(%d,%d) ms=%.2f" % [ch.cx, ch.cz, (Time.get_ticks_usec() - props_start_usec) / 1000.0])
 
 func _keep_prop(prop: String, x: int, z: int) -> bool:
 	var density := Quality.prop_density()

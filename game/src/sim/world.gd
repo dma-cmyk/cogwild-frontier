@@ -1,5 +1,7 @@
 class_name World
-extends RefCounted
+static var _profile_chunks: bool = OS.get_environment("COGWILD_PROFILE_CHUNKS") == "1"
+static func profile_chunks() -> bool:
+	return _profile_chunks
 ## Root of the simulation: map chunks, navigation, fog of war, entities, colony state and the fixed
 ## tick. Deterministic: the same seed and the same orders give the same results, independent of
 ## frame rate or time scale (speed = more ticks per frame). The view and HUD only read this state
@@ -175,22 +177,36 @@ func ensure_chunk(key: Vector2i) -> ChunkData:
 		return chunks[key]
 	if not gen.chunk_in_bounds(key.x, key.y):
 		return null
+	var profile := World.profile_chunks()
+	var total_start_usec: int = Time.get_ticks_usec() if profile else 0
+	var generation_start_usec: int = total_start_usec
 	var ch := gen.generate_chunk(key.x, key.y)
+	var generation_usec: int = Time.get_ticks_usec() - generation_start_usec if profile else 0
 	if _pending_mods.has(key):
 		var m: Dictionary = _pending_mods[key]
 		ch.apply_mods(m.get("res", {}), m.get("terrain", {}), m.get("regrow", {}), m.get("height", {}))
 		_pending_mods.erase(key)
 	chunks[key] = ch
+	var setup_start_usec: int = Time.get_ticks_usec() if profile else 0
 	# re-apply player building footprints and grown site structures reaching into this chunk
 	for b: Building in buildings.values():
 		_mark_building_tiles(b, 1, ch)
 	for st: Dictionary in sites.values():
 		for s: Dictionary in st.get("extra", []):
 			_mark_structure(s, ch)
+	var setup_usec: int = Time.get_ticks_usec() - setup_start_usec if profile else 0
+	var nav_start_usec: int = Time.get_ticks_usec() if profile else 0
 	_nav_update_chunk(ch)
+	var nav_usec: int = Time.get_ticks_usec() - nav_start_usec if profile else 0
+	var sites_start_usec: int = Time.get_ticks_usec() if profile else 0
 	for sid: int in ch.site_ids:
 		factions.instantiate_site(sid)
+	var sites_usec: int = Time.get_ticks_usec() - sites_start_usec if profile else 0
 	chunk_ready.emit(key)
+	if profile:
+		print("PERF_WORLD_CHUNK key=%s gen_ms=%.2f setup_ms=%.2f nav_ms=%.2f sites_ms=%.2f total_ms=%.2f" % [
+			key, generation_usec / 1000.0, setup_usec / 1000.0, nav_usec / 1000.0,
+			sites_usec / 1000.0, (Time.get_ticks_usec() - total_start_usec) / 1000.0])
 	return ch
 
 
@@ -416,7 +432,10 @@ func find_path(a: Vector2, b: Vector2) -> PackedVector2Array:
 	var tb := nearest_walkable(Vector2i(int(floor(b.x)), int(floor(b.y))), 4)
 	if ta.x == -99999 or tb.x == -99999:
 		return out
+	var path_start_usec := Time.get_ticks_usec()
 	var ids: Array[Vector2i] = nav.get_id_path(ta, tb, true)
+	if World.profile_chunks() and Time.get_ticks_usec() - path_start_usec > 15000:
+		print("PERF_PATH ms=%.2f from=%s to=%s" % [(Time.get_ticks_usec() - path_start_usec) / 1000.0, ta, tb])
 	for id: Vector2i in ids:
 		out.append(Vector2(id.x + 0.5, id.y + 0.5))
 	return out
