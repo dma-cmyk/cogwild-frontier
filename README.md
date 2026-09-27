@@ -9,7 +9,7 @@ RPG 要素のある自律型 RTS の **Playable Vertical Slice**（Godot 4.7 製
 UI は日本語 / 英語に対応しています。
 
 **ブラウザで遊ぶ（PC・スマホ）: https://dma-cmyk.github.io/cogwild-frontier/**
-（初回は約 90 MB の読み込みがあります。スマホは横向き推奨）
+（初回は約 60 MB のダウンロードがあります。2 回目からはブラウザのキャッシュで数秒。スマホは横向き推奨）
 
 ![開拓地の昼](docs/screenshots/settlement_day.png)
 

@@ -44,7 +44,7 @@
 - **性能**（Iris Xe・1600×900・Compatibility・画質「中」）:
   - x1・既定ズーム: 平均 14.6 ms（前回 12.7〜14.4 ms）、p95 25.4 ms（前回 16〜19 ms）。
   - VRAM: 86 MB（前回 215 MB）。
-  - ブラウザ版（Chrome・同じ PC）: ゲーム中 約 45 fps、タイトル 96 fps。
+  - ブラウザ版（Chrome・同じ PC）: ローカル版はゲーム中 約 45 fps、タイトル 96 fps。公開版を開いた計測では約 29 fps（p95 83 ms）でした。この計測時は PC のメモリが逼迫しており、スワップを 8.9 GB 使っていました。
 
 面白い点・弱い点（今回の変更後）:
 
@@ -122,6 +122,7 @@
 | AI 層 | 未設定で無効 / ローカルのモックサーバーで実際に HTTP 往復し文章だけ書き換わる | PASS |
 | 実プレイ（ウィンドウ） | `tests/probe/explore_day.json`（探索と報告）、`combat_camp.json`（世界シード 11 で野営地を掃討・戦利品 8 個）、`build_windmill.json`（UI クリックで配置→住民が建設）、`save_load.json`（F5→F9 で続行）、`night.json`、`showcase.json`、`battle_shots.json`、タイトル→作成→開始 | すべて PASS（2026-09-27 に現行版で再実行） |
 | ブラウザ版 | ローカルの Web 書き出しを Chrome（実 GPU）で開き、PC 表示と iPhone 12 横向きのエミュレーションで操作 | タイトル・設定・作成・開始・選択・移動・ピンチ・建設まで動作 |
+| 公開版（GitHub Pages） | Actions の書き出し（1 分 12 秒）→ 公開。Chrome で PC 表示: タイトル→作成→開始、吹き出しの表示。iPhone 12 横向きエミュレーション: タイトル→作成→「見た目 2/2」→開始→タッチで探索命令 | 動作（`docs/screenshots/mobile_pages.png`）。ダウンロードは pck 52 MB + wasm 40 MB（転送時は wasm が 10 MB に圧縮される）。キャッシュ後の再読み込みは約 4 秒でタイトル。キャッシュなしの初回は、この PC がメモリ逼迫中だったため一度途中で止まり、タブの再読み込み後に読み込めた（curl では pck を 3.5〜6 秒で取得） |
 
 ## パフォーマンス（初回計測: Intel Iris Xe、1600×900、Mobile レンダラー、vsync なし。現在の値は冒頭の更新を参照）
 
@@ -216,13 +217,15 @@
 - `game/assets/`（icons 84 SVG, audio 34 効果音 + BGM + 環境音, fonts Noto）
 - `game/tests/`（テスト 6 ファイル + 基底 test_case.gd、run_tests、ギャラリー 4 種、probe シナリオ 7 種、モック AI サーバー）, `game/tools/world_map_dump`
 
-Git: 新規リポジトリに初回コミット `e87e29b`（以降の修正は追加コミット）。
+Git: 新規リポジトリに初回コミット `e87e29b`（以降の修正は追加コミット）。GitHub: https://github.com/dma-cmyk/cogwild-frontier
 
 ## スクリーンショット
 
 `docs/screenshots/`（画像生成アート。2026-09-27 に現行版で撮り直し）: `title.png`, `character_creation.png`, `settlement_day.png`（商人の交易パネル付き）, `settlement_evening.png`（吹き出し）, `night.png`, `construction.png`（建設中の風車）, `windmill_built_via_ui.png`, `build_menu.png`（日本語）, `bandit_camp.png`, `combat_retreat.png`（撤退のかけ声）, `speech_battle.png`（戦闘中の吹き出し）, `speech_ja.png`, `speech_en.png`, `speech_mobile.png`（1170×540）, `world_overview_zoomed_out.png`, `world_map_seed11.png`。
 
 人物の v1 / v2 の比較は `docs/screenshots/dev/units_variants.png`。
+
+公開版をスマホ表示（iPhone 12 横向きのエミュレーション）で遊んでいる画面: `docs/screenshots/mobile_pages.png`。
 
 `docs/screenshots/i18n/`: `ja_title.png`, `ja_creation.png`, `ja_new_game.png`, `ja_hud.png`, `ja_pause.png`, `en_hud.png`。
 
