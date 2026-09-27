@@ -14,6 +14,14 @@ func _catalog(file: String) -> Dictionary:
 	var value: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/i18n/" + file))
 	return value if value is Dictionary else {}
 
+## Every catalog Loc loads for a language: "<lang>.json" plus "<topic>-<lang>.json".
+func _catalogs(lang: String) -> Dictionary:
+	var merged := {}
+	for file: String in DirAccess.get_files_at("res://data/i18n/"):
+		if file == lang + ".json" or file.ends_with("-%s.json" % lang):
+			merged.merge(_catalog(file), true)
+	return merged
+
 func _placeholders(text: String) -> PackedStringArray:
 	var found := PackedStringArray()
 	var regex := RegEx.new()
@@ -24,9 +32,7 @@ func _placeholders(text: String) -> PackedStringArray:
 	return found
 
 func test_literal_keys_have_japanese() -> void:
-	var ja := _catalog("ja.json")
-	ja.merge(_catalog("sim-ja.json"), true)
-	ja.merge(_catalog("gen-ja.json"), true)
+	var ja := _catalogs("ja")
 	var regex := RegEx.new()
 	regex.compile("(?:Loc\\.t|notify_key)\\(\"([^\"]+)\"")
 	for path: String in _source_files("res://src"):
@@ -36,11 +42,8 @@ func test_literal_keys_have_japanese() -> void:
 			assert_true(ja.has(key), "%s missing Japanese key %s" % [path, key])
 
 func test_catalog_placeholders_match() -> void:
-	var en := _catalog("sim-en.json")
-	en.merge(_catalog("gen-en.json"), true)
-	var ja := _catalog("ja.json")
-	ja.merge(_catalog("sim-ja.json"), true)
-	ja.merge(_catalog("gen-ja.json"), true)
+	var en := _catalogs("en")
+	var ja := _catalogs("ja")
 	for key: String in en:
 		assert_true(ja.has(key), "Japanese catalog missing " + key)
 		if ja.has(key):

@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cpn7gwyk4ed4e"
-path.bptc="res://.godot/imported/stoutkin_ranger_f.png-c5e7ec3590fb8256920b25ed20de10be.bptc.ctex"
+uid="uid://dctm8qswx1uld"
+path="res://.godot/imported/stoutkin_ranger_f.png-c5e7ec3590fb8256920b25ed20de10be.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/stoutkin_ranger_f.png"
-dest_files=["res://.godot/imported/stoutkin_ranger_f.png-c5e7ec3590fb8256920b25ed20de10be.bptc.ctex"]
+dest_files=["res://.godot/imported/stoutkin_ranger_f.png-c5e7ec3590fb8256920b25ed20de10be.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

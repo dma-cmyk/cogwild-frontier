@@ -12,6 +12,7 @@ const LEVEL_NAMES := ["Off", "Low", "Normal", "High"]
 var g: Game
 var tab := ""
 var _box: VBoxContainer
+var _scroll: ScrollContainer
 var _cost_labels: Array = []  # [label, cost]
 
 
@@ -23,14 +24,27 @@ func setup(game: Game) -> void:
 	anchor_right = 0.5
 	anchor_top = 1.0
 	anchor_bottom = 1.0
-	offset_left = -420
-	offset_right = 380
-	offset_bottom = -126
-	offset_top = -126
-	grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_scroll = ScrollContainer.new()
+	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	add_child(_scroll)
 	_box = UiTheme.vbox(6)
-	add_child(_box)
+	_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_scroll.add_child(_box)
 	visible = false
+	get_viewport().size_changed.connect(_fit_to_viewport)
+	_fit_to_viewport()
+
+
+## Sits above the command bar, as tall as its content (scrolling only when the screen is short).
+func _fit_to_viewport() -> void:
+	var size := get_viewport().get_visible_rect().size
+	var width := minf(840.0, size.x - 16.0)
+	var content := _box.get_combined_minimum_size().y + 20.0
+	var height := minf(minf(560.0, size.y - 168.0), content)
+	offset_left = -width * 0.5
+	offset_right = width * 0.5
+	offset_top = -height - 124.0
+	offset_bottom = -124.0
 
 
 func toggle(t: String) -> void:
@@ -40,6 +54,7 @@ func toggle(t: String) -> void:
 	tab = t
 	_rebuild()
 	visible = true
+	_fit_to_viewport.call_deferred()
 
 
 func _rebuild() -> void:
@@ -49,7 +64,8 @@ func _rebuild() -> void:
 	if tab == "build":
 		_box.add_child(UiTheme.title(Loc.t("Build"), 22))
 		var grid := GridContainer.new()
-		grid.columns = 3
+		var width := minf(840.0, get_viewport().get_visible_rect().size.x - 40.0)
+		grid.columns = clampi(int((width - 24.0) / 258.0), 1, 3)
 		grid.add_theme_constant_override("h_separation", 6)
 		grid.add_theme_constant_override("v_separation", 6)
 		_box.add_child(grid)
@@ -59,7 +75,8 @@ func _rebuild() -> void:
 			var id := str(d["id"])
 			var b := Button.new()
 			b.focus_mode = Control.FOCUS_NONE
-			b.custom_minimum_size = Vector2(250, 64)
+			var cell_width := (width - 12.0 - float(grid.columns - 1) * 6.0) / float(grid.columns)
+			b.custom_minimum_size = Vector2(cell_width, 64)
 			b.tooltip_text = "%s\n%s" % [Loc.def_name("buildings", id), Loc.def_text("buildings", id, "description")]
 			var h := UiTheme.hbox(6)
 			h.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -76,7 +93,7 @@ func _rebuild() -> void:
 				visible = false
 				g.input_ctl.set_mode("build:" + id))
 			grid.add_child(b)
-		_box.add_child(UiTheme.label(Loc.t("Settlers haul the materials and build on their own. Walls: drag a line."), 13, UiTheme.TEXT_DIM))
+		_box.add_child(UiTheme.label(Loc.t("Settlers haul the materials and build on their own. Walls: drag a line or tap both ends."), 13, UiTheme.TEXT_DIM))
 	else:
 		_box.add_child(UiTheme.title(Loc.t("Gather & work"), 22))
 		var zones := UiTheme.hbox(6)

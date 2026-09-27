@@ -1,7 +1,7 @@
 shader_type spatial;
 // Character / machine chip sheets: grid of frames (columns = animation frames, rows = facing).
-// One material per sheet; everything per unit is an instance uniform, so all units using the
-// same sheet share one material.
+// Each unit owns a copy of its sheet's material and sets frame / offset / roll / flash / hue as
+// plain uniforms: instance uniforms would overflow the small Compatibility (WebGL2) buffer.
 render_mode skip_vertex_transform, cull_disabled;
 
 #include "res://src/visual/shaders/sprite_common.gdshaderinc"
@@ -14,11 +14,11 @@ uniform float depth_bias = 0.45;
 // Portrait / preview viewports render outside the map.
 uniform bool no_fog = false;
 
-instance uniform vec2 frame = vec2(1.0, 0.0);
-instance uniform vec4 flash = vec4(1.0, 1.0, 1.0, 0.0);
-instance uniform float roll = 0.0;
-instance uniform float hue_shift = 0.0;
-instance uniform vec2 offset = vec2(0.0, 0.0);
+uniform vec2 frame = vec2(1.0, 0.0);
+uniform vec4 flash = vec4(1.0, 1.0, 1.0, 0.0);
+uniform float roll = 0.0;
+uniform float hue_shift = 0.0;
+uniform vec2 offset = vec2(0.0, 0.0);
 
 varying vec2 cell_uv;
 varying vec3 base_pos;
@@ -37,7 +37,7 @@ void vertex() {
 
 void fragment() {
 	vec4 tex = texture(sheet, cell_uv);
-	float lod = textureQueryLod(sheet, cell_uv).x;
+	float lod = manual_lod(cell_uv, vec2(textureSize(sheet, 0)));
 	vec3 col = shift_company_blue(tex.rgb, hue_shift);
 	col = mix(col, flash.rgb, flash.a);
 	float explored = no_fog ? 1.0 : fog_explored(base_pos);

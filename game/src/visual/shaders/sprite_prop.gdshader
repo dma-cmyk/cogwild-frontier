@@ -33,7 +33,7 @@ void vertex() {
 
 void fragment() {
 	vec4 tex = texture(atlas, atlas_uv);
-	float lod = textureQueryLod(atlas, atlas_uv).x;
+	float lod = manual_lod(atlas_uv, vec2(textureSize(atlas, 0)));
 	ALBEDO = fog_apply(tex.rgb * tint, fog_explored(base_pos));
 	ALPHA = coverage(tex.a, lod);
 	ALPHA_SCISSOR_THRESHOLD = 0.5;

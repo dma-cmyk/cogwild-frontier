@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5rtl1tbwjhvj"
-path.bptc="res://.godot/imported/stoutkin_scholar_m.png-d195e28eb2ab34a0ba77d2d297ed1e98.bptc.ctex"
+uid="uid://dnhi4078fg0rc"
+path="res://.godot/imported/stoutkin_scholar_m.png-d195e28eb2ab34a0ba77d2d297ed1e98.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/stoutkin_scholar_m.png"
-dest_files=["res://.godot/imported/stoutkin_scholar_m.png-d195e28eb2ab34a0ba77d2d297ed1e98.bptc.ctex"]
+dest_files=["res://.godot/imported/stoutkin_scholar_m.png-d195e28eb2ab34a0ba77d2d297ed1e98.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

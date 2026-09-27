@@ -32,6 +32,7 @@ LOOKS = ["worker", "fighter", "ranger", "engineer", "scholar"]
 
 # chip sheet id -> (left sheet id, right sheet id, anchor mode)
 CHIP_SHEETS = {f"chip_{r}_{l}": (f"{r}_{l}_m", f"{r}_{l}_f", "feet") for r in RACES for l in LOOKS}
+CHIP_SHEETS.update({f"chip_{r}_{l}_v2": (f"{r}_{l}_m@v2", f"{r}_{l}_f@v2", "feet") for r in RACES for l in LOOKS})
 CHIP_SHEETS.update({
 	"chip_bandit_a": ("bandit_m", "bandit_f", "feet"),
 	"chip_bandit_b": ("bandit_archer", "bandit_captain", "feet"),
@@ -290,7 +291,9 @@ def process_chips(only: set[str]) -> None:
 		for half, out_id in ((0, left_id), (1, right_id)):
 			frames = [[trim(union_crop(img, cells[(r, half * 3 + c)])) for c in range(3)] for r in range(4)]
 			sheet, meta = build_chip(frames, "center" if out_id in CENTER_ANCHOR else mode)
-			out = GAME / "assets" / "sprites" / "chars" / f"{out_id}.png"
+			v2 = out_id.endswith("@v2")
+			file_id = out_id.removesuffix("@v2") + "_v2" if v2 else out_id
+			out = GAME / "assets" / "sprites" / "chars" / f"{file_id}.png"
 			save_png(sheet, out)
 			entries.append({"id": out_id, "texture": res(out), "source": sheet_id, **meta})
 			print(f"  {out_id}: {meta.get('clipped_frames', 0)} clipped")
@@ -335,6 +338,7 @@ def process_chips(only: set[str]) -> None:
 def process_portraits(only: set[str]) -> None:
 	entries = []
 	pairs = {f"portrait_{r}_{l}": (f"{r}_{l}_m", f"{r}_{l}_f") for r in RACES for l in LOOKS}
+	pairs.update({f"portrait_{r}_{l}_v2": (f"{r}_{l}_m@v2", f"{r}_{l}_f@v2") for r in RACES for l in LOOKS})
 	pairs.update({"portrait_bandit_a": ("bandit_m", "bandit_f"), "portrait_bandit_b": ("bandit_archer", "bandit_captain")})
 	for pid, (left_id, right_id) in pairs.items():
 		if only and pid not in only:
@@ -352,7 +356,9 @@ def process_portraits(only: set[str]) -> None:
 			# heads sit near the top of the generated busts: keep hats/ears, trim the chest
 			y0 = int(np.clip(h * 0.02, 0, h - side))
 			crop = Image.fromarray(img[y0:y0 + side, x0:x0 + side]).resize((256, 256), Image.Resampling.LANCZOS)
-			out = GAME / "assets" / "portraits" / f"{out_id}.png"
+			v2 = out_id.endswith("@v2")
+			file_id = out_id.removesuffix("@v2") + "_v2" if v2 else out_id
+			out = GAME / "assets" / "portraits" / f"{file_id}.png"
 			out.parent.mkdir(parents=True, exist_ok=True)
 			crop.save(out, optimize=True)
 			write_import(out, "ui")

@@ -179,6 +179,27 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 # --- verification helpers (used by automated probe scenarios, e.g. tests/probe/*.json) ---------
+func dbg_touch_press(index: int, pos: Vector2) -> void:
+	var event := InputEventScreenTouch.new()
+	event.index = index
+	event.position = pos
+	event.pressed = true
+	input_ctl._handle_touch(event)
+
+
+func dbg_touch_drag(index: int, pos: Vector2) -> void:
+	var event := InputEventScreenDrag.new()
+	event.index = index
+	event.position = pos
+	input_ctl._handle_touch(event)
+
+
+func dbg_touch_release(index: int, pos: Vector2) -> void:
+	var event := InputEventScreenTouch.new()
+	event.index = index
+	event.position = pos
+	event.pressed = false
+	input_ctl._handle_touch(event)
 
 ## Reveals the nearest site of a kind (generating its chunks) and returns its id, or -1.
 func dbg_reveal_site(kind: String) -> int:
@@ -258,6 +279,7 @@ func clear_selection() -> void:
 	sel_squad = -1
 	sel_building = -1
 	sel_site = -1
+	sel_loot = -1
 	_refresh_rings()
 	selection_changed.emit()
 
@@ -266,6 +288,7 @@ func select_units(ids: Array) -> void:
 	sel_units = ids.duplicate()
 	sel_building = -1
 	sel_site = -1
+	sel_loot = -1
 	sel_squad = -1
 	# a selection that is exactly one squad selects that squad
 	if not ids.is_empty():
@@ -294,6 +317,7 @@ func select_squad(id: int) -> void:
 	sel_squad = id
 	sel_building = -1
 	sel_site = -1
+	sel_loot = -1
 	_refresh_rings()
 	selection_changed.emit()
 
@@ -307,6 +331,12 @@ func select_building(id: int) -> void:
 func select_site(id: int) -> void:
 	clear_selection()
 	sel_site = id
+	selection_changed.emit()
+func select_loot(id: int) -> void:
+	if not world.loot_bags.has(id):
+		return
+	clear_selection()
+	sel_loot = id
 	selection_changed.emit()
 
 

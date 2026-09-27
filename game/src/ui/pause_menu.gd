@@ -1,10 +1,10 @@
 class_name PauseMenu
 extends Control
-## Esc menu: pauses the game; resume, save to slots 1-3, load (quick slot or 1-3), controls,
-## music volume, back to title.
+## Esc menu: pauses the game; resume, save/load, settings, controls and back to title.
 
 var g: Game
 var _panel: PanelContainer
+var _scroll: ScrollContainer
 var _box: VBoxContainer
 var _speed_before := 1
 
@@ -21,13 +21,29 @@ func setup(game: Game) -> void:
 	_panel = UiTheme.panel()
 	add_child(_panel)
 	_panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	_panel.offset_left = -260
-	_panel.offset_right = 260
-	_panel.offset_top = -330
-	_panel.offset_bottom = 330
+	_fit_panel()
+	get_viewport().size_changed.connect(_fit_panel)
+	_scroll = ScrollContainer.new()
+	_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_panel.add_child(_scroll)
 	_box = UiTheme.vbox(8)
-	_panel.add_child(_box)
+	_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_scroll.add_child(_box)
 	visible = false
+
+
+func _fit_panel() -> void:
+	if not is_instance_valid(_panel):
+		return
+	var viewport_size := get_viewport_rect().size
+	var width := minf(520.0, maxf(280.0, viewport_size.x - 24.0))
+	var height := minf(660.0, maxf(240.0, viewport_size.y - 24.0))
+	_panel.offset_left = -width * 0.5
+	_panel.offset_right = width * 0.5
+	_panel.offset_top = -height * 0.5
+	_panel.offset_bottom = height * 0.5
 
 
 func open() -> void:
@@ -64,17 +80,7 @@ func _rebuild() -> void:
 			continue
 		var s: int = slot
 		_box.add_child(_btn("%s — %s" % [Loc.t("Quick save") if slot == 0 else Loc.t("Slot %d") % slot, _describe(info)], "ui_load", func() -> void: App.load_game(s)))
-	var vol := UiTheme.hbox(8)
-	vol.add_child(UiTheme.label(Loc.t("Music"), 15))
-	var sl := HSlider.new()
-	sl.min_value = -40
-	sl.max_value = 0
-	sl.value = Sfx.music_db
-	sl.custom_minimum_size = Vector2(220, 20)
-	sl.focus_mode = Control.FOCUS_NONE
-	sl.value_changed.connect(func(v: float) -> void: Sfx.set_music_volume(v))
-	vol.add_child(sl)
-	_box.add_child(vol)
+	_box.add_child(_btn(Loc.t("Settings"), "ui_gear", func() -> void: SettingsPanel.open(self)))
 	_box.add_child(_btn(Loc.t("Controls (F1)"), "ui_scroll", func() -> void:
 		close()
 		g.hud._help.visible = true))
@@ -99,5 +105,7 @@ func _btn(text: String, icon: String, cb: Callable) -> Button:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if visible and event.is_action_pressed("cancel"):
+		if get_node_or_null("SettingsPanel") != null:
+			return
 		close()
 		get_viewport().set_input_as_handled()

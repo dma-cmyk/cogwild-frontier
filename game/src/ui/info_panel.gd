@@ -17,6 +17,7 @@ var _en: ProgressBar
 var _en_l: Label
 var _dyn: Label
 var _armory_slot := ""
+var mobile_collapsed := false
 
 
 func setup(game: Game, h: Hud) -> void:
@@ -39,6 +40,17 @@ func setup(game: Game, h: Hud) -> void:
 	_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(_body)
 	visible = false
+	mobile_collapsed = App.is_touch() or App.is_mobile_web()
+func toggle_drawer() -> void:
+	mobile_collapsed = not mobile_collapsed
+	visible = not mobile_collapsed and _key != ""
+
+
+func open_drawer() -> void:
+	mobile_collapsed = false
+	visible = _key != ""
+
+
 
 
 func refresh(force: bool) -> void:
@@ -52,7 +64,10 @@ func refresh(force: bool) -> void:
 	elif g.sel_site >= 0:
 		var st: Dictionary = g.world.sites.get(g.sel_site, {})
 		key = "s%d:%s:%s" % [g.sel_site, str(st.get("cleared", false)), str(st.get("looted", false))]
-	visible = key != ""
+	elif g.sel_loot >= 0 and g.world.loot_bags.has(g.sel_loot):
+		var bag: Dictionary = g.world.loot_bags[g.sel_loot]
+		key = "l%d:%d:%d:%d" % [g.sel_loot, (bag.get("items", []) as Array).size(), int(bag.get("gold", 0)), int(bag.get("metal", 0))]
+	visible = key != "" and not mobile_collapsed
 	if key != _key or force:
 		_key = key
 		_rebuild(u)
@@ -75,6 +90,8 @@ func _rebuild(u: Unit) -> void:
 		_build_building(g.world.buildings[g.sel_building])
 	elif g.sel_site >= 0 and g.world.sites.has(g.sel_site):
 		_build_site(g.world.sites[g.sel_site])
+	elif g.sel_loot >= 0 and g.world.loot_bags.has(g.sel_loot):
+		_build_loot(g.world.loot_bags[g.sel_loot])
 
 
 func _update_dynamic(u: Unit) -> void:
@@ -589,9 +606,23 @@ func _build_site(st: Dictionary) -> void:
 	_body.add_child(f)
 
 
+func _build_loot(bag: Dictionary) -> void:
+	_body.add_child(UiTheme.title(Loc.t("Loot bag"), 22))
+	_body.add_child(UiTheme.label(Loc.t("Recovered automatically by nearby members."), 14, UiTheme.TEXT_DIM))
+	var gold := int(bag.get("gold", 0))
+	var metal := int(bag.get("metal", 0))
+	if gold > 0:
+		_body.add_child(UiTheme.label(Loc.t("%d gold") % gold, 16, UiTheme.GOLD))
+	if metal > 0:
+		_body.add_child(UiTheme.label(Loc.t("%d metal") % metal, 16, UiTheme.TEXT))
+	var items: Array = bag.get("items", [])
+	for item: Dictionary in items:
+		_body.add_child(_item_row(item, "loot", null))
+
+
 func _my_strength() -> float:
 	if g.sel_squad >= 0:
 		return g.world.squad_ai.strength(g.world.get_squad(g.sel_squad))
 	if not g.world.squads.is_empty():
-		return g.world.squad_ai.strength(g.world.squads[0])
+		return g.world.squad_ai.strength(g.world.get_squad(0))
 	return 0.0

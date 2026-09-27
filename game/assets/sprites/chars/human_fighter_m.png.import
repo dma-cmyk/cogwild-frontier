@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b62g183hqyguj"
-path.bptc="res://.godot/imported/human_fighter_m.png-bb88d9889d256a9e0bf4490699c3648a.bptc.ctex"
+uid="uid://c6vy48xg2vcg4"
+path="res://.godot/imported/human_fighter_m.png-bb88d9889d256a9e0bf4490699c3648a.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/human_fighter_m.png"
-dest_files=["res://.godot/imported/human_fighter_m.png-bb88d9889d256a9e0bf4490699c3648a.bptc.ctex"]
+dest_files=["res://.godot/imported/human_fighter_m.png-bb88d9889d256a9e0bf4490699c3648a.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

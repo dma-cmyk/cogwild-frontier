@@ -15,8 +15,6 @@ const ACTIONS := {
 	"cam_right": [KEY_D, KEY_RIGHT],
 	"cam_up": [KEY_W, KEY_UP],
 	"cam_down": [KEY_S, KEY_DOWN],
-	"cam_rotate_left": [KEY_Q],
-	"cam_rotate_right": [KEY_E],
 	"cam_zoom_in": [KEY_EQUAL, KEY_KP_ADD, KEY_PAGEUP],
 	"cam_zoom_out": [KEY_MINUS, KEY_KP_SUBTRACT, KEY_PAGEDOWN],
 	"toggle_pause": [KEY_SPACE],
@@ -48,16 +46,63 @@ const ACTIONS := {
 func _enter_tree() -> void:
 	_register_actions()
 
+func _ready() -> void:
+	get_tree().root.size_changed.connect(_apply_ui_scale)
+	Settings.changed.connect(func(key: String, _value: Variant) -> void:
+		if key == "interface/ui_scale":
+			_apply_ui_scale())
+	_apply_ui_scale()
+
+
+## UI scale (root content_scale_factor on top of the 1920x1080 canvas_items stretch). "auto" and
+## "normal" aim at ~0.75 CSS px per UI pixel (16 px text ≈ 12 CSS px, so phones get a readable,
+## touch-sized UI) while keeping at least 540 UI pixels on the short side so every layout fits;
+## never below 1.0 (desktop windows keep the designed size). "small" / "large" scale that by 0.85 / 1.2.
+func _apply_ui_scale() -> void:
+	var win := Vector2(DisplayServer.window_get_size())
+	if win.x < 1.0 or win.y < 1.0:
+		return
+	var base := Vector2(float(ProjectSettings.get_setting("display/window/size/viewport_width")), float(ProjectSettings.get_setting("display/window/size/viewport_height")))
+	var stretch := minf(win.x / base.x, win.y / base.y)
+	var css_per_px := maxf(1.0, DisplayServer.screen_get_scale()) / stretch
+	var short_side := minf(win.x, win.y) / stretch
+	var scale := maxf(1.0, minf(0.75 * css_per_px, short_side / 540.0))
+	match str(Settings.get_value("interface/ui_scale")):
+		"small":
+			scale *= 0.85
+		"large":
+			scale = minf(scale * 1.2, maxf(1.2, short_side / 440.0))
+	get_tree().root.content_scale_factor = scale
+
+
+func is_touch() -> bool:
+	return DisplayServer.is_touchscreen_available()
+
+
+func is_mobile_web() -> bool:
+	return OS.has_feature("web_android") or OS.has_feature("web_ios")
+
+
+## Size of the UI canvas in UI pixels (after the stretch and the UI scale).
+func screen_size() -> Vector2:
+	return get_tree().root.get_visible_rect().size
+
 
 func _register_actions() -> void:
 	for action: String in ACTIONS:
 		if InputMap.has_action(action):
 			continue
 		InputMap.add_action(action)
-		for key: int in ACTIONS[action]:
+		if OS.has_feature("web") and action in ["quicksave", "quickload"]:
 			var ev := InputEventKey.new()
-			ev.physical_keycode = key as Key
+			ev.physical_keycode = KEY_S if action == "quicksave" else KEY_L
+			ev.ctrl_pressed = true
 			InputMap.action_add_event(action, ev)
+		else:
+			for key: int in ACTIONS[action]:
+				var ev := InputEventKey.new()
+				ev.physical_keycode = key as Key
+				InputMap.action_add_event(action, ev)
 
 
 ## Releases static mesh/material/texture caches so nothing outlives the scene tree at exit.

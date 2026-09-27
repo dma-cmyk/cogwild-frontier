@@ -18,6 +18,9 @@ static var _quad: QuadMesh
 
 var entry: Dictionary = {}
 var card: MeshInstance3D
+## Private copy of the sheet material: per-unit values are plain uniforms (Compatibility / WebGL2
+## has room for only a few thousand instance-uniform slots in total).
+var _mat: ShaderMaterial
 var _size := Vector2.ONE
 var _row := ROW_DOWN
 var _screen_dir := Vector2(0.0, -1.0)
@@ -27,6 +30,7 @@ var _static := false
 var _carry_icon: Sprite3D
 var _dead_t := 0.0
 var _sent_frame := Vector2(-1.0, -1.0)
+var _sent_scale := Vector2(INF, INF)
 var _sent_offset := Vector2(INF, INF)
 var _sent_roll := INF
 var _sent_flash := Color(0, 0, 0, -1)
@@ -45,11 +49,12 @@ func setup_sprite(p_dna: Dictionary, p_entry: Dictionary, hints: Dictionary) -> 
 	card = MeshInstance3D.new()
 	card.name = "Card"
 	card.mesh = _quad
-	card.material_override = SpriteLibrary.unit_material(entry)
+	_mat = SpriteLibrary.unit_material(entry).duplicate() as ShaderMaterial
+	card.material_override = _mat
 	card.scale = Vector3(_size.x, _size.y, 1.0)
 	card.custom_aabb = AABB(Vector3(-1.2, -1.0, -1.5), Vector3(2.4, 2.4, 3.0))
 	card.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
-	card.set_instance_shader_parameter("hue_shift", SpriteLibrary.hue_shift_for(dna))
+	_mat.set_shader_parameter("hue_shift", SpriteLibrary.hue_shift_for(dna))
 	add_child(card)
 	var cell: Array = entry.get("cell", [128, 128])
 	_height = _size.y * float(entry.get("height_px", cell[1])) / float(cell[1])
@@ -68,6 +73,7 @@ func _process(delta: float) -> void:
 	var frame := 1
 	var offset := Vector2.ZERO
 	var roll := 0.0
+	var death_scale := 1.0
 	var flash := Color(1, 1, 1, 0)
 	match anim:
 		Anim.WALK:
@@ -81,7 +87,10 @@ func _process(delta: float) -> void:
 		Anim.DEAD:
 			_dead_t += delta
 			roll = (-PI * 0.5 if _row != ROW_LEFT else PI * 0.5) * clampf(_dead_t * 2.5, 0.0, 1.0)
-			flash = Color(0.1, 0.08, 0.08, clampf(_dead_t * 0.5, 0.0, 0.45))
+			death_scale = clampf(1.0 - _dead_t * 0.48, 0.0, 1.0)
+			offset.y = -minf(_dead_t * 0.12, 0.25)
+			var death_flash := clampf(1.0 - _dead_t / 0.18, 0.0, 1.0)
+			flash = Color(1.0, 0.72, 0.42, 0.9 * death_flash) if death_flash > 0.0 else Color(0.1, 0.08, 0.08, clampf((_dead_t - 0.18) * 0.18, 0.0, 0.32))
 	if _hover:
 		offset.y += sin(anim_time * (2.2 if kind == "drone" else 0.8)) * (0.06 if kind == "drone" else 0.18)
 		if kind == "drone":
@@ -93,15 +102,16 @@ func _process(delta: float) -> void:
 		var pulse := sin(k * PI)
 		match action:
 			&"attack_melee":
-				offset += _screen_dir * 0.22 * pulse
-				frame = 2 if k < 0.5 else 0
+				offset += _screen_dir * 0.34 * pulse
+				offset.y += 0.08 * pulse
+				frame = 2 if k < 0.45 else 0
 			&"attack_ranged":
-				offset -= _screen_dir * 0.08 * pulse
+				offset -= _screen_dir * 0.12 * pulse
 				if _static:
 					frame = 2 if k < 0.35 else 0
 			&"hit":
-				offset -= _screen_dir * 0.12 * pulse
-				flash = Color(1.0, 0.92, 0.85, 0.75 * (1.0 - k))
+				offset -= _screen_dir * 0.2 * pulse
+				flash = Color(1.0, 0.94, 0.84, 0.92 * (1.0 - k))
 			&"cheer", &"levelup":
 				offset.y += 0.28 * pulse
 			_:
@@ -109,20 +119,26 @@ func _process(delta: float) -> void:
 					offset += _screen_dir * 0.07 * pulse
 					offset.y -= 0.04 * pulse
 					frame = 0 if k < 0.5 else 2
-	# instance parameters cost a render-server call each: only send what changed
+	# each uniform write is a render-server call: only send what changed
+	var card_scale := _size * death_scale
+	if card_scale != _sent_scale:
+		_sent_scale = card_scale
+		card.scale = Vector3(card_scale.x, card_scale.y, 1.0)
 	var fr := Vector2(float(frame), float(_row))
 	if fr != _sent_frame:
 		_sent_frame = fr
-		card.set_instance_shader_parameter("frame", fr)
+		_mat.set_shader_parameter("frame", fr)
 	if offset != _sent_offset:
 		_sent_offset = offset
-		card.set_instance_shader_parameter("offset", offset)
+		_mat.set_shader_parameter("offset", offset)
 	if roll != _sent_roll:
 		_sent_roll = roll
-		card.set_instance_shader_parameter("roll", roll)
+		_mat.set_shader_parameter("roll", roll)
 	if flash != _sent_flash:
 		_sent_flash = flash
-		card.set_instance_shader_parameter("flash", flash)
+		_mat.set_shader_parameter("flash", flash)
+	if anim == Anim.DEAD and is_instance_valid(_carry_icon):
+		_carry_icon.visible = false
 	if is_instance_valid(_carry_icon):
 		_carry_icon.position = Vector3(0.0, _height * 0.95 + maxf(0.0, offset.y), 0.0)
 
@@ -201,9 +217,7 @@ func set_carry(resource: String) -> void:
 
 ## Title / portrait previews render outside the map: a private material without fog of war.
 func use_preview_material() -> void:
-	var mat := (card.material_override as ShaderMaterial).duplicate() as ShaderMaterial
-	mat.set_shader_parameter("no_fog", true)
-	card.material_override = mat
+	_mat.set_shader_parameter("no_fog", true)
 	card.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 

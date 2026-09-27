@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpibtlx45aed1"
-path.bptc="res://.godot/imported/machine_warden.png-1d40ee4527b04ec42e0726eb49e7d421.bptc.ctex"
+uid="uid://bqtj3uc54mfnf"
+path="res://.godot/imported/machine_warden.png-1d40ee4527b04ec42e0726eb49e7d421.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/machine_warden.png"
-dest_files=["res://.godot/imported/machine_warden.png-1d40ee4527b04ec42e0726eb49e7d421.bptc.ctex"]
+dest_files=["res://.godot/imported/machine_warden.png-1d40ee4527b04ec42e0726eb49e7d421.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

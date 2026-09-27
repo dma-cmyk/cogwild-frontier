@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyqbbc4qvxdme"
-path.bptc="res://.godot/imported/cargo_airship.png-527d7dbf571cd136fd1672509da86f10.bptc.ctex"
+uid="uid://bfs2kv7kakyyi"
+path="res://.godot/imported/cargo_airship.png-527d7dbf571cd136fd1672509da86f10.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/cargo_airship.png"
-dest_files=["res://.godot/imported/cargo_airship.png-527d7dbf571cd136fd1672509da86f10.bptc.ctex"]
+dest_files=["res://.godot/imported/cargo_airship.png-527d7dbf571cd136fd1672509da86f10.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

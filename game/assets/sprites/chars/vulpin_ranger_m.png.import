@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dkgrc4e13ma5x"
-path.bptc="res://.godot/imported/vulpin_ranger_m.png-a5fbcca40a147ee3bde3215486a62dda.bptc.ctex"
+uid="uid://bl6aii3trdjha"
+path="res://.godot/imported/vulpin_ranger_m.png-a5fbcca40a147ee3bde3215486a62dda.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/vulpin_ranger_m.png"
-dest_files=["res://.godot/imported/vulpin_ranger_m.png-a5fbcca40a147ee3bde3215486a62dda.bptc.ctex"]
+dest_files=["res://.godot/imported/vulpin_ranger_m.png-a5fbcca40a147ee3bde3215486a62dda.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

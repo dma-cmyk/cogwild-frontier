@@ -5,7 +5,7 @@ extends RefCounted
 
 ## Isometric-style orthographic camera: looks from +X+Z toward -X-Z, so +X, +Z and +Y faces are
 ## visible and a model's front (+Z) faces the viewer (down-right on screen).
-const CAMERA_PITCH_DEG := -38.0
+const CAMERA_PITCH_DEG := -30.0
 const CAMERA_YAW_DEG := 45.0
 const CAMERA_DISTANCE := 50.0
 const ZOOM_DEFAULT := 28.0  # Camera3D.size (visible world height in metres)

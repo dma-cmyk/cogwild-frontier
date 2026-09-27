@@ -39,8 +39,27 @@ LOOKS = {
 	"scholar": "wearing a long blue and cream robe and a leather satchel, holding a wooden staff with a small hanging lantern",
 }
 
+V2_APPEARANCE = {
+	"human": ("a human man with tightly curled black hair, a short neat beard",
+		"a human woman with dark auburn hair in a high braided bun"),
+	"sylvan": ("a Sylvan man (elf-like woodland folk with long pointed ears) with pale silver hair in a short braid",
+		"a Sylvan woman (elf-like woodland folk with long pointed ears) with dark violet hair in a braided crown"),
+	"stoutkin": ("a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a long dark-plum braided beard",
+		"a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with dark-plum hair in a pair of looped braids"),
+	"vulpin": ("a Vulpin man (fox-folk with large russet fox ears and a russet bushy tail with a cream tip) with deep russet hair",
+		"a Vulpin woman (fox-folk with large russet fox ears and a russet bushy tail with a cream tip) with dark russet hair in a high ponytail"),
+}
+V2_LOOKS = {
+	"worker": "wearing a warm ochre work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a dark green cap, a hand axe at the belt",
+	"fighter": "wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and a steel kettle helmet, holding a short sword and a wooden shield",
+	"ranger": "wearing a rust-red hooded cloak with the hood down, a leather tunic and a royal-blue company scarf, carrying a short bow and a quiver",
+	"engineer": "wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on the forehead and leather tool pouches, carrying a steel wrench",
+	"scholar": "wearing a plum and muted-gold robe with a royal-blue company sash and a dark leather satchel, holding a wooden staff with a small hanging lantern",
+}
 
-def chip_args(left: str, right: str, frames: str = "walking frames: left foot forward, standing, right foot forward") -> dict:
+
+def chip_args(left: str, right: str, frames: str = "walking frames: left foot forward, standing, right foot forward",
+		reference: str = "") -> dict:
 	subject = ("Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. "
 		f"LEFT HALF (columns 1-3): {left}. RIGHT HALF (columns 4-6): {right}. "
 		"Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. "
@@ -48,9 +67,14 @@ def chip_args(left: str, right: str, frames: str = "walking frames: left foot fo
 		"Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). "
 		f"Each row has 3 {frames}. All 24 figures have identical size and chibi proportions, "
 		"each centred in an equal cell with empty space around it.")
-	return {"subject": subject, "style": CHIP_STYLE, "scene": BG,
+	args = {"subject": subject, "style": CHIP_STYLE, "scene": BG,
 		"composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
 		"aspect_ratio": "3:2", "image_size": "1536x1024", "model": MODEL}
+	if reference:
+		args["subject"] += (" Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. "
+			"Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.")
+		args["input"] = [{"path": f"art_src/raw/{reference}.webp"}]
+	return args
 
 
 def portrait_args(chip_id: str, left: str, right: str) -> dict:
@@ -62,7 +86,7 @@ def portrait_args(chip_id: str, left: str, right: str) -> dict:
 		"scene": "each portrait on its own simple dark slate-blue vignette background",
 		"composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
 		"aspect_ratio": "3:2", "image_size": "1536x1024",
-		"input": [{"path": str(ROOT / "art_src" / "raw" / f"{chip_id}.webp")}], "model": MODEL}
+		"input": [{"path": f"art_src/raw/{chip_id}.webp"}], "model": MODEL}
 
 
 def sheet_args(subject: str, rows: int, cols: int) -> dict:
@@ -161,7 +185,14 @@ def build() -> list:
 		for look, outfit in LOOKS.items():
 			left = f"{male}, {outfit}"
 			right = f"{female}, {outfit}"
-			out.append({"id": f"chip_{race}_{look}", "kind": "chip", "args": chip_args(left, right)})
+			cid = f"chip_{race}_{look}"
+			out.append({"id": cid, "kind": "chip", "args": chip_args(left, right)})
+			v2_male, v2_female = V2_APPEARANCE[race]
+			v2_outfit = V2_LOOKS[look]
+			v2_left = f"{v2_male}, {v2_outfit}"
+			v2_right = f"{v2_female}, {v2_outfit}"
+			out.append({"id": f"{cid}_v2", "kind": "chip",
+				"args": chip_args(v2_left, v2_right, reference=cid)})
 	bandit_a = ("a human man bandit in a patched brown leather coat, a red bandana and a red scarf over the mouth, holding a rusty hand axe",
 		"a human woman bandit in a red hood and patched brown leather, holding a rusty hand axe")
 	bandit_b = ("a bandit crossbowman: a human man in a red hood and patched leather armour, holding a crossbow",
@@ -220,7 +251,12 @@ def build() -> list:
 	for race, (male, female) in RACES.items():
 		for look, outfit in LOOKS.items():
 			cid = f"chip_{race}_{look}"
-			out.append({"id": f"portrait_{race}_{look}", "kind": "portrait", "args": portrait_args(cid, f"{male}, {outfit}", f"{female}, {outfit}")})
+			out.append({"id": f"portrait_{race}_{look}", "kind": "portrait",
+				"args": portrait_args(cid, f"{male}, {outfit}", f"{female}, {outfit}")})
+			v2_male, v2_female = V2_APPEARANCE[race]
+			v2_outfit = V2_LOOKS[look]
+			out.append({"id": f"portrait_{race}_{look}_v2", "kind": "portrait",
+				"args": portrait_args(f"{cid}_v2", f"{v2_male}, {v2_outfit}", f"{v2_female}, {v2_outfit}")})
 	out.append({"id": "portrait_bandit_a", "kind": "portrait", "args": portrait_args("chip_bandit_a", *bandit_a)})
 	out.append({"id": "portrait_bandit_b", "kind": "portrait", "args": portrait_args("chip_bandit_b", *bandit_b)})
 	return sorted(out, key=_priority)

@@ -20,9 +20,9 @@ uniform float depth_toward = 0.05;
 uniform bool no_fog = false;
 
 // 0..1 part of the picture shown, from the bottom (construction progress).
-instance uniform float reveal = 1.0;
-instance uniform float hue_shift = 0.0;
-instance uniform vec4 flash = vec4(1.0, 1.0, 1.0, 0.0);
+uniform float reveal = 1.0;
+uniform float hue_shift = 0.0;
+uniform vec4 flash = vec4(1.0, 1.0, 1.0, 0.0);
 
 varying vec2 card;
 varying vec3 base_pos;
@@ -61,7 +61,7 @@ void fragment() {
 		discard;
 	}
 	vec4 c = texture(tex, UV);
-	float lod = textureQueryLod(tex, UV).x;
+	float lod = manual_lod(UV, vec2(textureSize(tex, 0)));
 	vec3 col = shift_company_blue(c.rgb, hue_shift);
 	col = mix(col, flash.rgb, flash.a);
 	float explored = no_fog ? 1.0 : fog_explored(base_pos);
@@ -87,5 +87,10 @@ void fragment() {
 	float toward = h >= 0.0 ? (-f * cos_p + h * sin_p) : (-card.y * cos_p / sin_p);
 	vec3 anchor_view = (VIEW_MATRIX * vec4(base_pos, 1.0)).xyz;
 	vec4 clip = PROJECTION_MATRIX * vec4(anchor_view + vec3(card.x, card.y, toward + depth_toward), 1.0);
+	// Forward+/Mobile use reverse Z in 0..1; Compatibility (OpenGL / WebGL2) maps NDC -1..1.
+#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
+	DEPTH = clip.z / clip.w * 0.5 + 0.5;
+#else
 	DEPTH = clip.z / clip.w;
+#endif
 }

@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dsg7481pe8lm4"
-path.bptc="res://.godot/imported/stoutkin_engineer_m.png-65eec19f6f8f2ccc98a85b7a09431ead.bptc.ctex"
+uid="uid://c6h8ah6sl5ht8"
+path="res://.godot/imported/stoutkin_engineer_m.png-65eec19f6f8f2ccc98a85b7a09431ead.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/stoutkin_engineer_m.png"
-dest_files=["res://.godot/imported/stoutkin_engineer_m.png-65eec19f6f8f2ccc98a85b7a09431ead.bptc.ctex"]
+dest_files=["res://.godot/imported/stoutkin_engineer_m.png-65eec19f6f8f2ccc98a85b7a09431ead.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

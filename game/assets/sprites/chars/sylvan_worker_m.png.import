@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ctnb4vamll4wr"
-path.bptc="res://.godot/imported/sylvan_worker_m.png-6b8760e6ac89407108aecb74e76d5dd8.bptc.ctex"
+uid="uid://0sce65qa2e04"
+path="res://.godot/imported/sylvan_worker_m.png-6b8760e6ac89407108aecb74e76d5dd8.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/sylvan_worker_m.png"
-dest_files=["res://.godot/imported/sylvan_worker_m.png-6b8760e6ac89407108aecb74e76d5dd8.bptc.ctex"]
+dest_files=["res://.godot/imported/sylvan_worker_m.png-6b8760e6ac89407108aecb74e76d5dd8.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

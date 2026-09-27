@@ -14,6 +14,7 @@ const DEFAULTS := {
 	"audio/music_track": "auto",  # "auto" (follows the situation), "shuffle", "off" or a track id
 	"graphics/quality": "auto",  # "auto", "low", "medium", "high"
 	"interface/ui_scale": "auto",  # "auto", "small", "normal", "large"
+	"interface/speech": "all",  # speech bubbles: "all", "combat", "off"
 }
 
 var _cfg := ConfigFile.new()

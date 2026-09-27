@@ -4,7 +4,12 @@
 RPG 要素のある自律型 RTS の **Playable Vertical Slice**（Godot 4.7 製）。
 自分で部隊を動かしても、指示だけ出して眺めていても世界が進みます。
 キャラチップ・肖像・建物・木や岩・地面・アイテムアイコン・タイトル画像は画像生成した絵で、3D の地形の上に置いています（手順は `docs/art_pipeline.md`）。
+住民は種族 × 見た目 × 性別ごとに 2 種類の絵があり、同じ見た目の人が並びにくくなっています。
+住民は RimWorld のように吹き出しでしゃべります（仕事の一言、近くの仲間との雑談、戦闘中のかけ声）。
 UI は日本語 / 英語に対応しています。
+
+**ブラウザで遊ぶ（PC・スマホ）: https://dma-cmyk.github.io/cogwild-frontier/**
+（初回は約 90 MB の読み込みがあります。スマホは横向き推奨）
 
 ![開拓地の昼](docs/screenshots/settlement_day.png)
 
@@ -16,14 +21,23 @@ UI は日本語 / 英語に対応しています。
 godot --path game
 ```
 
-必要なもの: Godot 4.7（`godot` コマンド）。Vulkan 対応 GPU（開発機は Intel Iris Xe）。
+必要なもの: Godot 4.7（`godot` コマンド）。レンダラーは Compatibility（OpenGL 3.3 / WebGL 2）で、ブラウザ版と同じ見た目になります（開発機は Intel Iris Xe）。
 
 タイトル → **New frontier** で創設者（名前・種族・役割・見た目・会社名と旗の色・ワールドシード）を決めて開始。
 同じシードなら同じ世界になります。**Continue / Load** でセーブから再開。
 
-## 言語設定
+## 設定
 
-タイトル画面右上の **Language / 言語**、またはゲーム中の Esc メニューから **日本語** / **English** を切り替えられます。変更は保存され、表示中の画面にも反映されます。
+タイトル画面またはゲーム中の Esc メニューの **設定 / Settings** で変更できます。設定は保存されます（ブラウザ版はブラウザ内に保存）。
+
+| 項目 | 内容 |
+|---|---|
+| 言語 | 日本語 / English（タイトル画面右上の **Language / 言語** からも切り替え可） |
+| BGM | 自動（タイトル・昼・夜・戦闘で切り替え）/ シャッフル / なし / 曲を固定（5 曲） |
+| 音量 | 全体・音楽・効果音・環境音 |
+| 画質 | 自動 / 低 / 中 / 高（自動はスマホで低、それ以外は中。高は MSAA と長い影） |
+| UI サイズ | 自動 / 小 / 標準 / 大（自動は画面の大きさと画素密度から、スマホでも文字とボタンが読める大きさに） |
+| 吹き出し | すべて / 戦闘のみ / なし |
 
 起動時に固定する場合は環境変数 `COGWILD_LANG=ja|en`、または Godot のユーザー引数 `--lang=ja|en` を使います。
 
@@ -45,10 +59,24 @@ godot --path game -- --lang=en
 | B / G | 建設メニュー / 採取ゾーンと仕事の優先度 |
 | 1–4, Tab | 小隊を選択 |
 | W A S D・矢印・画面端・中ボタンドラッグ | カメラ移動 |
-| ホイール / Q E | ズーム / 90° 回転 |
+| ホイール | ズーム（カメラの向きは画像生成した建物の絵に合わせて固定） |
 | Space / `[` `]` | 一時停止 / 速度（x1 x2 x4） |
-| F5 / F9 | クイックセーブ / クイックロード |
-| Esc / F1 | キャンセル・メニュー（セーブ 3 枠・ロード）/ 操作説明 |
+| F5 / F9（ブラウザ版は Ctrl+S / Ctrl+L） | クイックセーブ / クイックロード |
+| Esc / F1 | キャンセル・メニュー（セーブ 3 枠・ロード・設定）/ 操作説明 |
+
+タッチ操作（スマホ・タブレット）:
+
+| 操作 | 動作 |
+|---|---|
+| タップ | 選択（ユニット・建物・拠点・戦利品）。選択中に地面・敵をタップすると移動・攻撃などの文脈命令 |
+| 1 本指ドラッグ / 2 本指ピンチ | カメラ移動 / ズーム |
+| 長押し | 指の下にあるものの詳細 |
+| 右上の **範囲選択** | オンの間はドラッグで範囲選択 |
+| 右上の **マップ** / **詳細** | ミニマップ / 選択中の詳細パネルを開閉 |
+| 命令ボタン（移動・攻撃・巡回など） | 次にタップした場所が目標 |
+| 建設 | 建物を選び、場所をタップして **決定**（壁はドラッグか両端をタップ） |
+
+縦向きでは横向きを勧める案内が出ます（「このまま続ける」で縦のまま遊べます）。タイトル画面の **全画面** でブラウザの全画面表示に切り替えられます。
 
 ## 遊び方の例
 
@@ -75,6 +103,9 @@ game/
   tests/         ヘッドレステスト（test_*.gd）・ギャラリー・probe シナリオ
   tools/         world_map_dump（生成した世界を PNG に）
 tools/art/       make_prompts.py（画像生成のプロンプト）・process.py（生成画像 → ゲーム用素材）・overrides.json
+tools/audio/     compose_bgm.py（BGM 5 曲の手続き作曲 → OGG）
+tools/web/       fetch_templates.py（Web 書き出しテンプレートの取得）・apply_import_presets.py（テクスチャ圧縮設定）・build_web.sh
+.github/         workflows/pages.yml（main への push で Web 版を書き出して GitHub Pages に公開）
 art_src/         prompts.json（生成リクエスト一覧）。raw/ は生成結果の原本（大きいので Git 管理外）
 docs/            design.md（設計・仮定）、art_pipeline.md（画像生成アート）、contracts.md（モジュール境界）、screenshots/、samples/
 ```
@@ -91,14 +122,24 @@ godot --headless --path game res://tests/run_tests.tscn -- --filter=sim         
 
 ```bash
 P=~/.omp/agent/skills/game-production/scripts/godot_probe.py
-python3 $P game --scenario game/tests/probe/explore_day.json --godot-arg=--time-scale --godot-arg=4
-python3 $P game --scenario game/tests/probe/combat_camp.json --godot-arg=--time-scale --godot-arg=4
-python3 $P game --scenario game/tests/probe/build_windmill.json --godot-arg=--time-scale --godot-arg=4
-python3 $P game --scenario game/tests/probe/save_load.json --godot-arg=--time-scale --godot-arg=4
+export COGWILD_LANG=en   # probe のクリック座標は英語 UI が前提
+COGWILD_WORLD_SEED=7  python3 $P game --scenario game/tests/probe/explore_day.json    --godot-arg=--time-scale --godot-arg=4
+COGWILD_WORLD_SEED=11 python3 $P game --scenario game/tests/probe/combat_camp.json    --godot-arg=--time-scale --godot-arg=4
+python3 $P game --scenario game/tests/probe/build_windmill.json --godot-arg=--time-scale --godot-arg=4   # 世界はシナリオの乱数シードから
+COGWILD_WORLD_SEED=7  python3 $P game --scenario game/tests/probe/save_load.json      --godot-arg=--time-scale --godot-arg=4
 godot --headless --path game res://tools/world_map_dump.tscn -- --seed=123 --radius=6 --out=/tmp/map.png
 ```
 
-probe のクリック座標は英語 UI を前提としているため、全シナリオの実行時は `COGWILD_LANG=en` を指定してください。
+`COGWILD_WORLD_SEED`（またはユーザー引数 `--world-seed=`）で世界を固定します。combat_camp は近くの野営地へ歩いて行ける世界（シード 11）が前提です。
+
+Web 版（GitHub Pages と同じもの）をローカルで作って確かめる:
+
+```bash
+tools/web/build_web.sh                                   # テンプレート取得 → インポート → build/web/ に書き出し
+python3 -m http.server -d build/web 8060 --bind 127.0.0.1  # http://127.0.0.1:8060/ を開く
+```
+
+スレッドなしの Web テンプレート（COOP/COEP ヘッダ不要）を使います。人物・建物などの絵は Basis Universal で 1 種類だけ配布し、読み込み時に GPU の形式（PC は BC 系、スマホは ASTC / ETC2）に変換します。
 
 ## 任意の AI 文章生成
 
@@ -113,5 +154,5 @@ COGWILD_AI_ENDPOINT=https://api.openai.com/v1/chat/completions COGWILD_AI_KEY=..
 
 - 人物・機械・建物・木や岩・地面・アイテムアイコン・タイトル画像は、画像生成モデル（OpenAI gpt-image-1、OMP の画像生成ツール経由）で作った絵を `tools/art/process.py` で加工したもの。プロンプトは `art_src/prompts.json`。
 - 絵がないものの代替表示・UI アイコン・エフェクトはコードで手続き生成。
-- 効果音・BGM・環境音は `audio_gen.py` による手続き生成（第三者素材なし）。
+- 効果音・環境音は `audio_gen.py`、BGM 5 曲は `tools/audio/compose_bgm.py` による手続き生成（第三者素材なし、OGG Vorbis）。
 - フォント: Noto Sans / Noto Serif（`game/assets/fonts/LICENSE-Noto.txt`）、日本語は Noto Sans CJK JP のサブセット（`CogwildCJK-*.otf`、`LICENSE-NotoCJK.txt`、いずれも SIL OFL 1.1）。

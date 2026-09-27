@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ggnn4yikyni5"
-path.bptc="res://.godot/imported/war_drone.png-4871c212964a92b2d796631fb1442035.bptc.ctex"
+uid="uid://deha6npufk8a0"
+path="res://.godot/imported/war_drone.png-4871c212964a92b2d796631fb1442035.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/war_drone.png"
-dest_files=["res://.godot/imported/war_drone.png-4871c212964a92b2d796631fb1442035.bptc.ctex"]
+dest_files=["res://.godot/imported/war_drone.png-4871c212964a92b2d796631fb1442035.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

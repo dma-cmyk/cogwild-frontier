@@ -19,6 +19,8 @@ var w: World
 var visual: UnitVisual
 var ring: MeshInstance3D
 var bar: MeshInstance3D
+## Per-bar copy of the shared bar material (plain uniforms; see hp_bar.gdshader).
+var _bar_values: ShaderMaterial
 var shadow: MeshInstance3D
 var selected := false
 var hovered := false
@@ -86,7 +88,8 @@ func setup(world: World, unit: Unit) -> void:
 	add_child(ring)
 	bar = MeshInstance3D.new()
 	bar.mesh = _bar_mesh
-	bar.material_override = _bar_mat
+	_bar_values = _bar_mat.duplicate() as ShaderMaterial
+	bar.material_override = _bar_values
 	bar.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	bar.visible = false
 	add_child(bar)
@@ -191,10 +194,10 @@ func sync(alpha: float, delta: float) -> void:
 	bar.visible = u.alive and u.state != Unit.State.DOWNED and (selected or ratio < 0.999 or hovered)
 	if bar.visible:
 		bar.position = Vector3(0, _bar_h, 0)
-		bar.set_instance_shader_parameter("ratio", ratio)
+		_bar_values.set_shader_parameter("ratio", ratio)
 		var col := Color("#58d65a") if u.is_player() else (Color("#e0493b") if w.hostile("player", u.faction) else Color("#e8c14a"))
-		bar.set_instance_shader_parameter("fill_color", col)
+		_bar_values.set_shader_parameter("fill_color", col)
 		var e := -1.0
 		if u.is_person() and u.is_player() and selected:
 			e = clampf(u.energy / maxf(1.0, float(u.stats.get("energy_max", 100.0))), 0.0, 1.0)
-		bar.set_instance_shader_parameter("ratio2", e)
+		_bar_values.set_shader_parameter("ratio2", e)

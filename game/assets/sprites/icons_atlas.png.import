@@ -3,24 +3,23 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://biplpti6tbono"
-path.bptc="res://.godot/imported/icons_atlas.png-94bda7423471f8feb82ef43ee0e50bbb.bptc.ctex"
+path="res://.godot/imported/icons_atlas.png-94bda7423471f8feb82ef43ee0e50bbb.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons_atlas.png"
-dest_files=["res://.godot/imported/icons_atlas.png-94bda7423471f8feb82ef43ee0e50bbb.bptc.ctex"]
+dest_files=["res://.godot/imported/icons_atlas.png-94bda7423471f8feb82ef43ee0e50bbb.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

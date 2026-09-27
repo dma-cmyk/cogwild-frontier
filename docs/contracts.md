@@ -7,10 +7,10 @@ closest version and report the deviation.
 
 ## 0. Project facts
 
-- Root: `/home/dma/プロジェクト/cogwild-frontier/`, Godot project in `game/` (run `godot --path game`).
+- Root: the repository root, Godot project in `game/` (run `godot --path game`).
 - Godot **4.7.2**, GDScript only, **static typing** (`var hp: int`, return types), tabs for indent.
-- Renderer: **Mobile** (target GPU: Intel Iris Xe). No physics bodies are used for units/props.
-- Autoloads: `DB` (data registry, `src/core/db.gd`), `App` (`src/core/app.gd`). Do not add autoloads.
+- Renderer: **Compatibility** (OpenGL 3.3 / WebGL 2, same as the Web build; target GPU: Intel Iris Xe and phones). No physics bodies are used for units/props. No instance uniforms (the WebGL2 buffer is tiny): per-object shader values are plain uniforms on a private material copy.
+- Autoloads: `Settings` (player settings), `DB` (data registry), `App` (input, scene changes, UI scale), `Sfx` (audio), `Loc` (localization), `Quality` (graphics presets).
 - Shared, read-only for sub-modules (ask the integrator in your report if a change is needed):
   `project.godot`, `src/core/*`, `src/visual/mesh_kit.gd`, `src/visual/look_dev.gd`,
   `src/visual/shaders/*`, `tests/test_case.gd`, `tests/run_tests.*`.
@@ -18,14 +18,14 @@ closest version and report the deviation.
   `godot --headless --path game res://tests/run_tests.tscn -- --filter=<name>`.
 - After adding scripts with `class_name` or new assets run `godot --headless --path game --import`.
   Several agents share the project; if a class is "not found", re-run the import once.
-- Windowed screenshots: `python3 ~/.omp/agent/skills/game-production/scripts/godot_probe.py game --scene res://tests/<scene>.tscn --shot 10 --frames 12 --resolution 1600x900 --out /tmp/cf_probe/<name>`.
-  The machine has ~1 GB free RAM: run one Godot instance at a time, prefer headless, keep windowed runs short.
+- Windowed screenshots: `python3 ~/.omp/agent/skills/game-production/scripts/godot_probe.py game --scene res://tests/<scene>.tscn --shot 10 --frames 12 --resolution 1600x900 --out build/probe/<name>`.
+  The machine has ~1 GB free RAM: run one Godot instance at a time (`flock /tmp/cogwild-godot.lock ...`), prefer headless, keep windowed runs short.
 - Never run destructive git commands. Do not edit files owned by another module.
 
 ## 1. World conventions & art direction
 
 - 1 unit = 1 m, +Y up, **model front = +Z**. One map tile = 1 × 1 m.
-- Camera (LookDev): orthographic, pitch −38°, yaw 45°, looking from +X+Z toward −X−Z, so the
+- Camera (LookDev): orthographic, pitch −30° (matches the painted 2:1 isometric art), fixed yaw 45°, looking from +X+Z toward −X−Z, so the
   **+X, +Z and +Y faces are what players see**; put doors, faces, emblems on +Z (and +X).
   Default zoom `size = 28` (≈38 px per metre at 1080p), close 12, far 64.
 - Lighting: `LookDev.setup_preview(parent, target, size)` gives the in-game sun/environment/camera.

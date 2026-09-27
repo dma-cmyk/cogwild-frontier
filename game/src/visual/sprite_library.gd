@@ -96,11 +96,49 @@ static func chip_id(dna: Dictionary, hints: Dictionary = {}) -> String:
 	return "%s_%s_%s" % [str(dna.get("race", "human")), look_for(dna), g]
 
 
+## Number of loadable painted looks for this unit's base sheet.
+static func variant_count(dna: Dictionary, hints: Dictionary = {}) -> int:
+	var base_id := chip_id(dna, hints)
+	var count := 0
+	# existence only: loading every variant's sheet here would put unused textures in video memory
+	for id: String in [base_id, base_id + "@v2"]:
+		var entry := DB.get_def("art/sprites", id)
+		if not entry.is_empty() and ResourceLoader.exists(str(entry.get("texture", ""))):
+			count += 1
+	return count
+
+
+## The founder's explicit choice (dna["art_variant"]) wins; everyone else gets a stable look derived
+## from their appearance DNA, so generation does not draw extra random numbers.
+static func art_variant(dna: Dictionary, hints: Dictionary = {}) -> int:
+	var count := variant_count(dna, hints)
+	if count <= 1:
+		return 0
+	if dna.has("art_variant"):
+		return posmod(int(dna["art_variant"]), count)
+	var base_id := chip_id(dna, hints)
+	var identity := "%s|%s|%s|%s|%s|%s" % [
+		str(dna.get("seed", 0)), str(dna.get("hair", "")), str(dna.get("hair_color", "")),
+		str(dna.get("skin", "")), str(dna.get("gender", "")), base_id]
+	return posmod(hash(identity), count)
+
+
+static func _variant_id(base_id: String, variant: int) -> String:
+	return base_id + "@v2" if variant == 1 else base_id
+
+
+static func _variant_entry(table: String, base_id: String, variant: int) -> Dictionary:
+	var entry := DB.get_def(table, _variant_id(base_id, variant))
+	if entry.is_empty() and variant != 0:
+		entry = DB.get_def(table, base_id)
+	return entry
+
 ## "art/sprites" entry for a unit, or {} when it has no painted sheet.
 static func chip(dna: Dictionary, hints: Dictionary = {}) -> Dictionary:
 	if not enabled:
 		return {}
-	var entry := DB.get_def("art/sprites", chip_id(dna, hints))
+	var id := chip_id(dna, hints)
+	var entry := _variant_entry("art/sprites", id, art_variant(dna, hints))
 	if entry.is_empty() or texture(str(entry.get("texture", ""))) == null:
 		return {}
 	return entry
@@ -176,17 +214,19 @@ static func portrait(dna: Dictionary, hints: Dictionary = {}) -> Texture2D:
 	if not enabled:
 		return null
 	var id := chip_id(dna, hints)
-	if _portraits.has(id):
-		return _portraits[id] as Texture2D
+	var variant := art_variant(dna, hints)
+	var key := _variant_id(id, variant)
+	if _portraits.has(key):
+		return _portraits[key] as Texture2D
 	var tex: Texture2D = null
-	var entry := DB.get_def("art/portraits", id)
+	var entry := _variant_entry("art/portraits", id, variant)
 	if not entry.is_empty():
 		tex = texture(str(entry.get("texture", "")))
 	if tex == null:
 		var c := chip(dna, hints)
 		if not c.is_empty():
 			tex = chip_front_frame(c)
-	_portraits[id] = tex
+	_portraits[key] = tex
 	return tex
 
 

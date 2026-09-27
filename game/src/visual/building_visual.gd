@@ -69,7 +69,7 @@ func set_construction(progress: float) -> void:
 		idx = 1
 	_body.mesh = _stage_meshes[idx]
 	if _card != null:
-		_card.set_instance_shader_parameter("reveal", clampf(_construction / 0.82, 0.0, 1.0))
+		(_card.material_override as ShaderMaterial).set_shader_parameter("reveal", clampf(_construction / 0.82, 0.0, 1.0))
 		if _scaffold != null:
 			_scaffold.visible = _construction < 0.82
 		if _sails != null:
@@ -124,7 +124,7 @@ func _process(delta: float) -> void:
 		_moving.rotate(_moving_axis, delta * _spin_speed)
 	if _sails != null:
 		_sails_angle -= delta * _spin_speed
-		_sails.set_instance_shader_parameter("roll", _sails_angle)
+		(_sails.material_override as ShaderMaterial).set_shader_parameter("roll", _sails_angle)
 	if not _smoke_card.is_empty():
 		_place_smoke()
 
@@ -137,7 +137,7 @@ func set_sprite(entry: Dictionary, scaffold: Dictionary, hue_shift: float, sails
 		_quad.size = Vector2.ONE
 	_body.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 	_card = _make_card("Picture", entry, 0.05)
-	_card.set_instance_shader_parameter("hue_shift", hue_shift)
+	(_card.material_override as ShaderMaterial).set_shader_parameter("hue_shift", hue_shift)
 	if not scaffold.is_empty():
 		_scaffold = _make_card("Scaffold", scaffold, 0.6)
 	if _moving != null:
@@ -166,9 +166,9 @@ func _make_card(node_name: String, entry: Dictionary, toward: float) -> MeshInst
 	var card := MeshInstance3D.new()
 	card.name = node_name
 	card.mesh = _quad
-	var mat := SpriteLibrary.building_material(entry, footprint)
+	# a private copy: reveal / hue are per building (plain uniforms, see sprite_building.gdshader)
+	var mat := SpriteLibrary.building_material(entry, footprint).duplicate() as ShaderMaterial
 	if toward != 0.05:
-		mat = mat.duplicate() as ShaderMaterial
 		mat.set_shader_parameter("depth_toward", toward)
 	card.material_override = mat
 	var size := SpriteLibrary.building_card_size(entry, footprint)
@@ -204,8 +204,8 @@ func _add_sails(entry: Dictionary, sails: Dictionary) -> void:
 	_sails.scale = Vector3(d, d * float(sp[1]) / float(sp[0]), 1.0)
 	_sails.custom_aabb = AABB(Vector3(-2.0, -2.0, -2.0), Vector3(4.0, 4.0, 4.0))
 	_sails.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	_sails.set_instance_shader_parameter("offset", _sails_offset)
-	_sails.set_instance_shader_parameter("frame", Vector2.ZERO)
+	mat.set_shader_parameter("offset", _sails_offset)
+	mat.set_shader_parameter("frame", Vector2.ZERO)
 	add_child(_sails)
 
 

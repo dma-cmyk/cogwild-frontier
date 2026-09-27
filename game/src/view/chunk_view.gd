@@ -53,8 +53,13 @@ static func terrain_material() -> ShaderMaterial:
 		# the importer produces a CompressedTexture2DArray (a TextureLayered, not a Texture2DArray)
 		var ok := layers is TextureLayered and (layers as TextureLayered).get_layered_type() == TextureLayered.LAYERED_TYPE_2D_ARRAY
 		_terrain_mat.set_shader_parameter("use_layers", ok)
+		_terrain_mat.set_shader_parameter("detail_enabled", Quality.terrain_detail_enabled())
 	return _terrain_mat
 
+
+
+func apply_terrain_detail(enabled: bool) -> void:
+	terrain_material().set_shader_parameter("detail_enabled", enabled)
 
 static func water_material() -> ShaderMaterial:
 	if _water_mat == null:
@@ -368,6 +373,8 @@ func rebuild_props() -> void:
 				prop = "berry_bush_empty"
 			if prop == "":
 				continue
+			if prop in ["grass_tuft", "flowers", "reeds"] and not _keep_prop(prop, x, z):
+				continue
 			var h1 := float((variant * 37) % 100) / 100.0
 			var jx := (h1 - 0.5) * 0.3
 			var jz := (float((variant * 61) % 100) / 100.0 - 0.5) * 0.3
@@ -397,6 +404,8 @@ func rebuild_props() -> void:
 			continue
 		var i := clampi(int(lz), 0, S - 1) * S + clampi(int(lx), 0, S - 1)
 		if ch.res_type[i] != Tiles.Res.NONE and prop in ["grass_tuft", "flowers"]:
+			continue
+		if prop in ["grass_tuft", "flowers", "reeds"] and not _keep_prop(prop, int(lx * 10.0), int(lz * 10.0)):
 			continue
 		if prop == "reeds":
 			pos.y = maxf(pos.y, -0.25)
@@ -428,6 +437,12 @@ func rebuild_props() -> void:
 		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if prop in SHADOW_PROPS else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		props_root.add_child(mmi)
 	_build_cards(cards)
+
+func _keep_prop(prop: String, x: int, z: int) -> bool:
+	var density := Quality.prop_density()
+	if density >= 1.0:
+		return true
+	return RngUtil.hash01(ch.cx * 131 + x, ch.cz * 71 + z, prop.hash() & 0xFFFF) < density
 
 
 func _group(groups: Dictionary, key: String, xf: Transform3D) -> void:

@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bh56pkfyi7v0s"
-path.bptc="res://.godot/imported/scout_drone.png-2a00050961709fc6870d9f72c610e832.bptc.ctex"
+uid="uid://cxvq5nlbaltmp"
+path="res://.godot/imported/scout_drone.png-2a00050961709fc6870d9f72c610e832.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/scout_drone.png"
-dest_files=["res://.godot/imported/scout_drone.png-2a00050961709fc6870d9f72c610e832.bptc.ctex"]
+dest_files=["res://.godot/imported/scout_drone.png-2a00050961709fc6870d9f72c610e832.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

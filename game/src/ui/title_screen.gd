@@ -3,8 +3,6 @@ extends Control
 ## world seed) and a live 3D preview; continue / load saved games; quit.
 
 const COLORS := [["Azure", "#3a5da8"], ["Crimson", "#a83a3a"], ["Forest", "#3f7f45"], ["Violet", "#6a4aa0"], ["Teal", "#2f8a8a"], ["Amber", "#b8862e"]]
-const HAIRS := ["short", "long", "ponytail", "bun", "mohawk", "bald", "braids", "wild"]
-const HAIR_COLORS := ["#2b1d14", "#5a3a22", "#8a5a2e", "#c9a45a", "#e0d2b0", "#a83a2a", "#4a4a4a", "#e8e8e8", "#3a5da8"]
 
 var _menu: VBoxContainer
 var _left: VBoxContainer
@@ -17,13 +15,13 @@ var _race := "human"
 var _role := "settler"
 var _gender := "female"
 var _look_seed := 1
-var _hair_i := -1
-var _hair_col_i := -1
+var _look_variant := 0
 var _color_i := 0
 var _char: Dictionary = {}
 var _preview_vp: SubViewport
 var _preview_node: Node3D
 var _summary: RichTextLabel
+var _look_button: Button
 var _race_buttons: Dictionary = {}
 var _role_buttons: Dictionary = {}
 var _color_buttons: Array = []
@@ -34,6 +32,8 @@ func _ready() -> void:
 	theme = UiTheme.theme()
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_rng.randomize()
+	var viewport_size := App.screen_size()
+	var compact := viewport_size.x < 1300.0 or viewport_size.y < 720.0
 	var bg := TextureRect.new()
 	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	bg.texture = load("res://assets/ui/title_keyart.jpg")
@@ -42,36 +42,39 @@ func _ready() -> void:
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(bg)
 	var shade := ColorRect.new()
-	shade.position = Vector2.ZERO
-	shade.size = Vector2(700, 1080)
+	shade.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE)
 	shade.color = Color(0.025, 0.035, 0.055, 0.72)
 	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(shade)
-	var left := UiTheme.vbox(14)
-	left.position = Vector2(120, 150)
-	left.custom_minimum_size = Vector2(520, 0)
+	var left := UiTheme.vbox(14 if not compact else 8)
+	left.position = Vector2(120, 150) if not compact else Vector2(24, 64)
+	left.custom_minimum_size = Vector2(minf(520.0, viewport_size.x - 48.0), 0)
 	add_child(left)
 	_left = left
-	var t := UiTheme.title("Cogwild Frontier", 64)
+	# the shade covers the menu column, whose width depends on the language and screen size
+	left.resized.connect(func() -> void: shade.offset_right = left.position.x * 2.0 + left.size.x)
+	var t := UiTheme.title("Cogwild Frontier", 64 if not compact else 42)
 	t.add_theme_color_override("font_color", UiTheme.GOLD)
 	left.add_child(t)
-	var sub := UiTheme.label(Loc.t("Settle a living frontier. Command your squads — or trust them and watch."), 20, UiTheme.TEXT)
+	var sub := UiTheme.label(Loc.t("Settle a living frontier. Command your squads — or trust them and watch."), 20 if not compact else 16, UiTheme.TEXT)
 	sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	left.add_child(sub)
 	_menu = UiTheme.vbox(10)
-	_menu.custom_minimum_size = Vector2(360, 0)
+	_menu.custom_minimum_size = Vector2(minf(360.0, viewport_size.x - 48.0), 0)
 	left.add_child(_menu)
 	_menu.add_child(_big_button(Loc.t("New frontier"), "ui_play", _open_create))
 	var latest := _latest_slot()
 	if latest >= 0:
 		_menu.add_child(_big_button(Loc.t("Continue"), "ui_load", func() -> void: App.load_game(latest)))
 	_menu.add_child(_big_button(Loc.t("Load"), "ui_save", _toggle_load))
-	_menu.add_child(_big_button(Loc.t("Quit"), "ui_close", func() -> void: get_tree().quit()))
+	_menu.add_child(_big_button(Loc.t("Settings"), "ui_gear", _open_settings))
+	if not OS.has_feature("web"):
+		_menu.add_child(_big_button(Loc.t("Quit"), "ui_close", func() -> void: get_tree().quit()))
 	_load_box = UiTheme.vbox(6)
 	_load_box.visible = false
 	left.add_child(_load_box)
 	var credit := UiTheme.label(Loc.t("A playable vertical slice · Godot %s · procedural + image-generated art") % Engine.get_version_info()["string"], 14, UiTheme.TEXT_DIM)
-	credit.position = Vector2(24, 1040)
+	credit.position = Vector2(24, viewport_size.y - 40)
 	add_child(credit)
 	var language: HBoxContainer = Loc.language_selector()
 	language.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
@@ -80,8 +83,28 @@ func _ready() -> void:
 	language.offset_top = 20
 	language.offset_bottom = 62
 	add_child(language)
+	if OS.has_feature("web") or App.is_touch():
+		var full := UiTheme.button(Loc.t("Fullscreen"), "ui_target")
+		full.custom_minimum_size = Vector2(130, 44)
+		full.anchor_left = 1.0
+		full.anchor_right = 1.0
+		full.offset_left = -156
+		full.offset_right = -24
+		full.offset_top = 72
+		full.offset_bottom = 116
+		full.pressed.connect(_toggle_fullscreen)
+		add_child(full)
 	Loc.language_changed.connect(func() -> void: get_tree().reload_current_scene.call_deferred())
 	Sfx.start_music()
+
+
+func _open_settings() -> void:
+	SettingsPanel.open(self)
+
+
+func _toggle_fullscreen() -> void:
+	var next := DisplayServer.WINDOW_MODE_WINDOWED if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN else DisplayServer.WINDOW_MODE_FULLSCREEN
+	DisplayServer.window_set_mode(next)
 
 
 func _big_button(text: String, icon: String, cb: Callable) -> Button:
@@ -134,34 +157,48 @@ func _build_create() -> void:
 	_create = UiTheme.panel()
 	_create.add_theme_stylebox_override("panel", UiTheme.flat(Color(0.025, 0.035, 0.055, 0.93), 10, UiTheme.BORDER, 1))
 	_create.visible = false
+	_create.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_create.offset_left = 12
+	_create.offset_top = 12
+	_create.offset_right = -12
+	_create.offset_bottom = -12
 	add_child(_create)
-	_create.position = Vector2(700, 90)
-	_create.custom_minimum_size = Vector2(1120, 900)
+	var viewport_size := App.screen_size()
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_create.add_child(scroll)
 	var h := UiTheme.hbox(18)
-	_create.add_child(h)
+	h.custom_minimum_size = Vector2(660.0 if viewport_size.x >= 700.0 else 520.0, 0)
+	scroll.add_child(h)
 	var form := UiTheme.vbox(8)
-	form.custom_minimum_size = Vector2(640, 0)
+	form.custom_minimum_size = Vector2(640.0 if viewport_size.x >= 700.0 else 500.0, 0)
 	h.add_child(form)
 	form.add_child(UiTheme.title(Loc.t("Your founder"), 28))
 	var nrow := UiTheme.hbox(6)
 	nrow.add_child(_field_label(Loc.t("Name")))
 	_name = LineEdit.new()
-	_name.custom_minimum_size = Vector2(330, 38)
+	_name.custom_minimum_size = Vector2(330.0 if viewport_size.x >= 700.0 else 220.0, 44)
 	_name.max_length = 28
 	_name.text_changed.connect(func(_t: String) -> void: _refresh_summary())
 	nrow.add_child(_name)
-	var dice := UiTheme.button("", "ui_gear", Loc.t("Random name"))
+	var dice := UiTheme.button(Loc.t("Random"), "ui_dice", Loc.t("Random name"))
+	dice.custom_minimum_size = Vector2(132, 44)
+	dice.add_theme_font_size_override("font_size", 15)
 	dice.pressed.connect(_random_name)
 	nrow.add_child(dice)
 	form.add_child(nrow)
 	form.add_child(_field_label(Loc.t("Race")))
-	var rrow := UiTheme.hbox(6)
+	var rrow := GridContainer.new()
+	rrow.columns = 4 if viewport_size.x >= 700.0 else 2
+	rrow.add_theme_constant_override("h_separation", 6)
+	rrow.add_theme_constant_override("v_separation", 6)
 	for r: Dictionary in DB.entries("races"):
 		if not bool(r.get("playable", true)):
 			continue
 		var id := str(r["id"])
 		var b := UiTheme.button(Loc.def_name("races", id))
-		b.custom_minimum_size = Vector2(150, 38)
+		b.custom_minimum_size = Vector2(150, 44)
 		b.tooltip_text = Loc.def_text("races", id, "description")
 		b.pressed.connect(func() -> void:
 			_race = id
@@ -171,7 +208,7 @@ func _build_create() -> void:
 	form.add_child(rrow)
 	form.add_child(_field_label(Loc.t("Role — a starting point, not a class")))
 	var grid := GridContainer.new()
-	grid.columns = 4
+	grid.columns = 4 if viewport_size.x >= 700.0 else 2
 	grid.add_theme_constant_override("h_separation", 6)
 	grid.add_theme_constant_override("v_separation", 6)
 	for r: Dictionary in DB.entries("roles"):
@@ -179,7 +216,7 @@ func _build_create() -> void:
 			continue
 		var id := str(r["id"])
 		var b := UiTheme.button(Loc.def_name("roles", id), str(r.get("class_icon", "")))
-		b.custom_minimum_size = Vector2(152, 40)
+		b.custom_minimum_size = Vector2(152, 44)
 		b.tooltip_text = Loc.def_text("roles", id, "description")
 		b.pressed.connect(func() -> void:
 			_role = id
@@ -189,35 +226,34 @@ func _build_create() -> void:
 	form.add_child(grid)
 	form.add_child(_field_label(Loc.t("Look")))
 	var lrow := UiTheme.hbox(6)
-	for spec: Array in [["Randomize", func() -> void:
-			_look_seed = _rng.randi()
-			_hair_i = -1
-			_hair_col_i = -1
-			_regenerate(false)],
-			["Hair style", func() -> void:
-				_hair_i = (_hair_i + 1) % HAIRS.size()
-				_apply_look()],
-			["Hair colour", func() -> void:
-				_hair_col_i = (_hair_col_i + 1) % HAIR_COLORS.size()
-				_apply_look()],
-			["Gender", func() -> void:
-				_gender = {"female": "male", "male": "nonbinary", "nonbinary": "female"}[_gender]
-				_regenerate(false)]]:
-		var b := UiTheme.button(Loc.t(str(spec[0])))
-		b.custom_minimum_size = Vector2(150, 38)
-		b.pressed.connect(spec[1])
-		lrow.add_child(b)
+	var randomize := UiTheme.button(Loc.t("Randomize"), "ui_dice")
+	randomize.custom_minimum_size = Vector2(150, 44)
+	randomize.pressed.connect(func() -> void:
+		_look_seed = _rng.randi()
+		_look_variant = 0
+		_regenerate(false))
+	lrow.add_child(randomize)
+	_look_button = UiTheme.button(Loc.t("Look %d/%d") % [1, 1], "ui_people")
+	_look_button.custom_minimum_size = Vector2(150, 44)
+	_look_button.pressed.connect(_cycle_look)
+	lrow.add_child(_look_button)
+	var gender := UiTheme.button(Loc.t("Gender"), "", Loc.t("Cycle gender"))
+	gender.custom_minimum_size = Vector2(150, 44)
+	gender.pressed.connect(func() -> void:
+		_gender = {"female": "male", "male": "nonbinary", "nonbinary": "female"}[_gender]
+		_regenerate(false))
+	lrow.add_child(gender)
 	form.add_child(lrow)
 	form.add_child(_field_label(Loc.t("Company & banner")))
 	var crow := UiTheme.hbox(6)
 	_company = LineEdit.new()
-	_company.custom_minimum_size = Vector2(300, 38)
+	_company.custom_minimum_size = Vector2(300.0 if viewport_size.x >= 700.0 else 190.0, 44)
 	_company.max_length = 26
 	_company.text = Loc.t("Frontier Company")
 	crow.add_child(_company)
 	for i in COLORS.size():
 		var sw := Button.new()
-		sw.custom_minimum_size = Vector2(38, 38)
+		sw.custom_minimum_size = Vector2(44, 44)
 		sw.focus_mode = Control.FOCUS_NONE
 		sw.tooltip_text = Loc.t(str(COLORS[i][0]))
 		sw.add_theme_stylebox_override("normal", UiTheme.flat(Color(str(COLORS[i][1])), 6, UiTheme.BORDER_DIM, 2))
@@ -232,16 +268,14 @@ func _build_create() -> void:
 	form.add_child(_field_label(Loc.t("World seed — the same seed always makes the same world")))
 	var srow := UiTheme.hbox(6)
 	_seed = LineEdit.new()
-	_seed.custom_minimum_size = Vector2(220, 38)
+	_seed.custom_minimum_size = Vector2(220.0 if viewport_size.x >= 700.0 else 160.0, 44)
 	_seed.text = str(_rng.randi_range(1, 999999))
 	srow.add_child(_seed)
 	var sd := UiTheme.button(Loc.t("New seed"), "ui_gear")
+	sd.custom_minimum_size = Vector2(170, 44)
 	sd.pressed.connect(func() -> void: _seed.text = str(_rng.randi_range(1, 999999)))
 	srow.add_child(sd)
 	form.add_child(srow)
-	var spacer := Control.new()
-	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	form.add_child(spacer)
 	var brow := UiTheme.hbox(10)
 	var back := UiTheme.button(Loc.t("Back"), "ui_close")
 	back.custom_minimum_size = Vector2(160, 50)
@@ -256,12 +290,12 @@ func _build_create() -> void:
 	start.pressed.connect(_start)
 	brow.add_child(start)
 	form.add_child(brow)
-	# preview
 	var right := UiTheme.vbox(8)
-	right.custom_minimum_size = Vector2(420, 0)
+	right.custom_minimum_size = Vector2(360, 0)
+	right.visible = viewport_size.x >= 1300.0 and viewport_size.y >= 720.0
 	h.add_child(right)
 	var svc := SubViewportContainer.new()
-	svc.custom_minimum_size = Vector2(420, 420)
+	svc.custom_minimum_size = Vector2(360, 360)
 	svc.stretch = true
 	right.add_child(svc)
 	_preview_vp = SubViewport.new()
@@ -341,12 +375,12 @@ func _apply_look() -> void:
 	rng.seed = _look_seed
 	var color := Color(str(COLORS[_color_i][1]))
 	var dna := AppearanceGen.character(rng, _race, _role, "frontier", color, _gender)
-	if _hair_i >= 0:
-		dna["hair"] = HAIRS[_hair_i]
-	if _hair_col_i >= 0:
-		dna["hair_color"] = HAIR_COLORS[_hair_col_i]
+	var variant_count := _sprite_variant_count(dna)
+	_look_variant = posmod(_look_variant, variant_count)
+	dna["art_variant"] = _look_variant
 	_char["appearance"] = dna
-	# show the equipped starting weapon/armour on the preview
+	if _look_button:
+		_look_button.text = Loc.t("Look %d/%d") % [_look_variant + 1, variant_count]
 	var u := Unit.new()
 	u.character = _char
 	u.dna = dna
@@ -355,6 +389,16 @@ func _apply_look() -> void:
 	_show_preview(u.dna)
 	_refresh_summary()
 
+
+func _sprite_variant_count(dna: Dictionary) -> int:
+	return maxi(1, SpriteLibrary.variant_count(dna))
+
+
+func _cycle_look() -> void:
+	var dna: Dictionary = _char.get("appearance", {})
+	var count := _sprite_variant_count(dna)
+	_look_variant = (_look_variant + 1) % count
+	_apply_look()
 
 func _show_preview(dna: Dictionary) -> void:
 	if _preview_node:

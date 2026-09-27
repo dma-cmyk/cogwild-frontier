@@ -2,6 +2,61 @@
 
 起動: `./run.sh`（または `godot --path game`）。操作・遊び方は README、設計と仮定は `docs/design.md`。
 
+## 更新（2026-09-27 その 2）: 音と設定・スマホとブラウザ・住民の見た目・戦闘・吹き出し
+
+**ブラウザで遊ぶ: https://dma-cmyk.github.io/cogwild-frontier/**（`main` への push で GitHub Actions が Web 版を書き出して公開）
+
+- **音を軽く、選べるように**:
+  - 効果音 37 個を WAV から OGG Vorbis にしました（WAV は削除）。
+  - BGM は `tools/audio/compose_bgm.py` で 5 曲（タイトル・昼の開拓地・工房・夜・戦闘）を手続き作曲しました。ループ継ぎ目と音量（-20〜-14 LUFS）を測定済みで、音声は合計 1.9 MB です。
+  - Music / SFX / Ambience のバスとリミッターを入れました。
+- **設定画面**（タイトルの「設定」と Esc メニュー）: 言語、BGM（自動＝場面で切り替え / シャッフル / なし / 曲を固定）、音量 4 系統、画質（自動 / 低 / 中 / 高）、UI サイズ、吹き出しを変えられます。`user://settings.cfg`（ブラウザ版は IndexedDB）に保存されます。
+- **作成画面の空ボタン**: 名前の隣のボタンはアイコンの SVG が無く、何も描かれていませんでした。サイコロのアイコンと「ランダム / おまかせ」の文字を付けました。
+- **スマホ対応**:
+  - タッチ操作: タップで選択と命令、1 本指でカメラ移動、ピンチでズーム、長押しで詳細、範囲選択の切り替え、建設は「決定 / 取消」、壁は両端をタップ。
+  - 画面の大きさ: 画面の大きさと画素密度から UI を自動で拡大し、横幅の狭い画面ではミニマップと詳細パネルを引き出し式にします。
+  - その他: 縦向きでは横向きを勧める案内、全画面ボタン、仮想キーボード。タッチ端末では画面端スクロールを切りました。
+- **ブラウザ版**:
+  - Compatibility レンダラー（WebGL 2）に統一し、デスクトップ版も同じ見た目になりました。
+  - 絵は Basis Universal で 1 種類だけ配布し、読み込み時に GPU の形式へ変換します。
+  - 画質のプリセットを用意しました（低は草木の密度・影・細部を落とす）。
+  - チャンクの見た目の生成を 1 フレーム 3.5 ms までに分割し、開始地点周辺だけは開始時にまとめて作ります。
+  - スレッドなしのテンプレートなので、COOP/COEP ヘッダの無い GitHub Pages でも動きます。読み込みは約 92 MB です。
+- **住民の見た目の種類**:
+  - 人物のチップと肖像をもう 1 組ずつ画像生成しました（v2。チップ 40 種・肖像 40 枚。v1 を画風の参照画像にして、髪型・髪色・服・小物を変えています）。
+  - 人物の絵は 44 種から 84 種になりました。住民は DNA から v1 か v2 が決まり、創設者は作成画面の「見た目 1/2」で選べます。
+  - シミュレーション用の乱数は消費しないので、同じシードなら以前と同じ世界です。
+- **戦闘の手応え**:
+  - ダメージと「はずれ」の数字が浮かぶようにしました。
+  - 近接は斬撃の弧、被弾はフラッシュとのけぞり、ダウンは倒れる動きで見せます。画面内の近くで爆発が起きると画面が揺れます。
+  - エフェクトは画質「低」で量を減らします。
+- **建物とカメラの角度**: カメラの見下ろし角を 38° から 30° にし、画像生成した建物の 2:1 の等角と揃えました。建物の絵は 1 方向だけなので、カメラの回転（Q/E）はなくしました。
+- **吹き出し（RimWorld 風）**:
+  - 住民が話す内容は 3 種類です。
+    - 仕事中の一言: 伐採・採掘・運搬・建設・畑・巡回・探索など。
+    - 近くの仲間との雑談: 2 人の掛け合い。
+    - 戦闘中のかけ声: 被弾・助けを呼ぶ・撤退・敵を倒した・持ちこたえた、など。
+  - 日本語と英語でそれぞれ 64 行あります。
+  - 表示の制限: 人物ごとにクールダウンがあり、画面上は最大 5 個です。重なる吹き出しはずらし、詳細パネルの上には出しません。
+  - 設定で「すべて / 戦闘のみ / なし」を選べます。
+- **小隊の攻撃経路**: 攻撃目標までの道が「まだ生成されていない土地」を通る場合、以前はすぐ「道が見つからない」と諦めていました。今は間の土地を生成してから探し直します。
+- **テスト**: `test_chatter.gd`（吹き出しの日英対応・話者の条件）を追加しました。v2 の網羅と選択は `test_painted_art.gd` に、翻訳の抜けの検査は全カタログを対象にしました。全 38 件 PASS です。
+- **性能**（Iris Xe・1600×900・Compatibility・画質「中」）:
+  - x1・既定ズーム: 平均 14.6 ms（前回 12.7〜14.4 ms）、p95 25.4 ms（前回 16〜19 ms）。
+  - VRAM: 86 MB（前回 215 MB）。
+  - ブラウザ版（Chrome・同じ PC）: ゲーム中 約 45 fps、タイトル 96 fps。
+
+面白い点・弱い点（今回の変更後）:
+
+- 住民が「いい木だ。全部使おう。」「だんだん形になってきた。」とつぶやき、戦闘では「下がって立て直そう！」「やられた…まだ立てる！」と叫びます。眺めているだけで、誰が何をしているかが分かるようになりました。放置プレイの楽しさが一番上がった変更です。
+- 数字と斬撃が出るので、誰が誰を殴っているかが読めるようになりました。ただし戦闘そのもの（隊形・スキルの駆け引き）はまだ浅いです。
+- 建物の角度が絵と合い、村の見た目が安定しました。代わりにカメラを回せなくなりました。
+- 人物の絵は 2 倍になりましたが、同じ種族・装備・性別の住民は 2 種類の絵のどちらかなので、10 人を超えると同じ顔がまた目立ちます。
+- スマホはデスクトップ Chrome の端末エミュレーション（iPhone 12 の横向き）で、タイトル → 設定 → 作成 → 開始 → 選択・移動・ピンチ・建設まで確認しました。実機では確認していません。ボタンが多く、小さい画面ではまだ窮屈です。
+- 近い盗賊の野営地が川や崖の向こうで歩いて行けない世界がまだあります。試したシード 5 個中 3 個が該当しました（小隊は通知して待機します）。
+- Compatibility レンダラーにしたので、ネイティブ版の p95 が前回より悪化しています。チャンク生成の単発のカクつき（約 0.5 秒）も残っています。
+
+
 ## 更新（2026-09-27）: 日本語対応と画像生成アート
 
 - **日本語 / 英語の切り替え**:
@@ -58,16 +113,17 @@
 | 種類 | コマンド / シナリオ | 結果 |
 |---|---|---|
 | 全リソース読込 | `godot_probe.py game --health` | PASS（エラー・警告 0） |
-| ヘッドレステスト | `godot --headless --path game res://tests/run_tests.tscn` | 23/23 PASS（77 s） |
+| ヘッドレステスト | `godot --headless --path game res://tests/run_tests.tscn` | 38/38 PASS（92 s、2026-09-27 時点。初回は 23/23） |
 | 決定性 | 同 seed で 900 tick 後の全状態が一致 | PASS |
 | セーブ/ロード | 保存→読込で全状態一致、さらに 600 tick 進めても一致（float は 1e-6 で比較） | PASS |
 | 長時間 | 10 日間放置（小隊 Auto・飛行船 Auto） | PASS: 負の資源・NaN なし、ユニット 94 以下、探索約 15 万タイル、拠点約 25 発見、約 2 ms/tick |
 | 生成 | 品質分布 2 万回、NPC 才能の偏り 500 人、名前の重複、データ相互参照 | PASS |
 | 見た目 | 全建物 × 全様式 × 段階、全小物の予算、全アイコンが互いに異なる、全 VFX | PASS |
 | AI 層 | 未設定で無効 / ローカルのモックサーバーで実際に HTTP 往復し文章だけ書き換わる | PASS |
-| 実プレイ（ウィンドウ） | `tests/probe/explore_day.json`（探索と報告）、`combat_camp.json`（seed 11 で野営地を掃討・戦利品 8 個）、`build_windmill.json`（UI クリックで配置→住民が建設）、`save_load.json`（F5→F9 で続行）、タイトル→作成→開始 | すべて PASS |
+| 実プレイ（ウィンドウ） | `tests/probe/explore_day.json`（探索と報告）、`combat_camp.json`（世界シード 11 で野営地を掃討・戦利品 8 個）、`build_windmill.json`（UI クリックで配置→住民が建設）、`save_load.json`（F5→F9 で続行）、`night.json`、`showcase.json`、`battle_shots.json`、タイトル→作成→開始 | すべて PASS（2026-09-27 に現行版で再実行） |
+| ブラウザ版 | ローカルの Web 書き出しを Chrome（実 GPU）で開き、PC 表示と iPhone 12 横向きのエミュレーションで操作 | タイトル・設定・作成・開始・選択・移動・ピンチ・建設まで動作 |
 
-## パフォーマンス（Intel Iris Xe、1600×900、Mobile レンダラー、vsync なし）
+## パフォーマンス（初回計測: Intel Iris Xe、1600×900、Mobile レンダラー、vsync なし。現在の値は冒頭の更新を参照）
 
 | 場面 | 平均 | p95 | draw calls | primitives |
 |---|---|---|---|---|
@@ -104,11 +160,30 @@
 - 届かない拠点がある（上記）。開始地点付近の必須拠点は高さを揃えて配置し、川の浅瀬を増やして減らしている。
 - ユニット同士の押し合い（回避）はない。重なることがある。
 - セーブ/ロード後の継続は float の末尾誤差を除いて一致（完全なビット一致ではない）。
-- 画像アートの人物は 44 種の絵の使い回し。建物の絵は 1 方向のみ（カメラを回しても同じ面）。
+- 人物の絵は 84 種（種族 × 見た目 × 性別 × 2 種）の使い回し。建物の絵は 1 方向のみ（そのためカメラは回転しない）。
 - 世界の広さは開始点から ±320 m（設定値）。
-- 生成画像の等角の角度（約 30°）とカメラ（38°）の差で、建物がわずかに浅く見える。
+- スマホは実機未確認（デスクトップ Chrome のエミュレーションのみ）。
 
 ## 変更ファイル（新規プロジェクト。主要なもの）
+
+2026-09-27（その 2）の更新で追加・変更したもの:
+
+- 音と設定:
+  - `tools/audio/compose_bgm.py`、`game/assets/audio/`（全て OGG）、`game/default_bus_layout.tres`
+  - `game/src/core/{sfx,settings,quality}.gd`、`game/src/ui/{settings_panel,pause_menu,title_screen}.gd`
+- スマホとブラウザ:
+  - `game/src/core/app.gd`（UI の自動拡大・タッチ判定）
+  - `game/src/view/{input_controller,camera_rig,game}.gd`
+  - `game/src/ui/{hud,info_panel,squad_panel,build_menu}.gd`
+  - `game/export_presets.cfg`、`game/web_shell.html`、`tools/web/`、`.github/workflows/pages.yml`
+- 住民の見た目の種類:
+  - `tools/art/{make_prompts.py,process.py}`、`art_src/prompts.json`
+  - `game/assets/{sprites/chars,portraits}/*_v2.png`、`game/data/art/{sprites,portraits}.json`
+  - `game/src/visual/sprite_library.gd`
+- 戦闘と角度: `game/src/sim/combat.gd`、`game/src/visual/{vfx,sprite_unit_visual,look_dev,building_visual}.gd`、`game/src/visual/shaders/*`、`game/src/view/{world_view,chunk_view,unit_view}.gd`
+- 吹き出し: `game/src/view/chatter.gd`、`game/src/ui/speech_bubbles.gd`、`game/data/i18n/chatter-*.json`
+- 小隊の攻撃経路: `game/src/sim/squad_ai.gd`
+- テスト: `game/tests/{test_chatter,test_painted_art,test_i18n}.gd`、`game/tests/gallery_units.gd`
 
 2026-09-27 の更新で追加・変更したもの:
 
@@ -145,7 +220,9 @@ Git: 新規リポジトリに初回コミット `e87e29b`（以降の修正は�
 
 ## スクリーンショット
 
-`docs/screenshots/`（画像生成アート）: `title.png`, `character_creation.png`, `settlement_day.png`（商人の交易パネル付き）, `settlement_evening.png`, `night.png`, `construction.png`, `windmill_built_via_ui.png`, `build_menu.png`（日本語）, `bandit_camp.png`, `combat_retreat.png`, `world_overview_zoomed_out.png`, `world_map_seed11.png`。
+`docs/screenshots/`（画像生成アート。2026-09-27 に現行版で撮り直し）: `title.png`, `character_creation.png`, `settlement_day.png`（商人の交易パネル付き）, `settlement_evening.png`（吹き出し）, `night.png`, `construction.png`（建設中の風車）, `windmill_built_via_ui.png`, `build_menu.png`（日本語）, `bandit_camp.png`, `combat_retreat.png`（撤退のかけ声）, `speech_battle.png`（戦闘中の吹き出し）, `speech_ja.png`, `speech_en.png`, `speech_mobile.png`（1170×540）, `world_overview_zoomed_out.png`, `world_map_seed11.png`。
+
+人物の v1 / v2 の比較は `docs/screenshots/dev/units_variants.png`。
 
 `docs/screenshots/i18n/`: `ja_title.png`, `ja_creation.png`, `ja_new_game.png`, `ja_hud.png`, `ja_pause.png`, `en_hud.png`。
 

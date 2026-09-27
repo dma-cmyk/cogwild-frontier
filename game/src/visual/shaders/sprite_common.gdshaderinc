@@ -25,6 +25,15 @@ vec2 card_size(mat4 model) {
 float coverage(float a, float lod) {
 	return clamp(a * (1.0 + max(lod, 0.0) * 0.28), 0.0, 1.0);
 }
+// GLSL ES 3.0 / Compatibility does not expose textureQueryLod; derive the sampled mip level
+// from the actual UV gradients so fine alpha coverage remains stable while zooming out.
+float manual_lod(vec2 uv, vec2 texture_size) {
+	vec2 px = uv * texture_size;
+	vec2 dx = dFdx(px);
+	vec2 dy = dFdy(px);
+	return max(0.0, 0.5 * log2(max(dot(dx, dx), dot(dy, dy))));
+}
+
 
 vec3 rgb_to_hsv(vec3 c) {
 	vec4 k = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);

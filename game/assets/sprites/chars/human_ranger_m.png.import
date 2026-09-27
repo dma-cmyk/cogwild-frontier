@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://claeeljtt5nwk"
-path.bptc="res://.godot/imported/human_ranger_m.png-3b1f0d2b491d825e2fba830524db4fe2.bptc.ctex"
+uid="uid://ctf480mf1gie2"
+path="res://.godot/imported/human_ranger_m.png-3b1f0d2b491d825e2fba830524db4fe2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/human_ranger_m.png"
-dest_files=["res://.godot/imported/human_ranger_m.png-3b1f0d2b491d825e2fba830524db4fe2.bptc.ctex"]
+dest_files=["res://.godot/imported/human_ranger_m.png-3b1f0d2b491d825e2fba830524db4fe2.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

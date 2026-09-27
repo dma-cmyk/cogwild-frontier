@@ -23,6 +23,35 @@ var _ghost_type := ""
 var _foot: MeshInstance3D
 var _foot_mats := {}
 var _last_reason := ""
+var box_select_mode := false
+var _touches: Dictionary = {}
+var _touch_start := Vector2.ZERO
+var _touch_last := Vector2.ZERO
+var _touch_id := -1
+var _pinch_distance := 0.0
+var _touch_moved := false
+var _touch_long_pressed := false
+var _touch_elapsed := 0.0
+var _touch_build_point: Variant = null
+
+
+## True while a finger rests on the world long enough to show what is under it.
+func is_long_pressing() -> bool:
+	return _touch_id >= 0 and _touch_long_pressed
+
+
+func confirm_touch_build() -> void:
+	if not mode.begins_with("build:") or not (_touch_build_point is Vector3):
+		return
+	hover_ground = _touch_build_point
+	_place(mode.substr(6), false)
+
+
+func cancel_touch_mode() -> void:
+	if mode != "":
+		set_mode("")
+
+
 var _wall_start: Variant = null
 
 
@@ -52,8 +81,8 @@ func _mat(c: Color) -> StandardMaterial3D:
 
 func set_mode(m: String) -> void:
 	mode = m
+	_touch_build_point = null
 	_left_down = false
-	dragging = false
 	zone_start = null
 	_wall_start = null
 	if _ghost:
@@ -76,13 +105,160 @@ func _mouse() -> Vector2:
 
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouse and event.device == InputEvent.DEVICE_ID_EMULATION:
+		return
 	if event is InputEventMouse:
 		_mouse_pos = (event as InputEventMouse).position
 
 
-func pick_unit(sp: Vector2, prefer_hostile: bool = false) -> Unit:
+func _handle_touch(event: InputEvent) -> void:
+	if event is InputEventScreenTouch:
+		var touch := event as InputEventScreenTouch
+		if touch.pressed:
+			_touches[touch.index] = touch.position
+			if _touches.size() == 1:
+				_touch_id = touch.index
+				_touch_start = touch.position
+				_touch_last = touch.position
+				_touch_moved = false
+				_touch_long_pressed = false
+				_touch_elapsed = 0.0
+				_mouse_pos = touch.position
+			elif _touches.size() == 2:
+				_touch_id = -1
+				_touch_moved = true
+				_pinch_distance = _touch_distance()
+			get_viewport().set_input_as_handled()
+		else:
+			if not _touches.has(touch.index):
+				return
+			var last_count := _touches.size()
+			_touches.erase(touch.index)
+			if last_count >= 2:
+				if _touches.size() == 1:
+					for id: int in _touches.keys():
+						if id >= 0:
+							_touch_id = id
+							_touch_last = _touches[id]
+							_touch_start = _touch_last
+							_touch_elapsed = 0.0
+							_touch_moved = true
+							break
+			elif touch.index == _touch_id:
+				if not _touch_moved and not _touch_long_pressed:
+					_touch_tap(touch.position)
+				elif mode == "build:wall" and hover_ground is Vector3:
+					_place("wall", false)
+				elif mode.begins_with("zone:"):
+					_finish_zone(mode.substr(5))
+				elif box_select_mode and dragging:
+					_box_select(drag_rect)
+				_left_down = false
+				dragging = false
+				_touch_id = -1
+			get_viewport().set_input_as_handled()
+	elif event is InputEventScreenDrag:
+		var drag := event as InputEventScreenDrag
+		if not _touches.has(drag.index):
+			return
+		_touches[drag.index] = drag.position
+		if _touches.size() >= 2:
+			var old_distance := _pinch_distance
+			var new_distance := _touch_distance()
+			var center := _touch_center()
+			if old_distance > 1.0:
+				g.rig.zoom_at(center, old_distance / maxf(1.0, new_distance))
+			_pinch_distance = new_distance
+			_touch_moved = true
+		elif drag.index == _touch_id:
+			var delta := drag.position - _touch_last
+			_touch_last = drag.position
+			_mouse_pos = drag.position
+			if drag.position.distance_to(_touch_start) > DRAG_PX:
+				_touch_moved = true
+				if mode.begins_with("build:") or mode.begins_with("zone:"):
+					_left_down = true
+					drag_start = _touch_start
+					hover_ground = g.rig.screen_to_ground(drag.position)
+					if mode.begins_with("build:") and hover_ground is Vector3:
+						if mode != "build:wall":
+							_touch_build_point = hover_ground
+						elif not (_wall_start is Vector2i):
+							var start_ground: Variant = g.rig.screen_to_ground(_touch_start)
+							if start_ground is Vector3:
+								_wall_start = _tile_at(start_ground)
+					_update_ghost()
+					if mode.begins_with("zone:"):
+						_update_zone_preview()
+				elif box_select_mode:
+					_left_down = true
+					drag_start = _touch_start
+					dragging = true
+					drag_rect = Rect2(drag_start, drag.position - drag_start).abs()
+				else:
+					g.rig.pan_screen(delta)
+			get_viewport().set_input_as_handled()
+
+
+func _touch_distance() -> float:
+	var points: Array[Vector2] = []
+	for id: int in _touches:
+		if id >= 0:
+			points.append(_touches[id])
+	if points.size() < 2:
+		return 0.0
+	return points[0].distance_to(points[1])
+
+
+func _touch_center() -> Vector2:
+	var points: Array[Vector2] = []
+	for id: int in _touches:
+		if id >= 0:
+			points.append(_touches[id])
+	if points.size() < 2:
+		return _touch_last
+	return (points[0] + points[1]) * 0.5
+
+
+func _touch_tap(p: Vector2) -> void:
+	_mouse_pos = p
+	hover_ground = g.rig.screen_to_ground(p)
+	if mode.begins_with("cmd:"):
+		_target_command(mode.substr(4), p)
+		set_mode("")
+	elif mode.begins_with("build:"):
+		if hover_ground is Vector3:
+			_touch_build_point = hover_ground
+			if mode == "build:wall":
+				if _wall_start is Vector2i:
+					_place("wall", false)
+				else:
+					_wall_start = _tile_at(hover_ground)
+	elif mode.begins_with("zone:"):
+		_left_press(p)
+		_left_release(p, false)
+	else:
+		# a tap selects units and buildings; with a selection, a tap on an enemy or on open ground
+		# gives the same context order as a right click on desktop
+		var target := pick_unit(p, true, true)
+		var building: Building = g.world.building_at(_tile_at(hover_ground)) if hover_ground is Vector3 else null
+		var ordering := not g.selected_units().is_empty()
+		if target:
+			ordering = ordering and g.world.hostile("player", target.faction)
+		elif building:
+			ordering = false
+		if ordering:
+			_context_order(p)
+		else:
+			_click_select(p, false, true)
+
+
+
+
+## Unit nearest to screen point `sp`; `finger` widens the reach for touch taps.
+func pick_unit(sp: Vector2, prefer_hostile: bool = false, finger: bool = false) -> Unit:
 	var best: Unit = null
-	var best_d := PICK_PX * clampf(28.0 / g.rig.zoom, 0.6, 2.2)
+	var best_d := PICK_PX * clampf(28.0 / g.rig.zoom, 0.6, 2.2) * (1.6 if finger else 1.0)
 	for id: int in g.view.unit_views:
 		var v: UnitView = g.view.unit_views[id]
 		if not v.visible or not v.u.alive:
@@ -113,11 +289,30 @@ func site_at(t: Vector2i) -> int:
 		if Vector2(t).distance_to(c) <= maxf(3.0, float(g.world.gen.sites[sid].get("flat_radius", 4)) * 0.6):
 			return sid
 	return -1
+func loot_at(t: Vector2i) -> int:
+	var best_id := -1
+	var best_distance := 1.5
+	for id: int in g.world.loot_bags:
+		var bag: Dictionary = g.world.loot_bags[id]
+		var d := Vector2(t).distance_to(Vector2(bag.get("pos", Vector2.ZERO)))
+		if d <= best_distance:
+			best_distance = d
+			best_id = id
+	return best_id
 
 
 # --- frame ---------------------------------------------------------------------------------
 
 func _process(_delta: float) -> void:
+	if _touch_id >= 0 and _touches.has(_touch_id) and not _touch_moved and not _touch_long_pressed:
+		_touch_elapsed += _delta
+		if _touch_elapsed >= 0.45:
+			_touch_long_pressed = true
+			_mouse_pos = _touch_last
+			var unit := pick_unit(_touch_last, false, true)
+			if unit or hover_ground is Vector3:
+				_click_select(_touch_last, false, true)
+			g.hud.show_touch_detail(_describe_hover())
 	var sp := _mouse()
 	hover_ground = g.rig.screen_to_ground(sp)
 	var over_ui := g.hud.is_mouse_over_ui()
@@ -159,6 +354,10 @@ func _describe_hover() -> String:
 		if sid >= 0:
 			var st: Dictionary = g.world.sites[sid]
 			return "%s — %s%s" % [st["name"], Loc.t(str(FactionAI.KIND_LABEL.get(st["kind"], st["kind"]))), Loc.t(" (cleared)") if st.get("cleared", false) and st.get("hostile", false) else ""]
+		var loot_id := loot_at(t)
+		if loot_id >= 0:
+			var bag: Dictionary = g.world.loot_bags[loot_id]
+			return Loc.t("Loot bag — tier %d") % int(bag.get("tier", 0))
 		var r := g.world.res_at(t)
 		if r != Tiles.Res.NONE:
 			var info := Tiles.res_info(r)
@@ -174,6 +373,11 @@ func _describe_hover() -> String:
 # --- input ---------------------------------------------------------------------------------
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouse and event.device == InputEvent.DEVICE_ID_EMULATION:
+		return
+	if event is InputEventScreenTouch or event is InputEventScreenDrag:
+		_handle_touch(event)
+		return
 	if event is InputEventMouseButton:
 		var mb := event as InputEventMouseButton
 		if mb.button_index == MOUSE_BUTTON_LEFT:
@@ -225,8 +429,8 @@ func _left_release(p: Vector2, shift: bool) -> void:
 	_click_select(p, shift)
 
 
-func _click_select(p: Vector2, shift: bool) -> void:
-	var u := pick_unit(p)
+func _click_select(p: Vector2, shift: bool, finger: bool = false) -> void:
+	var u := pick_unit(p, false, finger)
 	if u:
 		if shift and u.is_player():
 			var ids := g.sel_units.duplicate()
@@ -249,6 +453,11 @@ func _click_select(p: Vector2, shift: bool) -> void:
 		var b := g.world.building_at(t)
 		if b:
 			g.select_building(b.id)
+			Sfx.play(&"ui_select")
+			return
+		var loot_id := loot_at(t)
+		if loot_id >= 0:
+			g.select_loot(loot_id)
 			Sfx.play(&"ui_select")
 			return
 		var sid := site_at(t)

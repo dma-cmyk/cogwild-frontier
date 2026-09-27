@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://difcem1bvdhnj"
-path.bptc="res://.godot/imported/vulpin_engineer_m.png-46e19f91e9e09a185f99d2b0ccccb32d.bptc.ctex"
+uid="uid://bw6eelf5in8ly"
+path="res://.godot/imported/vulpin_engineer_m.png-46e19f91e9e09a185f99d2b0ccccb32d.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/vulpin_engineer_m.png"
-dest_files=["res://.godot/imported/vulpin_engineer_m.png-46e19f91e9e09a185f99d2b0ccccb32d.bptc.ctex"]
+dest_files=["res://.godot/imported/vulpin_engineer_m.png-46e19f91e9e09a185f99d2b0ccccb32d.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

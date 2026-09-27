@@ -41,6 +41,16 @@ var _trade_dismissed := -2  # trader id whose wares were closed by the player
 var _help: PanelContainer
 var _t := 0.0
 var _seen_notes := 0
+var _top_bar: Control
+var _command_panel: Control
+var _touch_controls: Control
+var _box_select_button: Button
+var _minimap_button: Button
+var _details_button: Button
+var _place_confirm: Button
+var _portrait_panel: PanelContainer
+var _top_row: HBoxContainer
+var _compact := false
 
 
 func setup(game: Game) -> void:
@@ -52,6 +62,9 @@ func setup(game: Game) -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var speech: SpeechBubbles = SpeechBubbles.new()
+	root.add_child(speech)
+	speech.setup(g)
 	portraits = PortraitRenderer.new()
 	add_child(portraits)
 	_build_top_bar()
@@ -73,6 +86,9 @@ func setup(game: Game) -> void:
 	root.add_child(roster)
 	roster.setup(g, self)
 	_build_trade_panel()
+	_build_touch_controls()
+	get_viewport().size_changed.connect(_update_responsive)
+	_update_responsive()
 	_build_overlays()
 	pause_menu = PauseMenu.new()
 	root.add_child(pause_menu)
@@ -123,6 +139,8 @@ func _build_top_bar() -> void:
 	bar.offset_bottom = 62
 	var h := UiTheme.hbox(10)
 	bar.add_child(h)
+	_top_bar = bar
+	_top_row = h
 	var crest := UiTheme.icon("ui_crest", 40)
 	h.add_child(crest)
 	var name_l := UiTheme.title(g.world.company_name, 20)
@@ -190,6 +208,226 @@ func _res_entry(r: String, icon_id: String) -> Control:
 	return h
 
 
+func _build_touch_controls() -> void:
+	_touch_controls = Control.new()
+	_touch_controls.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_touch_controls.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(_touch_controls)
+	_box_select_button = UiTheme.button(Loc.t("Box"), "ui_target", Loc.t("Toggle drag box selection"))
+	_box_select_button.custom_minimum_size = Vector2(88, 44)
+	_box_select_button.anchor_left = 1.0
+	_box_select_button.anchor_right = 1.0
+	_box_select_button.offset_left = -192
+	_box_select_button.offset_right = -104
+	_box_select_button.offset_top = 72
+	_box_select_button.offset_bottom = 116
+	_box_select_button.pressed.connect(func() -> void:
+		g.input_ctl.box_select_mode = not g.input_ctl.box_select_mode
+		_box_select_button.add_theme_stylebox_override("normal", UiTheme.button_box("pressed" if g.input_ctl.box_select_mode else "normal")))
+	_touch_controls.add_child(_box_select_button)
+	_minimap_button = UiTheme.button(Loc.t("Map"), "ui_search")
+	_minimap_button.custom_minimum_size = Vector2(88, 44)
+	_minimap_button.anchor_left = 1.0
+	_minimap_button.anchor_right = 1.0
+	_minimap_button.offset_left = -96
+	_minimap_button.offset_right = -8
+	_minimap_button.offset_top = 72
+	_minimap_button.offset_bottom = 116
+	_minimap_button.pressed.connect(func() -> void: minimap.visible = not minimap.visible)
+	_touch_controls.add_child(_minimap_button)
+	_details_button = UiTheme.button(Loc.t("Details"), "ui_people")
+	_details_button.custom_minimum_size = Vector2(100, 44)
+	_details_button.anchor_left = 1.0
+	_details_button.anchor_right = 1.0
+	_details_button.offset_left = -108
+	_details_button.offset_right = -8
+	_details_button.offset_top = 124
+	_details_button.offset_bottom = 168
+	_details_button.pressed.connect(func() -> void: info_panel.toggle_drawer())
+	_touch_controls.add_child(_details_button)
+	_place_confirm = UiTheme.button(Loc.t("Confirm"), "ui_play")
+	_place_confirm.custom_minimum_size = Vector2(120, 48)
+	_place_confirm.anchor_left = 1.0
+	_place_confirm.anchor_right = 1.0
+	_place_confirm.anchor_top = 1.0
+	_place_confirm.anchor_bottom = 1.0
+	_place_confirm.offset_left = -260
+	_place_confirm.offset_right = -136
+	_place_confirm.offset_top = -64
+	_place_confirm.offset_bottom = -12
+	_place_confirm.pressed.connect(g.input_ctl.confirm_touch_build)
+	_touch_controls.add_child(_place_confirm)
+	var cancel := UiTheme.button(Loc.t("Cancel"), "ui_close")
+	cancel.custom_minimum_size = Vector2(120, 48)
+	cancel.anchor_left = 1.0
+	cancel.anchor_right = 1.0
+	cancel.anchor_top = 1.0
+	cancel.anchor_bottom = 1.0
+	cancel.offset_left = -128
+	cancel.offset_right = -8
+	cancel.offset_top = -64
+	cancel.offset_bottom = -12
+	cancel.pressed.connect(g.input_ctl.cancel_touch_mode)
+	_touch_controls.add_child(cancel)
+	_portrait_panel = UiTheme.panel()
+	_portrait_panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	_portrait_panel.offset_left = -220
+	_portrait_panel.offset_right = 220
+	_portrait_panel.offset_top = -100
+	_portrait_panel.offset_bottom = 100
+	var portrait_box := UiTheme.vbox(12)
+	portrait_box.add_child(UiTheme.title(Loc.t("Rotate your device to landscape"), 22))
+	portrait_box.add_child(UiTheme.label(Loc.t("This frontier is designed for landscape play."), 16))
+	var continue_button := UiTheme.button(Loc.t("Continue anyway"), "ui_play")
+	continue_button.custom_minimum_size = Vector2(0, 48)
+	continue_button.pressed.connect(func() -> void: _portrait_panel.hide())
+	portrait_box.add_child(continue_button)
+	_portrait_panel.add_child(portrait_box)
+	_touch_controls.add_child(_portrait_panel)
+	_update_responsive()
+
+
+func show_touch_detail(text: String) -> void:
+	info_panel.open_drawer()
+	_tooltip.text = Loc.t(text)
+	_tooltip_panel.visible = text != ""
+	_tooltip_panel.position = Vector2(12, 70)
+
+
+func _update_responsive() -> void:
+	if not is_instance_valid(root):
+		return
+	var size := App.screen_size()
+	_compact = size.x < 1300.0 or size.y < 720.0
+	squad_panel.set_compact(_compact)
+	if is_instance_valid(_portrait_panel):
+		_portrait_panel.visible = size.y > size.x
+		var portrait_width := minf(440.0, maxf(280.0, size.x - 24.0))
+		_portrait_panel.offset_left = -portrait_width * 0.5
+		_portrait_panel.offset_right = portrait_width * 0.5
+	if _compact:
+		squad_panel.anchor_left = 0.0
+		squad_panel.anchor_right = 0.0
+		squad_panel.offset_left = 8
+		squad_panel.offset_right = minf(500.0, size.x - 16.0)
+		squad_panel.offset_top = -300
+		squad_panel.offset_bottom = -124
+		# the minimap becomes a drawer under the Map button, above the other panels
+		minimap.anchor_left = 1.0
+		minimap.anchor_right = 1.0
+		minimap.anchor_top = 0.0
+		minimap.anchor_bottom = 0.0
+		minimap.offset_left = -(Minimap.SIZE + 24 + 52) - 8
+		minimap.offset_right = -8
+		minimap.offset_top = 124
+		minimap.offset_bottom = 124 + Minimap.SIZE + 30
+		minimap.visible = false
+		root.move_child(minimap, -1)
+		info_panel.anchor_left = 1.0
+		info_panel.anchor_right = 1.0
+		info_panel.offset_left = -minf(380.0, size.x - 16.0)
+		info_panel.offset_right = -8
+		info_panel.offset_top = 60
+		info_panel.offset_bottom = -112
+		_notes.custom_minimum_size.x = minf(340.0, size.x * 0.42)
+		for pair: Array in _speed_buttons:
+			(pair[1] as Button).custom_minimum_size = Vector2(40, 44)
+	else:
+		squad_panel.anchor_left = 0.5
+		squad_panel.anchor_right = 0.5
+		squad_panel.offset_left = -655
+		squad_panel.offset_right = -80
+		squad_panel.offset_top = -206
+		squad_panel.offset_bottom = -10
+		info_panel.offset_left = -352
+		info_panel.offset_right = -10
+		info_panel.offset_top = -660
+		info_panel.offset_bottom = -10
+		minimap.anchor_left = 0.0
+		minimap.anchor_right = 0.0
+		minimap.anchor_top = 1.0
+		minimap.anchor_bottom = 1.0
+		minimap.offset_left = 10
+		minimap.offset_right = 10 + Minimap.SIZE + 24 + 52
+		minimap.offset_top = -(Minimap.SIZE + 30)
+		minimap.offset_bottom = -10
+		minimap.visible = true
+	if is_instance_valid(_box_select_button):
+		var touch_ui := App.is_touch() or App.is_mobile_web()
+		_box_select_button.visible = touch_ui
+		_minimap_button.visible = touch_ui
+		_details_button.visible = touch_ui and _compact
+		_place_confirm.visible = touch_ui and g.input_ctl.mode.begins_with("build:")
+		_touch_controls.get_child(_touch_controls.get_child_count() - 2).visible = touch_ui and g.input_ctl.mode != ""
+	if _compact and _top_row:
+		_top_row.add_theme_constant_override("separation", 4)
+		_top_row.get_child(1).visible = false
+		for i in RES_ORDER.size():
+			var entry := _top_row.get_child(i + 2) as HBoxContainer
+			(entry.get_child(0) as Control).custom_minimum_size = Vector2(20, 20)
+			(entry.get_child(1) as Label).custom_minimum_size = Vector2(32, 0)
+			(entry.get_child(1) as Label).add_theme_font_size_override("font_size", 15)
+			entry.get_child(2).visible = false
+		var pop_row := _top_row.get_child(8) as HBoxContainer
+		(pop_row.get_child(0) as Control).custom_minimum_size = Vector2(20, 20)
+		_pop_label.add_theme_font_size_override("font_size", 15)
+		var energy_row := _top_row.get_child(9) as HBoxContainer
+		(energy_row.get_child(0) as Control).custom_minimum_size = Vector2(20, 20)
+		_energy_rate.visible = false
+		_energy_label.add_theme_font_size_override("font_size", 15)
+		(_top_row.get_child(11) as Control).custom_minimum_size = Vector2(22, 22)
+		_day_label.custom_minimum_size = Vector2(100, 0)
+		_day_label.add_theme_font_size_override("font_size", 15)
+		if size.x < 700.0:
+			_top_row.get_child(0).visible = false
+			for index in [4, 5, 7]:
+				_top_row.get_child(index).visible = false
+			_top_row.get_child(11).visible = false
+			for index in [2, 3, 6]:
+				var entry := _top_row.get_child(index) as HBoxContainer
+				(entry.get_child(0) as Control).custom_minimum_size = Vector2(18, 18)
+				(entry.get_child(1) as Label).custom_minimum_size = Vector2(28, 0)
+				(entry.get_child(1) as Label).add_theme_font_size_override("font_size", 13)
+			_pop_label.add_theme_font_size_override("font_size", 13)
+			_energy_label.add_theme_font_size_override("font_size", 13)
+			_day_label.custom_minimum_size = Vector2(62, 0)
+			_day_label.add_theme_font_size_override("font_size", 13)
+			for pair: Array in _speed_buttons:
+				(pair[1] as Button).custom_minimum_size = Vector2(40, 40)
+		else:
+			for index in [0, 4, 5, 7, 11]:
+				_top_row.get_child(index).visible = true
+	elif _top_row:
+		_top_row.add_theme_constant_override("separation", 10)
+		_top_row.get_child(1).visible = true
+		for i in RES_ORDER.size():
+			var entry := _top_row.get_child(i + 2) as HBoxContainer
+			(entry.get_child(0) as Control).custom_minimum_size = Vector2(28, 28)
+			(entry.get_child(1) as Label).custom_minimum_size = Vector2(48, 0)
+			(entry.get_child(1) as Label).add_theme_font_size_override("font_size", 20)
+			entry.get_child(2).visible = true
+		_energy_rate.visible = true
+		_day_label.custom_minimum_size = Vector2(150, 0)
+		_day_label.add_theme_font_size_override("font_size", 20)
+		for pair: Array in _speed_buttons:
+			(pair[1] as Button).custom_minimum_size = Vector2(44, 40)
+	if _compact and _command_panel:
+		var half_width := minf(316.0, size.x * 0.5 - 8.0)
+		_command_panel.offset_left = -half_width
+		_command_panel.offset_right = half_width
+		_command_panel.offset_top = -108
+		_command_panel.offset_bottom = -4
+		for id: String in _cmd_buttons:
+			var button: Button = _cmd_buttons[id]
+			button.custom_minimum_size = Vector2(48, 72) if size.x < 700.0 else Vector2(62, 88)
+			var box := button.get_child(0) as VBoxContainer
+			(box.get_child(0) as TextureRect).custom_minimum_size = Vector2(28, 28) if size.x < 700.0 else Vector2(40, 40)
+			(box.get_child(1) as Label).add_theme_font_size_override("font_size", 11 if size.x < 700.0 else 14)
+	else:
+		_command_panel.offset_left = -72
+		_command_panel.offset_right = -72 + 9 * 68 + 24
+		_command_panel.offset_top = -118
+		_command_panel.offset_bottom = -10
 func _on_speed(s: int) -> void:
 	for pair: Array in _speed_buttons:
 		(pair[1] as Button).set_pressed_no_signal(int(pair[0]) == s)
@@ -247,7 +485,7 @@ func add_note(n: Dictionary, life: float) -> void:
 	box.content_margin_right = 10
 	p.add_theme_stylebox_override("panel", box)
 	p.mouse_filter = Control.MOUSE_FILTER_STOP
-	p.custom_minimum_size = Vector2(470, 0)
+	p.custom_minimum_size = Vector2(340 if _compact else 470, 0)
 	var h := UiTheme.hbox(8)
 	p.add_child(h)
 	h.add_child(UiTheme.icon(str(KIND_ICON.get(str(n.get("kind", "info")), "ui_bell")), 22))
@@ -256,14 +494,14 @@ func add_note(n: Dictionary, life: float) -> void:
 		if is_instance_valid(l):
 			l.text = Loc.message(n))
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	l.custom_minimum_size = Vector2(420, 0)
+	l.custom_minimum_size = Vector2(290 if _compact else 420, 0)
 	h.add_child(l)
 	p.gui_input.connect(func(ev: InputEvent) -> void:
 		if ev is InputEventMouseButton and (ev as InputEventMouseButton).pressed:
 			_note_clicked(n)
 			p.queue_free())
 	_notes.add_child(p)
-	while _notes.get_child_count() > 6:
+	while _notes.get_child_count() > (3 if _compact else 6):
 		var old := _notes.get_child(0)
 		_notes.remove_child(old)
 		old.queue_free()
@@ -293,6 +531,7 @@ func _build_command_bar() -> void:
 	var p := UiTheme.panel()
 	p.name = "CommandBar"
 	root.add_child(p)
+	_command_panel = p
 	p.anchor_left = 0.5
 	p.anchor_right = 0.5
 	p.anchor_top = 1.0
@@ -487,17 +726,19 @@ func _build_overlays() -> void:
 	for line: String in [
 		"Left click: select unit / squad / building / site     Drag: box-select",
 		"Right click: move · attack enemy or camp · gather resource · trade (airship on a trade post)",
-		"W A S D / arrows / screen edge / middle drag: pan     Wheel: zoom     Q / E: rotate",
+		"W A S D / arrows / screen edge / middle drag: pan     Wheel: zoom",
 		"1–4 or Tab: select squads     Home: back to the hearth",
 		"M Move  F Attack  H Defend  X Explore  P Patrol  Y Escort  U Auto  R Retreat",
 		"B Build menu  G Gather zones & work priorities",
 		"Space: pause     [ ] or , . : game speed",
-		"F5 quick save   F9 quick load   Esc: cancel / menu   F1: this help",
+		"Quick save: F5 (Ctrl+S on web)  Quick load: F9 (Ctrl+L on web)  Esc: cancel / menu  F1: help",
 		"",
 		"Tip: give orders and watch — settlers work zones on their own, squads on Auto",
 		"defend, explore and clear weak camps, the drone scouts, the airship trades.",
 	]:
 		v.add_child(UiTheme.label(Loc.t(line), 17))
+	if App.is_touch() or App.is_mobile_web():
+		v.add_child(UiTheme.label(Loc.t("Touch: tap to select or order; drag to pan; pinch to zoom. Use Box for rectangle selection."), 16))
 
 
 func _on_mode(m: String) -> void:
@@ -508,7 +749,15 @@ func _on_mode(m: String) -> void:
 		text = Loc.t("Place %s  (right-click / Esc to cancel, Shift to place several)") % Loc.def_name("buildings", m.substr(6))
 	elif m.begins_with("zone:"):
 		text = Loc.t("Drag a rectangle to mark a %s zone  (right-click / Esc to cancel)") % Loc.t(m.substr(5))
+	if App.is_touch() or App.is_mobile_web():
+		if m.begins_with("cmd:"):
+			text = Loc.t("Tap the target for %s  (Cancel to leave)") % Loc.t(m.substr(4).capitalize())
+		elif m.begins_with("build:"):
+			text = Loc.t("Tap a site for placement, then confirm or cancel.")
+		elif m.begins_with("zone:"):
+			text = Loc.t("Drag a rectangle to mark a %s zone  (Cancel to leave)") % Loc.t(m.substr(5))
 	_mode_hint.text = text
+	_update_responsive()
 
 
 func _on_selection() -> void:
@@ -538,9 +787,12 @@ func _process(delta: float) -> void:
 		var n := ic.zone_count(ic.mode.substr(5))
 		if n >= 0:
 			tip = Loc.t("%d %s") % [n, Loc.t("tiles" if ic.mode.ends_with("farm") else "resource nodes")]
+	var touch_ui := App.is_touch() or App.is_mobile_web()
+	if touch_ui and ic.mode == "" and not ic.is_long_pressing():
+		tip = ""  # no hover on touch screens: the tip shows while a finger is held down
 	_tooltip_panel.visible = tip != "" and not is_mouse_over_ui()
 	if _tooltip_panel.visible:
 		_tooltip.text = Loc.t(tip)
 		var mp := root.get_local_mouse_position()
-		_tooltip_panel.position = mp + Vector2(18, 22)
+		_tooltip_panel.position = mp + (Vector2(18, -64) if touch_ui else Vector2(18, 22))
 		_tooltip_panel.size = Vector2.ZERO

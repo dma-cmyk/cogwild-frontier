@@ -15,6 +15,8 @@ var _slider_label: Label
 var _add_btn: Button
 var _shown_squad := -99
 var _shown_members: Array = []
+var _foot: HBoxContainer
+var _compact := false
 var _card_refs: Array = []  # [unit_id, hp_bar, en_bar, lv_label, frame]
 
 
@@ -50,8 +52,9 @@ func setup(game: Game, h: Hud) -> void:
 	_cards = UiTheme.hbox(6)
 	_cards.custom_minimum_size = Vector2(0, 118)
 	v.add_child(_cards)
-	var foot := UiTheme.hbox(8)
-	v.add_child(foot)
+	_foot = UiTheme.hbox(8)
+	v.add_child(_foot)
+	var foot := _foot
 	foot.add_child(UiTheme.icon("cmd_retreat", 20))
 	_slider_label = UiTheme.label(Loc.t("Retreat at %d%%") % 30, 14, UiTheme.TEXT_DIM)
 	_slider_label.custom_minimum_size = Vector2(130, 0)
@@ -82,6 +85,22 @@ func setup(game: Game, h: Hud) -> void:
 	new_btn.pressed.connect(_on_new)
 	foot.add_child(new_btn)
 
+func set_compact(compact: bool) -> void:
+	_compact = compact
+	if _foot:
+		for i in 3:
+			_foot.get_child(i).visible = not compact
+		for i in range(3, _foot.get_child_count()):
+			(_foot.get_child(i) as Control).custom_minimum_size = Vector2(0, 44) if compact else Vector2(0, 30)
+	for ref: Array in _card_refs:
+		var frame: PanelContainer = ref[4]
+		frame.custom_minimum_size = Vector2(68, 88) if compact else Vector2(84, 116)
+	for child in _cards.get_children():
+		for item in child.get_children():
+			if item is VBoxContainer and item.get_child_count() > 0:
+				var pic := item.get_child(0) as TextureRect
+				pic.custom_minimum_size = Vector2(56, 46) if compact else Vector2(72, 66)
+	_cards.custom_minimum_size = Vector2(0, 90 if compact else 118)
 
 func _squad() -> Squad:
 	if g.sel_squad >= 0:
@@ -170,7 +189,7 @@ func _rebuild_cards(s: Squad) -> void:
 			continue
 		var frame := PanelContainer.new()
 		frame.add_theme_stylebox_override("panel", UiTheme.flat(Color(0.08, 0.11, 0.17, 0.95), 6, UiTheme.BORDER_DIM, 2))
-		frame.custom_minimum_size = Vector2(84, 116)
+		frame.custom_minimum_size = Vector2(68, 88) if _compact else Vector2(84, 116)
 		frame.mouse_filter = Control.MOUSE_FILTER_STOP
 		frame.tooltip_text = "%s — %s" % [u.name, Loc.t(u.display_role())]
 		var v := UiTheme.vbox(2)
@@ -178,7 +197,7 @@ func _rebuild_cards(s: Squad) -> void:
 		var pic := TextureRect.new()
 		pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		pic.custom_minimum_size = Vector2(72, 66)
+		pic.custom_minimum_size = Vector2(56, 46) if _compact else Vector2(72, 66)
 		pic.texture = hud.portraits.get_portrait("u%d" % u.id, u.dna, 128)
 		pic.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		v.add_child(pic)

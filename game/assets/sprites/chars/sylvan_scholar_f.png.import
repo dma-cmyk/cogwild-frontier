@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dldd3etstckoh"
-path.bptc="res://.godot/imported/sylvan_scholar_f.png-7e309e2a1e734d162a056c41fa0d3002.bptc.ctex"
+uid="uid://u5ahc45g2ne3"
+path="res://.godot/imported/sylvan_scholar_f.png-7e309e2a1e734d162a056c41fa0d3002.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/sylvan_scholar_f.png"
-dest_files=["res://.godot/imported/sylvan_scholar_f.png-7e309e2a1e734d162a056c41fa0d3002.bptc.ctex"]
+dest_files=["res://.godot/imported/sylvan_scholar_f.png-7e309e2a1e734d162a056c41fa0d3002.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

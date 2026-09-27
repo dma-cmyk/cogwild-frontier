@@ -10,6 +10,7 @@ render_mode diffuse_lambert_wrap, specular_schlick_ggx;
 
 uniform sampler2DArray layers : source_color, filter_linear_mipmap, repeat_enable;
 uniform bool use_layers = false;
+uniform bool detail_enabled = true;
 // Metres covered by one texture repeat.
 uniform float tile_m = 9.0;
 uniform float rock_tile_m = 5.0;
@@ -63,7 +64,7 @@ void fragment() {
 		for (int i = 0; i < 8; i++) {
 			score[i] = -1.0;
 			if (w[i] > 0.003) {
-				cols[i] = i == 5 ? sample_rock(wpos, wnrm) : sample_layer(i, uv);
+				cols[i] = i == 5 && detail_enabled ? sample_rock(wpos, wnrm) : sample_layer(i, uv);
 				score[i] = w[i] + dot(cols[i], vec3(0.3, 0.59, 0.11)) * 0.45;
 				best = max(best, score[i]);
 			}
@@ -78,8 +79,10 @@ void fragment() {
 			}
 		}
 		vec3 painted = acc / max(sum, 1.0e-4);
-		float macro = value_noise(wpos.xz * 0.06) * 0.6 + value_noise(wpos.xz * 0.17) * 0.4;
-		painted *= 0.9 + macro * 0.2;
+		if (detail_enabled) {
+			float macro = value_noise(wpos.xz * 0.06) * 0.6 + value_noise(wpos.xz * 0.17) * 0.4;
+			painted *= 0.9 + macro * 0.2;
+		}
 		c = painted * COLOR.rgb;
 	} else {
 		float g = hash12(floor(wpos.xz * 3.0));

@@ -3,24 +3,23 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://scuvj6e3q46y"
-path.bptc="res://.godot/imported/trade_hall_glow.png-e72a343545b3d8d049898bcdb8a89285.bptc.ctex"
+path="res://.godot/imported/trade_hall_glow.png-e72a343545b3d8d049898bcdb8a89285.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/buildings/trade_hall_glow.png"
-dest_files=["res://.godot/imported/trade_hall_glow.png-e72a343545b3d8d049898bcdb8a89285.bptc.ctex"]
+dest_files=["res://.godot/imported/trade_hall_glow.png-e72a343545b3d8d049898bcdb8a89285.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
@@ -37,5 +36,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
-process/size_limit=0
+process/size_limit=768
 detect_3d/compress_to=0

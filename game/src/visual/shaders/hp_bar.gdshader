@@ -2,9 +2,9 @@ shader_type spatial;
 // Screen-facing health/energy bar drawn on top of the world. Per-instance ratio and colour.
 render_mode unshaded, cull_disabled, depth_test_disabled, depth_draw_never, fog_disabled, shadows_disabled;
 
-instance uniform float ratio = 1.0;
-instance uniform vec4 fill_color : source_color = vec4(0.35, 0.85, 0.35, 1.0);
-instance uniform float ratio2 = -1.0;
+uniform float ratio = 1.0;
+uniform vec4 fill_color : source_color = vec4(0.35, 0.85, 0.35, 1.0);
+uniform float ratio2 = -1.0;
 
 void vertex() {
 	MODELVIEW_MATRIX = VIEW_MATRIX * mat4(INV_VIEW_MATRIX[0], INV_VIEW_MATRIX[1], INV_VIEW_MATRIX[2], MODEL_MATRIX[3]);

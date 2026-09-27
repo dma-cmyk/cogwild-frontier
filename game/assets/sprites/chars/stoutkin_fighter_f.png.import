@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dt41tpglpls14"
-path.bptc="res://.godot/imported/stoutkin_fighter_f.png-995f0d79fe9bfd50b919d6677bba2c8b.bptc.ctex"
+uid="uid://cpbgbfi80hxf7"
+path="res://.godot/imported/stoutkin_fighter_f.png-995f0d79fe9bfd50b919d6677bba2c8b.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/stoutkin_fighter_f.png"
-dest_files=["res://.godot/imported/stoutkin_fighter_f.png-995f0d79fe9bfd50b919d6677bba2c8b.bptc.ctex"]
+dest_files=["res://.godot/imported/stoutkin_fighter_f.png-995f0d79fe9bfd50b919d6677bba2c8b.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

@@ -26,18 +26,25 @@ func _add_ground() -> void:
 	ground.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	add_child(ground)
 
+
 func _add_units() -> void:
 	var rng := RngUtil.make(["gallery", 20260926])
-	var roles: Array[String] = ["settler", "guard", "archer", "engineer", "farmer", "merchant", "bandit", "bandit_archer", "scholar", "hunter"]
-	for i in roles.size():
-		var style := "bandit" if roles[i].begins_with("bandit") else ("merchant" if roles[i] == "merchant" else "frontier")
-		var race := AppearanceGen.RACES[i % AppearanceGen.RACES.size()]
-		var dna := AppearanceGen.character(rng, race, roles[i], style, Color("#3a5da8") if style == "frontier" else Color.TRANSPARENT)
-		var visual := UnitVisualFactory.create(dna)
-		visual.position = Vector3(-7.8 + float(i % 5) * 3.6, 0, -3.7 + float(i / 5) * 2.7)
-		if i % 4 == 1: visual.set_anim(UnitVisual.Anim.WALK)
-		elif i % 4 == 2: visual.set_anim(UnitVisual.Anim.WORK)
-		add_child(visual)
+	var gallery_people: Array[Dictionary] = [
+		{"race":"human", "role":"settler"},
+		{"race":"sylvan", "role":"guard"},
+		{"race":"stoutkin", "role":"archer"},
+		{"race":"vulpin", "role":"engineer"},
+		{"race":"human", "role":"scholar"}]
+	for pair: int in gallery_people.size():
+		var spec: Dictionary = gallery_people[pair]
+		for variant: int in 2:
+			var role := str(spec["role"])
+			var style := "frontier"
+			var dna := AppearanceGen.character(rng, str(spec["race"]), role, style, Color("#3a5da8"))
+			dna["art_variant"] = variant
+			var visual := UnitVisualFactory.create(dna)
+			visual.position = Vector3(-8.4 + float(pair) * 4.2 + float(variant) * 1.35, 0, -2.4)
+			add_child(visual)
 	var robots: Array[String] = ["work_bot", "hauler", "walker", "sentry", "turret"]
 	for i in robots.size():
 		var visual := UnitVisualFactory.create(AppearanceGen.robot(rng, robots[i], "frontier" if i < 3 else "ancient", Color("#3a5da8")))

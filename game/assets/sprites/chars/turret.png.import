@@ -2,25 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://55bu2xedibjv"
-path.bptc="res://.godot/imported/turret.png-79c942f1f20df122c896d6b22a2accb0.bptc.ctex"
+uid="uid://b44cd5r4hdxwr"
+path="res://.godot/imported/turret.png-79c942f1f20df122c896d6b22a2accb0.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/chars/turret.png"
-dest_files=["res://.godot/imported/turret.png-79c942f1f20df122c896d6b22a2accb0.bptc.ctex"]
+dest_files=["res://.godot/imported/turret.png-79c942f1f20df122c896d6b22a2accb0.ctex"]
 
 [params]
 
-compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/mode=4
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
-compress/rdo_quality_loss=0.0
+compress/rdo_quality_loss=1.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

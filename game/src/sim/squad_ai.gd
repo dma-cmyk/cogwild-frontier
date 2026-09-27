@@ -76,6 +76,7 @@ func _slot(i: int) -> Vector2:
 
 func order_squad(s: Squad, order: Dictionary) -> void:
 	s.order = order
+	s.mem.erase("corridor")
 	s.mem.erase("target")
 	s.mem.erase("patrol_i")
 	s.mem.erase("loot_site")
@@ -270,12 +271,20 @@ func _think_attack(s: Squad) -> void:
 		if _all_arrived(s) or not s.mem.has("moving_to") or (s.mem["moving_to"] as Vector2).distance_to(anchor) > 1.0:
 			# no progress over several thinks while standing still = no route to the target
 			var last: Variant = s.mem.get("last_c")
-			if _all_arrived(s) and last is Vector2 and (last as Vector2).distance_to(c) < 1.0:
+			if w.pending_chunks() > 0:
+				pass  # land is still being generated: the route may appear
+			elif _all_arrived(s) and last is Vector2 and (last as Vector2).distance_to(c) < 1.0:
 				s.mem["stuck"] = int(s.mem.get("stuck", 0)) + 1
 			else:
 				s.mem["stuck"] = 0
 			s.mem["last_c"] = c
-			if int(s.mem.get("stuck", 0)) >= 6:
+			if int(s.mem.get("stuck", 0)) >= 6 and not s.mem.has("corridor"):
+				# Paths only cross generated land; the way around a river or cliff may lie in land
+				# nobody has seen yet. Generate the area between the squad and its target, then retry.
+				s.mem["corridor"] = true
+				s.mem["stuck"] = 0
+				_queue_corridor(c, anchor)
+			elif int(s.mem.get("stuck", 0)) >= 6:
 				w.notify_key("sim.squad.path_blocked", {"squad_name": s.name}, "info", c, {"squad": s.id})
 				s.mem.erase("stuck")
 				order_squad(s, {"type": "idle"})
@@ -738,3 +747,12 @@ func on_machine_built(m: Unit) -> void:
 func order_gather(u: Unit, tile: Vector2i) -> void:
 	w.colony.release(u)
 	u.order = {"type": "gather", "tile": tile}
+
+
+## Queues generation of every chunk in the box spanning a and b (plus a margin of two chunks).
+func _queue_corridor(a: Vector2, b: Vector2) -> void:
+	var ka := w.chunk_key(Vector2i(a))
+	var kb := w.chunk_key(Vector2i(b))
+	for z in range(mini(ka.y, kb.y) - 2, maxi(ka.y, kb.y) + 3):
+		for x in range(mini(ka.x, kb.x) - 2, maxi(ka.x, kb.x) + 3):
+			w.queue_chunk(Vector2i(x, z))

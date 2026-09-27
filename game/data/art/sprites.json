@@ -141,9 +141,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "human_engineer_f@v2",
+   "texture": "res://assets/sprites/chars/human_engineer_f_v2.png",
+   "source": "chip_human_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "human_engineer_m",
    "texture": "res://assets/sprites/chars/human_engineer_m.png",
    "source": "chip_human_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "human_engineer_m@v2",
+   "texture": "res://assets/sprites/chars/human_engineer_m_v2.png",
+   "source": "chip_human_engineer_v2",
    "cell": [
     128,
     128
@@ -187,9 +233,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "human_fighter_f@v2",
+   "texture": "res://assets/sprites/chars/human_fighter_f_v2.png",
+   "source": "chip_human_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "human_fighter_m",
    "texture": "res://assets/sprites/chars/human_fighter_m.png",
    "source": "chip_human_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "human_fighter_m@v2",
+   "texture": "res://assets/sprites/chars/human_fighter_m_v2.png",
+   "source": "chip_human_fighter_v2",
    "cell": [
     128,
     128
@@ -233,9 +325,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "human_ranger_f@v2",
+   "texture": "res://assets/sprites/chars/human_ranger_f_v2.png",
+   "source": "chip_human_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "human_ranger_m",
    "texture": "res://assets/sprites/chars/human_ranger_m.png",
    "source": "chip_human_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "human_ranger_m@v2",
+   "texture": "res://assets/sprites/chars/human_ranger_m_v2.png",
+   "source": "chip_human_ranger_v2",
    "cell": [
     128,
     128
@@ -279,9 +417,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "human_scholar_f@v2",
+   "texture": "res://assets/sprites/chars/human_scholar_f_v2.png",
+   "source": "chip_human_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "human_scholar_m",
    "texture": "res://assets/sprites/chars/human_scholar_m.png",
    "source": "chip_human_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "human_scholar_m@v2",
+   "texture": "res://assets/sprites/chars/human_scholar_m_v2.png",
+   "source": "chip_human_scholar_v2",
    "cell": [
     128,
     128
@@ -325,9 +509,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "human_worker_f@v2",
+   "texture": "res://assets/sprites/chars/human_worker_f_v2.png",
+   "source": "chip_human_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "human_worker_m",
    "texture": "res://assets/sprites/chars/human_worker_m.png",
    "source": "chip_human_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "human_worker_m@v2",
+   "texture": "res://assets/sprites/chars/human_worker_m_v2.png",
+   "source": "chip_human_worker_v2",
    "cell": [
     128,
     128
@@ -465,9 +695,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "stoutkin_engineer_f@v2",
+   "texture": "res://assets/sprites/chars/stoutkin_engineer_f_v2.png",
+   "source": "chip_stoutkin_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "stoutkin_engineer_m",
    "texture": "res://assets/sprites/chars/stoutkin_engineer_m.png",
    "source": "chip_stoutkin_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "stoutkin_engineer_m@v2",
+   "texture": "res://assets/sprites/chars/stoutkin_engineer_m_v2.png",
+   "source": "chip_stoutkin_engineer_v2",
    "cell": [
     128,
     128
@@ -511,9 +787,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "stoutkin_fighter_f@v2",
+   "texture": "res://assets/sprites/chars/stoutkin_fighter_f_v2.png",
+   "source": "chip_stoutkin_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "stoutkin_fighter_m",
    "texture": "res://assets/sprites/chars/stoutkin_fighter_m.png",
    "source": "chip_stoutkin_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "stoutkin_fighter_m@v2",
+   "texture": "res://assets/sprites/chars/stoutkin_fighter_m_v2.png",
+   "source": "chip_stoutkin_fighter_v2",
    "cell": [
     128,
     128
@@ -557,9 +879,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "stoutkin_ranger_f@v2",
+   "texture": "res://assets/sprites/chars/stoutkin_ranger_f_v2.png",
+   "source": "chip_stoutkin_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "stoutkin_ranger_m",
    "texture": "res://assets/sprites/chars/stoutkin_ranger_m.png",
    "source": "chip_stoutkin_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "stoutkin_ranger_m@v2",
+   "texture": "res://assets/sprites/chars/stoutkin_ranger_m_v2.png",
+   "source": "chip_stoutkin_ranger_v2",
    "cell": [
     128,
     128
@@ -603,9 +971,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "stoutkin_scholar_f@v2",
+   "texture": "res://assets/sprites/chars/stoutkin_scholar_f_v2.png",
+   "source": "chip_stoutkin_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "stoutkin_scholar_m",
    "texture": "res://assets/sprites/chars/stoutkin_scholar_m.png",
    "source": "chip_stoutkin_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "stoutkin_scholar_m@v2",
+   "texture": "res://assets/sprites/chars/stoutkin_scholar_m_v2.png",
+   "source": "chip_stoutkin_scholar_v2",
    "cell": [
     128,
     128
@@ -649,9 +1063,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "stoutkin_worker_f@v2",
+   "texture": "res://assets/sprites/chars/stoutkin_worker_f_v2.png",
+   "source": "chip_stoutkin_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "stoutkin_worker_m",
    "texture": "res://assets/sprites/chars/stoutkin_worker_m.png",
    "source": "chip_stoutkin_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "stoutkin_worker_m@v2",
+   "texture": "res://assets/sprites/chars/stoutkin_worker_m_v2.png",
+   "source": "chip_stoutkin_worker_v2",
    "cell": [
     128,
     128
@@ -695,9 +1155,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "sylvan_engineer_f@v2",
+   "texture": "res://assets/sprites/chars/sylvan_engineer_f_v2.png",
+   "source": "chip_sylvan_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "sylvan_engineer_m",
    "texture": "res://assets/sprites/chars/sylvan_engineer_m.png",
    "source": "chip_sylvan_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "sylvan_engineer_m@v2",
+   "texture": "res://assets/sprites/chars/sylvan_engineer_m_v2.png",
+   "source": "chip_sylvan_engineer_v2",
    "cell": [
     128,
     128
@@ -741,9 +1247,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "sylvan_fighter_f@v2",
+   "texture": "res://assets/sprites/chars/sylvan_fighter_f_v2.png",
+   "source": "chip_sylvan_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "sylvan_fighter_m",
    "texture": "res://assets/sprites/chars/sylvan_fighter_m.png",
    "source": "chip_sylvan_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "sylvan_fighter_m@v2",
+   "texture": "res://assets/sprites/chars/sylvan_fighter_m_v2.png",
+   "source": "chip_sylvan_fighter_v2",
    "cell": [
     128,
     128
@@ -787,9 +1339,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "sylvan_ranger_f@v2",
+   "texture": "res://assets/sprites/chars/sylvan_ranger_f_v2.png",
+   "source": "chip_sylvan_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "sylvan_ranger_m",
    "texture": "res://assets/sprites/chars/sylvan_ranger_m.png",
    "source": "chip_sylvan_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "sylvan_ranger_m@v2",
+   "texture": "res://assets/sprites/chars/sylvan_ranger_m_v2.png",
+   "source": "chip_sylvan_ranger_v2",
    "cell": [
     128,
     128
@@ -833,9 +1431,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "sylvan_scholar_f@v2",
+   "texture": "res://assets/sprites/chars/sylvan_scholar_f_v2.png",
+   "source": "chip_sylvan_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "sylvan_scholar_m",
    "texture": "res://assets/sprites/chars/sylvan_scholar_m.png",
    "source": "chip_sylvan_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "sylvan_scholar_m@v2",
+   "texture": "res://assets/sprites/chars/sylvan_scholar_m_v2.png",
+   "source": "chip_sylvan_scholar_v2",
    "cell": [
     128,
     128
@@ -879,9 +1523,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "sylvan_worker_f@v2",
+   "texture": "res://assets/sprites/chars/sylvan_worker_f_v2.png",
+   "source": "chip_sylvan_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "sylvan_worker_m",
    "texture": "res://assets/sprites/chars/sylvan_worker_m.png",
    "source": "chip_sylvan_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "sylvan_worker_m@v2",
+   "texture": "res://assets/sprites/chars/sylvan_worker_m_v2.png",
+   "source": "chip_sylvan_worker_v2",
    "cell": [
     128,
     128
@@ -973,9 +1663,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "vulpin_engineer_f@v2",
+   "texture": "res://assets/sprites/chars/vulpin_engineer_f_v2.png",
+   "source": "chip_vulpin_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "vulpin_engineer_m",
    "texture": "res://assets/sprites/chars/vulpin_engineer_m.png",
    "source": "chip_vulpin_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "vulpin_engineer_m@v2",
+   "texture": "res://assets/sprites/chars/vulpin_engineer_m_v2.png",
+   "source": "chip_vulpin_engineer_v2",
    "cell": [
     128,
     128
@@ -1019,9 +1755,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "vulpin_fighter_f@v2",
+   "texture": "res://assets/sprites/chars/vulpin_fighter_f_v2.png",
+   "source": "chip_vulpin_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "vulpin_fighter_m",
    "texture": "res://assets/sprites/chars/vulpin_fighter_m.png",
    "source": "chip_vulpin_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "vulpin_fighter_m@v2",
+   "texture": "res://assets/sprites/chars/vulpin_fighter_m_v2.png",
+   "source": "chip_vulpin_fighter_v2",
    "cell": [
     128,
     128
@@ -1065,9 +1847,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "vulpin_ranger_f@v2",
+   "texture": "res://assets/sprites/chars/vulpin_ranger_f_v2.png",
+   "source": "chip_vulpin_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "vulpin_ranger_m",
    "texture": "res://assets/sprites/chars/vulpin_ranger_m.png",
    "source": "chip_vulpin_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "vulpin_ranger_m@v2",
+   "texture": "res://assets/sprites/chars/vulpin_ranger_m_v2.png",
+   "source": "chip_vulpin_ranger_v2",
    "cell": [
     128,
     128
@@ -1111,9 +1939,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "vulpin_scholar_f@v2",
+   "texture": "res://assets/sprites/chars/vulpin_scholar_f_v2.png",
+   "source": "chip_vulpin_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "vulpin_scholar_m",
    "texture": "res://assets/sprites/chars/vulpin_scholar_m.png",
    "source": "chip_vulpin_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "vulpin_scholar_m@v2",
+   "texture": "res://assets/sprites/chars/vulpin_scholar_m_v2.png",
+   "source": "chip_vulpin_scholar_v2",
    "cell": [
     128,
     128
@@ -1157,9 +2031,55 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "vulpin_worker_f@v2",
+   "texture": "res://assets/sprites/chars/vulpin_worker_f_v2.png",
+   "source": "chip_vulpin_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "vulpin_worker_m",
    "texture": "res://assets/sprites/chars/vulpin_worker_m.png",
    "source": "chip_vulpin_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "vulpin_worker_m@v2",
+   "texture": "res://assets/sprites/chars/vulpin_worker_m_v2.png",
+   "source": "chip_vulpin_worker_v2",
    "cell": [
     128,
     128

@@ -97,6 +97,8 @@ func attack(u: Unit, t: Unit, wpn: Dictionary) -> void:
 	if crit:
 		dmg *= 1.6
 	u.push_fx(&"attack_ranged" if ranged else &"attack_melee")
+	if not ranged:
+		w.fx.emit(&"slash_arc", w.world_pos(u) + Vector3(0, 0.9, 0), Color("#ffe1a0"))
 	if ranged:
 		var hit_chance := clampf(float(wpn.get("accuracy", 0.75)) + skill / 300.0 + float(u.stats.get("accuracy", 0.0)) - (0.1 if t.moving else 0.0), 0.2, 0.97)
 		var hit := w.rng.randf() < hit_chance
@@ -126,6 +128,8 @@ func _resolve(p: Dictionary) -> void:
 				apply_damage(o, float(p["damage"]) * (1.0 if o.id == int(p["target"]) else 0.6), attacker, bool(p["crit"]))
 		return
 	if not bool(p["hit"]):
+		var miss_pos: Vector2 = p["pos"]
+		w.fx.emit(&"combat_miss", Vector3(miss_pos.x, w.height_at(miss_pos) + 1.0, miss_pos.y), Color("#aeb7c5"))
 		return
 	var t := w.get_unit(int(p["target"]))
 	if t and t.alive and t.state != Unit.State.DOWNED:
@@ -139,7 +143,9 @@ func apply_damage(t: Unit, amount: float, attacker: Unit, crit: bool = false) ->
 	t.hp -= dmg
 	t.last_hit_t = 0.0
 	t.push_fx(&"hit")
-	w.fx.emit(&"hit_spark", w.world_pos(t) + Vector3(0, 0.7, 0), Color("#ffe08a") if crit else Color.WHITE)
+	var impact := w.world_pos(t) + Vector3(0, 0.7, 0)
+	w.fx.emit(&"hit_spark", impact, Color("#ffe08a") if crit else Color.WHITE)
+	w.fx.emit(StringName("combat_damage|%d|%d" % [roundi(dmg), 1 if crit else 0]), impact + Vector3(0, 0.45, 0), Color.WHITE)
 	if attacker and t.target_id < 0 and t.is_armed() and w.hostile(t.faction, attacker.faction):
 		if not (t.is_player() and t.squad_id >= 0 and str(w.get_squad(t.squad_id).order.get("type", "")) == "retreat"):
 			t.target_id = attacker.id
@@ -269,7 +275,8 @@ func update_downed(u: Unit) -> void:
 		u.alive = false
 		u.state = Unit.State.DEAD
 		u.downed_t = 0.0
-		w.notify_key("sim.combat.unit_died", {"unit_name": u.name}, "bad", u.pos, {"unit": u.id})
+		w.fx.emit(&"death_poof", w.world_pos(u), Color.WHITE)
+		w.notify_key("sim.combat.unit_died", {"unit_name": u.name}, "bad", u.pos)
 
 
 func _towers() -> void:
@@ -315,8 +322,12 @@ func _heal_drones() -> void:
 				worst = o.hp_ratio()
 				best = o
 		if best:
+			var previous_hp := best.hp
 			best.hp = minf(float(best.stats["max_hp"]), best.hp + float(heal.get("amount", 5.0)))
-			w.fx.emit(&"heal", w.world_pos(best) + Vector3(0, 0.8, 0), Color("#7dff9a"))
+			var healed := best.hp - previous_hp
+			var heal_pos := w.world_pos(best) + Vector3(0, 0.8, 0)
+			w.fx.emit(&"heal", heal_pos, Color("#7dff9a"))
+			w.fx.emit(StringName("combat_heal|%d" % roundi(healed)), heal_pos + Vector3(0, 0.45, 0), Color("#73ff9b"))
 
 
 ## Named leaders use their abilities while fighting.
@@ -346,8 +357,12 @@ func _abilities() -> void:
 					used = true
 				"heal_self":
 					if u.hp_ratio() < float(a.get("trigger_hp", 0.5)):
+						var previous_hp := u.hp
 						u.hp = minf(float(u.stats["max_hp"]), u.hp + float(u.stats["max_hp"]) * float(a.get("amount_pct", 0.25)))
-						w.fx.emit(&"heal", w.world_pos(u) + Vector3(0, 1.0, 0), Color("#ffb070"))
+						var healed := u.hp - previous_hp
+						var heal_pos := w.world_pos(u) + Vector3(0, 1.0, 0)
+						w.fx.emit(&"heal", heal_pos, Color("#ffb070"))
+						w.fx.emit(StringName("combat_heal|%d" % roundi(healed)), heal_pos + Vector3(0, 0.45, 0), Color("#73ff9b"))
 						used = true
 				"multi_shot":
 					var t := w.get_unit(u.target_id)

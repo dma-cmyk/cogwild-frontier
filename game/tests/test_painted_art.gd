@@ -32,6 +32,51 @@ func test_every_person_the_game_makes_is_painted() -> void:
 				assert_true(DB.has_def("art/portraits", "%s_%s_%s" % [race, look, g]), "painted bust %s_%s_%s" % [race, look, g])
 
 
+func test_every_person_has_two_painted_variants() -> void:
+	for race: String in AppearanceGen.RACES:
+		for look: String in LOOKS:
+			for gender: String in ["m", "f"]:
+				var id := "%s_%s_%s" % [race, look, gender]
+				var dna := {"kind":"character", "race":race, "gender":"female" if gender == "f" else "male",
+					"seed":91, "hair":"braids", "hair_color":"#241c28", "skin":"#c58d70"}
+				match look:
+					"ranger":
+						dna["weapon"] = "bow"
+					"engineer":
+						dna["weapon"] = "wrench"
+					"scholar":
+						dna["weapon"] = "staff"
+					"fighter":
+						dna["weapon"] = "sword"
+					_:
+						dna["weapon"] = "none"
+				dna["armor"] = "none"
+				dna["offhand"] = "none"
+				dna["outfit"] = "robe" if look == "scholar" else "tunic"
+				var hints: Dictionary = {}
+				assert_eq(SpriteLibrary.variant_count(dna, hints), 2, "%s has two loadable chips" % id)
+				var first := DB.get_def("art/sprites", id)
+				var second := DB.get_def("art/sprites", id + "@v2")
+				assert_true(not first.is_empty() and not second.is_empty(), "%s has v1 and v2 chip metadata" % id)
+				for entry: Dictionary in [first, second]:
+					assert_true(SpriteLibrary.texture(str(entry.get("texture", ""))) != null, "%s chip texture loads" % entry["id"])
+					assert_true(not DB.get_def("art/portraits", str(entry["id"])).is_empty(), "%s portrait metadata exists" % entry["id"])
+				var old_save := dna.duplicate()
+				var old_variant := SpriteLibrary.art_variant(old_save, hints)
+				assert_true(old_variant >= 0 and old_variant < 2, "%s legacy look is in range" % id)
+				assert_eq(old_variant, SpriteLibrary.art_variant(old_save, hints), "%s legacy look is deterministic" % id)
+				assert_eq(str(SpriteLibrary.chip(old_save, hints).get("id", "")),
+					id if old_variant == 0 else id + "@v2", "%s legacy chip uses its derived look" % id)
+				for selected: int in [0, 1]:
+					dna["art_variant"] = selected
+					var selected_entry := SpriteLibrary.chip(dna, hints)
+					assert_eq(str(selected_entry.get("id", "")), id if selected == 0 else id + "@v2", "%s explicit chip variant %d" % [id, selected])
+					var portrait_entry := DB.get_def("art/portraits", id if selected == 0 else id + "@v2")
+					var expected_portrait := SpriteLibrary.texture(str(portrait_entry.get("texture", "")))
+					assert_true(expected_portrait != null and SpriteLibrary.portrait(dna, hints) == expected_portrait,
+						"%s explicit portrait variant %d" % [id, selected])
+
+
 func test_every_machine_the_game_makes_is_painted() -> void:
 	var rng := _rng(7)
 	for id: String in DB.ids("robots"):

@@ -4,7 +4,8 @@ extends Node3D
 ## projectiles, crops, zone outlines, fog-of-war texture and the day/night light. Reads the sim
 ## and listens to its signals; never changes simulation state.
 
-const CHUNK_BUILDS_PER_FRAME := 2
+const CHUNK_BUILD_BUDGET_MS := 3.5
+const FIRST_VIEW_CHUNKS := 2  # chunk radius around home built synchronously at setup
 const SITE_STYLE := {"bandit_camp": "bandit", "machine_outpost": "ancient", "trade_post": "merchant",
 	"wanderer_camp": "neutral", "ruins": "neutral", "wreck": "neutral", "crystal_grove": "neutral", "ore_field": "neutral"}
 
@@ -34,10 +35,13 @@ func setup(world: World) -> void:
 	w = world
 	name = "WorldView"
 	sun = LookDev.make_sun()
+	sun.add_to_group("quality_sun")
 	add_child(sun)
 	env = WorldEnvironment.new()
 	env.environment = LookDev.make_environment()
 	add_child(env)
+	Quality.level_changed.connect(_on_quality_changed)
+	_apply_quality(Quality.level())
 	_crop_root = Node3D.new()
 	_crop_root.name = "Crops"
 	add_child(_crop_root)
@@ -64,8 +68,16 @@ func setup(world: World) -> void:
 	w.projectile_fired.connect(_on_projectile)
 	w.farm_changed.connect(func(_t: Vector2i) -> void: _crops_dirty = true)
 	w.zones_changed.connect(func() -> void: _zones_dirty = true)
-	for key: Vector2i in w.chunks:
-		_build_chunk(key)
+	# Chunks around home are built now so the first frame has no holes; the rest are built a few
+	# milliseconds per frame, nearest first.
+	var home_key := w.chunk_key(Vector2i(w.home_pos()))
+	var keys: Array = w.chunks.keys()
+	keys.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return (a - home_key).length_squared() < (b - home_key).length_squared())
+	for key: Vector2i in keys:
+		if absi(key.x - home_key.x) <= FIRST_VIEW_CHUNKS and absi(key.y - home_key.y) <= FIRST_VIEW_CHUNKS:
+			_build_chunk(key)
+		elif not _chunk_queue.has(key):
+			_chunk_queue.append(key)
 	for b: Building in w.buildings.values():
 		_add_building(b)
 	for sid: int in w.sites:
@@ -125,6 +137,24 @@ func _add_building(b: Building) -> void:
 	v.set_construction(b.progress)
 	building_views[b.id] = v
 	v.set_meta("level", b.level)
+
+
+func _on_quality_changed(level: String) -> void:
+	_apply_quality(level)
+
+
+func _apply_quality(_level: String) -> void:
+	if sun != null:
+		sun.shadow_enabled = Quality.shadows_enabled()
+		var shadow_distance := 60.0 if _level == "low" else (100.0 if _level == "medium" else 150.0)
+		sun.directional_shadow_max_distance = shadow_distance
+	if not chunk_views.is_empty():
+		var first_chunk: ChunkView = chunk_views.values()[0]
+		first_chunk.apply_terrain_detail(Quality.terrain_detail_enabled())
+	for key: Vector2i in chunk_views:
+		(chunk_views[key] as ChunkView).built_res_version = -1
+		if not _chunk_queue.has(key):
+			_chunk_queue.append(key)
 
 
 func _remove_building(b: Building) -> void:
@@ -245,6 +275,18 @@ func _remove_loot(id: int) -> void:
 func _on_fx(kind: StringName, pos: Vector3, color: Color) -> void:
 	if not _visible_pos(Vector2(pos.x, pos.z)):
 		return
+	var kind_text := str(kind)
+	if kind_text.begins_with("combat_damage|") or kind_text.begins_with("combat_heal|") or kind_text == "combat_miss":
+		Vfx.spawn_combat_text(self, kind, pos, color)
+		return
+	if kind_text == "explosion_small":
+		var scene: Node = get_tree().current_scene
+		if scene != null:
+			var rig: CameraRig = scene.get("rig") as CameraRig
+			if rig != null and rig.cam != null and Vector2(rig.target.x - pos.x, rig.target.z - pos.z).length() <= 18.0:
+				var screen_pos := rig.cam.unproject_position(pos)
+				if rig.cam.get_viewport().get_visible_rect().has_point(screen_pos):
+					rig.request_shake(0.18, 0.16)
 	Vfx.spawn(self, kind, pos, color)
 
 
@@ -366,10 +408,13 @@ func set_show_zones(on: bool) -> void:
 # --- frame ---------------------------------------------------------------------------------
 
 func _process(delta: float) -> void:
-	var n := 0
-	while n < CHUNK_BUILDS_PER_FRAME and not _chunk_queue.is_empty():
+	var started_usec := Time.get_ticks_usec()
+	var builds := 0
+	while not _chunk_queue.is_empty():
+		if builds > 0 and float(Time.get_ticks_usec() - started_usec) / 1000.0 >= CHUNK_BUILD_BUDGET_MS:
+			break
 		_build_chunk(_chunk_queue.pop_front())
-		n += 1
+		builds += 1
 	for v: UnitView in unit_views.values():
 		v.sync(alpha, delta)
 	for b: Building in w.buildings.values():

@@ -27,9 +27,19 @@
    "source": "portrait_human_engineer"
   },
   {
+   "id": "human_engineer_f@v2",
+   "texture": "res://assets/portraits/human_engineer_f_v2.png",
+   "source": "portrait_human_engineer_v2"
+  },
+  {
    "id": "human_engineer_m",
    "texture": "res://assets/portraits/human_engineer_m.png",
    "source": "portrait_human_engineer"
+  },
+  {
+   "id": "human_engineer_m@v2",
+   "texture": "res://assets/portraits/human_engineer_m_v2.png",
+   "source": "portrait_human_engineer_v2"
   },
   {
    "id": "human_fighter_f",
@@ -37,9 +47,19 @@
    "source": "portrait_human_fighter"
   },
   {
+   "id": "human_fighter_f@v2",
+   "texture": "res://assets/portraits/human_fighter_f_v2.png",
+   "source": "portrait_human_fighter_v2"
+  },
+  {
    "id": "human_fighter_m",
    "texture": "res://assets/portraits/human_fighter_m.png",
    "source": "portrait_human_fighter"
+  },
+  {
+   "id": "human_fighter_m@v2",
+   "texture": "res://assets/portraits/human_fighter_m_v2.png",
+   "source": "portrait_human_fighter_v2"
   },
   {
    "id": "human_ranger_f",
@@ -47,9 +67,19 @@
    "source": "portrait_human_ranger"
   },
   {
+   "id": "human_ranger_f@v2",
+   "texture": "res://assets/portraits/human_ranger_f_v2.png",
+   "source": "portrait_human_ranger_v2"
+  },
+  {
    "id": "human_ranger_m",
    "texture": "res://assets/portraits/human_ranger_m.png",
    "source": "portrait_human_ranger"
+  },
+  {
+   "id": "human_ranger_m@v2",
+   "texture": "res://assets/portraits/human_ranger_m_v2.png",
+   "source": "portrait_human_ranger_v2"
   },
   {
    "id": "human_scholar_f",
@@ -57,9 +87,19 @@
    "source": "portrait_human_scholar"
   },
   {
+   "id": "human_scholar_f@v2",
+   "texture": "res://assets/portraits/human_scholar_f_v2.png",
+   "source": "portrait_human_scholar_v2"
+  },
+  {
    "id": "human_scholar_m",
    "texture": "res://assets/portraits/human_scholar_m.png",
    "source": "portrait_human_scholar"
+  },
+  {
+   "id": "human_scholar_m@v2",
+   "texture": "res://assets/portraits/human_scholar_m_v2.png",
+   "source": "portrait_human_scholar_v2"
   },
   {
    "id": "human_worker_f",
@@ -67,9 +107,19 @@
    "source": "portrait_human_worker"
   },
   {
+   "id": "human_worker_f@v2",
+   "texture": "res://assets/portraits/human_worker_f_v2.png",
+   "source": "portrait_human_worker_v2"
+  },
+  {
    "id": "human_worker_m",
    "texture": "res://assets/portraits/human_worker_m.png",
    "source": "portrait_human_worker"
+  },
+  {
+   "id": "human_worker_m@v2",
+   "texture": "res://assets/portraits/human_worker_m_v2.png",
+   "source": "portrait_human_worker_v2"
   },
   {
    "id": "stoutkin_engineer_f",
@@ -77,9 +127,19 @@
    "source": "portrait_stoutkin_engineer"
   },
   {
+   "id": "stoutkin_engineer_f@v2",
+   "texture": "res://assets/portraits/stoutkin_engineer_f_v2.png",
+   "source": "portrait_stoutkin_engineer_v2"
+  },
+  {
    "id": "stoutkin_engineer_m",
    "texture": "res://assets/portraits/stoutkin_engineer_m.png",
    "source": "portrait_stoutkin_engineer"
+  },
+  {
+   "id": "stoutkin_engineer_m@v2",
+   "texture": "res://assets/portraits/stoutkin_engineer_m_v2.png",
+   "source": "portrait_stoutkin_engineer_v2"
   },
   {
    "id": "stoutkin_fighter_f",
@@ -87,9 +147,19 @@
    "source": "portrait_stoutkin_fighter"
   },
   {
+   "id": "stoutkin_fighter_f@v2",
+   "texture": "res://assets/portraits/stoutkin_fighter_f_v2.png",
+   "source": "portrait_stoutkin_fighter_v2"
+  },
+  {
    "id": "stoutkin_fighter_m",
    "texture": "res://assets/portraits/stoutkin_fighter_m.png",
    "source": "portrait_stoutkin_fighter"
+  },
+  {
+   "id": "stoutkin_fighter_m@v2",
+   "texture": "res://assets/portraits/stoutkin_fighter_m_v2.png",
+   "source": "portrait_stoutkin_fighter_v2"
   },
   {
    "id": "stoutkin_ranger_f",
@@ -97,9 +167,19 @@
    "source": "portrait_stoutkin_ranger"
   },
   {
+   "id": "stoutkin_ranger_f@v2",
+   "texture": "res://assets/portraits/stoutkin_ranger_f_v2.png",
+   "source": "portrait_stoutkin_ranger_v2"
+  },
+  {
    "id": "stoutkin_ranger_m",
    "texture": "res://assets/portraits/stoutkin_ranger_m.png",
    "source": "portrait_stoutkin_ranger"
+  },
+  {
+   "id": "stoutkin_ranger_m@v2",
+   "texture": "res://assets/portraits/stoutkin_ranger_m_v2.png",
+   "source": "portrait_stoutkin_ranger_v2"
   },
   {
    "id": "stoutkin_scholar_f",
@@ -107,9 +187,19 @@
    "source": "portrait_stoutkin_scholar"
   },
   {
+   "id": "stoutkin_scholar_f@v2",
+   "texture": "res://assets/portraits/stoutkin_scholar_f_v2.png",
+   "source": "portrait_stoutkin_scholar_v2"
+  },
+  {
    "id": "stoutkin_scholar_m",
    "texture": "res://assets/portraits/stoutkin_scholar_m.png",
    "source": "portrait_stoutkin_scholar"
+  },
+  {
+   "id": "stoutkin_scholar_m@v2",
+   "texture": "res://assets/portraits/stoutkin_scholar_m_v2.png",
+   "source": "portrait_stoutkin_scholar_v2"
   },
   {
    "id": "stoutkin_worker_f",
@@ -117,9 +207,19 @@
    "source": "portrait_stoutkin_worker"
   },
   {
+   "id": "stoutkin_worker_f@v2",
+   "texture": "res://assets/portraits/stoutkin_worker_f_v2.png",
+   "source": "portrait_stoutkin_worker_v2"
+  },
+  {
    "id": "stoutkin_worker_m",
    "texture": "res://assets/portraits/stoutkin_worker_m.png",
    "source": "portrait_stoutkin_worker"
+  },
+  {
+   "id": "stoutkin_worker_m@v2",
+   "texture": "res://assets/portraits/stoutkin_worker_m_v2.png",
+   "source": "portrait_stoutkin_worker_v2"
   },
   {
    "id": "sylvan_engineer_f",
@@ -127,9 +227,19 @@
    "source": "portrait_sylvan_engineer"
   },
   {
+   "id": "sylvan_engineer_f@v2",
+   "texture": "res://assets/portraits/sylvan_engineer_f_v2.png",
+   "source": "portrait_sylvan_engineer_v2"
+  },
+  {
    "id": "sylvan_engineer_m",
    "texture": "res://assets/portraits/sylvan_engineer_m.png",
    "source": "portrait_sylvan_engineer"
+  },
+  {
+   "id": "sylvan_engineer_m@v2",
+   "texture": "res://assets/portraits/sylvan_engineer_m_v2.png",
+   "source": "portrait_sylvan_engineer_v2"
   },
   {
    "id": "sylvan_fighter_f",
@@ -137,9 +247,19 @@
    "source": "portrait_sylvan_fighter"
   },
   {
+   "id": "sylvan_fighter_f@v2",
+   "texture": "res://assets/portraits/sylvan_fighter_f_v2.png",
+   "source": "portrait_sylvan_fighter_v2"
+  },
+  {
    "id": "sylvan_fighter_m",
    "texture": "res://assets/portraits/sylvan_fighter_m.png",
    "source": "portrait_sylvan_fighter"
+  },
+  {
+   "id": "sylvan_fighter_m@v2",
+   "texture": "res://assets/portraits/sylvan_fighter_m_v2.png",
+   "source": "portrait_sylvan_fighter_v2"
   },
   {
    "id": "sylvan_ranger_f",
@@ -147,9 +267,19 @@
    "source": "portrait_sylvan_ranger"
   },
   {
+   "id": "sylvan_ranger_f@v2",
+   "texture": "res://assets/portraits/sylvan_ranger_f_v2.png",
+   "source": "portrait_sylvan_ranger_v2"
+  },
+  {
    "id": "sylvan_ranger_m",
    "texture": "res://assets/portraits/sylvan_ranger_m.png",
    "source": "portrait_sylvan_ranger"
+  },
+  {
+   "id": "sylvan_ranger_m@v2",
+   "texture": "res://assets/portraits/sylvan_ranger_m_v2.png",
+   "source": "portrait_sylvan_ranger_v2"
   },
   {
    "id": "sylvan_scholar_f",
@@ -157,9 +287,19 @@
    "source": "portrait_sylvan_scholar"
   },
   {
+   "id": "sylvan_scholar_f@v2",
+   "texture": "res://assets/portraits/sylvan_scholar_f_v2.png",
+   "source": "portrait_sylvan_scholar_v2"
+  },
+  {
    "id": "sylvan_scholar_m",
    "texture": "res://assets/portraits/sylvan_scholar_m.png",
    "source": "portrait_sylvan_scholar"
+  },
+  {
+   "id": "sylvan_scholar_m@v2",
+   "texture": "res://assets/portraits/sylvan_scholar_m_v2.png",
+   "source": "portrait_sylvan_scholar_v2"
   },
   {
    "id": "sylvan_worker_f",
@@ -167,9 +307,19 @@
    "source": "portrait_sylvan_worker"
   },
   {
+   "id": "sylvan_worker_f@v2",
+   "texture": "res://assets/portraits/sylvan_worker_f_v2.png",
+   "source": "portrait_sylvan_worker_v2"
+  },
+  {
    "id": "sylvan_worker_m",
    "texture": "res://assets/portraits/sylvan_worker_m.png",
    "source": "portrait_sylvan_worker"
+  },
+  {
+   "id": "sylvan_worker_m@v2",
+   "texture": "res://assets/portraits/sylvan_worker_m_v2.png",
+   "source": "portrait_sylvan_worker_v2"
   },
   {
    "id": "vulpin_engineer_f",
@@ -177,9 +327,19 @@
    "source": "portrait_vulpin_engineer"
   },
   {
+   "id": "vulpin_engineer_f@v2",
+   "texture": "res://assets/portraits/vulpin_engineer_f_v2.png",
+   "source": "portrait_vulpin_engineer_v2"
+  },
+  {
    "id": "vulpin_engineer_m",
    "texture": "res://assets/portraits/vulpin_engineer_m.png",
    "source": "portrait_vulpin_engineer"
+  },
+  {
+   "id": "vulpin_engineer_m@v2",
+   "texture": "res://assets/portraits/vulpin_engineer_m_v2.png",
+   "source": "portrait_vulpin_engineer_v2"
   },
   {
    "id": "vulpin_fighter_f",
@@ -187,9 +347,19 @@
    "source": "portrait_vulpin_fighter"
   },
   {
+   "id": "vulpin_fighter_f@v2",
+   "texture": "res://assets/portraits/vulpin_fighter_f_v2.png",
+   "source": "portrait_vulpin_fighter_v2"
+  },
+  {
    "id": "vulpin_fighter_m",
    "texture": "res://assets/portraits/vulpin_fighter_m.png",
    "source": "portrait_vulpin_fighter"
+  },
+  {
+   "id": "vulpin_fighter_m@v2",
+   "texture": "res://assets/portraits/vulpin_fighter_m_v2.png",
+   "source": "portrait_vulpin_fighter_v2"
   },
   {
    "id": "vulpin_ranger_f",
@@ -197,9 +367,19 @@
    "source": "portrait_vulpin_ranger"
   },
   {
+   "id": "vulpin_ranger_f@v2",
+   "texture": "res://assets/portraits/vulpin_ranger_f_v2.png",
+   "source": "portrait_vulpin_ranger_v2"
+  },
+  {
    "id": "vulpin_ranger_m",
    "texture": "res://assets/portraits/vulpin_ranger_m.png",
    "source": "portrait_vulpin_ranger"
+  },
+  {
+   "id": "vulpin_ranger_m@v2",
+   "texture": "res://assets/portraits/vulpin_ranger_m_v2.png",
+   "source": "portrait_vulpin_ranger_v2"
   },
   {
    "id": "vulpin_scholar_f",
@@ -207,9 +387,19 @@
    "source": "portrait_vulpin_scholar"
   },
   {
+   "id": "vulpin_scholar_f@v2",
+   "texture": "res://assets/portraits/vulpin_scholar_f_v2.png",
+   "source": "portrait_vulpin_scholar_v2"
+  },
+  {
    "id": "vulpin_scholar_m",
    "texture": "res://assets/portraits/vulpin_scholar_m.png",
    "source": "portrait_vulpin_scholar"
+  },
+  {
+   "id": "vulpin_scholar_m@v2",
+   "texture": "res://assets/portraits/vulpin_scholar_m_v2.png",
+   "source": "portrait_vulpin_scholar_v2"
   },
   {
    "id": "vulpin_worker_f",
@@ -217,9 +407,19 @@
    "source": "portrait_vulpin_worker"
   },
   {
+   "id": "vulpin_worker_f@v2",
+   "texture": "res://assets/portraits/vulpin_worker_f_v2.png",
+   "source": "portrait_vulpin_worker_v2"
+  },
+  {
    "id": "vulpin_worker_m",
    "texture": "res://assets/portraits/vulpin_worker_m.png",
    "source": "portrait_vulpin_worker"
+  },
+  {
+   "id": "vulpin_worker_m@v2",
+   "texture": "res://assets/portraits/vulpin_worker_m_v2.png",
+   "source": "portrait_vulpin_worker_v2"
   }
  ]
 }
