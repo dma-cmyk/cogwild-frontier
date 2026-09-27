@@ -451,6 +451,26 @@ func dbg_attack_site(kind: String) -> int:
 	return sid
 
 
+## Places squad 0 just outside the nearest site of a kind (probes of village trade and diplomacy)
+## and focuses the camera there. Returns the site id.
+func dbg_station_squad_at(kind: String) -> int:
+	var sid := dbg_reveal_site(kind)
+	if sid < 0 or world.squads.is_empty():
+		return sid
+	var c := Vector2(world.gen.sites[sid]["center"]) + Vector2(0.5, 0.5)
+	var i := 0
+	for id: int in world.squads[0].members:
+		var u := world.get_unit(id)
+		var t := world.nearest_walkable(Vector2i(c + Vector2(6.0 + float(i % 3), 2.0 + float(i / 3))), 6)
+		if u and t.x != -99999:
+			world.stop_unit(u)
+			u.pos = Vector2(t) + Vector2(0.5, 0.5)
+		i += 1
+	world.reveal(c, 20.0)
+	rig.focus(Vector3(c.x, 0, c.y), true)
+	return sid
+
+
 func quick_save(slot: int) -> void:
 	var err := SaveGame.save(world, slot)
 	if err == "":

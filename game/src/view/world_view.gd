@@ -479,10 +479,14 @@ func _build_queued_chunk() -> void:
 
 
 func _process(delta: float) -> void:
-	var chunk_pending := _chunk_building or not _chunk_queue.is_empty()
+	# A streamed chunk runs one row slice per frame; unit and site visuals share the remaining
+	# frames so camps, villages and newcomers still appear while the explorer keeps revealing land.
+	# Only the frame that starts a new chunk (its tile preparation) skips visual construction.
+	var chunk_started := false
 	if not _chunk_building and not _chunk_queue.is_empty():
 		_build_queued_chunk()
-	if not chunk_pending:
+		chunk_started = true
+	if not chunk_started:
 		var unit_pending := not _pending_unit_views.is_empty()
 		var site_pending := not _pending_site_visuals.is_empty()
 		var unit_first := Engine.get_process_frames() % 2 == 0
