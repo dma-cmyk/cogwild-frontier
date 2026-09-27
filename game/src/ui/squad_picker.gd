@@ -83,10 +83,10 @@ func _reopen() -> void:
 	popup_centered(popup_size)
 
 
-func button_for_unit(unit_id: int) -> CheckButton:
+func button_for_unit(unit_id: int) -> Button:
 	for row: Control in rows.get_children():
 		if int(row.get_meta("unit_id", -1)) == unit_id:
-			return row.get_child(2) as CheckButton
+			return row.get_child(2) as Button
 	return null
 
 
@@ -141,9 +141,10 @@ func _rebuild() -> void:
 				context = Loc.t("Member of %s") % old.name
 		detail.add_child(UiTheme.label("%s · Lv.%d · %s" % [role, unit.char_level(), context], 12, UiTheme.TEXT_DIM))
 		row.add_child(detail)
-		var select := CheckButton.new()
-		select.custom_minimum_size = Vector2(44, 44)
-		select.focus_mode = Control.FOCUS_NONE
+		# a labelled toggle: the theme's switch glyph was too faint to read the selected state
+		var select := UiTheme.button(Loc.t("Select"))
+		select.toggle_mode = true
+		select.custom_minimum_size = Vector2(92, 44)
 		select.button_pressed = _selected_ids.has(unit.id)
 		var uid := unit.id
 		select.toggled.connect(func(checked: bool) -> void: _on_candidate_toggled(uid, checked))
@@ -183,8 +184,11 @@ func _update_selection_controls() -> void:
 	for row: Control in rows.get_children():
 		var unit_id := int(row.get_meta("unit_id", -1))
 		var selected := _selected_ids.has(unit_id)
-		var button := row.get_child(2) as CheckButton
+		var button := row.get_child(2) as Button
 		button.disabled = not selected and (slots == 0 or selected_count >= slots)
+		button.text = Loc.t("Selected") if selected else Loc.t("Select")
+		button.add_theme_stylebox_override("normal", UiTheme.button_box("pressed" if selected else "normal"))
+		button.add_theme_color_override("font_color", UiTheme.ACCENT if selected else UiTheme.TEXT)
 
 
 func _confirm_add() -> void:

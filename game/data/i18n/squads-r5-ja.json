@@ -11,5 +11,7 @@
   "No eligible units.": "追加できるユニットがいません。",
   "Job: %s": "仕事：%s",
   "Member of %s": "%sの隊員",
-  "A squad can have at most 6 members.": "小隊は最大6人です。"
+  "A squad can have at most 6 members.": "小隊は最大6人です。",
+  "Select": "選ぶ",
+  "Selected": "選択中"
 }

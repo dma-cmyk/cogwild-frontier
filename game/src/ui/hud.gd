@@ -900,7 +900,10 @@ func _update_command_bar_height() -> void:
 	if _compact:
 		_command_panel.offset_top = _command_panel.offset_bottom - 64.0
 		if is_instance_valid(info_panel):
-			info_panel.offset_bottom = _command_panel.offset_top - 8.0
+			# the drawer is top-anchored on phones while the bar is bottom-anchored: convert the
+			# bar's top edge to an absolute position before ending the drawer above it
+			var bar_top := _command_panel.anchor_top * get_viewport().get_visible_rect().size.y + _command_panel.offset_top
+			info_panel.offset_bottom = bar_top - 8.0
 		return
 	# Desktop: the panel grows upward to its two rows; the details panel ends above it.
 	_command_panel.offset_top = _command_panel.offset_bottom
