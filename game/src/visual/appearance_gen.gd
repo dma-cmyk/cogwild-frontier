@@ -2,7 +2,17 @@ class_name AppearanceGen
 extends RefCounted
 ## Deterministic, JSON-safe appearance DNA. All variation comes from the caller's RNG.
 
-const RACES: Array[String] = ["human", "sylvan", "stoutkin", "vulpin"]
+const RACES: Array[String] = ["human", "sylvan", "stoutkin", "vulpin", "minotaur", "centaur", "harpy", "lamia", "oni", "tengu"]
+
+static func race_ids() -> Array[String]:
+	var result: Array[String] = []
+	if DB != null:
+		for race: Dictionary in DB.entries("races"):
+			if bool(race.get("playable", true)):
+				result.append(str(race.get("id", "")))
+	if result.is_empty():
+		return RACES.duplicate()
+	return result
 const GENDERS: Array[String] = ["female", "male", "nonbinary"]
 const BODY_TYPES: Array[String] = ["slim", "average", "stocky", "tall"]
 const FACES: Array[String] = ["round", "long", "square"]
@@ -43,7 +53,7 @@ static func _color_pick(rng: RandomNumberGenerator, values: Array, fallback: Str
 	return str(values[rng.randi_range(0, values.size() - 1)])
 
 static func character(rng: RandomNumberGenerator, race: String, role: String, faction_style: String, faction_color: Color, gender: String = "") -> Dictionary:
-	var r := race if RACES.has(race) else "human"
+	var r := race if RACES.has(race) and (DB == null or DB.has_def("races", race)) else "human"
 	var style := faction_style if STYLES.has(faction_style) else "neutral"
 	var doc := _doc()
 	var roles: Dictionary = doc.get("roles", {})
@@ -53,10 +63,16 @@ static func character(rng: RandomNumberGenerator, race: String, role: String, fa
 	var palette := _palette(style, faction_color)
 	var g := gender if GENDERS.has(gender) else _pick(rng, GENDERS, "nonbinary")
 	var bt := _pick(rng, BODY_TYPES, "average")
-	if r == "stoutkin":
+	if r in ["stoutkin", "minotaur", "oni"]:
 		bt = "stocky" if rng.randf() < 0.72 else "average"
 	elif r == "sylvan":
 		bt = "tall" if rng.randf() < 0.58 else "slim"
+	elif r == "centaur":
+		bt = "tall" if rng.randf() < 0.78 else "average"
+	elif r == "harpy":
+		bt = "slim" if rng.randf() < 0.68 else "average"
+	elif r == "tengu":
+		bt = "tall" if rng.randf() < 0.55 else "slim"
 	var outfit := str(role_data.get("outfit", "tunic"))
 	if not OUTFITS.has(outfit): outfit = "tunic"
 	var headgear := str(role_data.get("headgear", "none"))
@@ -71,7 +87,7 @@ static func character(rng: RandomNumberGenerator, race: String, role: String, fa
 	var hair_color := _color_pick(rng, race_data.get("hair", []), "#3c2922")
 	var hair := _pick(rng, HAIR, "short")
 	if r == "stoutkin" and rng.randf() < 0.7: hair = "short"
-	var facial := "beard" if r == "stoutkin" and g != "female" and rng.randf() < 0.65 else "none"
+	var facial := "beard" if r in ["stoutkin"] and g != "female" and rng.randf() < 0.65 else "none"
 	if g == "male" and rng.randf() < 0.18: facial = "mustache"
 	return {"kind":"character", "seed":rng.randi(), "race":r, "gender":g, "body_type":bt,
 		"height":rng.randf_range(0.9, 1.1), "skin":skin, "face":_pick(rng, FACES, "round"),

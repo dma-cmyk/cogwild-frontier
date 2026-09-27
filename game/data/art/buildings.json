@@ -529,6 +529,438 @@
    "back_glow": "res://assets/sprites/buildings/trade_stall_back_glow.png"
   },
   {
+   "id": "v_centaur_hall",
+   "texture": "res://assets/sprites/buildings/v_centaur_hall.png",
+   "size_px": [
+    640,
+    553
+   ],
+   "base_w_px": 632.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 552.0,
+   "source": "b_v_centaur_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_centaur_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_centaur_hall_back.png",
+   "back_size_px": [
+    640,
+    541
+   ],
+   "back_base_w_px": 634.0,
+   "back_base_cx_px": 319.5,
+   "back_base_bottom_px": 540.0,
+   "back_glow": "res://assets/sprites/buildings/v_centaur_hall_back_glow.png"
+  },
+  {
+   "id": "v_centaur_home",
+   "texture": "res://assets/sprites/buildings/v_centaur_home.png",
+   "size_px": [
+    640,
+    545
+   ],
+   "base_w_px": 639.0,
+   "base_cx_px": 320.0,
+   "base_bottom_px": 544.0,
+   "source": "b_v_centaur_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_centaur_home_glow.png",
+   "back_symmetric": true
+  },
+  {
+   "id": "v_harpy_hall",
+   "texture": "res://assets/sprites/buildings/v_harpy_hall.png",
+   "size_px": [
+    640,
+    1074
+   ],
+   "base_w_px": 509.0,
+   "base_cx_px": 316.0,
+   "base_bottom_px": 1073.0,
+   "source": "b_v_harpy_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_harpy_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_harpy_hall_back.png",
+   "back_size_px": [
+    589,
+    993
+   ],
+   "back_base_w_px": 469.0,
+   "back_base_cx_px": 290.0,
+   "back_base_bottom_px": 992.0,
+   "back_glow": "res://assets/sprites/buildings/v_harpy_hall_back_glow.png"
+  },
+  {
+   "id": "v_harpy_home",
+   "texture": "res://assets/sprites/buildings/v_harpy_home.png",
+   "size_px": [
+    640,
+    911
+   ],
+   "base_w_px": 600.0,
+   "base_cx_px": 313.5,
+   "base_bottom_px": 910.0,
+   "source": "b_v_harpy_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_harpy_home_glow.png",
+   "back_symmetric": true
+  },
+  {
+   "id": "v_human_hall",
+   "texture": "res://assets/sprites/buildings/v_human_hall.png",
+   "size_px": [
+    640,
+    506
+   ],
+   "base_w_px": 626.0,
+   "base_cx_px": 326.5,
+   "base_bottom_px": 505.0,
+   "source": "b_v_human_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_human_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_human_hall_back.png",
+   "back_size_px": [
+    640,
+    542
+   ],
+   "back_base_w_px": 621.0,
+   "back_base_cx_px": 310.0,
+   "back_base_bottom_px": 541.0,
+   "back_glow": "res://assets/sprites/buildings/v_human_hall_back_glow.png"
+  },
+  {
+   "id": "v_human_home",
+   "texture": "res://assets/sprites/buildings/v_human_home.png",
+   "size_px": [
+    640,
+    579
+   ],
+   "base_w_px": 623.0,
+   "base_cx_px": 311.0,
+   "base_bottom_px": 578.0,
+   "source": "b_v_human_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_human_home_glow.png",
+   "back_symmetric": true
+  },
+  {
+   "id": "v_lamia_hall",
+   "texture": "res://assets/sprites/buildings/v_lamia_hall.png",
+   "size_px": [
+    640,
+    641
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 640.0,
+   "source": "b_v_lamia_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_lamia_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_lamia_hall_back.png",
+   "back_size_px": [
+    640,
+    640
+   ],
+   "back_base_w_px": 640.0,
+   "back_base_cx_px": 319.5,
+   "back_base_bottom_px": 639.0,
+   "back_glow": "res://assets/sprites/buildings/v_lamia_hall_back_glow.png"
+  },
+  {
+   "id": "v_lamia_home",
+   "texture": "res://assets/sprites/buildings/v_lamia_home.png",
+   "size_px": [
+    640,
+    823
+   ],
+   "base_w_px": 627.0,
+   "base_cx_px": 320.0,
+   "base_bottom_px": 822.0,
+   "source": "b_v_lamia_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_lamia_home_glow.png",
+   "back_symmetric": true
+  },
+  {
+   "id": "v_minotaur_hall",
+   "texture": "res://assets/sprites/buildings/v_minotaur_hall.png",
+   "size_px": [
+    640,
+    557
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 556.0,
+   "source": "b_v_minotaur_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_minotaur_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_minotaur_hall_back.png",
+   "back_size_px": [
+    640,
+    629
+   ],
+   "back_base_w_px": 640.0,
+   "back_base_cx_px": 319.5,
+   "back_base_bottom_px": 628.0
+  },
+  {
+   "id": "v_minotaur_home",
+   "texture": "res://assets/sprites/buildings/v_minotaur_home.png",
+   "size_px": [
+    640,
+    593
+   ],
+   "base_w_px": 638.0,
+   "base_cx_px": 318.5,
+   "base_bottom_px": 592.0,
+   "source": "b_v_minotaur_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_minotaur_home_glow.png",
+   "back_symmetric": true
+  },
+  {
+   "id": "v_oni_hall",
+   "texture": "res://assets/sprites/buildings/v_oni_hall.png",
+   "size_px": [
+    640,
+    528
+   ],
+   "base_w_px": 635.0,
+   "base_cx_px": 317.0,
+   "base_bottom_px": 527.0,
+   "source": "b_v_oni_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_oni_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_oni_hall_back.png",
+   "back_size_px": [
+    640,
+    600
+   ],
+   "back_base_w_px": 634.0,
+   "back_base_cx_px": 322.5,
+   "back_base_bottom_px": 599.0,
+   "back_glow": "res://assets/sprites/buildings/v_oni_hall_back_glow.png"
+  },
+  {
+   "id": "v_oni_home",
+   "texture": "res://assets/sprites/buildings/v_oni_home.png",
+   "size_px": [
+    640,
+    600
+   ],
+   "base_w_px": 562.0,
+   "base_cx_px": 318.5,
+   "base_bottom_px": 599.0,
+   "source": "b_v_oni_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_oni_home_glow.png",
+   "back_symmetric": true
+  },
+  {
+   "id": "v_stoutkin_hall",
+   "texture": "res://assets/sprites/buildings/v_stoutkin_hall.png",
+   "size_px": [
+    640,
+    608
+   ],
+   "base_w_px": 616.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 607.0,
+   "source": "b_v_stoutkin_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_stoutkin_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_stoutkin_hall_back.png",
+   "back_size_px": [
+    640,
+    631
+   ],
+   "back_base_w_px": 635.0,
+   "back_base_cx_px": 317.0,
+   "back_base_bottom_px": 630.0,
+   "back_glow": "res://assets/sprites/buildings/v_stoutkin_hall_back_glow.png"
+  },
+  {
+   "id": "v_stoutkin_home",
+   "texture": "res://assets/sprites/buildings/v_stoutkin_home.png",
+   "size_px": [
+    640,
+    594
+   ],
+   "base_w_px": 636.0,
+   "base_cx_px": 318.5,
+   "base_bottom_px": 593.0,
+   "source": "b_v_stoutkin_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_stoutkin_home_glow.png",
+   "back_symmetric": true
+  },
+  {
+   "id": "v_sylvan_hall",
+   "texture": "res://assets/sprites/buildings/v_sylvan_hall.png",
+   "size_px": [
+    640,
+    600
+   ],
+   "base_w_px": 594.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 599.0,
+   "source": "b_v_sylvan_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_sylvan_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_sylvan_hall_back.png",
+   "back_size_px": [
+    640,
+    579
+   ],
+   "back_base_w_px": 594.0,
+   "back_base_cx_px": 319.5,
+   "back_base_bottom_px": 578.0,
+   "back_glow": "res://assets/sprites/buildings/v_sylvan_hall_back_glow.png"
+  },
+  {
+   "id": "v_sylvan_home",
+   "texture": "res://assets/sprites/buildings/v_sylvan_home.png",
+   "size_px": [
+    640,
+    769
+   ],
+   "base_w_px": 441.0,
+   "base_cx_px": 389.0,
+   "base_bottom_px": 768.0,
+   "source": "b_v_sylvan_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_sylvan_home_glow.png",
+   "back_symmetric": true
+  },
+  {
+   "id": "v_tengu_hall",
+   "texture": "res://assets/sprites/buildings/v_tengu_hall.png",
+   "size_px": [
+    640,
+    1134
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 1133.0,
+   "source": "b_v_tengu_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_tengu_hall_glow.png",
+   "back_pending": true,
+   "back_symmetric": true
+  },
+  {
+   "id": "v_tengu_home",
+   "texture": "res://assets/sprites/buildings/v_tengu_home.png",
+   "size_px": [
+    640,
+    753
+   ],
+   "base_w_px": 568.0,
+   "base_cx_px": 324.5,
+   "base_bottom_px": 752.0,
+   "source": "b_v_tengu_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_tengu_home_glow.png",
+   "back_symmetric": true
+  },
+  {
+   "id": "v_vulpin_hall",
+   "texture": "res://assets/sprites/buildings/v_vulpin_hall.png",
+   "size_px": [
+    640,
+    545
+   ],
+   "base_w_px": 638.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 544.0,
+   "source": "b_v_vulpin_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_vulpin_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_vulpin_hall_back.png",
+   "back_size_px": [
+    640,
+    530
+   ],
+   "back_base_w_px": 637.0,
+   "back_base_cx_px": 320.0,
+   "back_base_bottom_px": 529.0,
+   "back_glow": "res://assets/sprites/buildings/v_vulpin_hall_back_glow.png"
+  },
+  {
+   "id": "v_vulpin_home",
+   "texture": "res://assets/sprites/buildings/v_vulpin_home.png",
+   "size_px": [
+    640,
+    727
+   ],
+   "base_w_px": 563.0,
+   "base_cx_px": 333.0,
+   "base_bottom_px": 726.0,
+   "source": "b_v_vulpin_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_vulpin_home_glow.png",
+   "back_symmetric": true
+  },
+  {
    "id": "wall",
    "texture": "res://assets/sprites/buildings/wall.png",
    "size_px": [

@@ -831,6 +831,42 @@
         "Brasswell",
         "Cloudrest"
       ]
+    },
+    "minotaur": {
+      "female": ["Althea", "Callia", "Damaris", "Eleni", "Ione", "Kallisto", "Melia", "Thaleia", "Xanthe", "Zoe"],
+      "male": ["Acastus", "Bion", "Damon", "Evander", "Iason", "Kleon", "Leander", "Nikos", "Phaon", "Theron"],
+      "neutral": ["Ari Dorian", "Basile Echo", "Cleo Phoenix", "Dione Sage", "Eryx Sol", "Iris Vale", "Kallias Wren", "Niko Zephyr"],
+      "family": ["Aegean", "Argyros", "Daskalos", "Eirenaios", "Kallergis", "Melanthios", "Nikolaou", "Pappas", "Therianos", "Vardis"]
+    },
+    "centaur": {
+      "female": ["Ariadne", "Chloe", "Daphne", "Eudora", "Ianthe", "Kassandra", "Melina", "Nerissa", "Phoebe", "Thea"],
+      "male": ["Andron", "Castor", "Dorian", "Helios", "Kyros", "Orion", "Petros", "Stavros", "Timon", "Zephyros"],
+      "neutral": ["Aster Gale", "Calix Run", "Dara Zephyr", "Eos Flint", "Hesper Vale", "Ione Swift", "Kleio Wind", "Niko Trail"],
+      "family": ["Aeolus", "Alkimos", "Chrysanth", "Demetriou", "Heliad", "Kallias", "Lykaios", "Pherenikos", "Skiron", "Theron"]
+    },
+    "harpy": {
+      "female": ["Aella", "Aethra", "Arete", "Calypso", "Eos", "Halia", "Iris", "Ligeia", "Melia", "Thyra"],
+      "male": ["Aeson", "Atlas", "Boreas", "Eryx", "Kairos", "Melas", "Notus", "Pallas", "Pteron", "Zethus"],
+      "neutral": ["Aero Dawn", "Aster Skye", "Boreas Reed", "Cleo Cloud", "Dysis Wing", "Eos Ember", "Iris Gale", "Zephyr Ash"],
+      "family": ["Anemoi", "Astrapios", "Aurelios", "Chryseis", "Nephele", "Ouranos", "Pteris", "Thalassa", "Vesperos", "Zorya"]
+    },
+    "lamia": {
+      "female": ["Aglaia", "Aletheia", "Dione", "Eirene", "Hecate", "Ione", "Leto", "Melinoe", "Nyssa", "Selene"],
+      "male": ["Aeson", "Alkaios", "Damon", "Evander", "Lykos", "Morpheus", "Nereus", "Orestes", "Theron", "Xenon"],
+      "neutral": ["Aion Fern", "Cleo Moss", "Dione Ember", "Eryx Reed", "Iris Sage", "Kyrie Vale", "Niko Willow", "Thale Zephyr"],
+      "family": ["Acantha", "Aegis", "Anax", "Chloris", "Euphron", "Kallistos", "Myrmidon", "Narkissos", "Philemon", "Soter"]
+    },
+    "oni": {
+      "female": ["Aiko", "Chiyo", "Emi", "Hana", "Kaede", "Mei", "Natsumi", "Rei", "Sakura", "Yuna"],
+      "male": ["Daichi", "Haruto", "Isamu", "Kaito", "Masaru", "Ren", "Riku", "Takeshi", "Yori", "Yuuto"],
+      "neutral": ["Akari Hoshi", "Aoi Kaze", "Haru Mori", "Itsuki Rei", "Kaoru Sora", "Makoto Nami", "Ren Yuki", "Tsubasa Rin"],
+      "family": ["Amano", "Fujimoto", "Hayashi", "Ishikawa", "Kobayashi", "Matsuda", "Nakamura", "Saito", "Takahashi", "Yamamoto"]
+    },
+    "tengu": {
+      "female": ["Akane", "Ayame", "Fumiko", "Hotaru", "Izumi", "Kiyomi", "Mizuki", "Suzu", "Tomoe", "Yuri"],
+      "male": ["Akio", "Daigo", "Hiro", "Isao", "Kenshin", "Ryo", "Shinji", "Takumi", "Yoshi", "Zento"],
+      "neutral": ["Aki Sora", "Asa Kiri", "Haru Tsubasa", "Kaede Yama", "Kai Hoshi", "Michi Kaze", "Nao Tsuki", "Rei Hayate"],
+      "family": ["Chinen", "Endo", "Fujita", "Hasegawa", "Kuroda", "Mori", "Nishida", "Okada", "Shimizu", "Watanabe"]
     }
   },
   "nicknames": [

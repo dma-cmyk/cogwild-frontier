@@ -19,10 +19,15 @@ static func metrics(d: Dictionary) -> Dictionary:
 	var body_type := str(d.get("body_type", "average"))
 	var outfit := str(d.get("outfit", "tunic"))
 	var h := 1.18 * clampf(float(d.get("height", 1.0)), 0.85, 1.15)
-	if race == "stoutkin":
-		h *= 0.93
-	elif race == "sylvan":
-		h *= 1.06
+	match race:
+		"stoutkin": h *= 0.93
+		"sylvan": h *= 1.06
+		"minotaur": h *= 1.10
+		"centaur": h *= 1.08
+		"harpy": h *= 1.02
+		"lamia": h *= 1.04
+		"oni": h *= 1.08
+		"tengu": h *= 1.04
 	var bw := 0.300
 	match body_type:
 		"slim": bw = 0.262
@@ -31,6 +36,10 @@ static func metrics(d: Dictionary) -> Dictionary:
 		_: bw = 0.300
 	if race == "stoutkin":
 		bw += 0.036
+	elif race == "minotaur":
+		bw += 0.055
+	elif race == "oni":
+		bw += 0.035
 	elif race == "sylvan":
 		bw -= 0.020
 	bw *= h / 1.18
@@ -336,7 +345,7 @@ static func _head(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary, see
 		var ear_r := rx * (0.26 if race == "human" else 0.30)
 		for side in [-1.0, 1.0]:
 			kit.ellipsoid(Vector3(side * rx * 0.94, -ry * 0.02, -rz * 0.06),
-				Vector3(ear_r * 0.45, ear_r, ear_r * 0.75), c.skin, 5, 3)
+				Vector3(ear_r * 0.45, ear_r, ear_r * 0.75), c.skin, 4, 2)
 	_facial_hair(kit, m, c, d)
 	kit.pop()
 
@@ -405,14 +414,100 @@ static func _race_features(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictio
 			kit.cone(Vector3(0, ry * 0.30, 0.0), ry * 0.32, rx * 0.20, fur_tip, 5)
 			kit.pop()
 			kit.pop()
-		# bushy tail sweeping up behind the hips
 		var bw: float = m.bw
 		var base := Vector3(0, float(m.hip_y) + bw * 0.28, -float(m.bd) * 0.46)
 		kit.push_trs(base, Vector3(-38.0, 0, 0))
 		kit.ellipsoid(Vector3(0, bw * 0.28, 0), Vector3(bw * 0.30, bw * 0.52, bw * 0.30), fur, 6, 3)
 		kit.ellipsoid(Vector3(0, bw * 0.72, 0), Vector3(bw * 0.24, bw * 0.30, bw * 0.24), fur_tip, 5, 2)
 		kit.pop()
+	elif race in ["minotaur", "oni"]:
+		_horn_pair(kit, m, race)
+	elif race == "centaur":
+		_centaur_lower_body(kit, m, c)
+	elif race == "harpy":
+		_feather_wings(kit, m, Color("#694b38"), 0.68)
+	elif race == "lamia":
+		_lamia_lower_body(kit, m, c)
+	elif race == "tengu":
+		_beak(kit, m)
+		_feather_wings(kit, m, Color("#443a32"), 0.52)
 
+
+static func _horn_pair(kit: MeshKit, m: Dictionary, race: String) -> void:
+	var rx: float = m.head_rx
+	var ry: float = m.head_ry
+	var rz: float = m.head_rz
+	var hy: float = m.head_y
+	var horn: Color = Color("#e3d1a3") if race == "minotaur" else Color("#d4b76f")
+	for side in [-1.0, 1.0]:
+		var base := Vector3(side * rx * 0.68, hy + ry * 0.60, -rz * 0.04)
+		var tip := Vector3(side * rx * (1.34 if race == "minotaur" else 0.95),
+			hy + ry * (1.12 if race == "minotaur" else 1.48), -rz * 0.18)
+		kit.tube(base, tip, ry * 0.16, horn, 4)
+
+
+static func _centaur_lower_body(kit: MeshKit, m: Dictionary, c: Dictionary) -> void:
+	var bw: float = m.bw
+	var hip_y: float = m.hip_y
+	var coat: Color = c.hair
+	var coat_light := coat.lightened(0.12)
+	var coat_dark := coat.darkened(0.18)
+	kit.ellipsoid(Vector3(0, hip_y * 0.73, -0.14), Vector3(bw * 1.42, hip_y * 0.78, 0.53), coat, 6, 2)
+	kit.ellipsoid(Vector3(0, hip_y * 0.78, 0.22), Vector3(bw * 1.14, hip_y * 0.72, 0.34), coat_light, 5, 2)
+	for z: float in [0.31, -0.48]:
+		for side: float in [-1.0, 1.0]:
+			var x := side * bw * 0.88
+			var shoulder := Vector3(x, hip_y * 0.62, z)
+			var knee := Vector3(x * 1.04, hip_y * 0.30, z + (0.035 if z > 0.0 else -0.045))
+			var hoof := Vector3(x * 1.08, 0.035, knee.z + (0.04 if z > 0.0 else -0.035))
+			kit.tube(shoulder, knee, 0.075, coat_light if z > 0.0 else coat, 4)
+			kit.sphere(knee, 0.078, coat_dark, 4, 2)
+			kit.tube(knee, hoof, 0.052, coat_dark, 4)
+			kit.frustum(Vector3(hoof.x, 0.012, hoof.z), 0.095, 0.078, 0.092, Color("#342820"), 4)
+	kit.tube(Vector3(0, hip_y * 0.82, -0.56), Vector3(0.04, hip_y * 0.46, -0.77), 0.055, coat_dark, 5)
+	kit.tube(Vector3(0.04, hip_y * 0.46, -0.77), Vector3(0.11, hip_y * 0.40, -0.92), 0.04, coat_dark, 5)
+
+
+static func _lamia_lower_body(kit: MeshKit, m: Dictionary, c: Dictionary) -> void:
+	var hip_y: float = m.hip_y
+	var scale_color: Color = c.skin.darkened(0.08)
+	kit.tube(Vector3(0, hip_y * 0.96, 0.0), Vector3(0.04, hip_y * 0.64, -0.14), 0.15, scale_color, 5)
+	var segments := 8
+	for i in segments:
+		var a0 := TAU * float(i) / float(segments)
+		var a1 := TAU * float(i + 1) / float(segments)
+		var p0 := Vector3(cos(a0) * 0.23, 0.14, sin(a0) * 0.17 - 0.06)
+		var p1 := Vector3(cos(a1) * 0.23, 0.14, sin(a1) * 0.17 - 0.06)
+		kit.tube(p0, p1, 0.105, scale_color, 4)
+	kit.tube(Vector3(0.23, 0.14, -0.06), Vector3(0.18, 0.23, -0.30), 0.095, scale_color, 4)
+	kit.tube(Vector3(0.18, 0.23, -0.30), Vector3(0.02, 0.35, -0.42), 0.065, scale_color.lightened(0.06), 4)
+
+
+static func _feather_wings(kit: MeshKit, m: Dictionary, feather: Color, span: float) -> void:
+	var bw: float = m.bw
+	var top: float = m.torso_top
+	var bd: float = m.bd
+	for side in [-1.0, 1.0]:
+		kit.push_trs(Vector3(side * bw * 0.42, top * 0.80, -bd * 0.74))
+		var outline := PackedVector2Array([
+			Vector2(0, -0.13), Vector2(side * span * 0.38, 0.06), Vector2(side * span * 0.76, 0.30),
+			Vector2(side * span * 0.58, 0.08), Vector2(side * span, 0.15), Vector2(side * span * 0.54, -0.02),
+			Vector2(side * span * 0.73, -0.25), Vector2(side * span * 0.22, -0.32)
+		])
+		kit.plate(outline, 0.035, feather, feather.lightened(0.12))
+		for i in 2:
+			var start := Vector3(side * span * (0.24 + float(i) * 0.14), -0.04, -0.045)
+			var finish := Vector3(side * span * (0.47 + float(i) * 0.16), 0.19 - float(i) * 0.16, -0.045)
+			kit.tube(start, finish, 0.032, feather.lightened(0.22), 3)
+		kit.pop()
+
+
+static func _beak(kit: MeshKit, m: Dictionary) -> void:
+	var ry: float = m.head_ry
+	var rz: float = m.head_rz
+	kit.push_trs(Vector3(0, float(m.head_y) - ry * 0.14, rz * 0.80), Vector3(90.0, 0.0, 0.0))
+	kit.cone(Vector3.ZERO, ry * 0.72, ry * 0.20, Color("#b85e2c"), 5)
+	kit.pop()
 
 # --- hair ----------------------------------------------------------------------------------------
 
@@ -786,6 +881,8 @@ static func _offhand(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary) 
 ## One leg, authored around its hip joint (side -1 = left, +1 = right).
 static func leg(d: Dictionary, side: int) -> ArrayMesh:
 	var kit := MeshKit.new()
+	if str(d.get("race", "human")) in ["centaur", "lamia"]:
+		return kit.build()
 	var m := metrics(d)
 	var c := colors(d)
 	var hip: float = m.hip_y
