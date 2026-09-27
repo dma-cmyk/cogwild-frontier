@@ -1,6 +1,7 @@
 {
   "scene": "res://scenes/game.tscn",
   "frames": 100,
+  "seed": 11,
   "events": [
     {"frame": 1, "do": "scene.set_speed(0)"},
     {"frame": 2, "do": "scene.rig.rotate_step(1)"},
@@ -9,13 +10,13 @@
     {"frame": 35, "mouse": "click", "pos": [1292, 808], "button": "left"},
     {"frame": 38, "screenshot": "build_menu"},
     {"frame": 40, "mouse": "click", "pos": [560, 560], "button": "left"},
-    {"frame": 45, "mouse": "move", "pos": [300, 440]},
+    {"frame": 45, "mouse": "move", "pos": [500, 300]},
     {"frame": 48, "expect": "scene.input_ctl.mode == 'build:house'", "label": "house selected from build menu"},
     {"frame": 49, "do": "scene.set_meta('house_ghost_origin', scene.input_ctl._ghost_origin('house'))"},
     {"frame": 49, "do": "scene.set_meta('house_count_before', scene.world.buildings_of('house', false).size())"},
     {"frame": 49, "expect": "scene.input_ctl.ghost_reason() == '' and scene.input_ctl._ghost.visible", "label": "house ghost valid"},
     {"frame": 50, "screenshot": "house_ghost"},
-    {"frame": 52, "mouse": "click", "pos": [300, 440], "button": "left"},
+    {"frame": 52, "mouse": "click", "pos": [500, 300], "button": "left"},
     {"frame": 55, "expect": "scene.world.buildings_of('house', false).size() == int(scene.get_meta('house_count_before')) + 1", "label": "house placed by UI"},
     {"frame": 55, "expect": "scene.world.buildings_of('house', false).back().origin == scene.get_meta('house_ghost_origin')", "label": "placed origin matches ghost"},
     {"frame": 55, "expect": "scene.world.building_at(scene.get_meta('house_ghost_origin')) == scene.world.buildings_of('house', false).back()", "label": "ghost origin tile occupied"},

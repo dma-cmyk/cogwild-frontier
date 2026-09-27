@@ -1,0 +1,15 @@
+{
+  "＋ New squad": "＋ 新しい小隊",
+  "＋ New squad (%d/9)": "＋ 新しい小隊（%d/9）",
+  "Create a squad from selected units, or start an empty squad.": "選択中のユニットで小隊を作ります。選択がなければ空の小隊を作ります。",
+  "Maximum 9 squads (hotkeys 1–9).": "小隊は最大9隊です（ショートカット1～9）。",
+  "Add squad members": "小隊員を追加",
+  "Add selected": "選択中を追加",
+  "Add %d selected": "選択中の%d人を追加",
+  "%d selected · %d slots available": "%d人選択・残り%d枠",
+  "Squad is full (%d/6).": "小隊は満員です（%d/6）。",
+  "No eligible units.": "追加できるユニットがいません。",
+  "Job: %s": "仕事：%s",
+  "Member of %s": "%sの隊員",
+  "A squad can have at most 6 members.": "小隊は最大6人です。"
+}

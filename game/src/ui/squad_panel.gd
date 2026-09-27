@@ -23,7 +23,7 @@ var _expand_btn: Button
 var _close_btn: Button
 var _rename_edit: LineEdit
 var _auto_toggle: CheckButton
-var _new_btn: Button
+var _tab_new_btn: Button
 var _disband_btn: Button
 var _picker_btn: Button
 var _foot: HBoxContainer
@@ -89,10 +89,14 @@ func setup(game: Game, h: Hud) -> void:
 	_tabs_scroll = ScrollContainer.new()
 	_tabs_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	_tabs_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	_tabs_scroll.custom_minimum_size.y = 28
+	_tabs_scroll.custom_minimum_size.y = 44
 	_tabs_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_tabs_scroll.add_child(_tabs)
 	head.add_child(_tabs_scroll)
+	_tab_new_btn = UiTheme.button(Loc.t("＋ New squad"), "ui_squad", Loc.t("Create a squad from selected units, or start an empty squad."))
+	_tab_new_btn.custom_minimum_size = Vector2(140, 44)
+	_tab_new_btn.pressed.connect(_on_new)
+	head.add_child(_tab_new_btn)
 	_expand_btn = UiTheme.button("", "ui_expand", Loc.t("Squad menu"))
 	_expand_btn.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_expand_btn.visible = false
@@ -164,9 +168,6 @@ func setup(game: Game, h: Hud) -> void:
 	_split_selected_btn = UiTheme.button(Loc.t("One-person squad"), "ui_squad", Loc.t("Create a squad for the selected worker."))
 	_split_selected_btn.pressed.connect(_split_selected_into_own_squad)
 	_actions.add_child(_split_selected_btn)
-	_new_btn = UiTheme.button(Loc.t("New squad"), "ui_squad", Loc.t("Form a new squad from the selected units."))
-	_new_btn.pressed.connect(_on_new)
-	_actions.add_child(_new_btn)
 	_disband_btn = UiTheme.button(Loc.t("Disband"), "ui_close", Loc.t("Disband this squad and return its members to work."))
 	_disband_btn.pressed.connect(_confirm_disband)
 	_actions.add_child(_disband_btn)
@@ -195,14 +196,15 @@ func set_compact(compact: bool) -> void:
 	_body.add_theme_constant_override("separation", 4 if compact else 5)
 	_expand_btn.visible = compact
 	_expand_btn.custom_minimum_size = Vector2(44, 44)
-	_close_btn.visible = false
-	_rename_btn.custom_minimum_size = Vector2(32, 30)
+	_close_btn.custom_minimum_size = Vector2(44, 44)
+	_rename_btn.custom_minimum_size = Vector2(44, 44) if compact else Vector2(32, 30)
+	_tab_new_btn.custom_minimum_size = Vector2(156, 44)
+	_tabs_scroll.custom_minimum_size.y = 56 if compact else 44
 	_stance_select.custom_minimum_size = Vector2(120, 44) if compact else Vector2(98, 30)
 	_formation_select.custom_minimum_size = Vector2(104, 44) if compact else Vector2(86, 30)
 	_auto_toggle.custom_minimum_size = Vector2(144, 44) if compact else Vector2(122, 30)
 	for child in _actions.get_children():
 		(child as Control).custom_minimum_size = Vector2(0, 44 if compact else 30)
-	_tabs_scroll.custom_minimum_size.y = 56 if compact else 28
 	# phones: the member actions get their own row so the expanded panel stays narrow enough to
 	# sit beside the details drawer
 	var actions_parent: Node = _body if compact else _foot
@@ -226,29 +228,19 @@ func _apply_compact_layout() -> void:
 	_expand_btn.tooltip_text = Loc.t("Squad menu")
 	_head.get_child(0).visible = not collapsed
 	_name.visible = not collapsed
-	# refresh() first sets it for "one real squad shown"; collapsing hides it as well
 	_rename_btn.visible = _rename_btn.visible and not collapsed
 	_rename_edit.visible = false if collapsed else _renaming
 	_count.visible = not collapsed
 	_state.visible = not collapsed
 	_close_btn.visible = false
-	if collapsed:
-		if _card_scroll.get_parent() == _body:
-			_body.remove_child(_card_scroll)
-			_head.add_child(_card_scroll)
-		_head.move_child(_card_scroll, _expand_btn.get_index())
-		_card_scroll.custom_minimum_size = Vector2(0, 60)
-		_cards.custom_minimum_size = Vector2(0, 60)
-		_foot.visible = false
-		_actions.visible = false
-	elif _card_scroll.get_parent() == _head:
-		_head.remove_child(_card_scroll)
+	if _card_scroll.get_parent() != _body:
+		_card_scroll.get_parent().remove_child(_card_scroll)
 		_body.add_child(_card_scroll)
 		_body.move_child(_card_scroll, 1)
-	if not collapsed:
-		# desktop: room for a full squad (six 106 px cards, 6 px apart); extra cards scroll
-		_card_scroll.custom_minimum_size = Vector2(0, 124) if _compact else Vector2(6.0 * 106.0 + 5.0 * 6.0, 118)
-
+	_card_scroll.custom_minimum_size = Vector2(0, 54) if collapsed else Vector2(0, 124) if _compact else Vector2(6.0 * 106.0 + 5.0 * 6.0, 118)
+	_cards.custom_minimum_size = Vector2(0, 52) if collapsed else Vector2.ZERO
+	_foot.visible = not collapsed and _squad() != null
+	_actions.visible = not collapsed and (_squad() != null or _split_selected_btn.visible)
 func _begin_rename() -> void:
 	var squad := _squad()
 	if squad == null:
@@ -302,7 +294,7 @@ func fallback_if_empty(squad_id: int) -> void:
 		if squad.id != squad_id:
 			g.viewed_squad_id = squad.id
 			return
-	g.viewed_squad_id = -1
+	g.viewed_squad_id = squad_id
 
 
 
@@ -320,19 +312,14 @@ func _confirm_disband() -> void:
 	var dialog := ConfirmationDialog.new()
 	dialog.dialog_text = Loc.t("Disband %s? Members will return to work.") % s.name
 	dialog.confirmed.connect(func() -> void:
-		for id: int in s.members.duplicate():
-			var unit := g.world.get_unit(id)
-			if unit:
-				g.world.unassign_from_squad(unit)
-		g.world.squads.erase(s)
-		g.world.squads_changed.emit()
-		g.sel_squad = -1
-		g.viewed_squad_id = -1
-		for remaining: Squad in g.world.squads:
-			if not remaining.members.is_empty():
-				g.viewed_squad_id = remaining.id
-				break
+		if not g.world.disband_squad(s.id):
+			return
+		all_squads_active = false
 		g.clear_selection()
+		g.viewed_squad_id = g.world.squads[0].id if not g.world.squads.is_empty() else -1
+		if g.viewed_squad_id >= 0:
+			g.view_squad(g.viewed_squad_id)
+		hud._update_commands()
 		refresh(true))
 	add_child(dialog)
 	dialog.popup_centered()
@@ -366,36 +353,29 @@ func refresh(force: bool) -> void:
 	var add_count := 0
 	if s:
 		for unit: Unit in g.selected_units():
-			if unit.squad_id != s.id and unit.kind != "airship":
+			if unit.is_player() and unit.squad_id != s.id and unit.kind != "airship":
 				add_count += 1
 	_add_btn.visible = s != null and add_count > 0
 	_add_btn.text = Loc.t("Add %d selected") % add_count
 	_add_btn.disabled = s == null or s.members.size() >= 6
 	_picker_btn.visible = s != null
 	_picker_btn.disabled = s == null or s.members.size() >= 6
+	_tab_new_btn.disabled = g.world.squads.size() >= World.MAX_SQUADS
+	_tab_new_btn.text = Loc.t("＋ New squad (%d/9)") % g.world.squads.size() if _tab_new_btn.disabled else Loc.t("＋ New squad")
+	_tab_new_btn.tooltip_text = Loc.t("Maximum 9 squads (hotkeys 1–9).") if _tab_new_btn.disabled else Loc.t("Create a squad from selected units, or start an empty squad.")
 	var selected := g.selected_units()
-	var eligible_selected := false
-	for unit: Unit in selected:
-		if unit.kind != "airship":
-			eligible_selected = true
-			break
 	var split_unit: Unit = selected[0] if selected.size() == 1 else null
-	_split_selected_btn.visible = split_unit != null and split_unit.kind != "airship" and split_unit.squad_id < 0
+	_split_selected_btn.visible = split_unit != null and split_unit.is_player() and split_unit.kind != "airship" and split_unit.squad_id < 0
 	var focus := g.focus_unit()
-	_new_btn.visible = eligible_selected and not all_squads_active and target_ids.size() <= 1 \
-			and not _split_selected_btn.visible and (s == null or add_count > 0 or selected.size() < s.members.size())
 	_disband_btn.visible = s != null
-	_actions.visible = s != null or _split_selected_btn.visible or _new_btn.visible
+	_actions.visible = s != null or _split_selected_btn.visible
 	_foot.visible = s != null or _actions.visible
 	for i in range(3, 6):
 		_foot.get_child(i).visible = s != null
 	if _compact:
-		# collapsed: a one-row strip beside the command bar; expanded: above the bar (80 px high)
-		# so the bar never covers the stance and member controls
-		offset_bottom = -8.0 if _compact_collapsed else -96.0
-		offset_top = offset_bottom - (74.0 if _compact_collapsed else 292.0)
+		offset_bottom = -80.0
+		offset_top = offset_bottom - (122.0 if _compact_collapsed else 292.0)
 	else:
-		# desktop: HUD anchors the panel bottom-left and it grows upward to fit its content
 		offset_top = offset_bottom
 	_apply_compact_layout()
 	if s:
@@ -463,7 +443,7 @@ func _rebuild_tabs(current: Squad) -> void:
 	for child in _tabs.get_children():
 		child.queue_free()
 	var all_button := UiTheme.button(Loc.t("All squads") if not _compact else "", "ui_squad", Loc.t("Give orders to every squad."))
-	all_button.custom_minimum_size = Vector2(56 if _compact else 88, 56 if _compact else 28)
+	all_button.custom_minimum_size = Vector2(48 if _compact else 88, 48 if _compact else 44)
 	if all_squads_active:
 		all_button.add_theme_stylebox_override("normal", UiTheme.button_box("pressed"))
 	all_button.pressed.connect(func() -> void:
@@ -474,7 +454,7 @@ func _rebuild_tabs(current: Squad) -> void:
 	for i in g.world.squads.size():
 		var squad: Squad = g.world.squads[i]
 		var button := UiTheme.button(str(i + 1) if _compact else "%d %s" % [i + 1, squad.name.left(12)], "", Loc.t("Select %s (key %d)") % [squad.name, i + 1])
-		button.custom_minimum_size = Vector2(56 if _compact else 104, 56 if _compact else 28)
+		button.custom_minimum_size = Vector2(48 if _compact else 104, 48 if _compact else 44)
 		button.add_theme_font_size_override("font_size", 13)
 		if current and squad.id == current.id and not all_squads_active:
 			button.add_theme_stylebox_override("normal", UiTheme.button_box("pressed"))
@@ -524,6 +504,7 @@ func _focus_card_member(unit_id: int) -> void:
 	all_squads_active = false
 	g.focus_member(unit_id)
 	hud._update_commands()
+	hud.info_panel.refresh(true)
 	hud.info_panel.open_drawer()
 
 
@@ -534,7 +515,7 @@ func _rebuild_cards(members: Array, squad: Squad) -> void:
 	for unit: Unit in members:
 		if _compact and _compact_collapsed:
 			var mini := Button.new()
-			mini.custom_minimum_size = Vector2(60, 60)
+			mini.custom_minimum_size = Vector2(48, 48)
 			mini.tooltip_text = "%s — %s" % [unit.name, Loc.t("Click to focus this member's details.")]
 			var mini_pic := TextureRect.new()
 			mini_pic.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -573,29 +554,29 @@ func _rebuild_cards(members: Array, squad: Squad) -> void:
 		if member_squad and member_squad.members.size() > 1:
 			var split := UiTheme.button("", "ui_squad", Loc.t("Split into own squad"))
 			split.set_meta("card_action", "split")
-			split.custom_minimum_size = Vector2(26, 26)
+			split.custom_minimum_size = Vector2(44, 44) if _compact else Vector2(26, 26)
 			split.anchor_left = 0.0
 			split.anchor_right = 0.0
 			split.anchor_top = 0.0
 			split.anchor_bottom = 0.0
 			split.offset_left = 0.0
 			split.offset_top = 0.0
-			split.offset_right = 26.0
-			split.offset_bottom = 26.0
+			split.offset_right = 44.0 if _compact else 26.0
+			split.offset_bottom = 44.0 if _compact else 26.0
 			split.pressed.connect(func() -> void: _make_own_squad(unit_id))
 			portrait.add_child(split)
 		if member_squad:
 			var remove := UiTheme.button("", "ui_close", Loc.t("Return this member to work."))
 			remove.set_meta("card_action", "remove")
-			remove.custom_minimum_size = Vector2(26, 26)
+			remove.custom_minimum_size = Vector2(44, 44) if _compact else Vector2(26, 26)
 			remove.anchor_left = 1.0
 			remove.anchor_right = 1.0
 			remove.anchor_top = 0.0
 			remove.anchor_bottom = 0.0
-			remove.offset_left = -26.0
+			remove.offset_left = -44.0 if _compact else -26.0
 			remove.offset_top = 0.0
 			remove.offset_right = 0.0
-			remove.offset_bottom = 26.0
+			remove.offset_bottom = 44.0 if _compact else 26.0
 			remove.pressed.connect(func() -> void: _remove_member(unit_id))
 			portrait.add_child(remove)
 		var name_label := UiTheme.label(unit.name, 12)
@@ -630,7 +611,7 @@ func _rebuild_cards(members: Array, squad: Squad) -> void:
 		var mini_add := Button.new()
 		mini_add.text = "+"
 		mini_add.tooltip_text = Loc.t("Add a squad member")
-		mini_add.custom_minimum_size = Vector2(60, 60)
+		mini_add.custom_minimum_size = Vector2(48, 48)
 		mini_add.add_theme_font_size_override("font_size", 24)
 		mini_add.pressed.connect(func() -> void:
 			_set_compact_collapsed(false)
@@ -675,7 +656,7 @@ func _split_selected_into_own_squad() -> void:
 
 func _make_own_squad(unit_id: int) -> void:
 	var unit := g.world.get_unit(unit_id)
-	if unit == null or unit.kind == "airship":
+	if unit == null or not unit.is_player() or unit.kind == "airship":
 		return
 	var old_squad := g.world.get_squad(unit.squad_id)
 	if old_squad and old_squad.members.size() == 1:
@@ -684,17 +665,17 @@ func _make_own_squad(unit_id: int) -> void:
 		hud._update_commands()
 		return
 	var own_squad := g.world.create_squad(Loc.t("%s's squad") % unit.name)
-	if unit.squad_id >= 0:
-		g.world.unassign_from_squad(unit)
+	if own_squad == null:
+		hud.add_note({"text": Loc.t("Maximum 9 squads (hotkeys 1–9)."), "kind": "info"}, 3.0)
+		refresh(true)
+		return
 	if not g.world.assign_to_squad(unit, own_squad):
-		g.world.squads.erase(own_squad)
-		g.world.squads_changed.emit()
+		g.world.disband_squad(own_squad.id)
 		return
 	g.world.combat.enlist(unit)
 	all_squads_active = false
 	g.select_squad(own_squad.id)
 	hud._update_commands()
-
 
 func _card_action_button(unit_id: int, action: String) -> Button:
 	for frame in _cards.get_children():
@@ -744,35 +725,53 @@ func _on_threshold(v: float) -> void:
 
 
 func _on_add() -> void:
-	var s := _squad()
-	if s == null:
+	var squad := _squad()
+	if squad == null:
 		return
-	var n := 0
-	for u: Unit in g.selected_units():
-		if u.squad_id != s.id and u.kind != "airship" and g.world.assign_to_squad(u, s):
-			g.world.combat.enlist(u)
-			n += 1
-	hud.add_note({"key": "ui.squad.joined", "params": {"count": n, "name": s.name}, "kind": "info"} if n > 0 else {"text": Loc.t("Select settlers or machines outside this squad first."), "kind": "info"}, 3.0)
+	var added := 0
+	for unit: Unit in g.selected_units():
+		if unit.is_player() and unit.squad_id != squad.id and unit.kind != "airship" and g.world.assign_to_squad(unit, squad):
+			g.world.combat.enlist(unit)
+			added += 1
+	if added > 0:
+		hud.add_note({"key": "ui.squad.joined", "params": {"count": added, "name": squad.name}, "kind": "info"}, 3.0)
+	elif squad.members.size() >= 6:
+		hud.add_note({"text": Loc.t("A squad can have at most 6 members."), "kind": "info"}, 3.0)
+	else:
+		hud.add_note({"text": Loc.t("Select settlers or machines outside this squad first."), "kind": "info"}, 3.0)
 	refresh(true)
 
 
 func _on_new() -> void:
-	var picked: Array = []
-	for unit: Unit in g.selected_units():
-		if unit.kind != "airship":
-			picked.append(unit)
-	if picked.is_empty():
+	if g.world.squads.size() >= World.MAX_SQUADS:
+		hud.add_note({"text": Loc.t("Maximum 9 squads (hotkeys 1–9)."), "kind": "info"}, 3.0)
 		return
+	var picked: Array[Unit] = []
+	for unit: Unit in g.selected_units():
+		if unit.is_player() and unit.kind != "airship":
+			picked.append(unit)
 	var squad_name := Loc.t("%s's squad") % picked[0].name if picked.size() == 1 else ""
 	var squad := g.world.create_squad(squad_name)
-	for unit: Unit in picked:
+	if squad == null:
+		hud.add_note({"text": Loc.t("Maximum 9 squads (hotkeys 1–9)."), "kind": "info"}, 3.0)
+		refresh(true)
+		return
+	var added := 0
+	for index: int in mini(picked.size(), 6):
+		var unit := picked[index]
 		if g.world.assign_to_squad(unit, squad):
 			g.world.combat.enlist(unit)
-	g.world.squad_ai.order_squad(squad, {"type": "idle"})
+			added += 1
+	if added > 0:
+		g.world.squad_ai.order_squad(squad, {"type": "idle"})
 	all_squads_active = false
 	g.select_squad(squad.id)
 	hud._update_commands()
 	hud.add_note({"key": "ui.squad.formed", "params": {"name": squad.name}, "kind": "good"}, 3.0)
+	if picked.size() > 6:
+		hud.add_note({"text": Loc.t("A squad can have at most 6 members."), "kind": "info"}, 3.0)
+	elif added == 0:
+		_open_picker()
 
 func _on_tactics_changed(_index: int) -> void:
 	var s := _squad()
@@ -801,8 +800,8 @@ func _refresh_tactic_labels() -> void:
 	_picker_btn.tooltip_text = Loc.t("Choose a unit to add to this squad.")
 	_split_selected_btn.text = Loc.t("One-person squad")
 	_split_selected_btn.tooltip_text = Loc.t("Create a squad for the selected worker.")
-	_new_btn.text = Loc.t("New squad")
-	_new_btn.tooltip_text = Loc.t("Form a new squad from the selected units.")
+	_tab_new_btn.text = Loc.t("＋ New squad") if g.world.squads.size() < World.MAX_SQUADS else Loc.t("＋ New squad (%d/9)") % g.world.squads.size()
+	_tab_new_btn.tooltip_text = Loc.t("Create a squad from selected units, or start an empty squad.")
 	_disband_btn.text = Loc.t("Disband")
 	_disband_btn.tooltip_text = Loc.t("Disband this squad and return its members to work.")
 	_auto_toggle.text = Loc.t("Auto abilities")

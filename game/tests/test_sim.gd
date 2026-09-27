@@ -127,6 +127,46 @@ func test_save_load_continues_identically() -> void:
 	assert_true(SaveGame.parse("not json").has("error"), "damaged file rejected")
 
 
+func test_multiple_squad_lifecycle_and_save_round_trip() -> void:
+	var w := _new(SEED)
+	var original := w.squads[0] as Squad
+	var available: Array[Unit] = []
+	for unit: Unit in w.unit_list:
+		if unit.is_player() and unit.kind != "airship" and not original.members.has(unit.id):
+			available.append(unit)
+	assert_true(available.size() >= 3, "three eligible units for additional squads")
+	if available.size() < 3:
+		return
+	var empty := w.create_squad("Empty Watch")
+	var scouts := w.create_squad("North Scouts")
+	var reserve := w.create_squad("Reserve")
+	assert_eq(w.squads.size(), 4, "four squads including an empty squad")
+	assert_true(w.assign_to_squad(available[0], scouts), "first scout assigned")
+	assert_true(w.assign_to_squad(available[1], scouts), "second scout assigned")
+	assert_true(w.assign_to_squad(available[2], reserve), "reserve assigned")
+	assert_true(w.assign_to_squad(available[2], scouts), "member can move between squads")
+	assert_true(reserve.members.is_empty(), "source squad remains as a valid empty squad")
+	scouts.name = "Trailblazers"
+	w.squad_ai.order_squad(scouts, {"type": "auto"})
+	_run(w, 300)
+	var loaded := SaveGame.parse(JSON.stringify(SaveGame.to_dict(w)))
+	assert_true(loaded.has("world"), "multi-squad save parses")
+	if not loaded.has("world"):
+		return
+	var restored: World = loaded["world"]
+	_worlds.append(restored)
+	assert_eq(restored.squads.size(), 4, "empty and populated squads persist")
+	assert_eq(restored.get_squad(scouts.id).name, "Trailblazers", "rename persists")
+	assert_eq(restored.get_squad(empty.id).members.size(), 0, "empty squad persists")
+	assert_eq(restored.get_unit(available[2].id).squad_id, scouts.id, "moved membership persists")
+	assert_true(restored.disband_squad(empty.id), "empty squad disbands")
+	assert_true(restored.disband_squad(reserve.id), "second empty squad disbands")
+	assert_eq(restored.squads.size(), 2, "disband removes only selected squads")
+	while restored.squads.size() < World.MAX_SQUADS:
+		assert_true(restored.create_squad("Squad %d" % restored.squads.size()) != null, "squad created below cap")
+	assert_true(restored.create_squad("Too many") == null, "ninth hotkey is the hard squad cap")
+
+
 func test_squad_move_and_explore() -> void:
 	var w := _new(SEED)
 	var s := w.squads[0]

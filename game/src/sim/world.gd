@@ -28,6 +28,8 @@ const DAY_TICKS := 2400  # 240 s per day at x1
 const S := ChunkData.S
 const SAVE_VERSION := 1
 const RESOURCES := ["wood", "stone", "ore", "metal", "food", "gold", "energy"]
+const MAX_SQUADS := 9
+
 
 var seed := 0
 var gen: WorldGen
@@ -987,6 +989,8 @@ func zone_type_at(t: Vector2i) -> String:
 # --- squads --------------------------------------------------------------------------------
 
 func create_squad(name_: String = "") -> Squad:
+	if squads.size() >= MAX_SQUADS:
+		return null
 	var s := Squad.new()
 	s.id = squads.size()
 	for existing: Squad in squads:
@@ -998,6 +1002,19 @@ func create_squad(name_: String = "") -> Squad:
 	return s
 
 
+func disband_squad(squad_id: int) -> bool:
+	var squad := get_squad(squad_id)
+	if squad == null:
+		return false
+	for member_id: int in squad.members.duplicate():
+		var member := get_unit(member_id)
+		if member:
+			_unassign_from_squad(member)
+	squads.erase(squad)
+	squads_changed.emit()
+	return true
+
+
 func get_squad(id: int) -> Squad:
 	for s: Squad in squads:
 		if s.id == id:
@@ -1006,7 +1023,7 @@ func get_squad(id: int) -> Squad:
 
 
 func assign_to_squad(u: Unit, s: Squad) -> bool:
-	if s == null or not u.is_player() or u.kind == "airship" or s.members.size() >= 6:
+	if s == null or not squads.has(s) or not u.is_player() or u.kind == "airship" or s.members.size() >= 6:
 		return false
 	if u.squad_id >= 0:
 		unassign_from_squad(u)
@@ -1021,15 +1038,20 @@ func assign_to_squad(u: Unit, s: Squad) -> bool:
 
 
 func unassign_from_squad(u: Unit) -> void:
-	var s := get_squad(u.squad_id)
-	if s:
-		s.members.erase(u.id)
+	_unassign_from_squad(u)
+	squads_changed.emit()
+
+
+func _unassign_from_squad(u: Unit) -> void:
+	var squad := get_squad(u.squad_id)
+	if squad:
+		squad.members.erase(u.id)
 	u.squad_id = -1
 	u.target_id = -1
 	var arch := u.DB_archetype()
 	u.labor = str(arch.get("labor", "worker")) if u.is_machine() else "worker"
 	stop_unit(u)
-	squads_changed.emit()
+
 
 
 func home_pos() -> Vector2:
