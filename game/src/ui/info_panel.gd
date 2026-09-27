@@ -63,7 +63,8 @@ func refresh(force: bool) -> void:
 		key = "b%d:%d:%d:%s:%d" % [b.id, b.level, int(b.is_built()), str(b.queue), b.needs.hash()]
 	elif g.sel_site >= 0:
 		var st: Dictionary = g.world.sites.get(g.sel_site, {})
-		key = "s%d:%s:%s" % [g.sel_site, str(st.get("cleared", false)), str(st.get("looted", false))]
+		key = "s%d:%s:%s:%s" % [g.sel_site, str(st.get("cleared", false)), str(st.get("looted", false)),
+			VillagePanel.signature(st) if str(st.get("kind", "")) == "village" else ""]
 	elif g.sel_loot >= 0 and g.world.loot_bags.has(g.sel_loot):
 		var bag: Dictionary = g.world.loot_bags[g.sel_loot]
 		key = "l%d:%d:%d:%d" % [g.sel_loot, (bag.get("items", []) as Array).size(), int(bag.get("gold", 0)), int(bag.get("metal", 0))]
@@ -544,6 +545,9 @@ func _cost_text(cost: Dictionary) -> String:
 # --- sites ---------------------------------------------------------------------------------
 
 func _build_site(st: Dictionary) -> void:
+	if str(st.get("kind", "")) == "village":
+		VillagePanel.build(_body, g, hud, st)
+		return
 	var head := UiTheme.hbox(8)
 	head.add_child(UiTheme.icon(str(st.get("icon", "poi_ruins")), 44))
 	var hv := UiTheme.vbox(2)

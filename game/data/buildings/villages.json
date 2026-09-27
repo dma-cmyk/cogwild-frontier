@@ -1,0 +1,22 @@
+[
+	{"id": "v_human_home", "name": "Thatched Cottage", "size": [3, 3], "category": "village", "buildable": false, "hp": 260, "description": "A human villager's cottage of timber and plaster."},
+	{"id": "v_human_hall", "name": "Moot Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 520, "description": "Where a human village gathers to trade and argue."},
+	{"id": "v_sylvan_home", "name": "Bough Lodge", "size": [3, 3], "category": "village", "buildable": false, "hp": 240, "description": "A sylvan home woven into living wood and leaf."},
+	{"id": "v_sylvan_hall", "name": "Greenleaf Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 500, "description": "The round council hall of a sylvan grove village."},
+	{"id": "v_stoutkin_home", "name": "Stone Burrow", "size": [3, 3], "category": "village", "buildable": false, "hp": 300, "description": "A stoutkin house of dry stone dug into the hillside."},
+	{"id": "v_stoutkin_hall", "name": "Deepstone Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 600, "description": "A stoutkin longhall of mortared blocks and iron fittings."},
+	{"id": "v_vulpin_home", "name": "Painted Yurt", "size": [3, 3], "category": "village", "buildable": false, "hp": 230, "description": "A vulpin tent-home hung with painted cloth."},
+	{"id": "v_vulpin_hall", "name": "Caravan Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 470, "description": "The great awning where a vulpin village keeps its caravan goods."},
+	{"id": "v_minotaur_home", "name": "Megalith House", "size": [3, 3], "category": "village", "buildable": false, "hp": 340, "description": "A minotaur dwelling of standing slabs and a heavy lintel."},
+	{"id": "v_minotaur_hall", "name": "Horn Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 660, "description": "A minotaur hall raised from quarried megaliths."},
+	{"id": "v_centaur_home", "name": "Plains Pavilion", "size": [3, 3], "category": "village", "buildable": false, "hp": 230, "description": "An open-sided centaur shelter for a family and its herd."},
+	{"id": "v_centaur_hall", "name": "Herd Pavilion", "size": [5, 5], "category": "village", "buildable": false, "hp": 480, "description": "The wide centaur pavilion where the herd elders meet."},
+	{"id": "v_harpy_home", "name": "Cliff Nest", "size": [3, 3], "category": "village", "buildable": false, "hp": 210, "description": "A harpy nest-house on stilts above the rocks."},
+	{"id": "v_harpy_hall", "name": "Eyrie Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 450, "description": "The high harpy eyrie where the flock keeps watch."},
+	{"id": "v_lamia_home", "name": "Reed House", "size": [3, 3], "category": "village", "buildable": false, "hp": 230, "description": "A lamia house of bundled reeds beside the water."},
+	{"id": "v_lamia_hall", "name": "Coil Shrine", "size": [5, 5], "category": "village", "buildable": false, "hp": 490, "description": "A lamia shrine-hall of reed, water and pale stone."},
+	{"id": "v_oni_home", "name": "Oni Longhouse", "size": [3, 3], "category": "village", "buildable": false, "hp": 320, "description": "A heavy oni house of dark beams and deep eaves."},
+	{"id": "v_oni_hall", "name": "Oni Great Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 640, "description": "A tiered oni hall with iron-bound posts and red eaves."},
+	{"id": "v_tengu_home", "name": "Mountain Perch", "size": [3, 3], "category": "village", "buildable": false, "hp": 250, "description": "A tengu house perched on a high terrace."},
+	{"id": "v_tengu_hall", "name": "Scroll Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 520, "description": "The tiered tengu hall where scrolls and charms are kept."}
+]

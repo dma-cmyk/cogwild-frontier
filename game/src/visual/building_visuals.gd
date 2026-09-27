@@ -15,7 +15,17 @@ const FOOTPRINTS := {
 	"trade_hall": Vector2i(4, 4), "trade_stall": Vector2i(2, 2), "trade_mast": Vector2i(2, 2),
 	"wanderer_tent": Vector2i(2, 2), "ruin_arch": Vector2i(3, 1), "ruin_pillar": Vector2i(1, 1),
 	"ruin_wall": Vector2i(3, 1), "ruin_statue": Vector2i(2, 2), "ruin_vault": Vector2i(3, 3),
-	"wreck_airship": Vector2i(6, 3)
+	"wreck_airship": Vector2i(6, 3),
+	"v_human_home": Vector2i(3, 3), "v_human_hall": Vector2i(5, 5),
+	"v_sylvan_home": Vector2i(3, 3), "v_sylvan_hall": Vector2i(5, 5),
+	"v_stoutkin_home": Vector2i(3, 3), "v_stoutkin_hall": Vector2i(5, 5),
+	"v_vulpin_home": Vector2i(3, 3), "v_vulpin_hall": Vector2i(5, 5),
+	"v_minotaur_home": Vector2i(3, 3), "v_minotaur_hall": Vector2i(5, 5),
+	"v_centaur_home": Vector2i(3, 3), "v_centaur_hall": Vector2i(5, 5),
+	"v_harpy_home": Vector2i(3, 3), "v_harpy_hall": Vector2i(5, 5),
+	"v_lamia_home": Vector2i(3, 3), "v_lamia_hall": Vector2i(5, 5),
+	"v_oni_home": Vector2i(3, 3), "v_oni_hall": Vector2i(5, 5),
+	"v_tengu_home": Vector2i(3, 3), "v_tengu_hall": Vector2i(5, 5)
 }
 ## Style is fixed for the non-player factions; only the frontier ids honour the `style` argument.
 const FIXED_STYLE := {
@@ -51,7 +61,7 @@ static func create(type_id: String, style: String, variant_seed: int, level: int
 		"stages": stages,
 		"anchors": _anchors(id, fp),
 	})
-	var pal := BuildPalette.of(faction)
+	var pal := _palette(id, faction)
 	if id == "windmill":
 		var sails := MeshInstance3D.new()
 		sails.name = "WindmillSails"
@@ -71,15 +81,21 @@ static func create(type_id: String, style: String, variant_seed: int, level: int
 	return visual
 
 
+## Race village buildings pick their colours from data/villages instead of a faction style.
+static func _palette(id: String, style: String) -> BuildPalette:
+	var race := BldVillage.race_of(id)
+	return BldVillage.palette(race) if race != "" else BuildPalette.of(style)
+
+
 static func _make_mesh(id: String, style: String, seed: int, lv: int, stage: int) -> ArrayMesh:
-	var p := BuildPalette.of(style)
+	var p := _palette(id, style)
 	var fp: Vector2i = FOOTPRINTS[id]
 	var k := MeshKit.new()
 	k.shade_jitter = 0.03
 	if stage <= 1:
 		_construction(k, p, fp, stage, seed)
 		return k.build()
-	if not BldFrontier.build(k, id, p, seed, lv):
+	if not BldVillage.build(k, id, p, seed, lv) and not BldFrontier.build(k, id, p, seed, lv):
 		BldOutland.build(k, id, p, seed, lv)
 	if stage == 2:
 		# nearly finished: the real building wrapped in scaffolding and builders' clutter
@@ -203,6 +219,12 @@ static func _effects(id: String, seed: int, lv: int) -> Dictionary:
 		"trade_hall", "trade_stall", "windmill", "sky_dock", "watchtower", "storehouse", "trade_mast":
 			light = Vector3(0, 1.2, 1.2)
 			light_range = 2.2
+	if BldVillage.race_of(id) != "":
+		var hall := id.ends_with("_hall")
+		light = Vector3(0, 1.0, (2.4 if hall else 1.3))
+		light_range = 3.2 if hall else 2.4
+		if BldVillage.style_of(BldVillage.race_of(id)) in ["gable", "stone", "pagoda"]:
+			smoke.append(Vector3(0.9 if hall else 0.6, (3.8 if hall else 3.0), -0.6))
 	return {"smoke": smoke, "light": light, "light_range": light_range, "smoke_scale": smoke_scale}
 
 

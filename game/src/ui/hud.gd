@@ -22,6 +22,7 @@ var minimap: Minimap
 var build_menu: BuildMenu
 var pause_menu: PauseMenu
 var roster: RosterPanel
+var villages: VillageHud
 var _res_labels: Dictionary = {}
 var _rate_labels: Dictionary = {}
 var _pop_label: Label
@@ -119,6 +120,9 @@ func setup(game: Game) -> void:
 	roster = RosterPanel.new()
 	root.add_child(roster)
 	roster.setup(g, self)
+	villages = VillageHud.new()
+	root.add_child(villages)
+	villages.setup(g, self)
 	_build_trade_panel()
 	_build_touch_controls()
 	get_viewport().size_changed.connect(_update_responsive)
@@ -158,6 +162,9 @@ func _refresh_language() -> void:
 	_update_commands()
 	roster._sig = ""
 	roster.refresh()
+	villages.trade_window._signature = ""
+	villages.diplomacy_panel._signature = ""
+	villages.refresh()
 	_trade_count = -1
 	_update_trade()
 	if is_instance_valid(_rotate_left):
@@ -1105,7 +1112,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_help"):
 		_help.visible = not _help.visible
 	elif event.is_action_pressed("cancel") and g.input_ctl.mode == "":
-		if squad_panel.picker_open():
+		if villages.close_top():
+			pass
+		elif squad_panel.picker_open():
 			squad_panel.close_picker()
 		elif build_menu.visible:
 			build_menu.hide()
@@ -1270,6 +1279,7 @@ func _process(delta: float) -> void:
 		info_panel.refresh(false)
 		squad_panel.refresh(false)
 		roster.refresh()
+		villages.refresh()
 	var ic := g.input_ctl
 	_box.visible = ic.dragging
 	if ic.dragging:

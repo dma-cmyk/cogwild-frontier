@@ -1,0 +1,16 @@
+{
+  "sim.village.discovered": "Found {village_name}, a {race} village ({tier}).",
+  "sim.village.arrived": "{squad_name} reaches {village_name}.",
+  "sim.village.request": "{village_name} asks for {resources} by day {due_day}.",
+  "sim.village.request_fulfilled": "{village_name} thanks you and pays {reward} gold.",
+  "sim.village.request_expired": "{village_name} gave up waiting for their delivery.",
+  "sim.village.tier_changed": "{village_name} now sees you as {tier}.",
+  "sim.village.gift": "You gave {village_name} {resources}.",
+  "sim.village.allied_gift": "{village_name} sends a gift: {resources}.",
+  "sim.village.settler": "{unit_name}, a {race} from {village_name}, joins the colony.",
+  "sim.village.peace": "{village_name} takes {gold} gold and ends the war.",
+  "sim.village.attacked": "Your forces march on {village_name}!",
+  "sim.village.subdued": "{village_name} is subdued — its stores are yours.",
+  "sim.village.defended": "{village_name} heard that you drove the raiders off.",
+  "sim.village.recovered": "{village_name} has been rebuilt, {population} people strong."
+}

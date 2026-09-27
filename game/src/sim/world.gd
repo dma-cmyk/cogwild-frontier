@@ -72,6 +72,7 @@ var combat: Combat
 var squad_ai: SquadAI
 var factions: FactionAI
 var economy: Economy
+var diplomacy: Diplomacy
 
 var _grid: Dictionary = {}  # spatial hash of units: Vector2i cell -> Array[Unit]
 const GRID := 8.0
@@ -83,6 +84,7 @@ func _init() -> void:
 	squad_ai = SquadAI.new(self)
 	factions = FactionAI.new(self)
 	economy = Economy.new(self)
+	diplomacy = Diplomacy.new(self)
 	for r: String in RESOURCES:
 		res[r] = 0
 
@@ -107,7 +109,7 @@ func setup(p_seed: int) -> void:
 
 ## Breaks the reference cycles between the world and its systems so everything is freed.
 func dispose() -> void:
-	for sys: Variant in [colony, combat, squad_ai, factions, economy]:
+	for sys: Variant in [colony, combat, squad_ai, factions, economy, diplomacy]:
 		if sys != null:
 			sys.set("w", null)
 	colony = null
@@ -115,6 +117,7 @@ func dispose() -> void:
 	squad_ai = null
 	factions = null
 	economy = null
+	diplomacy = null
 	units.clear()
 	unit_list.clear()
 	buildings.clear()
@@ -656,9 +659,9 @@ func hostile(a: String, b: String) -> bool:
 		return false
 	var hostile_factions := ["bandits", "machines"]
 	if a == "player":
-		return b in hostile_factions
+		return b in hostile_factions or diplomacy.faction_hostile_to_player(b)
 	if b == "player":
-		return a in hostile_factions
+		return a in hostile_factions or diplomacy.faction_hostile_to_player(a)
 	return (a in hostile_factions) != (b in hostile_factions) and (a == "merchants" or b == "merchants")
 
 
@@ -1038,13 +1041,19 @@ func home_pos() -> Vector2:
 
 # --- loot ----------------------------------------------------------------------------------
 
-func drop_loot(p: Vector2, items: Array, gold: int = 0, metal: int = 0) -> Dictionary:
-	if items.is_empty() and gold <= 0 and metal <= 0:
+func drop_loot(p: Vector2, items: Array, gold: int = 0, metal: int = 0, resources: Dictionary = {}) -> Dictionary:
+	var has_resources := false
+	for amount: Variant in resources.values():
+		if int(amount) > 0:
+			has_resources = true
+			break
+	if items.is_empty() and gold <= 0 and metal <= 0 and not has_resources:
 		return {}
 	var best := -1
 	for it: Dictionary in items:
 		best = maxi(best, int(DB.get_def("items/qualities", str(it.get("quality", "common"))).get("tier", 2)))
-	var bag := {"id": new_id(), "pos": p, "items": items, "gold": gold, "metal": metal, "tier": best, "age": 0.0}
+	var bag := {"id": new_id(), "pos": p, "items": items, "gold": gold, "metal": metal,
+		"resources": resources.duplicate(true), "tier": best, "age": 0.0}
 	loot_bags[bag["id"]] = bag
 	loot_added.emit(bag)
 	return bag
@@ -1072,6 +1081,8 @@ func pickup_loot(bag_id: int, by: Unit) -> Array:
 		economy.add("gold", int(bag["gold"]))
 	if int(bag["metal"]) > 0:
 		economy.add("metal", int(bag["metal"]))
+	for resource: String in bag.get("resources", {}):
+		economy.add(resource, int(bag["resources"][resource]))
 	loot_removed.emit(bag_id)
 	return bag["items"]
 

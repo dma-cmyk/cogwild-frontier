@@ -101,7 +101,24 @@ static func from_dict(d: Dictionary) -> World:
 		for id: Variant in st.get("units", []):
 			ids.append(int(id))
 		st["units"] = ids
+		# JSON turns every number into a float; the village bookkeeping compares and stores ints.
+		if str(st.get("kind", "")) == "village":
+			for key: String in ["relation", "baseline_relation", "population", "ruined_until",
+					"gift_count", "gift_decay_day", "trade_day", "trade_gain_today", "stock_day",
+					"purse", "request_serial", "request_day", "cache_gold", "next_raid_day"]:
+				if st.has(key):
+					st[key] = int(st[key])
+			var stock: Dictionary = st.get("stock", {})
+			for resource: String in stock:
+				stock[resource] = int(stock[resource])
+			var request: Dictionary = st.get("request", {})
+			for key: String in ["serial", "amount", "due_day", "reward_gold", "relation"]:
+				if request.has(key):
+					request[key] = int(request[key])
+			for row: Dictionary in st.get("goods", []):
+				row["count"] = int(row.get("count", 0))
 	w.sites = fixed_sites
+	w.diplomacy.rebuild_hostile_cache()
 	for bd: Dictionary in d.get("buildings", []):
 		var b := Building.from_dict(bd)
 		w.buildings[b.id] = b

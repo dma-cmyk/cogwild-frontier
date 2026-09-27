@@ -542,6 +542,21 @@ func _context_order(p: Vector2) -> void:
 	if sid >= 0 and bool(g.world.sites[sid].get("hostile", false)) and not bool(g.world.sites[sid].get("cleared", false)):
 		issue("attack", {"site": sid, "pos": Vector2(g.world.sites[sid]["center"])})
 		return
+	if sid >= 0 and str(g.world.sites[sid]["kind"]) == "village" and not bool(g.world.sites[sid].get("ruined", false)):
+		# friendly village: walk over and open the market (hostile ones fell through to attack above)
+		var squad_ids: Dictionary = {}
+		for u: Unit in units:
+			if u.squad_id >= 0:
+				squad_ids[u.squad_id] = true
+		if squad_ids.is_empty():
+			issue("move", {"pos": Vector2(g.world.sites[sid]["center"]) + Vector2(0.5, 0.5)})
+			return
+		for squad_id: int in squad_ids:
+			g.world.squad_ai.order_squad(g.world.get_squad(squad_id),
+				{"type": "visit", "site": sid, "pos": Vector2(g.world.sites[sid]["center"])})
+		g.toast.emit(Loc.t("Heading to the village to trade."), "info")
+		Sfx.play(&"ui_confirm")
+		return
 	if sid >= 0 and str(g.world.sites[sid]["kind"]) == "trade_post":
 		for u: Unit in units:
 			if u.kind == "airship":

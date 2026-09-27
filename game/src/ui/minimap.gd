@@ -60,10 +60,11 @@ func setup(game: Game) -> void:
 	for b: Array in [["ui_home", "Back to the hearth (Home)", func() -> void: g.focus_home()],
 			["ui_buildings", "Build menu (B)", func() -> void: g.hud.build_menu.toggle("build")],
 			["ui_people", "Your people and machines", func() -> void: g.hud.roster.toggle()],
+			["poi_village", "Neighbouring villages", func() -> void: g.hud.villages.diplomacy_panel.toggle()],
 			["ui_target", "Next discovered site", _next_site],
 			["ui_search", "Find an idle settler", _find_idle]]:
 		var btn := UiTheme.button("", str(b[0]), Loc.t(str(b[1])))
-		btn.custom_minimum_size = Vector2(44, 42)
+		btn.custom_minimum_size = Vector2(44, 36)
 		btn.pressed.connect(b[2])
 		col.add_child(btn)
 	g.world.chunk_ready.connect(_queue_chunk)
@@ -161,6 +162,16 @@ func _draw_markers(c: Control) -> void:
 		if not bool(st.get("discovered", false)):
 			continue
 		var p := _w2m(Vector2(st["center"]))
+		if str(st["kind"]) == "village":
+			# villages get a house-shaped pip in their relation colour
+			var tint := VillagePanel.tier_color(Diplomacy.tier_for(int(st.get("relation", 0))))
+			if bool(st.get("ruined", false)):
+				tint = tint.darkened(0.45)
+			c.draw_colored_polygon(PackedVector2Array([p + Vector2(0, -6), p + Vector2(6, 0),
+				p + Vector2(4, 6), p + Vector2(-4, 6), p + Vector2(-6, 0)]), Color(0, 0, 0, 0.65))
+			c.draw_colored_polygon(PackedVector2Array([p + Vector2(0, -4.4), p + Vector2(4.4, 0),
+				p + Vector2(2.8, 4.4), p + Vector2(-2.8, 4.4), p + Vector2(-4.4, 0)]), tint)
+			continue
 		var col: Color = Color("#ff5a4a") if (st.get("hostile", false) and not st.get("cleared", false)) else ({"trade_post": Color("#7dff8a"), "ruins": Color("#c7a8ff"), "wreck": Color("#ffe07a")}.get(str(st["kind"]), Color("#e8e0c8")))
 		c.draw_circle(p, 5.0, Color(0, 0, 0, 0.6))
 		c.draw_circle(p, 3.6, col)

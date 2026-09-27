@@ -107,6 +107,9 @@ func order_squad(s: Squad, order: Dictionary) -> void:
 		"move":
 			_set_state(s, "moving")
 			_move_all(s, order["pos"])
+		"visit":
+			_set_state(s, "travelling")
+			_move_all(s, order["pos"])
 		"retreat":
 			_set_state(s, "retreating")
 			_move_all(s, w.home_pos())
@@ -266,8 +269,35 @@ func _think(s: Squad) -> void:
 				s.mem.erase("resume")
 				s.mem["hold"] = home
 				order_squad(s, resume if resume.get("type", "") != "retreat" else {"type": "idle"})
+		"visit":
+			_think_visit(s)
 		"auto":
 			_think_auto(s)
+
+
+## Walk to a village and stand in it. Arriving is what unlocks trading, gifts and deliveries
+## (Diplomacy.is_near_village), and it tells the HUD to open the trade window.
+func _think_visit(s: Squad) -> void:
+	var sid := int(s.order.get("site", -1))
+	var st: Dictionary = w.sites.get(sid, {})
+	if st.is_empty() or w.hostile("player", str(st.get("faction", ""))):
+		order_squad(s, {"type": "idle"})
+		return
+	var anchor := Vector2(st["center"]) + Vector2(0.5, 0.5)
+	if _engage(s, center(s), 8.0):
+		_set_state(s, "fighting")
+		return
+	if center(s).distance_to(anchor) <= Diplomacy.TRADE_RANGE - 2.0:
+		s.mem["hold"] = anchor
+		s.order = {"type": "idle"}
+		_set_state(s, "holding")
+		w.notify_key("sim.village.arrived", {"squad_name": s.name, "village_name": str(st.get("name", ""))},
+			"info", anchor, {"site": sid, "squad": s.id, "village_arrival": sid})
+		return
+	if _all_arrived(s) or not s.mem.has("moving_to") or (s.mem["moving_to"] as Vector2).distance_to(anchor) > 1.0:
+		_move_all(s, anchor)
+		s.mem["moving_to"] = anchor
+	_set_state(s, "travelling")
 
 
 func _think_attack(s: Squad) -> void:
@@ -481,6 +511,9 @@ func _nearest_cache(from: Vector2, region: Vector2, radius: float) -> Dictionary
 	var best_d := INF
 	for st: Dictionary in w.sites.values():
 		if not bool(st.get("discovered", false)) or bool(st.get("looted", false)) or (st.get("cache", []) as Array).is_empty():
+			continue
+		# a village's stash is not free loot: it is taken by subduing the place
+		if str(st.get("kind", "")) == "village":
 			continue
 		if w.factions.site_guarded(int(st["id"])):
 			continue

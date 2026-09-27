@@ -7,6 +7,7 @@ extends Node3D
 const CHUNK_BUILD_BUDGET_MS := 3.5
 const FIRST_VIEW_CHUNKS := 2  # chunk radius around home built synchronously at setup
 const SITE_STYLE := {"bandit_camp": "bandit", "machine_outpost": "ancient", "trade_post": "merchant",
+	"village": "neutral",
 	"wanderer_camp": "neutral", "ruins": "neutral", "wreck": "neutral", "crystal_grove": "neutral", "ore_field": "neutral"}
 
 var w: World

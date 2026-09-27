@@ -227,7 +227,45 @@ func _kind_radius(kind: String) -> float:
 	return float((site_cfg["kinds"] as Dictionary).get(kind, {}).get("flat_radius", 6))
 
 
-func _make_site(id: int, kind: String, pos: Vector2) -> Dictionary:
+func _village_races() -> Array[String]:
+	var result: Array[String] = []
+	for race: String in DB.ids("races"):
+		if DB.has_def("villages", race):
+			result.append(race)
+	return result
+
+
+## 0..1 suitability used to choose a race's preferred site terrain.
+func village_preference_score(race: String, pos: Vector2) -> float:
+	var cfg := DB.get_def("villages", race)
+	var h := raw_height(pos.x, pos.y)
+	var wet := moisture(pos.x, pos.y)
+	var river := 1.0
+	for i in 12:
+		var a := TAU * float(i) / 12.0
+		river = minf(river, river_value(pos.x + cos(a) * 18.0, pos.y + sin(a) * 18.0))
+	var height_low := clampf(1.0 - absf(h - 4.0) / 8.0, 0.0, 1.0)
+	var hill := clampf((h - 2.0) / 8.0, 0.0, 1.0)
+	var forest := clampf((wet + 0.2) / 0.7, 0.0, 1.0)
+	var riverbank := clampf(1.0 - river / 0.28, 0.0, 1.0)
+	match str(cfg.get("biome_preference", "plains")):
+		"forest":
+			return forest
+		"hills":
+			return hill * 0.75 + (1.0 - forest) * 0.25
+		"rocky_hills":
+			return hill * 0.7 + (1.0 - forest) * 0.3
+		"highlands":
+			return clampf((h - 4.0) / 8.0, 0.0, 1.0)
+		"mountain_forest":
+			return clampf((clampf((h - 3.0) / 8.0, 0.0, 1.0) + forest) * 0.5, 0.0, 1.0)
+		"river":
+			return riverbank
+		_:
+			return height_low * 0.75 + clampf(1.0 - absf(wet) / 0.8, 0.0, 1.0) * 0.25
+
+
+func _make_site(id: int, kind: String, pos: Vector2, race: String = "") -> Dictionary:
 	var center := Vector2i(int(floor(pos.x)), int(floor(pos.y)))
 	var dist := Vector2(center).distance_to(Vector2(start_tile))
 	var kcfg: Dictionary = (site_cfg["kinds"] as Dictionary).get(kind, {})
@@ -238,45 +276,89 @@ func _make_site(id: int, kind: String, pos: Vector2) -> Dictionary:
 		"distance": dist, "level": 1 + int(maxf(0.0, dist - 60.0) / 70.0),
 		"structures": [], "decor": [], "resources": [], "clear_radius": int(kcfg.get("flat_radius", 6)),
 	}
+	if kind == "village":
+		if race == "" or not DB.has_def("races", race) or not DB.has_def("villages", race):
+			return {}
+		site["race"] = race
+		site["faction"] = "folk_" + race
+		site["preference_score"] = village_preference_score(race, pos)
 	_layout_site(site)
 	sites[id] = site
 	return site
 
 
+## Guaranteed sites are laid out in the order of `generation/world.json`. Villages come last and
+## take the best-scoring spot for their race inside their distance band, so each race sits in the
+## terrain it likes without displacing the older landmarks.
 func _place_guaranteed_sites() -> void:
 	var rng := RngUtil.make([seed, "guaranteed"])
+	var village_races := _village_races()
+	var race_rng := RngUtil.make([seed, "village_races"])
+	for i in range(village_races.size() - 1, 0, -1):
+		var j := race_rng.randi_range(0, i)
+		var swap := village_races[i]
+		village_races[i] = village_races[j]
+		village_races[j] = swap
 	var used_angles: Array = []
+	var village_index := 0
 	var gid := 1
 	for g: Dictionary in site_cfg["guaranteed"]:
 		var kind: String = g["kind"]
 		var dmin := float(g["dist"][0])
 		var dmax := float(g["dist"][1])
 		var radius := _kind_radius(kind)
+		var is_village := kind == "village"
+		var race := ""
+		if is_village:
+			if village_races.is_empty():
+				gid += 1
+				continue
+			race = village_races[village_index % village_races.size()]
+			village_index += 1
 		var placed := false
-		for attempt in 60:
+		var best_score := -1.0
+		var best_pos := Vector2.ZERO
+		var best_angle := 0.0
+		# Villages search much harder: they are placed last, they must land in terrain their race
+		# likes, and unlike the landmarks they may share a bearing with a site at another distance.
+		for attempt in (240 if is_village else 60):
 			var ang := rng.randf() * TAU
+			var spread := rng.randf()
 			var too_close := false
-			for ua: float in used_angles:
-				if absf(angle_difference(ang, ua)) < 0.5 and attempt < 40:
-					too_close = true
+			if not is_village:
+				for ua: float in used_angles:
+					if absf(angle_difference(ang, ua)) < 0.5 and attempt < 40:
+						too_close = true
 			if too_close:
 				continue
-			var d := lerpf(dmin, dmax, rng.randf()) + attempt * 0.8
+			var d := lerpf(dmin, dmax, spread) + (0.0 if is_village else attempt * 0.8)
 			var pos := Vector2(start_tile) + Vector2(cos(ang), sin(ang)) * d
 			if not _site_ok(pos, radius):
 				continue
-			if dmax <= 140.0 and absf(raw_height(pos.x, pos.y) - start_height) > 3.2 and attempt < 50:
+			if not is_village and dmax <= 140.0 and absf(raw_height(pos.x, pos.y) - start_height) > 3.2 and attempt < 50:
 				continue
 			var clash := false
 			for other: Dictionary in _guaranteed:
-				if Vector2(other["center"]).distance_to(pos) < radius + _kind_radius(other["kind"]) + 14.0:
+				if Vector2(other["center"]).distance_to(pos) < radius + _kind_radius(str(other["kind"])) + 14.0:
 					clash = true
 			if clash:
 				continue
-			_guaranteed.append(_make_site(gid, kind, pos))
-			used_angles.append(ang)
-			placed = true
-			break
+			if not is_village:
+				_guaranteed.append(_make_site(gid, kind, pos))
+				used_angles.append(ang)
+				placed = true
+				break
+			var score := village_preference_score(race, pos)
+			if score > best_score:
+				best_score = score
+				best_pos = pos
+				best_angle = ang
+		if is_village and best_score >= 0.0:
+			var village := _make_site(gid, kind, best_pos, race)
+			if not village.is_empty():
+				_guaranteed.append(village)
+				used_angles.append(best_angle)
+				placed = true
 		if not placed:
 			push_warning("WorldGen: could not place guaranteed site %s (seed %d)" % [kind, seed])
 		gid += 1
@@ -298,6 +380,12 @@ func cell_site(cell: Vector2i) -> int:
 			var far := dist > float(site_cfg["far_distance"])
 			var weights: Dictionary = site_cfg["weights_far"] if far else site_cfg["weights_near"]
 			var kind: String = RngUtil.weighted_key(rng, weights)
+			var race := ""
+			if kind == "village":
+				var races := _village_races()
+				if races.is_empty():
+					continue
+				race = races[rng.randi_range(0, races.size() - 1)]
 			var radius := _kind_radius(kind)
 			var clash := false
 			for g: Dictionary in _guaranteed:
@@ -306,7 +394,9 @@ func cell_site(cell: Vector2i) -> int:
 			if clash or not _site_ok(pos, radius):
 				continue
 			id = 1000 + (cell.x + 512) * 1024 + (cell.y + 512)
-			_make_site(id, kind, pos)
+			var generated := _make_site(id, kind, pos, race)
+			if generated.is_empty():
+				id = -1
 			break
 	_cell_cache[cell] = id
 	return id
@@ -336,6 +426,38 @@ func _layout_site(site: Dictionary) -> void:
 	var occupied := {}
 	var a0 := rng.randf() * TAU
 	match site["kind"]:
+		"village":
+			var race := str(site["race"])
+			var cfg := DB.get_def("villages", race)
+			var homes: Array = cfg.get("homes", [3, 6])
+			var stalls: Array = cfg.get("stalls", [1, 2])
+			var fields: Array = cfg.get("fields", [1, 3])
+			var home_count := rng.randi_range(int(homes[0]), int(homes[1]))
+			var stall_count := rng.randi_range(int(stalls[0]), int(stalls[1]))
+			var field_count := rng.randi_range(int(fields[0]), int(fields[1]))
+			_add_structure(site, occupied, "v_%s_hall" % race, c, 0)
+			for i in home_count:
+				_ring_structure(site, occupied, "v_%s_home" % race, c, a0 + i * TAU / float(home_count), 8.7, rng)
+			for i in stall_count:
+				_ring_structure(site, occupied, "trade_stall", c, a0 + 0.55 + i * TAU / float(stall_count), 13.0, rng)
+			for i in field_count:
+				var angle := a0 + PI * 0.5 + float(i) * 0.95
+				var origin := Vector2(c) + Vector2(cos(angle), sin(angle)) * 12.5 + Vector2(0.5, 0.5)
+				for row in 2:
+					for col in 3:
+						var tile := origin + Vector2(float(col) - 1.0, float(row) - 0.5)
+						_add_decor(site, "tilled_soil", tile, rng)
+						_add_decor(site, "crop_wheat_3" if (col + row + i) % 2 == 0 else "crop_veg_3", tile, rng)
+				for col in 4:
+					_add_decor(site, "fence", origin + Vector2(float(col) - 1.5, -1.1), rng)
+			for i in 3:
+				var lamp := a0 + 0.9 + float(i) * TAU / 3.0
+				_add_decor(site, "lantern_post", Vector2(c) + Vector2(cos(lamp), sin(lamp)) * 5.6 + Vector2(0.5, 0.5), rng)
+			_add_decor(site, "banner_pole", Vector2(c) + Vector2(cos(a0 + PI), sin(a0 + PI)) * 4.0 + Vector2(0.5, 0.5), rng)
+			_add_decor(site, "crate", Vector2(c) + Vector2(4.0, -1.5), rng)
+			_add_decor(site, "barrel", Vector2(c) + Vector2(-4.0, 2.4), rng)
+			_add_decor(site, "log_pile", Vector2(c) + Vector2(-2.4, -4.2), rng)
+			_add_decor(site, "stone_pile", Vector2(c) + Vector2(3.2, 3.6), rng)
 		"bandit_camp":
 			_add_structure(site, occupied, "campfire", c, 0)
 			for k in 3:
@@ -405,6 +527,16 @@ const STRUCT_SIZE := {
 	"ruin_vault": Vector2i(3, 3), "ruin_statue": Vector2i(2, 2), "ruin_pillar": Vector2i(1, 1), "ruin_wall": Vector2i(3, 1),
 	"ruin_arch": Vector2i(3, 1), "trade_hall": Vector2i(4, 4), "trade_stall": Vector2i(2, 2), "trade_mast": Vector2i(2, 2),
 	"wanderer_tent": Vector2i(2, 2), "wreck_airship": Vector2i(6, 3),
+	"v_human_home": Vector2i(3, 3), "v_human_hall": Vector2i(5, 5),
+	"v_sylvan_home": Vector2i(3, 3), "v_sylvan_hall": Vector2i(5, 5),
+	"v_stoutkin_home": Vector2i(3, 3), "v_stoutkin_hall": Vector2i(5, 5),
+	"v_vulpin_home": Vector2i(3, 3), "v_vulpin_hall": Vector2i(5, 5),
+	"v_minotaur_home": Vector2i(3, 3), "v_minotaur_hall": Vector2i(5, 5),
+	"v_centaur_home": Vector2i(3, 3), "v_centaur_hall": Vector2i(5, 5),
+	"v_harpy_home": Vector2i(3, 3), "v_harpy_hall": Vector2i(5, 5),
+	"v_lamia_home": Vector2i(3, 3), "v_lamia_hall": Vector2i(5, 5),
+	"v_oni_home": Vector2i(3, 3), "v_oni_hall": Vector2i(5, 5),
+	"v_tengu_home": Vector2i(3, 3), "v_tengu_hall": Vector2i(5, 5),
 }
 
 

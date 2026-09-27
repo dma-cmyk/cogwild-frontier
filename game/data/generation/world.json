@@ -55,11 +55,15 @@
 			{"kind": "trade_post", "dist": [96, 130]},
 			{"kind": "crystal_grove", "dist": [85, 120]},
 			{"kind": "wreck", "dist": [115, 160]},
-			{"kind": "machine_outpost", "dist": [145, 190]}
+			{"kind": "machine_outpost", "dist": [145, 190]},
+			{"kind": "village", "dist": [58, 80]},
+			{"kind": "village", "dist": [90, 118]},
+			{"kind": "village", "dist": [120, 150]}
 		],
-		"weights_near": {"ruins": 3, "wanderer_camp": 2, "ore_field": 2, "crystal_grove": 1, "bandit_camp": 2, "trade_post": 1, "wreck": 1},
-		"weights_far": {"ruins": 3, "bandit_camp": 3, "machine_outpost": 3, "trade_post": 1, "crystal_grove": 2, "wreck": 2, "wanderer_camp": 1},
+		"weights_near": {"ruins": 3, "wanderer_camp": 2, "ore_field": 2, "crystal_grove": 1, "bandit_camp": 2, "trade_post": 1, "wreck": 1, "village": 2},
+		"weights_far": {"ruins": 3, "bandit_camp": 3, "machine_outpost": 3, "trade_post": 1, "crystal_grove": 2, "wreck": 2, "wanderer_camp": 1, "village": 3},
 		"kinds": {
+			"village": {"flat_radius": 14, "faction": "", "icon": "poi_village"},
 			"ruins": {"flat_radius": 7, "faction": "", "icon": "poi_ruins"},
 			"bandit_camp": {"flat_radius": 9, "faction": "bandits", "icon": "poi_bandit"},
 			"machine_outpost": {"flat_radius": 10, "faction": "machines", "icon": "poi_machine"},

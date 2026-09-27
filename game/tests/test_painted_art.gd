@@ -174,9 +174,11 @@ func test_company_colour_only_turns_painted_blue() -> void:
 
 func test_buildings_props_and_ground_are_painted() -> void:
 	for id: String in BuildingVisuals.FOOTPRINTS.keys():
-		if id in ["bridge_segment", "cliff_stairs"]:
+		# Crossings and race village buildings are allowed to stay procedural: they are tinted from
+		# data and a painted card is used only when data/art/buildings has one.
+		if id in ["bridge_segment", "cliff_stairs"] or BldVillage.race_of(id) != "":
 			var mesh := BuildingVisuals._make_mesh(id, "frontier", 17, 1, 3)
-			assert_true(mesh.get_surface_count() > 0, "procedural mesh for crossing " + id)
+			assert_true(mesh.get_surface_count() > 0, "procedural mesh for " + id)
 			continue
 		assert_true(not SpriteLibrary.building(id).is_empty(), "picture for building " + id)
 	for level in [1, 2, 3]:

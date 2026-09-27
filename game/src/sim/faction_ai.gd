@@ -8,9 +8,11 @@ extends RefCounted
 const ACTIVE_RANGE := 72.0
 const LEASH := 24.0
 const PLACE_KIND := {"ruins": "ruins", "bandit_camp": "bandit_camp", "machine_outpost": "machine_outpost",
-	"trade_post": "trade_post", "wanderer_camp": "wanderer_camp", "wreck": "wreck", "crystal_grove": "crystal", "ore_field": "ore_field"}
+	"trade_post": "trade_post", "wanderer_camp": "wanderer_camp", "wreck": "wreck", "crystal_grove": "crystal",
+	"ore_field": "ore_field", "village": "settlement"}
 const KIND_LABEL := {"ruins": "Ruins", "bandit_camp": "Bandit camp", "machine_outpost": "Machine outpost",
-	"trade_post": "Trade post", "wanderer_camp": "Wanderer camp", "wreck": "Airship wreck", "crystal_grove": "Aether crystals", "ore_field": "Ore field"}
+	"trade_post": "Trade post", "wanderer_camp": "Wanderer camp", "wreck": "Airship wreck", "crystal_grove": "Aether crystals",
+	"ore_field": "Ore field", "village": "Village"}
 const RESERVE := {"wood": 220, "stone": 160, "ore": 60, "metal": 80}
 const PRICE := {"wood": 0.5, "stone": 0.5, "ore": 1.0, "metal": 2.5}
 
@@ -41,7 +43,12 @@ func instantiate_site(sid: int) -> void:
 		"extra": [], "next_patrol": w.tick_count + rng.randi_range(600, 1500), "next_raid_day": 2 + rng.randi_range(0, 2),
 		"cleared_day": 0, "icon": str(g.get("icon", "")),
 	}
+	if kind == "village":
+		st["race"] = str(g.get("race", ""))
 	w.sites[sid] = st
+	if kind == "village":
+		w.diplomacy.initialize(st, rng)
+		w.diplomacy.populate(st, rng)
 	var lv := int(g["level"])
 	var c := Vector2(g["center"]) + Vector2(0.5, 0.5)
 	match kind:
@@ -190,6 +197,10 @@ func _discover(st: Dictionary, by: Variant) -> void:
 		(by as Unit).counter_add("sites_found")
 		if (by as Unit).squad_id >= 0:
 			w.squad_ai.add_report(w.get_squad((by as Unit).squad_id), {"key": "sim.report.site_found", "params": {"site_name": st["name"]}})
+	if str(st["kind"]) == "village":
+		w.diplomacy.mark_discovered(st, who)
+		w.site_changed.emit(int(st["id"]))
+		return
 	var params := {"site_kind_id": str(st["kind"]), "site_name": st["name"], "unit_name": who,
 		"strength": int(site_strength(int(st["id"])))}
 	var key := "sim.site.discovered"
@@ -207,10 +218,24 @@ func on_unit_spotted(u: Unit) -> void:
 		w.notify_key("sim.raid.spotted", {}, "bad", u.pos)
 
 
-func on_unit_killed(t: Unit, _attacker: Unit) -> void:
+func on_unit_killed(t: Unit, attacker: Unit) -> void:
 	if t.home_site < 0 or not w.sites.has(t.home_site):
 		return
 	var st: Dictionary = w.sites[t.home_site]
+	if str(st["kind"]) == "village":
+		w.diplomacy.villager_killed(t.home_site, t, attacker)
+		if not bool(st.get("hostile", false)) or bool(st.get("subdued", false)):
+			w.site_changed.emit(t.home_site)
+			return
+		for u: Unit in site_units(t.home_site):
+			if u.is_armed():
+				w.site_changed.emit(t.home_site)
+				return
+		w.diplomacy.subdue(t.home_site, attacker)
+		return
+	if str(st["kind"]) == "bandit_camp" and str(t.order.get("type", "")) == "raid" \
+			and attacker != null and attacker.is_player():
+		w.diplomacy.bandit_raid_repelled(t.pos)
 	if not bool(st["hostile"]) or bool(st["cleared"]):
 		return
 	for u: Unit in site_units(t.home_site):
@@ -229,7 +254,6 @@ func on_unit_killed(t: Unit, _attacker: Unit) -> void:
 		if near:
 			loot_site(int(st["id"]), near)
 	w.site_changed.emit(int(st["id"]))
-
 
 ## A cleared camp is still a place: build nearby to keep it (reoccupation checks look for you).
 func _player_presence(c: Vector2, r: float) -> bool:
@@ -277,11 +301,61 @@ func tick() -> void:
 				u.lod = 2
 				continue
 			u.lod = 0
-			if w.hostile("player", u.faction):
+			var st: Dictionary = w.sites.get(u.home_site, {})
+			if str(st.get("kind", "")) == "village":
+				if bool(st.get("ruined", false)):
+					continue
+				if w.hostile("player", u.faction):
+					if u.is_armed():
+						_guard(u)
+					else:
+						_flee_villager(u)
+				else:
+					_village_routine(u, st)
+			elif w.hostile("player", u.faction):
 				_guard(u)
 			elif u.faction == "wanderers":
 				_wanderer(u)
 	_patrols(active)
+
+
+func _village_routine(u: Unit, st: Dictionary) -> void:
+	if u.target_id >= 0:
+		u.target_id = -1
+	if w.is_night():
+		if not u.moving and u.pos.distance_to(u.guard_pos) > 1.0:
+			w.move_unit(u, u.guard_pos)
+		return
+	if u.moving or u.pos.distance_to(u.guard_pos) > 2.5:
+		return
+	if w.rng.randf() < 0.35:
+		return
+	var c := Vector2(st["center"]) + Vector2(0.5, 0.5)
+	var angle := w.rng.randf() * TAU
+	var target := c + Vector2(cos(angle), sin(angle)) * w.rng.randf_range(1.0, 4.0)
+	var tile := w.nearest_walkable(Vector2i(int(floor(target.x)), int(floor(target.y))), 4)
+	if tile.x != -99999:
+		w.move_unit(u, Vector2(tile) + Vector2(0.5, 0.5))
+
+
+func _flee_villager(u: Unit) -> void:
+	if u.moving:
+		return
+	var nearest: Unit = null
+	var nearest_distance := 13.0
+	for other: Unit in w.units_near(u.pos, nearest_distance):
+		if not other.is_player():
+			continue
+		var d := u.pos.distance_to(other.pos)
+		if d < nearest_distance:
+			nearest_distance = d
+			nearest = other
+	if nearest == null:
+		return
+	var direction := (u.pos - nearest.pos).normalized()
+	if direction.length_squared() < 0.01:
+		direction = Vector2.RIGHT
+	w.move_unit(u, u.pos + direction * 8.0)
 
 
 func _guard(u: Unit) -> void:
@@ -423,10 +497,16 @@ func _recruit(u: Unit, st: Dictionary) -> void:
 # --- days ----------------------------------------------------------------------------------
 
 func on_new_day() -> void:
+	w.diplomacy.on_new_day()
 	var home := w.home_pos()
 	for st: Dictionary in w.sites.values():
 		var c := Vector2(st["center"]) + Vector2(0.5, 0.5)
 		var kind := str(st["kind"])
+		if kind == "village":
+			if bool(st.get("hostile", false)) and not bool(st.get("subdued", false)) \
+					and c.distance_to(home) < 170.0 and w.day >= int(st.get("next_raid_day", w.day + 1)):
+				_launch_raid(st)
+			continue
 		if kind == "bandit_camp":
 			if bool(st["cleared"]):
 				if w.day - int(st["cleared_day"]) >= 6 and not _player_presence(c, 30.0):
@@ -480,7 +560,7 @@ func _launch_raid(st: Dictionary) -> void:
 	st["next_raid_day"] = w.day + 2 + w.rng.randi_range(0, 2)
 	var avail: Array = []
 	for u: Unit in site_units(int(st["id"])):
-		if not u.is_static and u.named.is_empty() and u.target_id < 0:
+		if not u.is_static and u.named.is_empty() and u.target_id < 0 and u.is_armed():
 			avail.append(u)
 	var n := mini(avail.size() - 1, 1 + w.day / 3)
 	if n <= 0:
