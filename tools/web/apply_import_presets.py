@@ -14,16 +14,20 @@ GAME = ROOT / "game"
 BASIS, LOSSY, LOSSLESS = 4, 1, 0
 PRESETS = {
     "ui/title_keyart.jpg": {"compress/mode": LOSSY, "compress/lossy_quality": "0.9", "mipmaps/generate": False, "process/size_limit": 0},
-    "portraits/": {"compress/mode": LOSSY, "compress/high_quality": "false", "compress/lossy_quality": "0.9", "compress/rdo_quality_loss": "1.0", "mipmaps/generate": True, "process/size_limit": 0},
-    "sprites/chars/": {"compress/mode": LOSSY, "compress/high_quality": "false", "compress/lossy_quality": "0.85", "compress/rdo_quality_loss": "1.0", "mipmaps/generate": True, "process/size_limit": 0},
+    "portraits/": {"compress/mode": LOSSY, "compress/high_quality": "false", "compress/lossy_quality": "0.9", "compress/rdo_quality_loss": "1.0", "mipmaps/generate": False, "process/size_limit": 0},
+    "sprites/chars/": {"compress/mode": LOSSY, "compress/high_quality": "false", "compress/lossy_quality": "0.85", "compress/rdo_quality_loss": "1.0", "mipmaps/generate": False, "process/size_limit": 0},
     "sprites/buildings/": {"compress/mode": BASIS, "mipmaps/generate": True, "process/size_limit": 768},
     "sprites/": {"compress/mode": BASIS, "compress/rdo_quality_loss": 1.5, "mipmaps/generate": True, "process/size_limit": 0},
     "ui/": {"compress/mode": LOSSLESS, "mipmaps/generate": False, "process/size_limit": 0},
     "icons/": {"compress/mode": LOSSLESS, "mipmaps/generate": False, "process/size_limit": 0},
 }
+<<<<<<< HEAD
 GLOW_PRESET = {"compress/mode": BASIS, "mipmaps/generate": True, "process/size_limit": 512}
 # The 3x3 village homes are small on screen; half the texture budget of a full-size building.
 VILLAGE_HOME_PRESET = {**PRESETS["sprites/buildings/"], "process/size_limit": 512}
+=======
+GLOW_PRESET = {"compress/mode": BASIS, "mipmaps/generate": False, "process/size_limit": 256}
+>>>>>>> r5-webload
 
 
 def preset_for(path: Path) -> dict | None:

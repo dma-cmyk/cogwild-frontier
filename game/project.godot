@@ -24,6 +24,7 @@ DB="*res://src/core/db.gd"
 App="*res://src/core/app.gd"
 Sfx="*res://src/core/sfx.gd"
 Loc="*res://src/core/loc.gd"
+WebArt="*res://src/core/web_extra_pack.gd"
 
 [display]
 

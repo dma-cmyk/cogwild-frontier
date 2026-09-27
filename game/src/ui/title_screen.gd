@@ -26,12 +26,14 @@ var _race_buttons: Dictionary = {}
 var _role_buttons: Dictionary = {}
 var _color_buttons: Array = []
 var _rng := RandomNumberGenerator.new()
+var _art_progress: Label
 
 
 func _ready() -> void:
 	theme = UiTheme.theme()
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_rng.randomize()
+	WebArt.begin()
 	var viewport_size := App.screen_size()
 	var compact := viewport_size.x < 1300.0 or viewport_size.y < 720.0
 	var bg := TextureRect.new()
@@ -76,6 +78,12 @@ func _ready() -> void:
 	var credit := UiTheme.label(Loc.t("A playable vertical slice · Godot %s · procedural + image-generated art") % Engine.get_version_info()["string"], 14, UiTheme.TEXT_DIM)
 	credit.position = Vector2(24, viewport_size.y - 40)
 	add_child(credit)
+	if OS.has_feature("web"):
+		_art_progress = UiTheme.label("", 14, UiTheme.TEXT_DIM)
+		_art_progress.position = Vector2(24, viewport_size.y - 62)
+		add_child(_art_progress)
+		WebArt.progress_changed.connect(_show_art_progress)
+		_show_art_progress(WebArt.progress())
 	var language: HBoxContainer = Loc.language_selector()
 	language.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	language.offset_left = -300
@@ -106,6 +114,16 @@ func _ready() -> void:
 
 func _open_settings() -> void:
 	SettingsPanel.open(self)
+
+
+## Extra painted art streams in behind the title menu; say so instead of leaving it silent.
+func _show_art_progress(ratio: float) -> void:
+	if _art_progress == null:
+		return
+	if ratio >= 1.0:
+		_art_progress.text = ""
+	else:
+		_art_progress.text = Loc.t("Extra art %d%%") % int(ratio * 100.0)
 
 
 func _toggle_fullscreen() -> void:

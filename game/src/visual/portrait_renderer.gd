@@ -15,6 +15,7 @@ var _busy_camera: Camera3D
 var _busy_size := 128
 
 func _ready() -> void:
+	add_to_group("web_extra_art_refresh")
 	_viewport = SubViewport.new()
 	_viewport.name = "PortraitViewport"
 	_viewport.transparent_bg = true
@@ -60,6 +61,45 @@ func invalidate(key: String) -> void:
 	_cached.erase(key)
 	for i in range(_queue.size() - 1, -1, -1):
 		if str(_queue[i].get("key", "")) == key: _queue.remove_at(i)
+
+## Replace procedural portraits already displayed in the HUD when optional painted art arrives.
+## Update the existing ImageTexture in place so every TextureRect showing it refreshes immediately.
+func refresh_after_web_extra_art() -> void:
+	if not _busy_key.is_empty() and _cached.has(_busy_key):
+		var busy_entry: Dictionary = _cached[_busy_key] as Dictionary
+		if SpriteLibrary.portrait(busy_entry.get("dna", {}) as Dictionary) != null:
+			_cancel_busy_render()
+	for i in range(_queue.size() - 1, -1, -1):
+		var queued: Dictionary = _queue[i]
+		if SpriteLibrary.portrait(queued.get("dna", {}) as Dictionary) != null:
+			_queue.remove_at(i)
+	for key: Variant in _cached.keys():
+		var cached: Dictionary = _cached[key] as Dictionary
+		var painted := SpriteLibrary.portrait(cached.get("dna", {}) as Dictionary)
+		if painted == null:
+			continue
+		var image := painted.get_image()
+		if image == null or image.is_empty():
+			continue
+		if image.is_compressed():
+			image.decompress()
+		image.convert(Image.FORMAT_RGBA8)
+		var size := int(cached.get("size", 128))
+		if image.get_size() != Vector2i(size, size):
+			image.resize(size, size, Image.INTERPOLATE_LANCZOS)
+		var texture := cached.get("texture") as ImageTexture
+		if texture != null:
+			texture.update(image)
+
+
+func _cancel_busy_render() -> void:
+	if is_instance_valid(_busy_visual):
+		_busy_visual.queue_free()
+	if is_instance_valid(_busy_camera):
+		_busy_camera.queue_free()
+	_busy_visual = null
+	_busy_camera = null
+	_busy_key = ""
 
 func _process(_delta: float) -> void:
 	if _viewport == null: return
