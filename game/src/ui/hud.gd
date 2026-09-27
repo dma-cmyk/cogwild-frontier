@@ -23,6 +23,7 @@ var build_menu: BuildMenu
 var pause_menu: PauseMenu
 var roster: RosterPanel
 var villages: VillageHud
+var _note_queue: Array[Dictionary] = []
 var _res_labels: Dictionary = {}
 var _rate_labels: Dictionary = {}
 var _pop_label: Label
@@ -635,7 +636,11 @@ func _build_notifications() -> void:
 
 
 func _on_world_note(n: Dictionary) -> void:
-	add_note(n, 9.0)
+	# World notes arrive from inside a sim tick, often several at once (a level-up and a title);
+	# a Japanese toast costs ~20 ms to lay out, so they are built one per frame from _process.
+	_note_queue.append(n)
+	while _note_queue.size() > 6:
+		_note_queue.pop_front()
 	match str(n.get("kind", "")):
 		"discover":
 			Sfx.play(&"discover")
@@ -1284,6 +1289,8 @@ func _on_selection() -> void:
 
 
 func _process(delta: float) -> void:
+	if not _note_queue.is_empty():
+		add_note(_note_queue.pop_front(), 9.0)
 	_t -= delta
 	if _t <= 0.0:
 		_t = 0.25
