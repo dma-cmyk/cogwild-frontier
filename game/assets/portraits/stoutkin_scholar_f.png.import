@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/stoutkin_scholar_f.png-1349ce6e0da86505708a70
 
 [params]
 
-compress/mode=4
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.8
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=1.0
 compress/hdr_compression=1

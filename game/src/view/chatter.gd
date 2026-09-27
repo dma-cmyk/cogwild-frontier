@@ -15,9 +15,24 @@ const WORK_LINES := {
 	"trade": ["Let's make this a fair deal.", "I wonder what they brought.", "Keep the ledger handy."],
 	"repair": ["A little care goes a long way.", "Back in working order soon.", "This should hold now."],
 	"rest": ["My feet needed this.", "A quiet night sounds lovely.", "Wake me when the kettle's on."],
-	"idle": ["It's peaceful for a change.", "Anyone know a good story?", "Could use a cup of tea."]
+	"idle": ["It's peaceful for a change.", "Anyone know a good story?", "Could use a cup of tea."],
+	"swim": ["The current's slow. This river won't stop us.", "Cold water! Keep your gear dry!", "A bridge here would save us a swim."],
+	"climb": ["Handholds all the way up. Keep climbing!", "Don't look down, don't look down...", "Stairs here would save our knees."],
+	"build_crossing": ["Once this is done, we'll cross dry-footed.", "Brace it well. Carts will run over this.", "Every plank here saves someone a long detour."]
 }
 const COMBAT_LINES := ["Stay together!", "They're not getting through!", "Keep your guard up!", "That one felt close!", "I'm hit—still standing!", "I need a hand!", "They're down!", "Fall back, regroup!", "We held the line!", "You'll regret that!", "Not so brave now, are you?", "Hold fast, help is coming!", "We can do this!"]
+const TACTIC_LINES := {
+	"shield_bash": "Shield up—make room!",
+	"aimed_shot": "Steady... now!",
+	"blast_charge": "Clear the blast zone!",
+	"field_dressing": "Hold still, I've got you!",
+	"rallying_call": "With me! Keep the line!",
+	"flank": "We got around them!",
+	"stance_aggressive": "Push forward!",
+	"stance_balanced": "Stay flexible!",
+	"stance_cautious": "Keep your distance!",
+	"stance_hold": "Hold this ground!"
+}
 const TOPICS := [
 	["Sky's lovely today, isn't it?", "It is. Let's enjoy it while it lasts."],
 	["Any good food left, {name}?", "Saved you a bite, {name}. Don't tell the cook."],
@@ -86,6 +101,7 @@ func _process(delta: float) -> void:
 				_cooldowns[unit.id] = 25.0 + float((unit.id * 7 + game.world.tick_count) % 21)
 				_global_cd = 2.0
 
+
 func _eligible(unit: Unit) -> bool:
 	return unit != null and unit.alive and unit.is_player() and unit.is_person() and unit.visible and not unit.hidden and unit.state != Unit.State.DEAD and unit.state != Unit.State.DOWNED
 
@@ -127,6 +143,9 @@ func _try_chat(unit: Unit, people: Array) -> bool:
 	return false
 
 func _activity(unit: Unit) -> String:
+	var crossing := _crossing_activity(unit)
+	if crossing != "":
+		return crossing
 	if unit.carry_amount > 0 or str(unit.job.get("type", "")) in ["haul", "deliver"]:
 		return "haul"
 	match str(unit.job.get("type", "")):
@@ -146,12 +165,27 @@ func _activity(unit: Unit) -> String:
 		return "repair"
 	return "idle"
 
+## Swimming a river, climbing a cliff, or building a bridge/stairs segment (view-side read only).
+func _crossing_activity(unit: Unit) -> String:
+	var world := game.world
+	if str(unit.job.get("type", "")) == "build":
+		var site: Building = world.buildings.get(int(unit.job.get("building", -1)))
+		if site != null and site.type in ["bridge_segment", "cliff_stairs"]:
+			return "build_crossing"
+	var tile := unit.tile()
+	if not unit.moving or unit.flying or world.crossing_building_at(tile) != null:
+		return ""
+	var terrain := world.terrain_at(tile)
+	if terrain == Tiles.CLIFF:
+		return "climb"
+	if Tiles.is_water(terrain) and world.gen.is_river_water(float(tile.x) + 0.5, float(tile.y) + 0.5):
+		return "swim"
+	return ""
+
 func _on_fx(kind: StringName, pos: Vector3, _color: Color) -> void:
 	if game == null or game.speed <= 0:
 		return
 	var name := str(kind)
-	if name not in ["hit_spark", "death_poof"] and not name.begins_with("combat_damage|"):
-		return
 	var best: Unit
 	var distance := 3.0
 	for unit: Unit in game.world.player_people():
@@ -161,9 +195,46 @@ func _on_fx(kind: StringName, pos: Vector3, _color: Color) -> void:
 		if d < distance:
 			distance = d
 			best = unit
+	if name.begins_with("combat_ability|") or name.begins_with("tactic_stance|"):
+		if best == null:
+			return
+		if name.begins_with("combat_ability|"):
+			var source: Unit = null
+			for candidate: Unit in game.world.unit_list:
+				if candidate.pos.distance_to(Vector2(pos.x, pos.z)) < 0.2:
+					source = candidate
+					break
+			if source == null or not source.is_player():
+				return
+		var key := name.get_slice("|", 1)
+		if name.begins_with("tactic_stance|"):
+			key = "stance_" + key
+		var bark := str(TACTIC_LINES.get(key, "Keep your guard up!"))
+		if _emit(best, bark, true):
+			_cooldowns[best.id] = 12.0
+		return
+	if name.begins_with("combat_tactic|"):
+		var source: Unit = null
+		for candidate: Unit in game.world.unit_list:
+			if candidate.pos.distance_to(Vector2(pos.x, pos.z)) < 0.2:
+				source = candidate
+				break
+		if source == null or not source.is_player():
+			return
+		if best and name.contains("Flank!"):
+			if _emit(best, str(TACTIC_LINES["flank"]), true):
+				_cooldowns[best.id] = 12.0
+		return
+	if name not in ["hit_spark", "death_poof"] and not name.begins_with("combat_damage|"):
+		return
 	if best == null:
 		return
 	var bark := "I'm hit—still standing!"
+	if name.begins_with("combat_damage|") and name.contains("Flank!"):
+		var damage_fields := name.split("|")
+		var attacker := game.world.get_unit(int(damage_fields[4])) if damage_fields.size() > 4 else null
+		if attacker != null and attacker.is_player():
+			bark = str(TACTIC_LINES["flank"])
 	if name == "death_poof":
 		var victim: Unit
 		var victim_distance := 2.0
@@ -204,4 +275,6 @@ static func all_lines() -> Array[String]:
 	for pair: Array in TOPICS:
 		lines.append(str(pair[0]))
 		lines.append(str(pair[1]))
+	for line: String in TACTIC_LINES.values():
+		lines.append(line)
 	return lines

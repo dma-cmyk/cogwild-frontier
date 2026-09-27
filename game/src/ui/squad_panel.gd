@@ -16,7 +16,10 @@ var _add_btn: Button
 var _shown_squad := -99
 var _shown_members: Array = []
 var _foot: HBoxContainer
+var _actions: HBoxContainer
 var _compact := false
+var _stance_select: OptionButton
+var _formation_select: OptionButton
 var _card_refs: Array = []  # [unit_id, hp_bar, en_bar, lv_label, frame]
 
 
@@ -68,10 +71,27 @@ func setup(game: Game, h: Hud) -> void:
 	_slider.tooltip_text = Loc.t("The squad falls back to the hearth when its total health drops below this.")
 	_slider.value_changed.connect(_on_threshold)
 	foot.add_child(_slider)
+	_stance_select = OptionButton.new()
+	for label: String in ["Aggressive", "Balanced", "Cautious", "Hold"]:
+		_stance_select.add_item(Loc.t(label))
+	_stance_select.tooltip_text = Loc.t("Aggressive: chase and strike. Balanced: standard orders. Cautious: kite and retreat early. Hold: stay near the order point.")
+	_stance_select.focus_mode = Control.FOCUS_NONE
+	_stance_select.item_selected.connect(_on_tactics_changed)
+	foot.add_child(_stance_select)
+	_formation_select = OptionButton.new()
+	for label: String in ["Line", "Wedge", "Loose"]:
+		_formation_select.add_item(Loc.t(label))
+	_formation_select.tooltip_text = Loc.t("Line: broad front. Wedge: pointed advance. Loose: wider spacing.")
+	_formation_select.focus_mode = Control.FOCUS_NONE
+	_formation_select.item_selected.connect(_on_tactics_changed)
+	foot.add_child(_formation_select)
+	Loc.language_changed.connect(_refresh_tactic_labels)
+	_actions = UiTheme.hbox(8)
+	v.add_child(_actions)
 	_add_btn = UiTheme.button(Loc.t("Add selected"), "ui_people", Loc.t("Draft the selected settlers or machines into this squad (max 6)."))
 	_add_btn.custom_minimum_size = Vector2(0, 30)
 	_add_btn.pressed.connect(_on_add)
-	foot.add_child(_add_btn)
+	_actions.add_child(_add_btn)
 	var esc := UiTheme.button(Loc.t("Escort"), "cmd_escort", Loc.t("Escort (Y): follow and protect one of your units — e.g. the airship or a work bot."))
 	esc.custom_minimum_size = Vector2(0, 30)
 	esc.pressed.connect(func() -> void:
@@ -79,19 +99,21 @@ func setup(game: Game, h: Hud) -> void:
 			hud.add_note({"text": Loc.t("Select a squad first."), "kind": "info"}, 3.0)
 		else:
 			g.input_ctl.set_mode("cmd:escort"))
-	foot.add_child(esc)
+	_actions.add_child(esc)
 	var new_btn := UiTheme.button(Loc.t("New squad"), "ui_squad", Loc.t("Form a new squad from the selected units."))
 	new_btn.custom_minimum_size = Vector2(0, 30)
 	new_btn.pressed.connect(_on_new)
-	foot.add_child(new_btn)
+	_actions.add_child(new_btn)
 
 func set_compact(compact: bool) -> void:
 	_compact = compact
 	if _foot:
 		for i in 3:
 			_foot.get_child(i).visible = not compact
-		for i in range(3, _foot.get_child_count()):
-			(_foot.get_child(i) as Control).custom_minimum_size = Vector2(0, 44) if compact else Vector2(0, 30)
+		for child in _actions.get_children():
+			(child as Control).custom_minimum_size = Vector2(0, 44 if compact else 30)
+		_stance_select.custom_minimum_size = Vector2(112, 44 if compact else 30)
+		_formation_select.custom_minimum_size = Vector2(96, 44 if compact else 30)
 	for ref: Array in _card_refs:
 		var frame: PanelContainer = ref[4]
 		frame.custom_minimum_size = Vector2(68, 88) if compact else Vector2(84, 116)
@@ -127,8 +149,8 @@ func refresh(force: bool) -> void:
 	_name.add_theme_color_override("font_color", s.color().lerp(UiTheme.TEXT, 0.35))
 	_count.text = "%d/6" % s.members.size()
 	_state.text = _state_text(s)
-	_slider.set_value_no_signal(s.retreat_threshold)
-	_slider_label.text = Loc.t("Retreat at %d%%") % int(s.retreat_threshold * 100)
+	_stance_select.select(["aggressive", "balanced", "cautious", "hold"].find(s.stance))
+	_formation_select.select(["line", "wedge", "loose"].find(s.formation))
 	var focus := g.focus_unit()
 	for ref: Array in _card_refs:
 		var u := g.world.get_unit(int(ref[0]))
@@ -257,3 +279,26 @@ func _on_new() -> void:
 	g.world.squad_ai.order_squad(s, {"type": "idle"})
 	g.select_squad(s.id)
 	hud.add_note({"key": "ui.squad.formed", "params": {"name": s.name}, "kind": "good"}, 3.0)
+
+
+func _on_tactics_changed(_index: int) -> void:
+	var s := _squad()
+	if s == null:
+		return
+	var stances := ["aggressive", "balanced", "cautious", "hold"]
+	var formations := ["line", "wedge", "loose"]
+	s.stance = stances[_stance_select.selected]
+	s.formation = formations[_formation_select.selected]
+	var center := g.world.squad_ai.center(s)
+	g.world.fx.emit(StringName("tactic_stance|" + s.stance), Vector3(center.x, 0.0, center.y), Color("#ffd36a"))
+
+
+func _refresh_tactic_labels() -> void:
+	var stance_labels := ["Aggressive", "Balanced", "Cautious", "Hold"]
+	for i in stance_labels.size():
+		_stance_select.set_item_text(i, Loc.t(stance_labels[i]))
+	_stance_select.tooltip_text = Loc.t("Aggressive: chase and strike. Balanced: standard orders. Cautious: kite and retreat early. Hold: stay near the order point.")
+	var formation_labels := ["Line", "Wedge", "Loose"]
+	for i in formation_labels.size():
+		_formation_select.set_item_text(i, Loc.t(formation_labels[i]))
+	_formation_select.tooltip_text = Loc.t("Line: broad front. Wedge: pointed advance. Loose: wider spacing.")

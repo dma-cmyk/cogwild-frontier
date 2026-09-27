@@ -25,8 +25,7 @@ closest version and report the deviation.
 ## 1. World conventions & art direction
 
 - 1 unit = 1 m, +Y up, **model front = +Z**. One map tile = 1 × 1 m.
-- Camera (LookDev): orthographic, pitch −30° (matches the painted 2:1 isometric art), fixed yaw 45°, looking from +X+Z toward −X−Z, so the
-  **+X, +Z and +Y faces are what players see**; put doors, faces, emblems on +Z (and +X).
+- Camera (LookDev): orthographic, pitch −30° (matches the painted 2:1 isometric art), yaw 45° by default with four 90°-step orientations. Screen-relative panning and picking use the live camera basis; building cards mirror at ±90° and compute per-pixel depth for the active yaw.
   Default zoom `size = 28` (≈38 px per metre at 1080p), close 12, far 64.
 - Lighting: `LookDev.setup_preview(parent, target, size)` gives the in-game sun/environment/camera.
   Always judge art with it.

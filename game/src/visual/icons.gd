@@ -6,10 +6,10 @@ extends RefCounted
 const REQUIRED_IDS := [
 	"res_wood", "res_stone", "res_metal", "res_ore", "res_gold", "res_food", "res_energy", "res_pop",
 	"cmd_move", "cmd_attack", "cmd_defend", "cmd_explore", "cmd_build", "cmd_gather", "cmd_patrol", "cmd_auto", "cmd_retreat", "cmd_escort", "cmd_stop", "cmd_farm", "cmd_trade", "cmd_cancel",
-	"ui_home", "ui_buildings", "ui_people", "ui_target", "ui_search", "ui_pause", "ui_play", "ui_fast", "ui_faster", "ui_sun", "ui_moon", "ui_save", "ui_load", "ui_menu", "ui_close", "ui_squad", "ui_bell", "ui_crest", "ui_skull", "ui_star", "ui_heart", "ui_bolt", "ui_chest", "ui_scroll", "ui_gear",
+	"ui_home", "ui_buildings", "ui_people", "ui_target", "ui_search", "ui_pause", "ui_play", "ui_fast", "ui_faster", "ui_sun", "ui_moon", "ui_save", "ui_load", "ui_menu", "ui_close", "ui_squad", "ui_bell", "ui_crest", "ui_skull", "ui_star", "ui_heart", "ui_bolt", "ui_chest", "ui_scroll", "ui_gear", "ui_dice", "ui_rotate_left", "ui_rotate_right",
 	"class_shield", "class_spear", "class_archer", "class_scout", "class_engineer", "class_commander", "class_worker", "class_robot", "class_drone", "class_airship", "class_medic", "class_merchant",
 	"zone_logging", "zone_mining", "zone_forage", "zone_farm", "zone_clear",
-	"bld_hearth", "bld_house", "bld_storehouse", "bld_workshop", "bld_smelter", "bld_windmill", "bld_sky_dock", "bld_watchtower", "bld_wall", "bld_outpost", "bld_farm_plot", "bld_road",
+	"bld_hearth", "bld_house", "bld_storehouse", "bld_workshop", "bld_smelter", "bld_windmill", "bld_sky_dock", "bld_watchtower", "bld_wall", "bld_outpost", "bld_farm_plot", "bld_road", "bld_bridge_segment", "bld_cliff_stairs",
 	"poi_ruins", "poi_bandit", "poi_machine", "poi_trade", "poi_wanderer", "poi_wreck", "poi_crystal", "poi_ore"
 ]
 const SHAPES := ["sword", "dagger", "axe", "spear", "bow", "crossbow", "hammer", "mace", "staff", "rifle", "pistol", "wrench", "pickaxe", "shield", "vest", "coat", "plate", "helmet", "boots", "gloves", "scope", "lantern", "compass", "goggles", "gear", "servo", "sensor", "core", "plating", "propeller", "envelope", "engine", "orb", "idol", "relic", "amulet", "ring", "tonic", "ration", "repair_kit", "shard", "ingot", "timber", "pelt", "book", "map"]

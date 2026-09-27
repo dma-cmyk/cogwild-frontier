@@ -33,6 +33,12 @@
 	{"id": "wall", "name": "Stone Wall", "size": [1, 1], "category": "defense",
 		"cost": {"stone": 4}, "work": 8, "hp": 250,
 		"description": "Blocks the way. Drag to build a line."},
+	{"id": "bridge_segment", "name": "River Bridge", "size": [1, 1], "category": "utility",
+		"cost": {"wood": 12, "stone": 2}, "work": 12, "hp": 180,
+		"description": "A timber deck across river water. Drag a line to plan multiple segments."},
+	{"id": "cliff_stairs", "name": "Cliff Stairs", "size": [1, 1], "category": "utility",
+		"cost": {"wood": 8, "stone": 6}, "work": 14, "hp": 200,
+		"description": "A braced stairway up a cliff. Drag a line to plan multiple segments."},
 	{"id": "outpost", "name": "Outpost", "size": [3, 3], "category": "core",
 		"cost": {"wood": 60, "stone": 20, "metal": 10}, "work": 90, "hp": 400, "storage": true, "build_radius": 22, "vision": 14, "housing": 2,
 		"description": "A foothold far from home: storage and a new area to build in."}

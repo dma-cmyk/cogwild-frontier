@@ -3,6 +3,8 @@ extends Node
 ## and quits with exit code 0 (all passed) or 1. User args after "--": --filter=<substring>.
 
 func _ready() -> void:
+	# Tests add nodes to the root; wait until the root has finished adding this scene.
+	await get_tree().process_frame
 	var filter := ""
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--filter="):

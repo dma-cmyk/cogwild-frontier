@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/bandit_archer.png-168e35d74dcdbda5e8a3a6f338f
 
 [params]
 
-compress/mode=4
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.8
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=1.0
 compress/hdr_compression=1

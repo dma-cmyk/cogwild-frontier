@@ -1,0 +1,11 @@
+{
+  "River Bridge": "River Bridge",
+  "Cliff Stairs": "Cliff Stairs",
+  "A timber deck across river water. Drag a line to plan multiple segments.": "A timber deck across river water. Drag a line to plan multiple segments.",
+  "A braced stairway up a cliff. Drag a line to plan multiple segments.": "A braced stairway up a cliff. Drag a line to plan multiple segments.",
+  "%d building segments planned.": "%d building segments planned.",
+  "No room for building segments there.": "No room for building segments there.",
+  "Bridge segments need river water": "Bridge segments need river water",
+  "Stairs need cliff ground": "Stairs need cliff ground",
+  "Colonists build automatically. Drag lines: walls in range, bridges on explored rivers, stairs on explored cliffs.": "Colonists build automatically. Drag lines: walls in range, bridges on explored rivers, stairs on explored cliffs."
+}

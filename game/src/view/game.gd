@@ -239,6 +239,184 @@ func dbg_plan_building(type: String, min_r: int = 6) -> int:
 	return -1
 
 
+## Probe helper: use real world terrain and construction APIs for crossing acceptance shots.
+func dbg_prepare_crossing_probe(kind: String) -> bool:
+	var feature := "river" if kind in ["swim", "bridge"] else "cliff"
+	var base := world.chunk_key(world.gen.start_tile)
+	for ring in range(7):
+		for cz in range(-ring, ring + 1):
+			for cx in range(-ring, ring + 1):
+				if ring > 0 and absi(cx) != ring and absi(cz) != ring:
+					continue
+				var ch := world.ensure_chunk(base + Vector2i(cx, cz))
+				for i in ch.terrain.size():
+					var tile := Vector2i(ch.cx * ChunkData.S + i % ChunkData.S,
+						ch.cz * ChunkData.S + i / ChunkData.S)
+					var is_feature := world.gen.is_river_water(float(tile.x) + 0.5, float(tile.y) + 0.5) \
+						and Tiles.is_water(ch.terrain[i]) if feature == "river" else ch.terrain[i] == Tiles.CLIFF
+					if not is_feature:
+						continue
+					if kind == "stairs":
+						var local_tile := tile - Vector2i(ch.cx * ChunkData.S, ch.cz * ChunkData.S)
+						if local_tile.x < 4 or local_tile.y < 4 or local_tile.x >= ChunkData.S - 4 \
+								or local_tile.y >= ChunkData.S - 4:
+							continue
+						var nearby_trees := 0
+						for decor_item: Array in ch.decor:
+							if not str(decor_item[0]).begins_with("tree_"):
+								continue
+							if absf(float(decor_item[1]) - float(local_tile.x) - 0.5) <= 3.5 \
+									and absf(float(decor_item[2]) - float(local_tile.y) - 0.5) <= 3.5:
+								nearby_trees += 1
+						if nearby_trees > 1:
+							continue
+						var nearby_tree_resources := 0
+						for dx in range(-3, 4):
+							for dz in range(-3, 4):
+								if Tiles.is_tree(world.res_at(tile + Vector2i(dx, dz))):
+									nearby_tree_resources += 1
+						if nearby_tree_resources > 0:
+							continue
+					if kind in ["swim", "climb"]:
+						var sides := _dbg_crossing_probe_sides(tile, feature)
+						if sides.size() != 2:
+							continue
+						world.reveal(Vector2(tile), 40.0)
+						var path := world.find_path(Vector2(sides[0]) + Vector2(0.5, 0.5),
+							Vector2(sides[1]) + Vector2(0.5, 0.5))
+						var crosses := false
+						for point: Vector2 in path:
+							var step := Vector2i(floori(point.x), floori(point.y))
+							if feature == "river":
+								crosses = crosses or world.gen.is_river_water(float(step.x) + 0.5, float(step.y) + 0.5)
+							else:
+								crosses = crosses or world.terrain_at(step) == Tiles.CLIFF
+						if not crosses:
+							continue
+						for unit: Unit in world.unit_list:
+							if not unit.alive or unit.faction != "player" or unit.kind != "character":
+								continue
+							unit.pos = Vector2(tile) + Vector2(0.5, 0.5)
+							var moved := false
+							if kind == "swim":
+								var squad := world.get_squad(unit.squad_id)
+								if squad == null:
+									continue
+								world.squad_ai.order_squad(squad,
+									{"type": "move", "pos": Vector2(sides[1]) + Vector2(0.5, 0.5)})
+								moved = unit.moving
+							else:
+								moved = world.move_unit(unit, Vector2(sides[1]) + Vector2(0.5, 0.5))
+							if moved:
+								rig.zoom_goal = 12.0
+								rig.focus(Vector3(tile.x + 0.5, world.ground_y(Vector2(tile) + Vector2(0.5, 0.5)),
+									tile.y + 0.5), true)
+								return true
+					elif kind in ["bridge", "stairs"]:
+						var line: Array[Vector2i] = [tile]
+						for axis: Vector2i in [Vector2i.RIGHT, Vector2i.DOWN]:
+							var trial: Array[Vector2i] = [tile]
+							for step in range(1, 4):
+								var next := tile + axis * step
+								var matches := world.gen.is_river_water(float(next.x) + 0.5, float(next.y) + 0.5) \
+									if feature == "river" else world.terrain_at(next) == Tiles.CLIFF
+								if not matches:
+									break
+								trial.append(next)
+							if trial.size() > line.size():
+								line = trial
+						world.reveal(Vector2(tile), 40.0)
+						world.economy.add("wood", maxi(0, 300 - int(world.res.get("wood", 0))))
+						world.economy.add("stone", maxi(0, 300 - int(world.res.get("stone", 0))))
+						world.priorities["build"] = 3
+						world.priorities["haul"] = 3
+						world.priorities["gather"] = 0
+						world.priorities["farm"] = 0
+						world.priorities["operate"] = 0
+						for worker: Unit in world.unit_list:
+							if worker.faction == "player" and worker.kind == "character" and worker.squad_id < 0:
+								world.colony.release(worker)
+						var building_type := "bridge_segment" if kind == "bridge" else "cliff_stairs"
+						var planned: Array[Vector2i] = []
+						for segment: Vector2i in line:
+							if world.can_place(building_type, segment) == "":
+								world.place_building(building_type, segment)
+								planned.append(segment)
+						if not planned.is_empty():
+							rig.zoom_goal = 12.0
+							rig.focus(Vector3(tile.x + 0.5, world.ground_y(Vector2(tile) + Vector2(0.5, 0.5)),
+								tile.y + 0.5), true)
+							return true
+	return false
+
+
+func _dbg_crossing_probe_sides(tile: Vector2i, feature: String) -> Array[Vector2i]:
+	var directions: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
+	for direction: Vector2i in directions:
+		var start := tile - direction
+		var goal := tile + direction
+		for depth in 4:
+			var is_feature := world.gen.is_river_water(float(start.x) + 0.5, float(start.y) + 0.5) \
+				if feature == "river" else world.terrain_at(start) == Tiles.CLIFF
+			if not is_feature:
+				break
+			start -= direction
+		for depth in 4:
+			var is_feature := world.gen.is_river_water(float(goal.x) + 0.5, float(goal.y) + 0.5) \
+				if feature == "river" else world.terrain_at(goal) == Tiles.CLIFF
+			if not is_feature:
+				break
+			goal += direction
+		world.ensure_chunk(world.chunk_key(start))
+		world.ensure_chunk(world.chunk_key(goal))
+		if world.is_walkable(start) and world.is_walkable(goal):
+			return [start, goal]
+	return []
+
+
+func dbg_walk_on_crossing(building_type: String) -> bool:
+	var buildings := world.buildings_of(building_type, true)
+	if buildings.is_empty():
+		return false
+	var crossing: Building = buildings[0]
+	for unit: Unit in world.unit_list:
+		if unit.alive and unit.faction == "player" and unit.kind == "character":
+			var origin := crossing.origin
+			for direction: Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+				var start := origin + direction
+				world.ensure_chunk(world.chunk_key(start))
+				if world.is_walkable(start):
+					unit.pos = Vector2(start) + Vector2(0.5, 0.5)
+					if world.move_unit(unit, Vector2(origin) + Vector2(0.5, 0.5)):
+						rig.zoom_goal = 12.0
+						rig.focus(Vector3(origin.x + 0.5, world.ground_y(Vector2(origin) + Vector2(0.5, 0.5)),
+							origin.y + 0.5), true)
+						return true
+	return false
+
+
+func dbg_stage_unit_on_crossing(building_type: String) -> bool:
+	var buildings := world.buildings_of(building_type, true)
+	if buildings.is_empty():
+		return false
+	var crossing: Building = buildings[buildings.size() / 2]
+	var deck_pos := Vector2(crossing.origin) + Vector2(0.5, 0.5)
+	for unit: Unit in world.unit_list:
+		if not unit.alive or unit.faction != "player" or unit.kind != "character":
+			continue
+		unit.pos = deck_pos
+		unit.prev_pos = deck_pos
+		unit.path = PackedVector2Array()
+		unit.path_i = 0
+		unit.moving = false
+		unit.goal = deck_pos
+		unit.state = Unit.State.IDLE
+		rig.zoom_goal = 12.0
+		rig.focus(Vector3(deck_pos.x, world.ground_y(deck_pos), deck_pos.y), true)
+		return true
+	return false
+
+
 ## Centres the camera on the nearest site of a kind.
 func dbg_focus_site(kind: String) -> void:
 	var sid := dbg_reveal_site(kind)

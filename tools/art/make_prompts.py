@@ -57,6 +57,46 @@ V2_LOOKS = {
 	"scholar": "wearing a plum and muted-gold robe with a royal-blue company sash and a dark leather satchel, holding a wooden staff with a small hanging lantern",
 }
 
+V3_APPEARANCE = {
+	"human": [
+		("a young human man with sandy-blond hair in a low ponytail and freckles", "an older human woman with a silver bob, round spectacles and a sturdy build"),
+		("an older human man with close-cropped salt-and-pepper hair, a moustache and a scar", "a young human woman with a copper-red undercut and freckles"),
+		("a young human man with shoulder-length black curls and a slim build", "an older human woman with dark braided hair and a small mole"),
+		("an older human man with wavy white hair and a short beard", "a young human woman with a chestnut pixie cut and round glasses"),
+		("a young human man with a shaved head, auburn moustache and freckles", "an older human woman with long ash-blond hair in a braid and a broad build"),
+	],
+	"sylvan": [
+		("a young Sylvan man with long pointed ears and dark forest-green curls", "an older Sylvan woman with long pointed ears, white hair in a high knot and freckles"),
+		("an older Sylvan man with long pointed ears, pale-gold hair, a thin beard and spectacles", "a young Sylvan woman with long pointed ears and a short black bob"),
+		("a young Sylvan man with long pointed ears and copper hair in a loose braid", "an older Sylvan woman with long pointed ears, silver twin braids and a strong build"),
+		("an older Sylvan man with long pointed ears, auburn hair, a moustache and a weathered face", "a young Sylvan woman with long pointed ears, violet-black curls and freckles"),
+		("a young Sylvan man with long pointed ears and white shoulder-length hair", "an older Sylvan woman with long pointed ears, dark green hair in a bun and round glasses"),
+	],
+	"stoutkin": [
+		("a young stocky Stoutkin man with a short braided ginger beard and shaved sides", "an older stocky Stoutkin woman with silver hair in a single thick braid and spectacles"),
+		("an older broad-shouldered Stoutkin man with a long white beard bound in brass rings", "a young sturdy Stoutkin woman with dark plum twin buns and freckles"),
+		("a young stocky Stoutkin man with black curls, a narrow moustache and round glasses", "an older broad Stoutkin woman with copper hair in a crown braid"),
+		("an older stocky Stoutkin man with a bald crown, grey side locks and a beard", "a young sturdy Stoutkin woman with short sandy hair and a cheek scar"),
+		("a young broad Stoutkin man with pale blond braids and freckles", "an older stocky Stoutkin woman with dark red hair in two long braids and a strong jaw"),
+	],
+	"vulpin": [
+		("a young Vulpin man with large pointed fox ears, a russet tail with cream tip, and dark brown swept-back hair", "an older Vulpin woman with large fox ears, a russet tail with cream tip, silver hair and round spectacles"),
+		("an older Vulpin man with large fox ears, a russet tail with cream tip, black hair and a grey moustache", "a young Vulpin woman with large fox ears, a russet tail with cream tip and a short pale-gold bob"),
+		("a young Vulpin man with large fox ears, a russet tail with cream tip, and sandy curls with freckles", "an older Vulpin woman with large fox ears, a russet tail with cream tip and dark auburn braids"),
+		("an older Vulpin man with large fox ears, a russet tail with cream tip, long cream hair and a thin beard", "a young Vulpin woman with large fox ears, a russet tail with cream tip, charcoal hair and glasses"),
+		("a young Vulpin man with large fox ears, a russet tail with cream tip, and dark-red hair in a topknot", "an older Vulpin woman with large fox ears, a russet tail with cream tip, white curls and a broad build"),
+	],
+}
+
+V3_LOOKS = {
+	"worker": "wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt",
+	"fighter": "wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield",
+	"ranger": "wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver",
+	"engineer": "wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench",
+	"scholar": "wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern",
+}
+
+
 
 def chip_args(left: str, right: str, frames: str = "walking frames: left foot forward, standing, right foot forward",
 		reference: str = "") -> dict:
@@ -193,6 +233,12 @@ def build() -> list:
 			v2_right = f"{v2_female}, {v2_outfit}"
 			out.append({"id": f"{cid}_v2", "kind": "chip",
 				"args": chip_args(v2_left, v2_right, reference=cid)})
+			v3_male, v3_female = V3_APPEARANCE[race][list(LOOKS).index(look)]
+			v3_outfit = V3_LOOKS[look]
+			v3_left = f"{v3_male}, {v3_outfit}"
+			v3_right = f"{v3_female}, {v3_outfit}"
+			out.append({"id": f"{cid}_v3", "kind": "chip",
+				"args": chip_args(v3_left, v3_right, reference=cid)})
 	bandit_a = ("a human man bandit in a patched brown leather coat, a red bandana and a red scarf over the mouth, holding a rusty hand axe",
 		"a human woman bandit in a red hood and patched brown leather, holding a rusty hand axe")
 	bandit_b = ("a bandit crossbowman: a human man in a red hood and patched leather armour, holding a crossbow",
@@ -257,6 +303,10 @@ def build() -> list:
 			v2_outfit = V2_LOOKS[look]
 			out.append({"id": f"portrait_{race}_{look}_v2", "kind": "portrait",
 				"args": portrait_args(f"{cid}_v2", f"{v2_male}, {v2_outfit}", f"{v2_female}, {v2_outfit}")})
+			v3_male, v3_female = V3_APPEARANCE[race][list(LOOKS).index(look)]
+			v3_outfit = V3_LOOKS[look]
+			out.append({"id": f"portrait_{race}_{look}_v3", "kind": "portrait",
+				"args": portrait_args(f"{cid}_v3", f"{v3_male}, {v3_outfit}", f"{v3_female}, {v3_outfit}")})
 	out.append({"id": "portrait_bandit_a", "kind": "portrait", "args": portrait_args("chip_bandit_a", *bandit_a)})
 	out.append({"id": "portrait_bandit_b", "kind": "portrait", "args": portrait_args("chip_bandit_b", *bandit_b)})
 	return sorted(out, key=_priority)

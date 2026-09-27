@@ -1,7 +1,7 @@
 class_name CameraRig
 extends Node3D
-## Orthographic isometric RTS camera: keyboard/edge scrolling and middle-drag panning,
-## wheel zoom, smooth focusing, and ray picking against the terrain height field.
+## Orthographic isometric RTS camera: four 90° yaw orientations with smooth turns, keyboard/edge
+## scrolling and middle-drag panning, wheel zoom, focusing, and ray picking against the terrain.
 
 signal moved
 
@@ -10,7 +10,9 @@ const EDGE := 6.0
 var world: World
 var cam: Camera3D
 var target := Vector3.ZERO
-const yaw := LookDev.CAMERA_YAW_DEG
+var yaw := LookDev.CAMERA_YAW_DEG
+var _yaw_tween: Tween
+var _yaw_goal := LookDev.CAMERA_YAW_DEG
 var zoom := LookDev.ZOOM_DEFAULT
 var zoom_goal := LookDev.ZOOM_DEFAULT
 var edge_scroll := true
@@ -57,6 +59,16 @@ func focus(p: Vector3, instant: bool = false) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo:
+		var key := (event as InputEventKey).keycode
+		if key == KEY_Q:
+			rotate_step(-1)
+			get_viewport().set_input_as_handled()
+			return
+		elif key == KEY_E:
+			rotate_step(1)
+			get_viewport().set_input_as_handled()
+			return
 	if event is InputEventMouseButton:
 		var mb := event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_WHEEL_UP:
@@ -75,6 +87,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		zoom_goal = clampf(zoom_goal * 0.85, LookDev.ZOOM_MIN, LookDev.ZOOM_MAX)
 	elif event.is_action_pressed("cam_zoom_out"):
 		zoom_goal = clampf(zoom_goal * 1.18, LookDev.ZOOM_MIN, LookDev.ZOOM_MAX)
+
+
+func rotate_step(direction: int) -> void:
+	var step := -1 if direction < 0 else 1
+	if _yaw_tween != null and _yaw_tween.is_running():
+		_yaw_tween.kill()
+	_yaw_goal += float(step) * 90.0
+	_yaw_tween = create_tween()
+	_yaw_tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	_yaw_tween.tween_property(self, "yaw", _yaw_goal, 0.3)
 
 
 func pan_screen(delta: Vector2) -> void:

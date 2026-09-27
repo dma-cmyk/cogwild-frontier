@@ -407,6 +407,7 @@ func _wanderer(u: Unit) -> void:
 func _recruit(u: Unit, st: Dictionary) -> void:
 	(st["units"] as Array).erase(u.id)
 	u.faction = "player"
+	w.assign_art_variant(u, true)
 	u.archetype = "colonist"
 	u.labor = "worker"
 	u.home_site = -1

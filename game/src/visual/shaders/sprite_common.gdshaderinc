@@ -17,6 +17,12 @@ vec3 card_world(mat4 model, mat4 inv_view, vec2 local, float toward) {
 	return model[3].xyz + inv_view[0].xyz * local.x + inv_view[1].xyz * local.y + inv_view[2].xyz * toward;
 }
 
+bool camera_mirror_x(mat4 inv_view) {
+	float yaw = degrees(atan(inv_view[2].x, inv_view[2].z));
+	float quarter = round((yaw - 45.0) / 90.0);
+	return mod(abs(quarter), 2.0) > 0.5;
+}
+
 vec2 card_size(mat4 model) {
 	return vec2(length(model[0].xyz), length(model[1].xyz));
 }

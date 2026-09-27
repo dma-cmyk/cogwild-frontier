@@ -33,6 +33,7 @@ LOOKS = ["worker", "fighter", "ranger", "engineer", "scholar"]
 # chip sheet id -> (left sheet id, right sheet id, anchor mode)
 CHIP_SHEETS = {f"chip_{r}_{l}": (f"{r}_{l}_m", f"{r}_{l}_f", "feet") for r in RACES for l in LOOKS}
 CHIP_SHEETS.update({f"chip_{r}_{l}_v2": (f"{r}_{l}_m@v2", f"{r}_{l}_f@v2", "feet") for r in RACES for l in LOOKS})
+CHIP_SHEETS.update({f"chip_{r}_{l}_v3": (f"{r}_{l}_m@v3", f"{r}_{l}_f@v3", "feet") for r in RACES for l in LOOKS})
 CHIP_SHEETS.update({
 	"chip_bandit_a": ("bandit_m", "bandit_f", "feet"),
 	"chip_bandit_b": ("bandit_archer", "bandit_captain", "feet"),
@@ -181,6 +182,7 @@ def save_png(rgba: np.ndarray, path: pathlib.Path, preset: str = "sprite") -> No
 	mode = "RGBA" if rgba.ndim == 3 and rgba.shape[2] == 4 else ("RGB" if rgba.ndim == 3 else "L")
 	Image.fromarray(rgba, mode).save(path, optimize=True)
 	write_import(path, preset)
+	match_v2_import_settings(path)
 
 
 IMPORT_PRESETS = {
@@ -210,15 +212,33 @@ def write_import(path: pathlib.Path, preset: str) -> None:
 	imp.write_text("\n".join(lines) + "\n")
 
 
+def match_v2_import_settings(path: pathlib.Path) -> None:
+	if not path.stem.endswith("_v3"):
+		return
+	v2_import = path.with_name(path.name.removesuffix("_v3.png") + "_v2.png.import")
+	v3_import = path.with_name(path.name + ".import")
+	if not v2_import.is_file() or not v3_import.is_file():
+		return
+	v2_text = v2_import.read_text()
+	v3_text = v3_import.read_text()
+	if "[params]" not in v2_text or "[params]" not in v3_text:
+		return
+	head = v3_text.split("[params]", 1)[0]
+	params = v2_text.split("[params]", 1)[1]
+	v3_import.write_text(head + "[params]" + params)
+
+
 def write_table(name: str, entries: list[dict]) -> None:
 	DATA.mkdir(parents=True, exist_ok=True)
 	path = DATA / f"{name}.json"
 	old = {}
 	if path.exists():
 		for e in json.loads(path.read_text()).get("entries", []):
-			old[e["id"]] = e
+			if v3_pair_files_exist(e["id"]):
+				old[e["id"]] = e
 	for e in entries:
-		old[e["id"]] = e
+		if v3_pair_files_exist(e["id"]):
+			old[e["id"]] = e
 	doc = {"table": name, "entries": [old[k] for k in sorted(old)]}
 	path.write_text(json.dumps(doc, indent=1) + "\n")
 
@@ -226,6 +246,15 @@ def write_table(name: str, entries: list[dict]) -> None:
 def res(path: pathlib.Path) -> str:
 	return "res://" + str(path.relative_to(GAME))
 
+
+
+def v3_pair_files_exist(asset_id: str) -> bool:
+	if not asset_id.endswith("@v3"):
+		return True
+	file_id = asset_id.removesuffix("@v3") + "_v3.png"
+	sprite = GAME / "assets" / "sprites" / "chars" / file_id
+	portrait = GAME / "assets" / "portraits" / file_id
+	return all(p.is_file() and p.with_name(p.name + ".import").is_file() for p in (sprite, portrait))
 
 # --- character / machine chips --------------------------------------------------------------
 
@@ -290,9 +319,9 @@ def process_chips(only: set[str]) -> None:
 			continue
 		for half, out_id in ((0, left_id), (1, right_id)):
 			frames = [[trim(union_crop(img, cells[(r, half * 3 + c)])) for c in range(3)] for r in range(4)]
-			sheet, meta = build_chip(frames, "center" if out_id in CENTER_ANCHOR else mode)
-			v2 = out_id.endswith("@v2")
-			file_id = out_id.removesuffix("@v2") + "_v2" if v2 else out_id
+			sheet, meta = build_chip(frames, mode)
+			variant = "_v3" if out_id.endswith("@v3") else "_v2" if out_id.endswith("@v2") else ""
+			file_id = out_id.split("@")[0] + variant
 			out = GAME / "assets" / "sprites" / "chars" / f"{file_id}.png"
 			save_png(sheet, out)
 			entries.append({"id": out_id, "texture": res(out), "source": sheet_id, **meta})
@@ -339,6 +368,7 @@ def process_portraits(only: set[str]) -> None:
 	entries = []
 	pairs = {f"portrait_{r}_{l}": (f"{r}_{l}_m", f"{r}_{l}_f") for r in RACES for l in LOOKS}
 	pairs.update({f"portrait_{r}_{l}_v2": (f"{r}_{l}_m@v2", f"{r}_{l}_f@v2") for r in RACES for l in LOOKS})
+	pairs.update({f"portrait_{r}_{l}_v3": (f"{r}_{l}_m@v3", f"{r}_{l}_f@v3") for r in RACES for l in LOOKS})
 	pairs.update({"portrait_bandit_a": ("bandit_m", "bandit_f"), "portrait_bandit_b": ("bandit_archer", "bandit_captain")})
 	for pid, (left_id, right_id) in pairs.items():
 		if only and pid not in only:
@@ -356,12 +386,13 @@ def process_portraits(only: set[str]) -> None:
 			# heads sit near the top of the generated busts: keep hats/ears, trim the chest
 			y0 = int(np.clip(h * 0.02, 0, h - side))
 			crop = Image.fromarray(img[y0:y0 + side, x0:x0 + side]).resize((256, 256), Image.Resampling.LANCZOS)
-			v2 = out_id.endswith("@v2")
-			file_id = out_id.removesuffix("@v2") + "_v2" if v2 else out_id
+			variant = "_v3" if out_id.endswith("@v3") else "_v2" if out_id.endswith("@v2") else ""
+			file_id = out_id.split("@")[0] + variant
 			out = GAME / "assets" / "portraits" / f"{file_id}.png"
 			out.parent.mkdir(parents=True, exist_ok=True)
 			crop.save(out, optimize=True)
 			write_import(out, "ui")
+			match_v2_import_settings(out)
 			entries.append({"id": out_id, "texture": res(out), "source": pid})
 	if entries:
 		write_table("portraits", entries)

@@ -17,9 +17,8 @@ func setup(game: Game, h: Hud) -> void:
 	anchor_top = 1.0
 	anchor_bottom = 1.0
 	offset_left = 10
-	offset_right = 430
-	offset_top = -760
-	offset_bottom = -290
+	offset_top = -840
+	offset_bottom = -120
 	var v := UiTheme.vbox(6)
 	add_child(v)
 	var head := UiTheme.hbox(8)
@@ -74,9 +73,16 @@ func refresh() -> void:
 			h.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			h.offset_left = 6
 			b.add_child(h)
+			var portrait := TextureRect.new()
+			portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			portrait.custom_minimum_size = Vector2(34, 34)
+			portrait.texture = hud.portraits.get_portrait("u%d" % u.id, u.dna, 128)
+			portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			h.add_child(portrait)
 			h.add_child(UiTheme.icon(u.class_icon(), 26))
 			var nm := UiTheme.label("%s  Lv.%d" % [u.name, u.char_level()], 14, UiTheme.TEXT, UiTheme.bold_font)
-			nm.custom_minimum_size = Vector2(190, 0)
+			nm.custom_minimum_size = Vector2(160, 0)
 			nm.clip_text = true
 			h.add_child(nm)
 			h.add_child(UiTheme.label(hud.info_panel._activity(u), 13, UiTheme.TEXT_DIM))

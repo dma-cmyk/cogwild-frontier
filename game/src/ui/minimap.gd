@@ -88,7 +88,8 @@ func _paint_chunks() -> void:
 		_paint(ch)
 		changed = true
 		n += 1
-		if n >= 6:
+		# Keep discovery painting bounded; the dirty flag resumes remaining chunks next frame.
+		if n >= 1:
 			_dirty = true
 			break
 	if changed:
@@ -136,6 +137,11 @@ func _w2m(p: Vector2) -> Vector2:
 
 
 func _draw_markers(c: Control) -> void:
+	c.draw_string(ThemeDB.fallback_font, Vector2(SIZE - 22.0, 18.0), "N", HORIZONTAL_ALIGNMENT_CENTER, -1.0, 12, Color("#fff2cc"))
+	c.draw_line(Vector2(SIZE - 22.0, 22.0), Vector2(SIZE - 22.0, 10.0), Color("#fff2cc"), 1.5)
+	c.draw_colored_polygon(PackedVector2Array([
+		Vector2(SIZE - 22.0, 7.0), Vector2(SIZE - 25.0, 13.0), Vector2(SIZE - 19.0, 13.0)
+	]), Color("#fff2cc"))
 	var w := g.world
 	for b: Building in w.buildings.values():
 		var p := _w2m(b.center())

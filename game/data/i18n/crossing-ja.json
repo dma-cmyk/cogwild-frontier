@@ -1,0 +1,11 @@
+{
+  "River Bridge": "川の橋",
+  "Cliff Stairs": "崖の階段",
+  "A timber deck across river water. Drag a line to plan multiple segments.": "川に木製の橋を架けます。ドラッグで複数の区間を計画できます。",
+  "A braced stairway up a cliff. Drag a line to plan multiple segments.": "崖を上る補強階段です。ドラッグで複数の区間を計画できます。",
+  "%d building segments planned.": "%d 区間を計画しました。",
+  "No room for building segments there.": "そこには置けません。",
+  "Bridge segments need river water": "橋は川の水上にのみ設置できます",
+  "Stairs need cliff ground": "階段は崖の上にのみ設置できます",
+  "Colonists build automatically. Drag lines: walls in range, bridges on explored rivers, stairs on explored cliffs.": "住民が自動で建設。線状配置：壁は建設範囲内、橋は探索済みの川、階段は探索済みの崖。"
+}

@@ -19,6 +19,7 @@ uniform vec4 flash = vec4(1.0, 1.0, 1.0, 0.0);
 uniform float roll = 0.0;
 uniform float hue_shift = 0.0;
 uniform vec2 offset = vec2(0.0, 0.0);
+uniform bool mirror_camera_quadrants = false;
 
 varying vec2 cell_uv;
 varying vec3 base_pos;
@@ -32,7 +33,11 @@ void vertex() {
 	base_pos = MODEL_MATRIX[3].xyz;
 	VERTEX = (VIEW_MATRIX * vec4(world, 1.0)).xyz;
 	NORMAL = vec3(0.0, 0.0, 1.0);
-	cell_uv = (frame + UV) / grid;
+	float u = UV.x;
+	if (mirror_camera_quadrants && camera_mirror_x(INV_VIEW_MATRIX)) {
+		u = 1.0 - u;
+	}
+	cell_uv = (frame + vec2(u, UV.y)) / grid;
 }
 
 void fragment() {

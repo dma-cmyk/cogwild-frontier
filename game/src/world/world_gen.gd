@@ -82,6 +82,10 @@ func river_value(x: float, z: float) -> float:
 	var wz := z + _n_warp_z.get_noise_2d(x, z) * w
 	return absf(_n_river.get_noise_2d(wx, wz))
 
+## Natural lake basins have negative uncarved land height, unlike carved river channels.
+func is_river_water(x: float, z: float) -> bool:
+	return land_height(x, z) > 0.0 and river_value(x, z) < float(t["river_bank"])
+
 
 func moisture(x: float, z: float) -> float:
 	return _n_moist.get_noise_2d(x, z)

@@ -10,23 +10,27 @@ ROOT = Path(__file__).resolve().parents[2]
 GAME = ROOT / "game"
 
 
-# Painted sprites and portraits use Basis Universal (UASTC): one download for every browser, then
-# transcoded at load time to the GPU's own format (BC7 on desktops, ASTC / ETC2 on phones), so
-# textures stay compressed in video memory. Two VRAM variants (desktop + mobile) would double the
-# download. Building pictures are painted far above their on-screen size, even at the closest
-# zoom, so they are capped at 768 px.
-BASIS, LOSSLESS = 4, 0
+# Painted world and building sprites use UASTC Basis so game textures remain GPU-compressed.
+# Building art caps at 768 px; its grayscale night-glow masks cap at 512 px. Character chip sheets
+# use lossy WebP q=0.85; portraits use q=0.9. Both get mipmaps because the game minifies them. The title
+# JPEG source is preserved; WebP avoids inflating its full 1920x1080 pixels into a lossless RGBA map.
+BASIS, LOSSY, LOSSLESS = 4, 1, 0
 PRESETS = {
+    "ui/title_keyart.jpg": {"compress/mode": LOSSY, "compress/lossy_quality": "0.9", "mipmaps/generate": False, "process/size_limit": 0},
+    "portraits/": {"compress/mode": LOSSY, "compress/lossy_quality": "0.9", "mipmaps/generate": True, "process/size_limit": 0},
+    "sprites/chars/": {"compress/mode": LOSSY, "compress/lossy_quality": "0.85", "mipmaps/generate": True, "process/size_limit": 0},
     "sprites/buildings/": {"compress/mode": BASIS, "mipmaps/generate": True, "process/size_limit": 768},
-    "sprites/": {"compress/mode": BASIS, "mipmaps/generate": True, "process/size_limit": 0},
-    "portraits/": {"compress/mode": BASIS, "mipmaps/generate": True, "process/size_limit": 0},
+    "sprites/": {"compress/mode": BASIS, "compress/rdo_quality_loss": 1.5, "mipmaps/generate": True, "process/size_limit": 0},
     "ui/": {"compress/mode": LOSSLESS, "mipmaps/generate": False, "process/size_limit": 0},
     "icons/": {"compress/mode": LOSSLESS, "mipmaps/generate": False, "process/size_limit": 0},
 }
+GLOW_PRESET = {"compress/mode": BASIS, "mipmaps/generate": True, "process/size_limit": 512}
 
 
 def preset_for(path: Path) -> dict | None:
     rel = path.relative_to(GAME / "assets").as_posix()
+    if rel.startswith("sprites/buildings/") and rel.endswith("_glow.png.import"):
+        return GLOW_PRESET
     for prefix, preset in PRESETS.items():
         if rel.startswith(prefix):
             return preset
@@ -43,11 +47,13 @@ def apply(path: Path) -> bool:
     values = {
         "compress/mode": str(preset["compress/mode"]),
         "compress/uastc_level": "0",
-        "compress/rdo_quality_loss": "1.0",
+        "compress/rdo_quality_loss": str(preset.get("compress/rdo_quality_loss", 1.0)),
         "mipmaps/generate": "true" if preset["mipmaps/generate"] else "false",
         "mipmaps/limit": "-1",
         "process/size_limit": str(preset["process/size_limit"]),
     }
+    if "compress/lossy_quality" in preset:
+        values["compress/lossy_quality"] = str(preset["compress/lossy_quality"])
     before = text
     for key, value in values.items():
         pattern = re.compile(rf"(?m)^{re.escape(key)}=.*$")

@@ -8,7 +8,7 @@ const NAMES := ["Deep water", "Shallows", "Sand", "Grass", "Meadow", "Forest flo
 	"Cliff", "Trail", "Bridge", "Farmland", "Road"]
 const WALKABLE := [false, true, true, true, true, true, true, true, false, true, true, true, true]
 ## Movement cost multipliers for pathfinding (lower = preferred).
-const COST := [1.0, 2.4, 1.15, 1.0, 1.0, 1.1, 1.0, 1.25, 1.0, 0.7, 0.72, 1.15, 0.55]
+const COST := [6.0, 5.0, 1.15, 1.0, 1.0, 1.1, 1.0, 1.25, 6.0, 0.7, 0.72, 1.15, 0.55]
 ## Base terrain colours (sRGB), also used for the minimap.
 const COLORS := [
 	Color("#2f6f8f"), Color("#4fa3b5"), Color("#d9c68f"), Color("#79ad4f"), Color("#93bb57"),

@@ -46,6 +46,8 @@ var _command_panel: Control
 var _touch_controls: Control
 var _box_select_button: Button
 var _minimap_button: Button
+var _rotate_left: Button
+var _rotate_right: Button
 var _details_button: Button
 var _place_confirm: Button
 var _portrait_panel: PanelContainer
@@ -115,6 +117,9 @@ func _refresh_language() -> void:
 	roster.refresh()
 	_trade_count = -1
 	_update_trade()
+	if is_instance_valid(_rotate_left):
+		_rotate_left.tooltip_text = Loc.t("Rotate camera left (Q)")
+		_rotate_right.tooltip_text = Loc.t("Rotate camera right (E)")
 	if build_menu.visible:
 		build_menu._rebuild()
 	if pause_menu.visible:
@@ -213,6 +218,14 @@ func _build_touch_controls() -> void:
 	_touch_controls.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_touch_controls.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(_touch_controls)
+	_rotate_left = UiTheme.button("", "ui_rotate_left", Loc.t("Rotate camera left (Q)"))
+	_rotate_left.custom_minimum_size = Vector2(40, 40)
+	_rotate_left.pressed.connect(func() -> void: g.rig.rotate_step(-1))
+	_touch_controls.add_child(_rotate_left)
+	_rotate_right = UiTheme.button("", "ui_rotate_right", Loc.t("Rotate camera right (E)"))
+	_rotate_right.custom_minimum_size = Vector2(40, 40)
+	_rotate_right.pressed.connect(func() -> void: g.rig.rotate_step(1))
+	_touch_controls.add_child(_rotate_right)
 	_box_select_button = UiTheme.button(Loc.t("Box"), "ui_target", Loc.t("Toggle drag box selection"))
 	_box_select_button.custom_minimum_size = Vector2(88, 44)
 	_box_select_button.anchor_left = 1.0
@@ -310,7 +323,7 @@ func _update_responsive() -> void:
 		squad_panel.anchor_right = 0.0
 		squad_panel.offset_left = 8
 		squad_panel.offset_right = minf(500.0, size.x - 16.0)
-		squad_panel.offset_top = -300
+		squad_panel.offset_top = -380
 		squad_panel.offset_bottom = -124
 		# the minimap becomes a drawer under the Map button, above the other panels
 		minimap.anchor_left = 1.0
@@ -335,10 +348,10 @@ func _update_responsive() -> void:
 	else:
 		squad_panel.anchor_left = 0.5
 		squad_panel.anchor_right = 0.5
-		squad_panel.offset_left = -655
+		squad_panel.offset_left = -625
 		squad_panel.offset_right = -80
-		squad_panel.offset_top = -206
-		squad_panel.offset_bottom = -10
+		squad_panel.offset_top = -380
+		squad_panel.offset_bottom = -140
 		info_panel.offset_left = -352
 		info_panel.offset_right = -10
 		info_panel.offset_top = -660
@@ -352,6 +365,32 @@ func _update_responsive() -> void:
 		minimap.offset_top = -(Minimap.SIZE + 30)
 		minimap.offset_bottom = -10
 		minimap.visible = true
+	if is_instance_valid(_rotate_left) and is_instance_valid(_rotate_right):
+		if _compact:
+			for pair: Array in [[_rotate_left, 8.0], [_rotate_right, 52.0]]:
+				var button := pair[0] as Button
+				button.custom_minimum_size = Vector2(40, 40)
+				button.anchor_left = 0.0
+				button.anchor_right = 0.0
+				button.anchor_top = 1.0
+				button.anchor_bottom = 1.0
+				button.offset_left = float(pair[1])
+				button.offset_right = float(pair[1]) + 40.0
+				button.offset_top = -54.0
+				button.offset_bottom = -14.0
+		else:
+			for pair: Array in [[_rotate_left, 10.0 + Minimap.SIZE - 112.0], [_rotate_right, 10.0 + Minimap.SIZE - 74.0]]:
+				var button := pair[0] as Button
+				button.custom_minimum_size = Vector2(32, 32)
+				button.add_theme_font_size_override("font_size", 14)
+				button.anchor_left = 0.0
+				button.anchor_right = 0.0
+				button.anchor_top = 1.0
+				button.anchor_bottom = 1.0
+				button.offset_left = float(pair[1])
+				button.offset_right = float(pair[1]) + 32.0
+				button.offset_top = -(Minimap.SIZE + 30.0) + 2.0
+				button.offset_bottom = -(Minimap.SIZE + 30.0) + 34.0
 	if is_instance_valid(_box_select_button):
 		var touch_ui := App.is_touch() or App.is_mobile_web()
 		_box_select_button.visible = touch_ui
@@ -726,7 +765,7 @@ func _build_overlays() -> void:
 	for line: String in [
 		"Left click: select unit / squad / building / site     Drag: box-select",
 		"Right click: move · attack enemy or camp · gather resource · trade (airship on a trade post)",
-		"W A S D / arrows / screen edge / middle drag: pan     Wheel: zoom",
+		"W A S D / arrows / screen edge / middle drag: pan     Wheel: zoom     Q / E: rotate 90°",
 		"1–4 or Tab: select squads     Home: back to the hearth",
 		"M Move  F Attack  H Defend  X Explore  P Patrol  Y Escort  U Auto  R Retreat",
 		"B Build menu  G Gather zones & work priorities",
@@ -737,8 +776,7 @@ func _build_overlays() -> void:
 		"defend, explore and clear weak camps, the drone scouts, the airship trades.",
 	]:
 		v.add_child(UiTheme.label(Loc.t(line), 17))
-	if App.is_touch() or App.is_mobile_web():
-		v.add_child(UiTheme.label(Loc.t("Touch: tap to select or order; drag to pan; pinch to zoom. Use Box for rectangle selection."), 16))
+		v.add_child(UiTheme.label(Loc.t("Touch: tap to select or order; drag to pan; pinch to zoom; twist with two fingers to rotate. Use Box for rectangle selection."), 16))
 
 
 func _on_mode(m: String) -> void:

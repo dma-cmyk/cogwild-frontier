@@ -45,6 +45,8 @@ static func spawn_combat_text(parent: Node, kind: StringName, pos: Vector3, _col
 		var amount := int(damage_fields[1]) if damage_fields.size() > 1 else 0
 		var crit := damage_fields.size() > 2 and damage_fields[2] == "1"
 		text = "-%d" % amount
+		if damage_fields.size() > 3 and damage_fields[3] != "":
+			text += " " + Loc.t(damage_fields[3])
 		color = Color("#ffd05c") if crit else Color("#fff1dc")
 		size = 56 if crit else 44
 		rise = 1.35 if crit else 1.0
@@ -53,7 +55,16 @@ static func spawn_combat_text(parent: Node, kind: StringName, pos: Vector3, _col
 		text = "+%d" % (int(heal_fields[1]) if heal_fields.size() > 1 else 0)
 		color = Color("#73ff9b")
 		size = 40
-		rise = 0.9
+	elif kind_text.begins_with("combat_ability|"):
+		var ability_id := kind_text.get_slice("|", 1)
+		text = Loc.t(str(DB.get_def("generation/abilities", ability_id).get("name", ability_id))) + "!"
+		color = Color("#ffd36a")
+		size = 34
+	elif kind_text.begins_with("combat_tactic|") or kind_text.begins_with("combat_miss|"):
+		var feedback := kind_text.get_slice("|", 1)
+		text = Loc.t(feedback) if feedback != "" else Loc.t("Miss")
+		color = Color("#ffd36a") if kind_text.begins_with("combat_tactic|") else Color("#d5a2a2")
+		size = 34
 	label.text = text
 	label.font_size = size
 	label.modulate = color

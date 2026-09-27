@@ -29,6 +29,9 @@ var _touch_start := Vector2.ZERO
 var _touch_last := Vector2.ZERO
 var _touch_id := -1
 var _pinch_distance := 0.0
+var _twist_last_angle := 0.0
+var _twist_accum := 0.0
+var _twist_fired := false
 var _touch_moved := false
 var _touch_long_pressed := false
 var _touch_elapsed := 0.0
@@ -128,6 +131,9 @@ func _handle_touch(event: InputEvent) -> void:
 				_touch_id = -1
 				_touch_moved = true
 				_pinch_distance = _touch_distance()
+				_twist_last_angle = _touch_pair_angle()
+				_twist_accum = 0.0
+				_twist_fired = false
 			get_viewport().set_input_as_handled()
 		else:
 			if not _touches.has(touch.index):
@@ -147,8 +153,8 @@ func _handle_touch(event: InputEvent) -> void:
 			elif touch.index == _touch_id:
 				if not _touch_moved and not _touch_long_pressed:
 					_touch_tap(touch.position)
-				elif mode == "build:wall" and hover_ground is Vector3:
-					_place("wall", false)
+				elif _is_line_build() and hover_ground is Vector3:
+					_place(mode.substr(6), false)
 				elif mode.begins_with("zone:"):
 					_finish_zone(mode.substr(5))
 				elif box_select_mode and dragging:
@@ -169,6 +175,12 @@ func _handle_touch(event: InputEvent) -> void:
 			if old_distance > 1.0:
 				g.rig.zoom_at(center, old_distance / maxf(1.0, new_distance))
 			_pinch_distance = new_distance
+			var angle := _touch_pair_angle()
+			_twist_accum += wrapf(angle - _twist_last_angle, -PI, PI)
+			_twist_last_angle = angle
+			if not _twist_fired and absf(_twist_accum) >= deg_to_rad(40.0):
+				g.rig.rotate_step(1 if _twist_accum > 0.0 else -1)
+				_twist_fired = true
 			_touch_moved = true
 		elif drag.index == _touch_id:
 			var delta := drag.position - _touch_last
@@ -181,7 +193,7 @@ func _handle_touch(event: InputEvent) -> void:
 					drag_start = _touch_start
 					hover_ground = g.rig.screen_to_ground(drag.position)
 					if mode.begins_with("build:") and hover_ground is Vector3:
-						if mode != "build:wall":
+						if not _is_line_build():
 							_touch_build_point = hover_ground
 						elif not (_wall_start is Vector2i):
 							var start_ground: Variant = g.rig.screen_to_ground(_touch_start)
@@ -198,8 +210,6 @@ func _handle_touch(event: InputEvent) -> void:
 				else:
 					g.rig.pan_screen(delta)
 			get_viewport().set_input_as_handled()
-
-
 func _touch_distance() -> float:
 	var points: Array[Vector2] = []
 	for id: int in _touches:
@@ -220,6 +230,16 @@ func _touch_center() -> Vector2:
 	return (points[0] + points[1]) * 0.5
 
 
+func _touch_pair_angle() -> float:
+	var ids: Array = _touches.keys()
+	if ids.size() < 2:
+		return 0.0
+	ids.sort()
+	var first: Vector2 = _touches[ids[0]]
+	var second: Vector2 = _touches[ids[1]]
+	return (second - first).angle()
+
+
 func _touch_tap(p: Vector2) -> void:
 	_mouse_pos = p
 	hover_ground = g.rig.screen_to_ground(p)
@@ -229,9 +249,9 @@ func _touch_tap(p: Vector2) -> void:
 	elif mode.begins_with("build:"):
 		if hover_ground is Vector3:
 			_touch_build_point = hover_ground
-			if mode == "build:wall":
+			if _is_line_build():
 				if _wall_start is Vector2i:
-					_place("wall", false)
+					_place(mode.substr(6), false)
 				else:
 					_wall_start = _tile_at(hover_ground)
 	elif mode.begins_with("zone:"):
@@ -404,7 +424,7 @@ func _left_press(p: Vector2) -> void:
 	drag_start = p
 	if mode.begins_with("zone:") and hover_ground is Vector3:
 		zone_start = _tile_at(hover_ground)
-	if mode == "build:wall" and hover_ground is Vector3:
+	if _is_line_build() and hover_ground is Vector3:
 		_wall_start = _tile_at(hover_ground)
 
 
@@ -593,6 +613,10 @@ func _order_marker(p: Vector2, type: String) -> Node3D:
 
 # --- building placement ----------------------------------------------------------------------
 
+func _is_line_build() -> bool:
+	return mode in ["build:wall", "build:bridge_segment", "build:cliff_stairs"]
+
+
 func _ghost_origin(type: String) -> Vector2i:
 	var d := DB.get_def("buildings", type)
 	var size := Vector2i(int(d["size"][0]), int(d["size"][1]))
@@ -618,7 +642,7 @@ func _update_ghost() -> void:
 	var size := Vector2i(int(d["size"][0]), int(d["size"][1]))
 	var o := _ghost_origin(type)
 	var reason := g.world.can_place(type, o)
-	if type == "wall" and _wall_start is Vector2i and _left_down:
+	if _is_line_build() and _wall_start is Vector2i and _left_down:
 		reason = ""
 	_last_reason = reason
 	var c := Vector2(o) + Vector2(size) * 0.5
@@ -637,18 +661,18 @@ func ghost_reason() -> String:
 func _place(type: String, keep: bool) -> void:
 	if not (hover_ground is Vector3):
 		return
-	if type == "wall" and _wall_start is Vector2i:
+	if _is_line_build() and _wall_start is Vector2i:
 		var a: Vector2i = _wall_start
 		var b := _tile_at(hover_ground)
 		var n := 0
 		var steps := maxi(absi(b.x - a.x), absi(b.y - a.y))
 		for i in steps + 1:
 			var t := Vector2i(roundi(lerpf(a.x, b.x, float(i) / maxf(1.0, steps))), roundi(lerpf(a.y, b.y, float(i) / maxf(1.0, steps))))
-			if g.world.can_place("wall", t) == "":
-				g.world.place_building("wall", t)
+			if g.world.can_place(type, t) == "":
+				g.world.place_building(type, t)
 				n += 1
 		_wall_start = null
-		g.toast.emit(Loc.t("%d wall segments planned.") % n if n > 0 else Loc.t("No room for walls there."), "info" if n > 0 else "bad")
+		g.toast.emit(Loc.t("%d building segments planned.") % n if n > 0 else Loc.t("No room for building segments there."), "info" if n > 0 else "bad")
 		if n > 0:
 			Sfx.play(&"build_place")
 		return
@@ -661,7 +685,7 @@ func _place(type: String, keep: bool) -> void:
 	var b := g.world.place_building(type, o)
 	Sfx.play(&"build_place")
 	g.toast.emit(Loc.t("%s: construction site placed. Settlers will haul materials and build it.") % Loc.def_name("buildings", type), "good")
-	if not keep and type != "wall":
+	if not keep and not _is_line_build():
 		set_mode("")
 
 

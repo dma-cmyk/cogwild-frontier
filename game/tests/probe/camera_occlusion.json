@@ -1,0 +1,25 @@
+{
+  "scene": "res://scenes/game.tscn",
+  "frames": 65,
+  "events": [
+    {"frame": 1, "do": "scene.set_speed(0)"},
+    {"frame": 2, "do": "scene.rig.rotate_step(1)"},
+    {"frame": 30, "expect": "absf(scene.rig.yaw - 135.0) < 1.0", "label": "mirrored camera yaw"},
+    {"frame": 31, "do": "scene.set_meta('occlusion_building', scene.world.buildings.values()[0])"},
+    {"frame": 32, "do": "scene.set_meta('occlusion_center', scene.world.buildings.values()[0].center())"},
+    {"frame": 33, "do": "scene.world.get_unit(scene.world.squads[0].members[0]).set('pos', scene.get_meta('occlusion_center') + Vector2(-1.5, 1.5))"},
+    {"frame": 34, "do": "scene.world.get_unit(scene.world.squads[0].members[1]).set('pos', scene.get_meta('occlusion_center') + Vector2(2.5, -2.5))"},
+    {"frame": 35, "do": "scene.world.get_unit(scene.world.squads[0].members[2]).set('pos', scene.get_meta('occlusion_center') + Vector2(12.0, 12.0))"},
+    {"frame": 36, "do": "scene.world.get_unit(scene.world.squads[0].members[3]).set('pos', scene.get_meta('occlusion_center') + Vector2(-12.0, -12.0))"},
+    {"frame": 37, "do": "scene.rig.focus(Vector3(scene.get_meta('occlusion_center').x, 0, scene.get_meta('occlusion_center').y), true)"},
+    {"frame": 38, "do": "scene.rig.set('zoom', 14.0)"},
+    {"frame": 38, "do": "scene.rig.set('zoom_goal', 14.0)"},
+    {"frame": 38, "do": "scene.rig.cam.set('size', 14.0)"},
+    {"frame": 45, "watch": "scene.get_meta('occlusion_building').type", "label": "target building type"},
+    {"frame": 45, "watch": "scene.rig.world_to_screen(scene.view.unit_views[scene.world.squads[0].members[0]].global_position)", "label": "far unit projected position"},
+    {"frame": 45, "watch": "scene.rig.world_to_screen(scene.view.unit_views[scene.world.squads[0].members[1]].global_position)", "label": "front unit projected position"},
+    {"frame": 45, "expect": "absf(scene.rig.world_to_screen(scene.view.unit_views[scene.world.squads[0].members[0]].global_position).x - scene.rig.world_to_screen(scene.view.unit_views[scene.world.squads[0].members[1]].global_position).x) < 1.0", "label": "units aligned behind and in front"},
+    {"frame": 45, "expect": "scene.rig.world_to_screen(scene.view.unit_views[scene.world.squads[0].members[0]].global_position).y < scene.rig.world_to_screen(scene.view.unit_views[scene.world.squads[0].members[1]].global_position).y", "label": "rear unit projects above front unit"},
+    {"frame": 50, "screenshot": "house_occlusion_closeup"}
+  ]
+}

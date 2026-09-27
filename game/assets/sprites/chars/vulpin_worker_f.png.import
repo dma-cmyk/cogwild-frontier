@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/vulpin_worker_f.png-92f8d5a2c6450c31009cb0c58
 
 [params]
 
-compress/mode=4
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.8
+compress/lossy_quality=0.85
 compress/uastc_level=0
 compress/rdo_quality_loss=1.0
 compress/hdr_compression=1

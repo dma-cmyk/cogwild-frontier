@@ -66,11 +66,25 @@ func strength(s: Squad) -> float:
 	return total
 
 
-func _slot(i: int) -> Vector2:
-	var row := i / 3
-	var col := i % 3
-	return Vector2((col - 1) * SLOT + (0.5 if row % 2 == 1 else 0.0) * SLOT, row * SLOT)
-
+func _slot(i: int, s: Squad, u: Unit, threat: Vector2) -> Vector2:
+	var forward := threat - center(s)
+	if forward.length_squared() < 0.01:
+		forward = Vector2(0, 1)
+	forward = forward.normalized()
+	var side := Vector2(forward.y, -forward.x)
+	var weapon: Dictionary = u.stats.get("weapon", Unit.FISTS)
+	var ranged := str(weapon.get("kind", "melee")) == "ranged"
+	var role := str(u.character.get("role", "")) if u.is_person() else ""
+	var row: int = 1 if ranged or role in ["medic", "scholar", "engineer"] else 0
+	var col: int = i % 3 - 1
+	match s.formation:
+		"wedge":
+			col = 0 if i == 0 else int((i + 1) / 2) * (1 if i % 2 == 1 else -1)
+		"loose":
+			row = maxi(row, int(i / 3))
+			col = i % 3 - 1
+	var depth := 1.7 * float(row)
+	return side * float(col) * SLOT - forward * depth
 
 # --- orders --------------------------------------------------------------------------------
 
@@ -118,7 +132,7 @@ func _move_all(s: Squad, p: Vector2) -> void:
 	var ms := members(s)
 	for i in ms.size():
 		var u: Unit = ms[i]
-		var dest := p + _slot(i)
+		var dest := p + _slot(i, s, u, p)
 		var t := Vector2i(int(floor(dest.x)), int(floor(dest.y)))
 		if not u.flying and not w.is_walkable(t):
 			dest = p
@@ -139,14 +153,20 @@ func _engage(s: Squad, anchor: Vector2, radius: float) -> bool:
 		if not u.is_armed():
 			continue
 		if u.target_id >= 0:
-			var t := w.get_unit(u.target_id)
-			if t and t.alive and t.pos.distance_to(anchor) < radius + 12.0:
-				fighting = true
-				continue
+			var current := w.get_unit(u.target_id)
+			if current and current.alive and current.pos.distance_to(anchor) < radius + 12.0:
+				if s.stance != "hold" or current.pos.distance_to(Vector2(s.mem.get("hold", anchor))) <= 6.0:
+					fighting = true
+					continue
 			u.target_id = -1
-		var e := w.combat.acquire(u, float(u.stats.get("vision", 9.0)) + 2.0)
-		if e and e.pos.distance_to(anchor) <= radius:
-			u.target_id = e.id
+			if u.moving:
+				w.stop_unit(u)
+		var enemy := w.combat.acquire(u, float(u.stats.get("vision", 9.0)) + 2.0)
+		var engage_radius := radius + 4.0 if s.stance == "aggressive" else radius
+		if s.stance == "hold":
+			engage_radius = minf(radius, 6.0)
+		if enemy and enemy.pos.distance_to(anchor) <= engage_radius and not (s.stance == "cautious" and str(enemy.order.get("type", "")) == "retreat"):
+			u.target_id = enemy.id
 			fighting = true
 	return fighting
 
@@ -160,11 +180,10 @@ func _hold(s: Squad, p: Vector2, radius: float) -> bool:
 		var u: Unit = ms[i]
 		if u.target_id >= 0 or u.moving:
 			continue
-		var slot := p + _slot(i)
+		var slot := p + _slot(i, s, u, p)
 		if u.pos.distance_to(slot) > 2.5:
 			w.move_unit(u, slot)
 	return false
-
 
 func _clear_targets(s: Squad) -> void:
 	for u: Unit in members(s):
@@ -188,7 +207,11 @@ func _think(s: Squad) -> void:
 		_set_state(s, "down" if not s.members.is_empty() else "empty")
 		return
 	var otype := str(s.order.get("type", "idle"))
-	if otype != "retreat" and hp_ratio(s) < s.retreat_threshold:
+	var retreat_at := s.retreat_threshold
+	match s.stance:
+		"aggressive": retreat_at = minf(retreat_at, 0.2)
+		"cautious": retreat_at = maxf(retreat_at, 0.45)
+	if otype != "retreat" and hp_ratio(s) < retreat_at:
 		s.mem["resume"] = s.order.duplicate()
 		order_squad(s, {"type": "retreat"})
 		w.notify_key("sim.squad.retreating", {"squad_name": s.name}, "bad", center(s), {"squad": s.id})

@@ -22,6 +22,7 @@ var alpha := 1.0
 var show_zones := false
 var ghost: Node3D
 var _chunk_queue: Array = []
+var _initial_chunk_keys: Dictionary = {}
 var _crops_dirty := true
 var _crop_root: Node3D
 var _zone_mesh: MeshInstance3D
@@ -29,6 +30,8 @@ var _zones_dirty := true
 var _fog_t := 0.0
 var _projectiles: Array = []
 var _time_scale := 1.0
+var _pending_site_visuals: Array[int] = []
+var _queued_site_visuals: Dictionary = {}
 
 
 func setup(world: World) -> void:
@@ -68,11 +71,15 @@ func setup(world: World) -> void:
 	w.projectile_fired.connect(_on_projectile)
 	w.farm_changed.connect(func(_t: Vector2i) -> void: _crops_dirty = true)
 	w.zones_changed.connect(func() -> void: _zones_dirty = true)
-	# Chunks around home are built now so the first frame has no holes; the rest are built a few
-	# milliseconds per frame, nearest first.
+	# Chunks around home are built now so the first frame has no holes; the rest are built
+	# nearest-first until the per-frame budget is reached (one atomic chunk may exceed it).
 	var home_key := w.chunk_key(Vector2i(w.home_pos()))
 	var keys: Array = w.chunks.keys()
+	_initial_chunk_keys.clear()
+	for key: Vector2i in keys:
+		_initial_chunk_keys[key] = true
 	keys.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return (a - home_key).length_squared() < (b - home_key).length_squared())
+	# Initial chunk data is already complete, so adjacent meshes can sample their borders on first build.
 	for key: Vector2i in keys:
 		if absi(key.x - home_key.x) <= FIRST_VIEW_CHUNKS and absi(key.y - home_key.y) <= FIRST_VIEW_CHUNKS:
 			_build_chunk(key)
@@ -109,6 +116,8 @@ func _build_chunk(key: Vector2i) -> void:
 	var ch: ChunkData = w.chunks.get(key)
 	if ch == null:
 		return
+	var is_initial_chunk := _initial_chunk_keys.has(key)
+	_initial_chunk_keys.erase(key)
 	if chunk_views.has(key):
 		(chunk_views[key] as ChunkView).refresh()
 		return
@@ -117,6 +126,8 @@ func _build_chunk(key: Vector2i) -> void:
 	cv.setup(w, ch)
 	chunk_views[key] = cv
 	# neighbours re-blend their border colours once
+	if is_initial_chunk:
+		return
 	for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
 		var n: ChunkView = chunk_views.get(key + d)
 		if n:
@@ -131,7 +142,7 @@ func _add_building(b: Building) -> void:
 	var v := BuildingVisuals.create(b.type, "frontier" if b.faction == "player" else "neutral", b.variant, b.level)
 	v.name = "Building_%d" % b.id
 	var c := b.center()
-	v.position = Vector3(c.x, w.height_at(c), c.y)
+	v.position = Vector3(c.x, w.ground_y(c), c.y)
 	v.rotation.y = b.rot * PI * 0.5
 	add_child(v)
 	v.set_construction(b.progress)
@@ -174,7 +185,7 @@ func _on_building_changed(b: Building) -> void:
 		return
 	v.set_construction(b.progress)
 	var c := b.center()
-	v.position.y = w.height_at(c)
+	v.position.y = w.ground_y(c)
 
 
 func _on_site_changed(sid: int) -> void:
@@ -188,28 +199,47 @@ func _on_site_changed(sid: int) -> void:
 		root.name = "Site_%d" % sid
 		add_child(root)
 		site_views[sid] = root
-	var have := root.get_child_count()
 	var list: Array = (g.get("structures", []) as Array) + (st.get("extra", []) as Array)
-	var style := str(SITE_STYLE.get(str(st["kind"]), "neutral"))
-	for i in range(have, list.size()):
-		var s: Dictionary = list[i]
-		var sz: Vector2i = s["size"]
-		var o: Vector2i = s["origin"]
-		var rot := int(s.get("rot", 0))
-		var v := BuildingVisuals.create(str(s["type"]), style, sid * 31 + i, 1)
-		var c := Vector2(o) + Vector2(sz) * 0.5
-		v.position = Vector3(c.x, w.height_at(c), c.y)
-		v.rotation.y = rot * PI * 0.5
-		root.add_child(v)
-		v.set_construction(1.0)
-		v.set_active(str(s["type"]) in ["campfire", "machine_foundry", "machine_spire"])
+	if root.get_child_count() < list.size() and not _queued_site_visuals.has(sid):
+		_pending_site_visuals.append(sid)
+		_queued_site_visuals[sid] = true
 
+
+func _build_next_site_visual() -> void:
+	if _pending_site_visuals.is_empty():
+		return
+	var sid: int = _pending_site_visuals.pop_front()
+	_queued_site_visuals.erase(sid)
+	var st: Dictionary = w.sites.get(sid, {})
+	var g: Dictionary = w.gen.sites.get(sid, {})
+	var root: Node3D = site_views.get(sid)
+	if st.is_empty() or g.is_empty() or root == null:
+		return
+	var list: Array = (g.get("structures", []) as Array) + (st.get("extra", []) as Array)
+	var i := root.get_child_count()
+	if i >= list.size():
+		return
+	var s: Dictionary = list[i]
+	var sz: Vector2i = s["size"]
+	var o: Vector2i = s["origin"]
+	var rot := int(s.get("rot", 0))
+	var v := BuildingVisuals.create(str(s["type"]), str(SITE_STYLE.get(str(st["kind"]), "neutral")), sid * 31 + i, 1)
+	var c := Vector2(o) + Vector2(sz) * 0.5
+	v.position = Vector3(c.x, w.height_at(c), c.y)
+	v.rotation.y = rot * PI * 0.5
+	root.add_child(v)
+	v.set_construction(1.0)
+	v.set_active(str(s["type"]) in ["campfire", "machine_foundry", "machine_spire"])
+	if root.get_child_count() < list.size() and not _queued_site_visuals.has(sid):
+		_pending_site_visuals.append(sid)
+		_queued_site_visuals[sid] = true
 
 # --- units ---------------------------------------------------------------------------------
 
 func _add_unit(u: Unit) -> void:
 	if unit_views.has(u.id):
 		return
+
 	var v := UnitView.new()
 	add_child(v)
 	v.setup(w, u)
@@ -276,7 +306,7 @@ func _on_fx(kind: StringName, pos: Vector3, color: Color) -> void:
 	if not _visible_pos(Vector2(pos.x, pos.z)):
 		return
 	var kind_text := str(kind)
-	if kind_text.begins_with("combat_damage|") or kind_text.begins_with("combat_heal|") or kind_text == "combat_miss":
+	if kind_text.begins_with("combat_damage|") or kind_text.begins_with("combat_heal|") or kind_text.begins_with("combat_ability|") or kind_text.begins_with("combat_tactic|") or kind_text.begins_with("combat_miss|") or kind_text == "combat_miss":
 		Vfx.spawn_combat_text(self, kind, pos, color)
 		return
 	if kind_text == "explosion_small":
@@ -409,12 +439,14 @@ func set_show_zones(on: bool) -> void:
 
 func _process(delta: float) -> void:
 	var started_usec := Time.get_ticks_usec()
+
 	var builds := 0
 	while not _chunk_queue.is_empty():
 		if builds > 0 and float(Time.get_ticks_usec() - started_usec) / 1000.0 >= CHUNK_BUILD_BUDGET_MS:
 			break
 		_build_chunk(_chunk_queue.pop_front())
 		builds += 1
+	_build_next_site_visual()
 	for v: UnitView in unit_views.values():
 		v.sync(alpha, delta)
 	for b: Building in w.buildings.values():

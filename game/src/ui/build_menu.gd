@@ -93,7 +93,7 @@ func _rebuild() -> void:
 				visible = false
 				g.input_ctl.set_mode("build:" + id))
 			grid.add_child(b)
-		_box.add_child(UiTheme.label(Loc.t("Settlers haul the materials and build on their own. Walls: drag a line or tap both ends."), 13, UiTheme.TEXT_DIM))
+		_box.add_child(UiTheme.label(Loc.t("Colonists build automatically. Drag lines: walls in range, bridges on explored rivers, stairs on explored cliffs."), 13, UiTheme.TEXT_DIM))
 	else:
 		_box.add_child(UiTheme.title(Loc.t("Gather & work"), 22))
 		var zones := UiTheme.hbox(6)

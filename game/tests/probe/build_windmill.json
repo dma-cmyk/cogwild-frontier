@@ -1,7 +1,7 @@
 {"scene": "res://scenes/game.tscn", "frames": 1300, "seed": 7,
  "events": [
   {"frame": 30, "mouse": "click", "pos": [1002, 837]},
-  {"frame": 40, "mouse": "click", "pos": [565, 680]},
+  {"frame": 40, "mouse": "click", "pos": [571, 622]},
   {"frame": 46, "mouse": "move", "pos": [300, 440]},
   {"frame": 50, "screenshot": "ghost"},
   {"frame": 52, "mouse": "click", "pos": [300, 440]},

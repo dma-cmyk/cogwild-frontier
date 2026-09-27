@@ -15,6 +15,8 @@ static func build(k: MeshKit, id: String, p: BuildPalette, seed: int, lv: int) -
 		"windmill": windmill(k, p, seed)
 		"sky_dock": sky_dock(k, p, seed)
 		"watchtower": watchtower(k, p, seed)
+		"bridge_segment": bridge_segment(k, p)
+		"cliff_stairs": cliff_stairs(k, p)
 		"wall": wall(k, p, seed)
 		"palisade": palisade(k, p, seed)
 		"outpost": outpost(k, p, seed)
@@ -507,3 +509,31 @@ static func campfire(k: MeshKit, p: BuildPalette, _seed: int) -> void:
 	k.tube(Vector3(0, 0.98, 0), Vector3(0, 0.78, 0), 0.015, p.metal, 4)
 	k.frustum(Vector3(0, 0.55, 0), 0.24, 0.16, 0.2, p.metal, 8, true, p.metal.darkened(0.3))
 	k.box(Vector3(0.44, 0.1, 0.4), Vector3(0.46, 0.2, 0.2), p.wood_dark)
+
+
+## Single metre of a timber bridge: raised deck, bolted joists and camera-independent rails.
+static func bridge_segment(k: MeshKit, p: BuildPalette) -> void:
+	k.box(Vector3(0, 0.14, 0), Vector3(0.96, 0.12, 0.96), p.wood_dark)
+	for i in 4:
+		var z := (float(i) - 1.5) * 0.23
+		k.box(Vector3(0, 0.23, z), Vector3(0.92, 0.08, 0.21), p.wood, p.wood.lightened(0.1))
+	for s: float in [-1.0, 1.0]:
+		k.box(Vector3(s * 0.43, 0.38, 0), Vector3(0.09, 0.4, 0.09), p.timber)
+		k.box(Vector3(s * 0.43, 0.52, 0), Vector3(0.08, 0.07, 0.88), p.wood)
+		for z: float in [-0.34, 0.34]:
+			k.box(Vector3(s * 0.43, 0.23, z), Vector3(0.035, 0.04, 0.035), p.metal)
+
+
+## Single metre of stout cliff stair: stone foot, visible treads and timber side rails.
+static func cliff_stairs(k: MeshKit, p: BuildPalette) -> void:
+	k.box(Vector3(0, 0.06, 0), Vector3(0.92, 0.12, 0.92), p.stone, p.stone_top)
+	for i in 4:
+		var z := -0.36 + float(i) * 0.24
+		var y := 0.18 + float(i) * 0.2
+		k.box(Vector3(0, y, z), Vector3(0.78, 0.1, 0.28), p.wood, p.wood.lightened(0.12))
+	for s: float in [-1.0, 1.0]:
+		k.tube(Vector3(s * 0.43, 0.22, 0.43), Vector3(s * 0.43, 1.0, -0.43), 0.055, p.timber, 5)
+		for i in 3:
+			var z := 0.28 - float(i) * 0.24
+			var y := 0.48 + float(i) * 0.2
+			k.box(Vector3(s * 0.43, y, z), Vector3(0.12, 0.12, 0.12), p.wood_dark)

@@ -20,8 +20,8 @@ for row in range(0xA1, 0xFF):
 for path in (ROOT / 'game/data/i18n').rglob('*.json'):
     chars.update(map(ord, path.read_text()))
 chars.update(map(ord, 'Language / 言語日本語使い古した錆びたの'))
-for weight in ('Regular', 'Bold'):
-    font = TTFont(f'/usr/share/fonts/noto-cjk/NotoSansCJK-{weight}.ttc', fontNumber=0)
+for weight in ('Regular',):
+    font = TTFont('/usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc', fontNumber=0)
     assert 'JP' in font['name'].getDebugName(1)
     options = subset.Options()
     options.name_IDs = ['*']
@@ -34,5 +34,5 @@ for weight in ('Regular', 'Bold'):
     font.save(target)
     print(target.name, target.stat().st_size, 'bytes;', len(font.getBestCmap()), 'glyphs')
 license_text = Path('/usr/share/licenses/noto-fonts-cjk/LICENSE').read_text()
-(ROOT / 'game/assets/fonts/LICENSE-NotoCJK.txt').write_text('Covers CogwildCJK-Regular.otf and CogwildCJK-Bold.otf, subsets of Noto Sans CJK JP.\n\n' + license_text)
+(ROOT / 'game/assets/fonts/LICENSE-NotoCJK.txt').write_text('Covers CogwildCJK-Regular.otf, a subset of Noto Sans CJK JP. The CJK bold face is generated at runtime with FontVariation emboldening.\n\n' + license_text)
 (ROOT / 'game/assets/fonts/LICENSE-Noto.txt').write_text('Covers NotoSans-Regular.ttf, NotoSans-SemiBold.ttf, NotoSerif-Regular.ttf and NotoSerif-Bold.ttf.\n\n' + license_text)

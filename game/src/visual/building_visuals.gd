@@ -8,6 +8,7 @@ const FOOTPRINTS := {
 	"hearth": Vector2i(4, 4), "house": Vector2i(3, 3), "storehouse": Vector2i(3, 4),
 	"workshop": Vector2i(4, 4), "smelter": Vector2i(3, 3), "windmill": Vector2i(3, 3),
 	"sky_dock": Vector2i(4, 4), "watchtower": Vector2i(2, 2), "wall": Vector2i(1, 1),
+	"bridge_segment": Vector2i(1, 1), "cliff_stairs": Vector2i(1, 1),
 	"outpost": Vector2i(3, 3), "bandit_tent": Vector2i(2, 2), "bandit_hut": Vector2i(3, 3),
 	"bandit_tower": Vector2i(2, 2), "palisade": Vector2i(1, 1), "campfire": Vector2i(1, 1),
 	"machine_spire": Vector2i(2, 2), "machine_block": Vector2i(2, 2), "machine_foundry": Vector2i(4, 4),

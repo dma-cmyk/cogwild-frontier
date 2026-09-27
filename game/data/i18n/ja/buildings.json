@@ -15,5 +15,7 @@
 	"sky_dock": {"name": "飛行船ドック", "description": "飛行船の係留塔。交易商はドックのある入植地だけを訪れる。"},
 	"watchtower": {"name": "見張り塔", "description": "視界を広げ、襲撃者に矢を放つ。"},
 	"wall": {"name": "石壁", "description": "通行を遮る。ドラッグして連続配置できる。"},
+	"bridge_segment": {"name": "川の橋", "description": "川に木製の橋を架けます。ドラッグで複数の区間を計画できます。"},
+	"cliff_stairs": {"name": "崖の階段", "description": "崖を上る補強階段です。ドラッグで複数の区間を計画できます。"},
 	"outpost": {"name": "前哨基地", "description": "故郷から離れた拠点。物資を保管でき、新たな範囲に建設できる。"}
 }

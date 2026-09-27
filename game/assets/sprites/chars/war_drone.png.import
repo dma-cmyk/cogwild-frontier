@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/war_drone.png-4871c212964a92b2d796631fb144203
 
 [params]
 
-compress/mode=4
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.8
+compress/lossy_quality=0.85
 compress/uastc_level=0
 compress/rdo_quality_loss=1.0
 compress/hdr_compression=1

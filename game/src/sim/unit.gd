@@ -51,6 +51,8 @@ var ai_cd := 0.0
 var target_id := -1
 var attack_cd := 0.0
 var ability_cd: Dictionary = {}
+var ability_windup := 0.0
+var ability_target_id := -1
 var buffs: Array = []  # [{"mods": {}, "t": seconds}]
 var home_site := -1
 var guard_pos := Vector2.ZERO
@@ -256,9 +258,9 @@ func to_dict() -> Dictionary:
 		"state": state, "alive": alive, "hidden": hidden, "carry_res": carry_res, "carry_amount": carry_amount,
 		"path": _pack_path(), "path_i": path_i, "moving": moving, "goal": [goal.x, goal.y],
 		"labor": labor, "squad_id": squad_id, "order": _vec_safe(order), "job": _vec_safe(job), "ai_cd": ai_cd,
-		"target_id": target_id, "attack_cd": attack_cd, "ability_cd": ability_cd, "buffs": buffs,
-		"home_site": home_site, "guard_pos": [guard_pos.x, guard_pos.y], "downed_t": downed_t,
-		"injured_days": injured_days, "named": named, "counters": counters, "cargo": cargo, "held": held,
+		"target_id": target_id, "attack_cd": attack_cd, "ability_cd": ability_cd, "ability_windup": ability_windup,
+		"ability_target_id": ability_target_id, "buffs": buffs, "home_site": home_site, "guard_pos": [guard_pos.x, guard_pos.y],
+		"downed_t": downed_t, "injured_days": injured_days, "named": named, "counters": counters, "cargo": cargo, "held": held,
 		"visible": visible, "last_hit_t": last_hit_t,
 	}
 
@@ -355,6 +357,8 @@ static func from_dict(d: Dictionary) -> Unit:
 	u.target_id = int(d.get("target_id", -1))
 	u.attack_cd = float(d.get("attack_cd", 0.0))
 	u.ability_cd = d.get("ability_cd", {})
+	u.ability_windup = float(d.get("ability_windup", 0.0))
+	u.ability_target_id = int(d.get("ability_target_id", -1))
 	u.buffs = d.get("buffs", [])
 	u.home_site = int(d.get("home_site", -1))
 	u.guard_pos = Vector2(float(d["guard_pos"][0]), float(d["guard_pos"][1]))

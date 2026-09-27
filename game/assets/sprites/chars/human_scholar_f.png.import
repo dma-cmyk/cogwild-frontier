@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/human_scholar_f.png-ba303b52b4573fa67119ee5b8
 
 [params]
 
-compress/mode=4
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.8
+compress/lossy_quality=0.85
 compress/uastc_level=0
 compress/rdo_quality_loss=1.0
 compress/hdr_compression=1

@@ -1,0 +1,6 @@
+{
+  "Rotate camera left (Q)": "カメラを左に回転 (Q)",
+  "Rotate camera right (E)": "カメラを右に回転 (E)",
+  "W A S D / arrows / screen edge / middle drag: pan     Wheel: zoom     Q / E: rotate 90°": "W A S D / 矢印 / 画面端 / 中ボタンドラッグ: 移動　ホイール: ズーム　Q / E: 90°回転",
+  "Touch: tap to select or order; drag to pan; pinch to zoom; twist with two fingers to rotate. Use Box for rectangle selection.": "タッチ: タップで選択・命令、ドラッグで移動、ピンチでズーム、2本指をねじると回転。範囲選択は「範囲選択」を使用。"
+}

@@ -32,7 +32,7 @@ func test_every_person_the_game_makes_is_painted() -> void:
 				assert_true(DB.has_def("art/portraits", "%s_%s_%s" % [race, look, g]), "painted bust %s_%s_%s" % [race, look, g])
 
 
-func test_every_person_has_two_painted_variants() -> void:
+func test_every_person_has_three_painted_variants() -> void:
 	for race: String in AppearanceGen.RACES:
 		for look: String in LOOKS:
 			for gender: String in ["m", "f"]:
@@ -54,28 +54,73 @@ func test_every_person_has_two_painted_variants() -> void:
 				dna["offhand"] = "none"
 				dna["outfit"] = "robe" if look == "scholar" else "tunic"
 				var hints: Dictionary = {}
-				assert_eq(SpriteLibrary.variant_count(dna, hints), 2, "%s has two loadable chips" % id)
-				var first := DB.get_def("art/sprites", id)
-				var second := DB.get_def("art/sprites", id + "@v2")
-				assert_true(not first.is_empty() and not second.is_empty(), "%s has v1 and v2 chip metadata" % id)
-				for entry: Dictionary in [first, second]:
-					assert_true(SpriteLibrary.texture(str(entry.get("texture", ""))) != null, "%s chip texture loads" % entry["id"])
-					assert_true(not DB.get_def("art/portraits", str(entry["id"])).is_empty(), "%s portrait metadata exists" % entry["id"])
+				assert_eq(SpriteLibrary.variant_count(dna, hints), 3, "%s has three loadable chips" % id)
+				var entries: Array[Dictionary] = [
+					DB.get_def("art/sprites", id),
+					DB.get_def("art/sprites", id + "@v2"),
+					DB.get_def("art/sprites", id + "@v3"),
+				]
+				for variant: int in 3:
+					var entry := entries[variant]
+					assert_true(not entry.is_empty(), "%s has chip metadata variant %d" % [id, variant])
+					assert_true(SpriteLibrary.texture(str(entry.get("texture", ""))) != null, "%s chip texture loads v%d" % [id, variant + 1])
+					assert_true(not DB.get_def("art/portraits", str(entry["id"])).is_empty(), "%s portrait metadata v%d" % [id, variant + 1])
+					var portrait_entry := DB.get_def("art/portraits", str(entry["id"]))
+					assert_true(SpriteLibrary.texture(str(portrait_entry.get("texture", ""))) != null, "%s portrait texture loads v%d" % [id, variant + 1])
 				var old_save := dna.duplicate()
 				var old_variant := SpriteLibrary.art_variant(old_save, hints)
-				assert_true(old_variant >= 0 and old_variant < 2, "%s legacy look is in range" % id)
-				assert_eq(old_variant, SpriteLibrary.art_variant(old_save, hints), "%s legacy look is deterministic" % id)
-				assert_eq(str(SpriteLibrary.chip(old_save, hints).get("id", "")),
-					id if old_variant == 0 else id + "@v2", "%s legacy chip uses its derived look" % id)
-				for selected: int in [0, 1]:
+				assert_true(old_variant >= 0 and old_variant < 2, "%s legacy look is in v1/v2 range" % id)
+				var old_id := id if old_variant == 0 else id + "@v2"
+				assert_eq(str(SpriteLibrary.chip(old_save, hints).get("id", "")), old_id, "%s legacy look uses its v1/v2 painting" % id)
+				for selected: int in 3:
 					dna["art_variant"] = selected
-					var selected_entry := SpriteLibrary.chip(dna, hints)
-					assert_eq(str(selected_entry.get("id", "")), id if selected == 0 else id + "@v2", "%s explicit chip variant %d" % [id, selected])
-					var portrait_entry := DB.get_def("art/portraits", id if selected == 0 else id + "@v2")
+					var selected_id := id if selected == 0 else id + ("@v2" if selected == 1 else "@v3")
+					assert_eq(str(SpriteLibrary.chip(dna, hints).get("id", "")), selected_id, "%s explicit chip variant %d" % [id, selected])
+					var portrait_entry := DB.get_def("art/portraits", selected_id)
 					var expected_portrait := SpriteLibrary.texture(str(portrait_entry.get("texture", "")))
 					assert_true(expected_portrait != null and SpriteLibrary.portrait(dna, hints) == expected_portrait,
 						"%s explicit portrait variant %d" % [id, selected])
 
+
+func test_joining_residents_get_least_used_painting_and_save_stably() -> void:
+	var w := World.new()
+	w.setup(3703)
+	var people: Array[Unit] = []
+	for i in 6:
+		var u := Unit.new()
+		u.faction = "player"
+		u.dna = {"kind":"character", "race":"human", "gender":"female", "seed":i + 10,
+			"hair":"braids", "hair_color":"#241c28", "skin":"#c58d70", "weapon":"none",
+			"armor":"none", "offhand":"none", "outfit":"tunic"}
+		w.add_unit(u)
+		people.append(u)
+	var used := {}
+	for u: Unit in people:
+		var v := int(u.dna["art_variant"])
+		used[v] = int(used.get(v, 0)) + 1
+	assert_eq(used.size(), 3, "same-combo residents use all three available paintings")
+	for count: int in used.values():
+		assert_eq(count, 2, "least-used assignment balances six residents across three paintings")
+	var save := SaveGame.to_dict(w)
+	var loaded := SaveGame.from_dict(save)
+	assert_true(loaded is World, "world save reload succeeds")
+	var restored := (loaded as World).player_people()
+	for i in people.size():
+		assert_eq(int(restored[i].dna["art_variant"]), int(people[i].dna["art_variant"]),
+			"resident variant %d survives save/load" % i)
+	(loaded as World).dispose()
+	w.dispose()
+
+
+func test_legacy_unit_save_keeps_its_two_variant_look() -> void:
+	var u := Unit.new()
+	u.dna = {"kind":"character", "race":"human", "gender":"female", "seed":556,
+		"hair":"braids", "hair_color":"#241c28", "skin":"#c58d70", "weapon":"none",
+		"armor":"none", "offhand":"none", "outfit":"tunic"}
+	var legacy_variant := SpriteLibrary.art_variant(u.dna)
+	var restored := Unit.from_dict(u.to_dict())
+	assert_false(restored.dna.has("art_variant"), "legacy save stays unbackfilled")
+	assert_eq(SpriteLibrary.art_variant(restored.dna), legacy_variant, "legacy two-variant painting remains unchanged")
 
 func test_every_machine_the_game_makes_is_painted() -> void:
 	var rng := _rng(7)
@@ -127,6 +172,10 @@ func test_company_colour_only_turns_painted_blue() -> void:
 
 func test_buildings_props_and_ground_are_painted() -> void:
 	for id: String in BuildingVisuals.FOOTPRINTS.keys():
+		if id in ["bridge_segment", "cliff_stairs"]:
+			var mesh := BuildingVisuals._make_mesh(id, "frontier", 17, 1, 3)
+			assert_true(mesh.get_surface_count() > 0, "procedural mesh for crossing " + id)
+			continue
 		assert_true(not SpriteLibrary.building(id).is_empty(), "picture for building " + id)
 	for level in [1, 2, 3]:
 		assert_true(not SpriteLibrary.building("hearth", level).is_empty(), "hearth level %d picture" % level)

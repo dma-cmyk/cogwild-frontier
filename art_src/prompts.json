@@ -31,6 +31,24 @@
   }
  },
  {
+  "id": "chip_human_worker_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young human man with sandy-blond hair in a low ponytail and freckles, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. RIGHT HALF (columns 4-6): an older human woman with a silver bob, round spectacles and a sturdy build, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_worker.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_human_fighter",
   "kind": "chip",
   "args": {
@@ -48,6 +66,24 @@
   "kind": "chip",
   "args": {
    "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a human man with tightly curled black hair, a short neat beard, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and a steel kettle helmet, holding a short sword and a wooden shield. RIGHT HALF (columns 4-6): a human woman with dark auburn hair in a high braided bun, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and a steel kettle helmet, holding a short sword and a wooden shield. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_fighter.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_human_fighter_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an older human man with close-cropped salt-and-pepper hair, a moustache and a scar, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. RIGHT HALF (columns 4-6): a young human woman with a copper-red undercut and freckles, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
    "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
    "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
    "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
@@ -93,6 +129,24 @@
   }
  },
  {
+  "id": "chip_human_ranger_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young human man with shoulder-length black curls and a slim build, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. RIGHT HALF (columns 4-6): an older human woman with dark braided hair and a small mole, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_ranger.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_human_engineer",
   "kind": "chip",
   "args": {
@@ -110,6 +164,24 @@
   "kind": "chip",
   "args": {
    "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a human man with tightly curled black hair, a short neat beard, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on the forehead and leather tool pouches, carrying a steel wrench. RIGHT HALF (columns 4-6): a human woman with dark auburn hair in a high braided bun, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on the forehead and leather tool pouches, carrying a steel wrench. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_engineer.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_human_engineer_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an older human man with wavy white hair and a short beard, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. RIGHT HALF (columns 4-6): a young human woman with a chestnut pixie cut and round glasses, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
    "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
    "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
    "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
@@ -155,6 +227,24 @@
   }
  },
  {
+  "id": "chip_human_scholar_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young human man with a shaved head, auburn moustache and freckles, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. RIGHT HALF (columns 4-6): an older human woman with long ash-blond hair in a braid and a broad build, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_scholar.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_sylvan_worker",
   "kind": "chip",
   "args": {
@@ -172,6 +262,24 @@
   "kind": "chip",
   "args": {
    "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Sylvan man (elf-like woodland folk with long pointed ears) with pale silver hair in a short braid, wearing a warm ochre work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a dark green cap, a hand axe at the belt. RIGHT HALF (columns 4-6): a Sylvan woman (elf-like woodland folk with long pointed ears) with dark violet hair in a braided crown, wearing a warm ochre work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a dark green cap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_sylvan_worker.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_sylvan_worker_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young Sylvan man with long pointed ears and dark forest-green curls, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. RIGHT HALF (columns 4-6): an older Sylvan woman with long pointed ears, white hair in a high knot and freckles, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
    "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
    "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
    "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
@@ -217,6 +325,24 @@
   }
  },
  {
+  "id": "chip_sylvan_fighter_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an older Sylvan man with long pointed ears, pale-gold hair, a thin beard and spectacles, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. RIGHT HALF (columns 4-6): a young Sylvan woman with long pointed ears and a short black bob, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_sylvan_fighter.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_sylvan_ranger",
   "kind": "chip",
   "args": {
@@ -234,6 +360,24 @@
   "kind": "chip",
   "args": {
    "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Sylvan man (elf-like woodland folk with long pointed ears) with pale silver hair in a short braid, wearing a rust-red hooded cloak with the hood down, a leather tunic and a royal-blue company scarf, carrying a short bow and a quiver. RIGHT HALF (columns 4-6): a Sylvan woman (elf-like woodland folk with long pointed ears) with dark violet hair in a braided crown, wearing a rust-red hooded cloak with the hood down, a leather tunic and a royal-blue company scarf, carrying a short bow and a quiver. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_sylvan_ranger.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_sylvan_ranger_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young Sylvan man with long pointed ears and copper hair in a loose braid, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. RIGHT HALF (columns 4-6): an older Sylvan woman with long pointed ears, silver twin braids and a strong build, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
    "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
    "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
    "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
@@ -279,6 +423,24 @@
   }
  },
  {
+  "id": "chip_sylvan_engineer_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an older Sylvan man with long pointed ears, auburn hair, a moustache and a weathered face, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. RIGHT HALF (columns 4-6): a young Sylvan woman with long pointed ears, violet-black curls and freckles, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_sylvan_engineer.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_sylvan_scholar",
   "kind": "chip",
   "args": {
@@ -296,6 +458,24 @@
   "kind": "chip",
   "args": {
    "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Sylvan man (elf-like woodland folk with long pointed ears) with pale silver hair in a short braid, wearing a plum and muted-gold robe with a royal-blue company sash and a dark leather satchel, holding a wooden staff with a small hanging lantern. RIGHT HALF (columns 4-6): a Sylvan woman (elf-like woodland folk with long pointed ears) with dark violet hair in a braided crown, wearing a plum and muted-gold robe with a royal-blue company sash and a dark leather satchel, holding a wooden staff with a small hanging lantern. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_sylvan_scholar.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_sylvan_scholar_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young Sylvan man with long pointed ears and white shoulder-length hair, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. RIGHT HALF (columns 4-6): an older Sylvan woman with long pointed ears, dark green hair in a bun and round glasses, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
    "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
    "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
    "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
@@ -341,6 +521,24 @@
   }
  },
  {
+  "id": "chip_stoutkin_worker_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young stocky Stoutkin man with a short braided ginger beard and shaved sides, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. RIGHT HALF (columns 4-6): an older stocky Stoutkin woman with silver hair in a single thick braid and spectacles, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_worker.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_stoutkin_fighter",
   "kind": "chip",
   "args": {
@@ -358,6 +556,24 @@
   "kind": "chip",
   "args": {
    "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a long dark-plum braided beard, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and a steel kettle helmet, holding a short sword and a wooden shield. RIGHT HALF (columns 4-6): a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with dark-plum hair in a pair of looped braids, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and a steel kettle helmet, holding a short sword and a wooden shield. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_fighter.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_stoutkin_fighter_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an older broad-shouldered Stoutkin man with a long white beard bound in brass rings, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. RIGHT HALF (columns 4-6): a young sturdy Stoutkin woman with dark plum twin buns and freckles, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
    "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
    "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
    "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
@@ -403,6 +619,24 @@
   }
  },
  {
+  "id": "chip_stoutkin_ranger_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young stocky Stoutkin man with black curls, a narrow moustache and round glasses, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. RIGHT HALF (columns 4-6): an older broad Stoutkin woman with copper hair in a crown braid, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_ranger.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_stoutkin_engineer",
   "kind": "chip",
   "args": {
@@ -420,6 +654,24 @@
   "kind": "chip",
   "args": {
    "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Stoutkin man (short, stocky dwarf-like folk with broad shoulders) with a long dark-plum braided beard, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on the forehead and leather tool pouches, carrying a steel wrench. RIGHT HALF (columns 4-6): a Stoutkin woman (short, stocky dwarf-like folk with broad shoulders) with dark-plum hair in a pair of looped braids, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on the forehead and leather tool pouches, carrying a steel wrench. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_engineer.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_stoutkin_engineer_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an older stocky Stoutkin man with a bald crown, grey side locks and a beard, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. RIGHT HALF (columns 4-6): a young sturdy Stoutkin woman with short sandy hair and a cheek scar, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
    "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
    "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
    "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
@@ -465,6 +717,24 @@
   }
  },
  {
+  "id": "chip_stoutkin_scholar_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young broad Stoutkin man with pale blond braids and freckles, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. RIGHT HALF (columns 4-6): an older stocky Stoutkin woman with dark red hair in two long braids and a strong jaw, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_scholar.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_vulpin_worker",
   "kind": "chip",
   "args": {
@@ -482,6 +752,24 @@
   "kind": "chip",
   "args": {
    "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Vulpin man (fox-folk with large russet fox ears and a russet bushy tail with a cream tip) with deep russet hair, wearing a warm ochre work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a dark green cap, a hand axe at the belt. RIGHT HALF (columns 4-6): a Vulpin woman (fox-folk with large russet fox ears and a russet bushy tail with a cream tip) with dark russet hair in a high ponytail, wearing a warm ochre work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a dark green cap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_worker.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_vulpin_worker_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young Vulpin man with large pointed fox ears, a russet tail with cream tip, and dark brown swept-back hair, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. RIGHT HALF (columns 4-6): an older Vulpin woman with large fox ears, a russet tail with cream tip, silver hair and round spectacles, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
    "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
    "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
    "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
@@ -527,6 +815,24 @@
   }
  },
  {
+  "id": "chip_vulpin_fighter_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an older Vulpin man with large fox ears, a russet tail with cream tip, black hair and a grey moustache, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. RIGHT HALF (columns 4-6): a young Vulpin woman with large fox ears, a russet tail with cream tip and a short pale-gold bob, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_fighter.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_vulpin_ranger",
   "kind": "chip",
   "args": {
@@ -544,6 +850,24 @@
   "kind": "chip",
   "args": {
    "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Vulpin man (fox-folk with large russet fox ears and a russet bushy tail with a cream tip) with deep russet hair, wearing a rust-red hooded cloak with the hood down, a leather tunic and a royal-blue company scarf, carrying a short bow and a quiver. RIGHT HALF (columns 4-6): a Vulpin woman (fox-folk with large russet fox ears and a russet bushy tail with a cream tip) with dark russet hair in a high ponytail, wearing a rust-red hooded cloak with the hood down, a leather tunic and a royal-blue company scarf, carrying a short bow and a quiver. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_ranger.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_vulpin_ranger_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young Vulpin man with large fox ears, a russet tail with cream tip, and sandy curls with freckles, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. RIGHT HALF (columns 4-6): an older Vulpin woman with large fox ears, a russet tail with cream tip and dark auburn braids, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
    "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
    "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
    "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
@@ -589,6 +913,24 @@
   }
  },
  {
+  "id": "chip_vulpin_engineer_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an older Vulpin man with large fox ears, a russet tail with cream tip, long cream hair and a thin beard, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. RIGHT HALF (columns 4-6): a young Vulpin woman with large fox ears, a russet tail with cream tip, charcoal hair and glasses, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_engineer.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_vulpin_scholar",
   "kind": "chip",
   "args": {
@@ -606,6 +948,24 @@
   "kind": "chip",
   "args": {
    "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Vulpin man (fox-folk with large russet fox ears and a russet bushy tail with a cream tip) with deep russet hair, wearing a plum and muted-gold robe with a royal-blue company sash and a dark leather satchel, holding a wooden staff with a small hanging lantern. RIGHT HALF (columns 4-6): a Vulpin woman (fox-folk with large russet fox ears and a russet bushy tail with a cream tip) with dark russet hair in a high ponytail, wearing a plum and muted-gold robe with a royal-blue company sash and a dark leather satchel, holding a wooden staff with a small hanging lantern. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_scholar.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_vulpin_scholar_v3",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young Vulpin man with large fox ears, a russet tail with cream tip, and dark-red hair in a topknot, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. RIGHT HALF (columns 4-6): an older Vulpin woman with large fox ears, a russet tail with cream tip, white curls and a broad build, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
    "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
    "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
    "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
@@ -1098,6 +1458,24 @@
   }
  },
  {
+  "id": "portrait_human_worker_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a young human man with sandy-blond hair in a low ponytail and freckles, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. RIGHT portrait: the character from the right half of Image 1 - an older human woman with a silver bob, round spectacles and a sturdy build, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_worker_v3.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "portrait_human_fighter",
   "kind": "portrait",
   "args": {
@@ -1128,6 +1506,24 @@
    "input": [
     {
      "path": "art_src/raw/chip_human_fighter_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_human_fighter_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an older human man with close-cropped salt-and-pepper hair, a moustache and a scar, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. RIGHT portrait: the character from the right half of Image 1 - a young human woman with a copper-red undercut and freckles, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_fighter_v3.webp"
     }
    ],
    "model": "openai-codex/gpt-image-1"
@@ -1170,6 +1566,24 @@
   }
  },
  {
+  "id": "portrait_human_ranger_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a young human man with shoulder-length black curls and a slim build, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. RIGHT portrait: the character from the right half of Image 1 - an older human woman with dark braided hair and a small mole, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_ranger_v3.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "portrait_human_engineer",
   "kind": "portrait",
   "args": {
@@ -1200,6 +1614,24 @@
    "input": [
     {
      "path": "art_src/raw/chip_human_engineer_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_human_engineer_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an older human man with wavy white hair and a short beard, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. RIGHT portrait: the character from the right half of Image 1 - a young human woman with a chestnut pixie cut and round glasses, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_engineer_v3.webp"
     }
    ],
    "model": "openai-codex/gpt-image-1"
@@ -1242,6 +1674,24 @@
   }
  },
  {
+  "id": "portrait_human_scholar_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a young human man with a shaved head, auburn moustache and freckles, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. RIGHT portrait: the character from the right half of Image 1 - an older human woman with long ash-blond hair in a braid and a broad build, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_scholar_v3.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "portrait_sylvan_worker",
   "kind": "portrait",
   "args": {
@@ -1272,6 +1722,24 @@
    "input": [
     {
      "path": "art_src/raw/chip_sylvan_worker_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_sylvan_worker_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a young Sylvan man with long pointed ears and dark forest-green curls, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. RIGHT portrait: the character from the right half of Image 1 - an older Sylvan woman with long pointed ears, white hair in a high knot and freckles, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_sylvan_worker_v3.webp"
     }
    ],
    "model": "openai-codex/gpt-image-1"
@@ -1314,6 +1782,24 @@
   }
  },
  {
+  "id": "portrait_sylvan_fighter_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an older Sylvan man with long pointed ears, pale-gold hair, a thin beard and spectacles, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. RIGHT portrait: the character from the right half of Image 1 - a young Sylvan woman with long pointed ears and a short black bob, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_sylvan_fighter_v3.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "portrait_sylvan_ranger",
   "kind": "portrait",
   "args": {
@@ -1344,6 +1830,24 @@
    "input": [
     {
      "path": "art_src/raw/chip_sylvan_ranger_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_sylvan_ranger_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a young Sylvan man with long pointed ears and copper hair in a loose braid, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. RIGHT portrait: the character from the right half of Image 1 - an older Sylvan woman with long pointed ears, silver twin braids and a strong build, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_sylvan_ranger_v3.webp"
     }
    ],
    "model": "openai-codex/gpt-image-1"
@@ -1386,6 +1890,24 @@
   }
  },
  {
+  "id": "portrait_sylvan_engineer_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an older Sylvan man with long pointed ears, auburn hair, a moustache and a weathered face, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. RIGHT portrait: the character from the right half of Image 1 - a young Sylvan woman with long pointed ears, violet-black curls and freckles, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_sylvan_engineer_v3.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "portrait_sylvan_scholar",
   "kind": "portrait",
   "args": {
@@ -1416,6 +1938,24 @@
    "input": [
     {
      "path": "art_src/raw/chip_sylvan_scholar_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_sylvan_scholar_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a young Sylvan man with long pointed ears and white shoulder-length hair, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. RIGHT portrait: the character from the right half of Image 1 - an older Sylvan woman with long pointed ears, dark green hair in a bun and round glasses, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_sylvan_scholar_v3.webp"
     }
    ],
    "model": "openai-codex/gpt-image-1"
@@ -1458,6 +1998,24 @@
   }
  },
  {
+  "id": "portrait_stoutkin_worker_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a young stocky Stoutkin man with a short braided ginger beard and shaved sides, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. RIGHT portrait: the character from the right half of Image 1 - an older stocky Stoutkin woman with silver hair in a single thick braid and spectacles, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_worker_v3.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "portrait_stoutkin_fighter",
   "kind": "portrait",
   "args": {
@@ -1488,6 +2046,24 @@
    "input": [
     {
      "path": "art_src/raw/chip_stoutkin_fighter_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_stoutkin_fighter_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an older broad-shouldered Stoutkin man with a long white beard bound in brass rings, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. RIGHT portrait: the character from the right half of Image 1 - a young sturdy Stoutkin woman with dark plum twin buns and freckles, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_fighter_v3.webp"
     }
    ],
    "model": "openai-codex/gpt-image-1"
@@ -1530,6 +2106,24 @@
   }
  },
  {
+  "id": "portrait_stoutkin_ranger_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a young stocky Stoutkin man with black curls, a narrow moustache and round glasses, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. RIGHT portrait: the character from the right half of Image 1 - an older broad Stoutkin woman with copper hair in a crown braid, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_ranger_v3.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "portrait_stoutkin_engineer",
   "kind": "portrait",
   "args": {
@@ -1560,6 +2154,24 @@
    "input": [
     {
      "path": "art_src/raw/chip_stoutkin_engineer_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_stoutkin_engineer_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an older stocky Stoutkin man with a bald crown, grey side locks and a beard, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. RIGHT portrait: the character from the right half of Image 1 - a young sturdy Stoutkin woman with short sandy hair and a cheek scar, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_engineer_v3.webp"
     }
    ],
    "model": "openai-codex/gpt-image-1"
@@ -1602,6 +2214,24 @@
   }
  },
  {
+  "id": "portrait_stoutkin_scholar_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a young broad Stoutkin man with pale blond braids and freckles, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. RIGHT portrait: the character from the right half of Image 1 - an older stocky Stoutkin woman with dark red hair in two long braids and a strong jaw, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_scholar_v3.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "portrait_vulpin_worker",
   "kind": "portrait",
   "args": {
@@ -1632,6 +2262,24 @@
    "input": [
     {
      "path": "art_src/raw/chip_vulpin_worker_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_vulpin_worker_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a young Vulpin man with large pointed fox ears, a russet tail with cream tip, and dark brown swept-back hair, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. RIGHT portrait: the character from the right half of Image 1 - an older Vulpin woman with large fox ears, a russet tail with cream tip, silver hair and round spectacles, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_worker_v3.webp"
     }
    ],
    "model": "openai-codex/gpt-image-1"
@@ -1674,6 +2322,24 @@
   }
  },
  {
+  "id": "portrait_vulpin_fighter_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an older Vulpin man with large fox ears, a russet tail with cream tip, black hair and a grey moustache, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. RIGHT portrait: the character from the right half of Image 1 - a young Vulpin woman with large fox ears, a russet tail with cream tip and a short pale-gold bob, wearing a royal-blue company tabard with a cream sunburst emblem over light chainmail and steel kettle helmet, holding a short sword and wooden shield. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_fighter_v3.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "portrait_vulpin_ranger",
   "kind": "portrait",
   "args": {
@@ -1704,6 +2370,24 @@
    "input": [
     {
      "path": "art_src/raw/chip_vulpin_ranger_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_vulpin_ranger_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a young Vulpin man with large fox ears, a russet tail with cream tip, and sandy curls with freckles, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. RIGHT portrait: the character from the right half of Image 1 - an older Vulpin woman with large fox ears, a russet tail with cream tip and dark auburn braids, wearing a rust-red hooded cloak with hood down, leather tunic and royal-blue company scarf, carrying a short bow and quiver. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_ranger_v3.webp"
     }
    ],
    "model": "openai-codex/gpt-image-1"
@@ -1746,6 +2430,24 @@
   }
  },
  {
+  "id": "portrait_vulpin_engineer_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an older Vulpin man with large fox ears, a russet tail with cream tip, long cream hair and a thin beard, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. RIGHT portrait: the character from the right half of Image 1 - a young Vulpin woman with large fox ears, a russet tail with cream tip, charcoal hair and glasses, wearing charcoal overalls over a rust-red shirt with a royal-blue company neck scarf, brass goggles on forehead and leather tool pouches, carrying a steel wrench. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_engineer_v3.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "portrait_vulpin_scholar",
   "kind": "portrait",
   "args": {
@@ -1776,6 +2478,24 @@
    "input": [
     {
      "path": "art_src/raw/chip_vulpin_scholar_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_vulpin_scholar_v3",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a young Vulpin man with large fox ears, a russet tail with cream tip, and dark-red hair in a topknot, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. RIGHT portrait: the character from the right half of Image 1 - an older Vulpin woman with large fox ears, a russet tail with cream tip, white curls and a broad build, wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_scholar_v3.webp"
     }
    ],
    "model": "openai-codex/gpt-image-1"

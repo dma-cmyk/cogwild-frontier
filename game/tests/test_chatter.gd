@@ -11,6 +11,16 @@ func test_every_pool_line_has_japanese_and_matching_params() -> void:
 		assert_true(ja.has(line), "missing Japanese chatter: " + line)
 		if ja.has(line):
 			assert_eq(_params(line), _params(str(ja[line])), "placeholder mismatch: " + line)
+func test_every_pool_line_has_english_and_matching_params() -> void:
+	var value: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/i18n/chatter-en.json"))
+	assert_true(value is Dictionary, "English chatter catalog parses")
+	if not value is Dictionary:
+		return
+	var en: Dictionary = value
+	for line: String in Chatter.all_lines():
+		assert_true(en.has(line), "missing English chatter: " + line)
+		if en.has(line):
+			assert_eq(_params(line), _params(str(en[line])), "placeholder mismatch: " + line)
 
 func test_person_pool_excludes_dead_hostile_and_robot_speakers() -> void:
 	var director := Chatter.new()

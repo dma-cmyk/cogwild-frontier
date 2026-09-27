@@ -195,6 +195,7 @@ func _add_sails(entry: Dictionary, sails: Dictionary) -> void:
 	mat.set_shader_parameter("grid", Vector2.ONE)
 	mat.set_shader_parameter("anchor", Vector2(0.5, 0.5))
 	mat.set_shader_parameter("depth_bias", 1.2)
+	mat.set_shader_parameter("mirror_camera_quadrants", true)
 	mat.set_shader_parameter("receive_shadow", 0.0)
 	_sails = MeshInstance3D.new()
 	_sails.name = "Sails"

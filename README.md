@@ -4,12 +4,14 @@
 RPG 要素のある自律型 RTS の **Playable Vertical Slice**（Godot 4.7 製）。
 自分で部隊を動かしても、指示だけ出して眺めていても世界が進みます。
 キャラチップ・肖像・建物・木や岩・地面・アイテムアイコン・タイトル画像は画像生成した絵で、3D の地形の上に置いています（手順は `docs/art_pipeline.md`）。
-住民は種族 × 見た目 × 性別ごとに 2 種類の絵があり、同じ見た目の人が並びにくくなっています。
-住民は RimWorld のように吹き出しでしゃべります（仕事の一言、近くの仲間との雑談、戦闘中のかけ声）。
+住民は種族 × 見た目 × 性別ごとに 3 種類の絵があり、入植者には同じ組み合わせの住民の中で一番使われていない絵が割り当てられるので、同じ顔が並びにくくなっています。
+住民は RimWorld のように吹き出しでしゃべります（仕事の一言、近くの仲間との雑談、戦闘中のかけ声、川を泳ぐ・崖を登るときの一言）。
+小隊には態勢（攻勢・均衡・慎重・防衛）と隊形（横列・楔形・散開）があり、役割ごとの技（盾打ち・狙い撃ち・爆破チャージ・野戦手当・鼓舞の号令）、側面攻撃、木や岩の遮蔽が戦闘に効きます。
+川は泳いで、崖はよじ登って越えられます（遅い）。住民に橋や崖の階段を建てさせると速く通れます。カメラは 90° ずつ 4 方向に回せます。
 UI は日本語 / 英語に対応しています。
 
 **ブラウザで遊ぶ（PC・スマホ）: https://dma-cmyk.github.io/cogwild-frontier/**
-（初回は約 60 MB のダウンロードがあります。2 回目からはブラウザのキャッシュで数秒。スマホは横向き推奨）
+（初回は約 50 MB のダウンロードがあります。読み込み画面の MB 表示は展開後の大きさです。2 回目からはブラウザのキャッシュで数秒。読み込みが 20 秒止まったら再読み込みボタンが出ます。スマホは横向き推奨）
 
 ![開拓地の昼](docs/screenshots/settlement_day.png)
 
@@ -56,10 +58,12 @@ godot --path game -- --lang=en
 | 左クリック / ドラッグ | 選択（ユニット・小隊・建物・拠点）/ 範囲選択 |
 | 右クリック | 文脈命令: 地面へ移動 / 敵・敵拠点を攻撃 / 資源を採取（住民）/ 交易所へ交易（飛行船） |
 | M F H X P Y U R | Move / Attack / Defend / Explore / Patrol / Escort / Auto / Retreat（小隊・選択ユニット） |
-| B / G | 建設メニュー / 採取ゾーンと仕事の優先度 |
+| B / G | 建設メニュー（川の橋・崖の階段は壁と同じく線で配置）/ 採取ゾーンと仕事の優先度 |
 | 1–4, Tab | 小隊を選択 |
+| 小隊パネルの 態勢 / 隊形 | 攻勢・均衡・慎重・防衛 / 横列・楔形・散開 |
 | W A S D・矢印・画面端・中ボタンドラッグ | カメラ移動 |
-| ホイール | ズーム（カメラの向きは画像生成した建物の絵に合わせて固定） |
+| ホイール | ズーム |
+| Q / E | カメラを90°ずつ左右に回転 |
 | Space / `[` `]` | 一時停止 / 速度（x1 x2 x4） |
 | F5 / F9（ブラウザ版は Ctrl+S / Ctrl+L） | クイックセーブ / クイックロード |
 | Esc / F1 | キャンセル・メニュー（セーブ 3 枠・ロード・設定）/ 操作説明 |
@@ -69,7 +73,7 @@ godot --path game -- --lang=en
 | 操作 | 動作 |
 |---|---|
 | タップ | 選択（ユニット・建物・拠点・戦利品）。選択中に地面・敵をタップすると移動・攻撃などの文脈命令 |
-| 1 本指ドラッグ / 2 本指ピンチ | カメラ移動 / ズーム |
+| 1 本指ドラッグ / 2 本指ピンチ / 2 本指ねじり | カメラ移動 / ズーム / ねじりが約40°を超えると90°回転 |
 | 長押し | 指の下にあるものの詳細 |
 | 右上の **範囲選択** | オンの間はドラッグで範囲選択 |
 | 右上の **マップ** / **詳細** | ミニマップ / 選択中の詳細パネルを開閉 |
@@ -85,6 +89,8 @@ godot --path game -- --lang=en
 2. **Build**（B）で Windmill を建てると電力がプラスになり、ロボットの消費をまかなえます。House で人口上限が増え、移住者が来ます。
 3. 小隊を選んで **Explore**（X）→ 地面をクリック。領域を調べ、遺跡の宝を拾い、強すぎる拠点を避けて、帰還時に報告します。
 4. 見つけた盗賊の野営地は右クリック（または拠点パネル）で攻撃。倒すと装備や宝箱を落とします。
+   弓兵が多い小隊は **慎重**（距離を取って早めに引く）、守りたい場所があるなら **防衛**、押し切るなら **攻勢** に。
+   川や崖の向こうの拠点へは泳ぐ・登るで行けますが遅いので、よく通る場所には **川の橋** や **崖の階段** を建てます。
    キャラクター詳細の **Equipment → Change** で武器庫の品を装備できます。
 5. 任せたいときは小隊を **Auto**（U）に。飛行船は詳細パネルの **Trade run / Auto** で交易所へ余剰を売りに行きます。
 
@@ -127,10 +133,13 @@ COGWILD_WORLD_SEED=7  python3 $P game --scenario game/tests/probe/explore_day.js
 COGWILD_WORLD_SEED=11 python3 $P game --scenario game/tests/probe/combat_camp.json    --godot-arg=--time-scale --godot-arg=4
 python3 $P game --scenario game/tests/probe/build_windmill.json --godot-arg=--time-scale --godot-arg=4   # 世界はシナリオの乱数シードから
 COGWILD_WORLD_SEED=7  python3 $P game --scenario game/tests/probe/save_load.json      --godot-arg=--time-scale --godot-arg=4
+COGWILD_WORLD_SEED=7  python3 $P game --scenario game/tests/probe/crossing.json        # 川を泳ぐ・崖を登る・橋と階段の建設
+COGWILD_WORLD_SEED=7  python3 $P game --scenario game/tests/probe/camera_rotate.json   # 4 方向の回転・タッチのねじり
+COGWILD_WORLD_SEED=7  python3 $P game --scenario game/tests/probe/perf_exploration_spikes.json   # 3 分の探索で時間を測る（x1）
 godot --headless --path game res://tools/world_map_dump.tscn -- --seed=123 --radius=6 --out=/tmp/map.png
 ```
 
-`COGWILD_WORLD_SEED`（またはユーザー引数 `--world-seed=`）で世界を固定します。combat_camp は近くの野営地へ歩いて行ける世界（シード 11）が前提です。
+`COGWILD_WORLD_SEED`（またはユーザー引数 `--world-seed=`）で世界を固定します。combat_camp のシナリオはシード 11 の地形（近くの野営地の位置）に合わせて書いてあります。
 
 Web 版（GitHub Pages と同じもの）をローカルで作って確かめる:
 

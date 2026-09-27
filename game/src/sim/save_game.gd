@@ -105,6 +105,7 @@ static func from_dict(d: Dictionary) -> World:
 	for bd: Dictionary in d.get("buildings", []):
 		var b := Building.from_dict(bd)
 		w.buildings[b.id] = b
+	w.rebuild_crossing_index()
 	for z: Dictionary in d.get("zones", []):
 		var r: Array = z["rect"]
 		w.zones.append({"id": int(z["id"]), "type": str(z["type"]), "rect": Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3]))})

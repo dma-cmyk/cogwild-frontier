@@ -42,7 +42,8 @@ static func texture(path: String) -> Texture2D:
 	if path.is_empty():
 		return null
 	if not _textures.has(path):
-		_textures[path] = load(path) if ResourceLoader.exists(path) else null
+		var texture_exists := ResourceLoader.exists(path)
+		_textures[path] = load(path) if texture_exists else null
 	return _textures[path] as Texture2D
 
 
@@ -101,10 +102,15 @@ static func variant_count(dna: Dictionary, hints: Dictionary = {}) -> int:
 	var base_id := chip_id(dna, hints)
 	var count := 0
 	# existence only: loading every variant's sheet here would put unused textures in video memory
-	for id: String in [base_id, base_id + "@v2"]:
-		var entry := DB.get_def("art/sprites", id)
-		if not entry.is_empty() and ResourceLoader.exists(str(entry.get("texture", ""))):
-			count += 1
+	for variant_id: String in [base_id, base_id + "@v2", base_id + "@v3"]:
+		var entry := DB.get_def("art/sprites", variant_id)
+		if entry.is_empty() or not ResourceLoader.exists(str(entry.get("texture", ""))):
+			continue
+		if str(dna.get("kind", "character")) == "character":
+			var portrait_entry := DB.get_def("art/portraits", variant_id)
+			if portrait_entry.is_empty() or not ResourceLoader.exists(str(portrait_entry.get("texture", ""))):
+				continue
+		count += 1
 	return count
 
 
@@ -120,12 +126,14 @@ static func art_variant(dna: Dictionary, hints: Dictionary = {}) -> int:
 	var identity := "%s|%s|%s|%s|%s|%s" % [
 		str(dna.get("seed", 0)), str(dna.get("hair", "")), str(dna.get("hair_color", "")),
 		str(dna.get("skin", "")), str(dna.get("gender", "")), base_id]
-	return posmod(hash(identity), count)
+	# People from saves predating explicit colony assignment retain their exact two-look mapping.
+	return posmod(hash(identity), mini(count, 2))
 
 
 static func _variant_id(base_id: String, variant: int) -> String:
+	if variant == 2:
+		return base_id + "@v3"
 	return base_id + "@v2" if variant == 1 else base_id
-
 
 static func _variant_entry(table: String, base_id: String, variant: int) -> Dictionary:
 	var entry := DB.get_def(table, _variant_id(base_id, variant))

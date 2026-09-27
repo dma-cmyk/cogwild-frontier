@@ -46,6 +46,7 @@ var units: Dictionary = {}
 var unit_list: Array[Unit] = []
 var buildings: Dictionary = {}
 var squads: Array[Squad] = []
+var _crossing_index: Dictionary = {}  # Vector2i tile -> bridge/stairs Building
 var sites: Dictionary = {}  # id -> runtime site state
 var loot_bags: Dictionary = {}
 var zones: Array = []  # {id, type, rect: Rect2i}
@@ -266,14 +267,29 @@ func height_at(p: Vector2) -> float:
 	return ch.height_local(p.x - ch.cx * S, p.y - ch.cz * S)
 
 
-## Height a ground unit stands at (bridges carry units above the water).
+## Height a ground unit stands at. Swimmers sink below the surface; built bridge decks are raised.
 func ground_y(p: Vector2) -> float:
 	var t := Vector2i(int(floor(p.x)), int(floor(p.y)))
 	var h := height_at(p)
-	if terrain_at(t) == Tiles.BRIDGE:
+	var crossing := _crossing_index.get(t) as Building
+	if crossing != null and crossing.type == "bridge_segment" and crossing.is_built():
 		return maxf(h, float(gen.t["bridge_deck"]))
+	if Tiles.is_water(terrain_at(t)) and gen.is_river_water(float(t.x) + 0.5, float(t.y) + 0.5):
+		return h - 0.45
 	return h
 
+
+func crossing_building_at(t: Vector2i) -> Building:
+	if _crossing_index.is_empty():
+		return null
+	return _crossing_index.get(t) as Building
+
+
+func rebuild_crossing_index() -> void:
+	_crossing_index.clear()
+	for b: Building in buildings.values():
+		if b.type in ["bridge_segment", "cliff_stairs"]:
+			_crossing_index[b.origin] = b
 
 func world_pos(u: Unit) -> Vector3:
 	var y := ground_y(u.pos)
@@ -286,6 +302,11 @@ func world_pos(u: Unit) -> Vector3:
 
 func _tile_cost(ch: ChunkData, i: int) -> float:
 	var tt := ch.terrain[i]
+	var t := Vector2i(ch.cx * S + i % S, ch.cz * S + i / S)
+	if not _crossing_index.is_empty():
+		var crossing := _crossing_index.get(t) as Building
+		if crossing != null and crossing.is_built():
+			return float(Tiles.COST[Tiles.PAVED if crossing.type == "bridge_segment" else Tiles.TRAIL])
 	var cost := float(Tiles.COST[tt])
 	var r := ch.res_type[i]
 	cost += float(Tiles.RES_PATH_COST.get(r, 0.0))
@@ -294,7 +315,18 @@ func _tile_cost(ch: ChunkData, i: int) -> float:
 
 func _tile_solid(ch: ChunkData, i: int) -> bool:
 	var tt := ch.terrain[i]
-	if not Tiles.WALKABLE[tt] or ch.blocked[i] != 0:
+	var t := Vector2i(ch.cx * S + i % S, ch.cz * S + i / S)
+	if not _crossing_index.is_empty():
+		var crossing := _crossing_index.get(t) as Building
+		if crossing != null:
+			return not crossing.is_built()
+	if ch.blocked[i] != 0:
+		return true
+	if tt == Tiles.CLIFF:
+		return false
+	if tt == Tiles.SHALLOW_WATER or tt == Tiles.DEEP_WATER:
+		return not gen.is_river_water(float(t.x) + 0.5, float(t.y) + 0.5)
+	if not Tiles.WALKABLE[tt]:
 		return true
 	var r := ch.res_type[i]
 	return r != Tiles.Res.NONE and bool(Tiles.res_info(r).get("solid", false))
@@ -351,6 +383,8 @@ func nearest_walkable(t: Vector2i, radius: int = 4) -> Vector2i:
 ## Path of tile centres from a to b (partial path to the closest reachable tile if blocked).
 func find_path(a: Vector2, b: Vector2) -> PackedVector2Array:
 	var out := PackedVector2Array()
+	for t: Vector2i in _crossing_index:
+		_nav_update_tile(t)
 	var ta := nearest_walkable(Vector2i(int(floor(a.x)), int(floor(a.y))), 3)
 	var tb := nearest_walkable(Vector2i(int(floor(b.x)), int(floor(b.y))), 4)
 	if ta.x == -99999 or tb.x == -99999:
@@ -379,6 +413,10 @@ func move_unit(u: Unit, p: Vector2) -> bool:
 	var last := path[path.size() - 1]
 	if Vector2i(int(floor(last.x)), int(floor(last.y))) == tp and is_walkable(tp):
 		path[path.size() - 1] = p
+	for step_pos: Vector2 in path:
+		if not unit_can_use_terrain(u, Vector2i(int(floor(step_pos.x)), int(floor(step_pos.y)))):
+			u.moving = false
+			return false
 	if path.size() > 1 and u.pos.distance_to(path[0]) < 0.75:
 		path.remove_at(0)
 	u.path = path
@@ -387,6 +425,19 @@ func move_unit(u: Unit, p: Vector2) -> bool:
 	u.goal = path[path.size() - 1]
 	u.stuck_t = 0.0
 	return true
+
+func unit_can_use_terrain(u: Unit, t: Vector2i) -> bool:
+	if u.flying or not u.is_machine():
+		return true
+	var terrain := terrain_at(t)
+	var crossing := crossing_building_at(t)
+	if crossing != null and crossing.is_built():
+		return true
+	if terrain != Tiles.CLIFF and not Tiles.is_water(terrain):
+		return true
+	var legs := str(u.dna.get("legs", ""))
+	var heavy := u.archetype in ["walker", "hauler", "machine_warden"]
+	return not heavy and legs not in ["wheels", "treads"]
 
 
 func stop_unit(u: Unit) -> void:
@@ -496,6 +547,8 @@ func recount_explored() -> void:
 # --- units ---------------------------------------------------------------------------------
 
 func add_unit(u: Unit) -> Unit:
+	if u.faction == "player" and u.is_person() and not u.dna.has("art_variant"):
+		assign_art_variant(u)
 	if u.id == 0:
 		u.id = new_id()
 	u.prev_pos = u.pos
@@ -505,6 +558,32 @@ func add_unit(u: Unit) -> Unit:
 		u.recompute_stats()
 	unit_added.emit(u)
 	return u
+
+
+func assign_art_variant(u: Unit, force: bool = false) -> void:
+	if u.faction != "player" or not u.is_person() or (u.dna.has("art_variant") and not force):
+		return
+	var count := SpriteLibrary.variant_count(u.dna)
+	if count <= 1:
+		u.dna["art_variant"] = 0
+		return
+	var combo := SpriteLibrary.chip_id(u.dna)
+	var used := PackedInt32Array()
+	used.resize(count)
+	for resident: Unit in player_people():
+		if resident == u or SpriteLibrary.chip_id(resident.dna) != combo:
+			continue
+		var variant := SpriteLibrary.art_variant(resident.dna)
+		used[variant] += 1
+	var identity := "%s|%s|%s|%s|%s" % [str(u.dna.get("seed", 0)), str(u.dna.get("hair", "")),
+		str(u.dna.get("hair_color", "")), str(u.dna.get("skin", "")), combo]
+	var start := posmod(hash(identity), count)
+	var chosen := start
+	for offset in range(1, count):
+		var candidate := (start + offset) % count
+		if used[candidate] < used[chosen]:
+			chosen = candidate
+	u.dna["art_variant"] = chosen
 
 
 func remove_unit(u: Unit) -> void:
@@ -578,6 +657,8 @@ func population() -> int:
 func add_building(b: Building) -> Building:
 	if b.id == 0:
 		b.id = new_id()
+	if b.type in ["bridge_segment", "cliff_stairs"]:
+		_crossing_index[b.origin] = b
 	buildings[b.id] = b
 	if b.name == "":
 		b.name = b.display_name()
@@ -590,6 +671,8 @@ func remove_building(b: Building) -> void:
 	if not buildings.has(b.id):
 		return
 	buildings.erase(b.id)
+	if _crossing_index.get(b.origin) == b:
+		_crossing_index.erase(b.origin)
 	_mark_building_tiles(b, 0)
 	for wid: int in b.workers:
 		var w := get_unit(wid)
@@ -702,6 +785,25 @@ func can_place(type: String, origin: Vector2i, check_cost: bool = true) -> Strin
 	if d.is_empty():
 		return "Unknown building"
 	var size := Vector2i(int(d["size"][0]), int(d["size"][1]))
+	if type in ["bridge_segment", "cliff_stairs"]:
+		var t := origin
+		if not in_bounds(t) or chunk_at_tile(t) == null:
+			return "Outside the known world"
+		if not is_explored(t):
+			return "Unexplored ground"
+		if blocked_at(t) or crossing_building_at(t) != null:
+			return "Blocked"
+		if farm.has(t):
+			return "Farmland"
+		var tt := terrain_at(t)
+		if type == "bridge_segment":
+			if not Tiles.is_water(tt) or not gen.is_river_water(float(t.x) + 0.5, float(t.y) + 0.5):
+				return "Bridge segments need river water"
+		elif tt != Tiles.CLIFF:
+			return "Stairs need cliff ground"
+		if check_cost and not economy.can_afford(d.get("cost", {})):
+			return "Not enough resources"
+		return ""
 	var hmin := INF
 	var hmax := -INF
 	for x in range(origin.x, origin.x + size.x):
@@ -749,7 +851,8 @@ func place_building(type: String, origin: Vector2i, instant: bool = false, facti
 		economy.pay(cost)
 		for k: String in cost:
 			b.needs[k] = int(cost[k])
-	_flatten_footprint(b)
+	if type not in ["bridge_segment", "cliff_stairs"]:
+		_flatten_footprint(b)
 	# gather what grows or lies on the footprint (felled as part of clearing)
 	for x in range(origin.x, origin.x + b.size.x):
 		for z in range(origin.y, origin.y + b.size.y):
@@ -1003,7 +1106,6 @@ func tick() -> void:
 		colony.on_new_day()
 	_cleanup()
 
-
 func _update_unit(u: Unit) -> void:
 	if not u.alive:
 		return
@@ -1036,8 +1138,12 @@ func _move(u: Unit) -> void:
 	var target := u.path[u.path_i]
 	var speed := float(u.stats.get("move_speed", 2.0))
 	if not u.flying:
-		var tt := terrain_at(u.tile())
-		speed /= float(Tiles.COST[tt]) if tt < Tiles.COST.size() else 1.0
+		var current_tile := u.tile()
+		var crossing := crossing_building_at(current_tile)
+		var move_cost := float(Tiles.COST[terrain_at(current_tile)])
+		if crossing != null and crossing.is_built():
+			move_cost = float(Tiles.COST[Tiles.PAVED if crossing.type == "bridge_segment" else Tiles.TRAIL])
+		speed /= move_cost
 		speed = maxf(speed, 0.5)
 	if u.is_machine() and u.is_player() and int(res.get("energy", 0)) <= 0:
 		speed *= 0.5

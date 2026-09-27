@@ -1,0 +1,10 @@
+{
+  "scene": "res://scenes/game.tscn",
+  "frames": 40,
+  "events": [
+    {"frame": 1, "do": "scene.set_speed(0)"},
+    {"frame": 2, "do": "scene.select_squad(scene.world.squads[0].id)"},
+    {"frame": 30, "watch": "scene.hud._compact", "label": "compact layout state"},
+    {"frame": 30, "screenshot": "selected_squad_hud"}
+  ]
+}

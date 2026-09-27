@@ -60,8 +60,12 @@ void fragment() {
 	if (UV.y < 1.0 - reveal) {
 		discard;
 	}
-	vec4 c = texture(tex, UV);
-	float lod = manual_lod(UV, vec2(textureSize(tex, 0)));
+	vec2 sample_uv = UV;
+	if (camera_mirror_x(INV_VIEW_MATRIX)) {
+		sample_uv.x = 1.0 - sample_uv.x;
+	}
+	vec4 c = texture(tex, sample_uv);
+	float lod = manual_lod(sample_uv, vec2(textureSize(tex, 0)));
 	vec3 col = shift_company_blue(c.rgb, hue_shift);
 	col = mix(col, flash.rgb, flash.a);
 	float explored = no_fog ? 1.0 : fog_explored(base_pos);
@@ -71,7 +75,7 @@ void fragment() {
 	ROUGHNESS = 1.0;
 	SPECULAR = 0.0;
 	float night = no_fog ? 0.0 : night_amount;
-	EMISSION = col * texture(glow_tex, UV).r * glow_strength * (0.2 + 1.8 * night) * explored;
+	EMISSION = col * texture(glow_tex, sample_uv).r * glow_strength * (0.2 + 1.8 * night) * explored;
 
 	// per-pixel depth on the front walls
 	vec3 r = INV_VIEW_MATRIX[0].xyz;

@@ -1,0 +1,10 @@
+{
+  "table": "abilities",
+  "entries": [
+    {"id":"shield_bash","name":"Shield Bash","kind":"stun","cooldown":18.0,"range":2.2,"duration":0.8,"roles":["guard","mercenary","commander","bandit","bandit_captain"],"archetypes":["walker","war_drone"]},
+    {"id":"aimed_shot","name":"Aimed Shot","kind":"aimed_shot","cooldown":22.0,"range":10.0,"windup":1.2,"damage_mult":1.5,"roles":["archer","hunter","bandit_archer"],"archetypes":["sentry","turret"]},
+    {"id":"blast_charge","name":"Blast Charge","kind":"blast","cooldown":22.0,"range":4.0,"radius":2.2,"damage":18.0,"roles":["engineer","tinkerer"],"archetypes":["war_drone","machine_warden"]},
+    {"id":"field_dressing","name":"Field Dressing","kind":"heal_ally","cooldown":24.0,"range":5.0,"amount_pct":0.22,"roles":["medic","scholar"],"archetypes":["repair_drone"]},
+    {"id":"rallying_call","name":"Rallying Call","kind":"buff_allies","cooldown":25.0,"radius":6.0,"duration":8.0,"mods":{"melee_damage_pct":0.1,"move_speed_pct":0.05},"roles":["commander","bandit_captain"],"archetypes":["machine_warden"]}
+  ]
+}

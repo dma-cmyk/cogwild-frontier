@@ -36,8 +36,12 @@ static func theme() -> Theme:
 	var system := SystemFont.new()
 	system.font_names = PackedStringArray(["Noto Sans CJK JP"])
 	var regular: Font = load("res://assets/fonts/CogwildCJK-Regular.otf")
-	var bold: Font = load("res://assets/fonts/CogwildCJK-Bold.otf")
 	regular.fallbacks = [system]
+	# Replace the 4 MB bold face with synthetic weight; glyph stroke weight may differ slightly
+	# and missing CJK glyphs fall through to the system font (including typed rare kanji).
+	var bold := FontVariation.new()
+	bold.base_font = regular
+	bold.variation_embolden = 0.45
 	bold.fallbacks = [system]
 	body_font.fallbacks = [regular]
 	bold_font.fallbacks = [bold]

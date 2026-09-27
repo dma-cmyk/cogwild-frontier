@@ -2,6 +2,56 @@
 
 起動: `./run.sh`（または `godot --path game`）。操作・遊び方は README、設計と仮定は `docs/design.md`。
 
+## 更新（2026-09-27 その 3）: 前回の弱点の修正（カメラ・顔の重複・戦術・川と崖・カクつき・読み込み）
+
+- **カメラの回転**:
+  - Q / E、ミニマップ上端の回転ボタン、タッチの 2 本指ねじり（約 40°）で、90° ずつ 4 方向に回せます。
+  - 建物の絵は 1 方向しかないので、基準と 180° では絵のまま、±90° では左右反転して出します（矩形の敷地なら輪郭が一致する、等角ゲームの定番の方法）。反転しても奥行きの書き込みは正しく、建物の裏のユニットは隠れます。
+  - 夜の窓の光、会社の色、建設中の足場、風車の羽根も反転に合わせました。移動・範囲選択・建設の配置・壁の線は、どの向きでも画面基準で動きます。ミニマップは北が上のままで、視野の枠が向きを示します。
+- **同じ顔の重複**:
+  - 人物のチップと肖像をもう 1 組（v3。チップ 40 種・肖像 40 枚）画像生成しました。v2 は種族ごとに同じ髪型・髪色でしたが、v3 は種族 × 見た目ごとに年齢・髪・ひげ・そばかす・眼鏡・帽子を変えています。
+  - 人物の絵は 84 種から 124 種になりました。
+  - 入植者・移住者・勧誘した人には、同じ種族・見た目・性別の住民の中で一番使われていない絵を割り当てます（乱数は使わない）。同じ組み合わせの人が 3 人までなら顔が重なりません。古いセーブの住民は元の絵のままです。
+  - 会社一覧（ロスター）の行に肖像を付けたので、顔の違いが一覧で分かります。
+- **戦闘の駆け引き**:
+  - 小隊パネルで **態勢**（攻勢 / 均衡 / 慎重 / 防衛）と **隊形**（横列 / 楔形 / 散開）を選べます。近接は前列、射手・支援は後列に入り、同じ敵を囲むときは別々の角度から攻めます（重なりが減りました）。
+  - 役割の技が自動で出ます: 盾打ち（気絶）、狙い撃ち（溜め・被弾で中断）、爆破チャージ（範囲）、野戦手当（回復・ダウンからの復帰を早める）、鼓舞の号令（周囲を強化）。敵の盗賊・機械・固有敵も同じ規則で使います。
+  - 側面攻撃（命中とダメージが上がる）と、木や岩の遮蔽（射撃が当たりにくい）が効き、浮き文字と吹き出しで分かります。
+  - 同じ戦闘を決定論的に比べた結果: 均衡・横列は被ダメージ 116・18.9 秒、慎重・楔形は被ダメージ 183・19.9 秒（どちらも死者なし）。選択で結果が変わります。
+- **川と崖を越える**（ユーザーの提案）:
+  - 人と軽い二脚の機械は、川を泳いで（遅い、腰まで水に沈んで見える）、崖をよじ登って（遅い）越えられます。車輪・履帯・重い機械は越えられません。自然の湖は泳げません。
+  - 建設メニューに **川の橋**（木材 12・石 2 / 区間）と **崖の階段**（木材 8・石 6 / 区間）を追加しました。壁と同じく線で配置し、住民が建てます。探索済みなら開拓地から遠くても置けます。完成すると道と同じ速さで通れます。
+  - 経路は遅い泳ぎ・登りを避け、橋・浅瀬・道を優先します。
+  - 以前に野営地へ歩いて行けなかったシード（3・21・42）でも、攻撃命令で野営地に着いて戦います（シード 3・7・11・21・42 をテストで確認）。
+  - 泳ぐ・登る・橋や階段を建てるときの吹き出しも追加しました（例:「ここに橋があれば泳がずに済むのに。」）。
+- **カクつき**:
+  - 一番大きな単発のカクつきの原因は、盗賊の野営地などの拠点が見つかった瞬間に、その建物の見た目（最大 40 棟）を 1 フレームでまとめて作っていたことでした（計測で 402 ms）。今は 1 フレーム 1 棟ずつ作ります（拠点の状態と敵は即座に存在します）。
+  - ミニマップの描き足しも 1 フレーム 1 チャンクに分け、開始時の周辺チャンクの無駄な作り直しをなくしました。
+- **ブラウザ版の読み込み**:
+  - `index.pck` を 52.3 MB から 39.1 MB に減らしました（v3 の絵 80 枚を足したうえで）。転送量は約 61 MB から約 48 MB です（wasm は圧縮で約 10 MB）。
+  - 内訳: 日本語の太字フォントを外して通常体から太字を合成、肖像を WebP（品質 0.9）、キャラチップを WebP（品質 0.85）、窓の光のマスクを 512 px までに、タイトル画像を WebP にしました。最も寄ったズームで見比べて、劣化は見えませんでした。
+  - 読み込み画面は、読み込んだ MB 数を表示し、20 秒進まなければ日英のメッセージと「再読み込み」ボタンを出します。
+  - 2 回目以降はサービスワーカーのキャッシュから読み込みます。書き出しごとにキャッシュ名が変わるので、更新後に古い版が残ることはありません（COOP/COEP は不要のまま）。
+- **その他**:
+  - 回転ボタンの矢印（↶ ↷）がブラウザ版では日本語フォントに無く、四角（豆腐）で表示されていました。SVG のアイコンに替えました。
+  - テスト実行の最初に出ていた `add_child() failed`（親ノードが準備中）のエラーを直しました（テストの開始を 1 フレーム遅らせる）。
+  - 建設メニューの項目が増えて位置がずれたので、`build_windmill` シナリオのクリック位置を直しました。
+- **性能**（Iris Xe・1600×900・画質「中」・x1、各 2 回）:
+  - 開拓地（showcase）: 平均 10.0〜10.5 ms、p95 12.9〜13.6 ms（前回 p95 25.4 ms、同じシナリオを変更前の版で測ると 18.7 ms）。
+  - 3 分間の探索（新しいチャンクへ進み続ける）: 平均 9.8 ms、p95 13.0 ms、最悪 154 ms（前回は約 0.5 秒の単発あり）。
+  - VRAM: 107〜125 MB（前回 86 MB）。WebP にした絵は GPU 上では非圧縮になるためです。
+
+面白い点・弱い点（今回の変更後）:
+
+- 戦闘前に「弓兵が多いから慎重に」「この丘を守るから防衛」と選ぶ理由ができ、盾打ちや狙い撃ちの通知と「側面を取ったぞ！」の吹き出しで、戦いの流れが追えるようになりました。
+- 川や崖が「越えられない壁」から「遅い近道」に変わり、よく通る場所に橋や階段を架けるという、建設の新しい目的ができました。
+- カメラを回すと、建物の裏に隠れた住民を探せ、開拓地が立体的に見えます。ただし ±90° の建物は左右反転なので、扉や看板の位置が変わります。
+- 顔の重複は 12 人の開拓地で目立たなくなりました。同じ組み合わせの人が 4 人以上になると、また重なります。
+- 戦術はまだ自動の比重が大きく、技を自分のタイミングで使うことはできません。態勢の違いは被ダメージや撤退の早さに出ますが、画面上の差は小さめです。
+- 崖の階段の見た目は「崖に板を並べた」程度で、橋ほどは分かりやすくありません。橋に向けて移動を命じると、橋の横の浅瀬で止まることがあります。
+- 最悪フレームは 154 ms まで下がりましたが、0 にはなっていません（拠点の見た目の作成は 1 棟 5〜13 ms）。ブラウザ版のフレーム時間は今回は測っていません。
+- スマホは今回もデスクトップ Chrome の端末エミュレーションでの確認です（2 本指ねじりの回転、態勢の変更まで確認）。エミュレーションでは作成画面のスワイプでのスクロールが効かず（前回の公開版でも同じ）、ホイールで確認しました。実機のタッチでスクロールできるかは未確認です。
+
 ## 更新（2026-09-27 その 2）: 音と設定・スマホとブラウザ・住民の見た目・戦闘・吹き出し
 
 **ブラウザで遊ぶ: https://dma-cmyk.github.io/cogwild-frontier/**（`main` への push で GitHub Actions が Web 版を書き出して公開）
@@ -113,16 +163,17 @@
 | 種類 | コマンド / シナリオ | 結果 |
 |---|---|---|
 | 全リソース読込 | `godot_probe.py game --health` | PASS（エラー・警告 0） |
-| ヘッドレステスト | `godot --headless --path game res://tests/run_tests.tscn` | 38/38 PASS（92 s、2026-09-27 時点。初回は 23/23） |
+| ヘッドレステスト | `godot --headless --path game res://tests/run_tests.tscn` | 51/51 PASS（2026-09-27 その 3 時点。前回 38、初回 23）。追加: `test_tactics.gd`（態勢の撤退・追撃範囲、技のクールダウンと中断、側面攻撃、セーブ往復、同じ戦闘の態勢別比較）、`test_crossing.gd`（シード 3・7・11・21・42 で近い野営地まで経路があり、3・21・42 では攻撃命令で着いて戦う、橋・階段で経路コストが下がりセーブ後も残る） |
 | 決定性 | 同 seed で 900 tick 後の全状態が一致 | PASS |
 | セーブ/ロード | 保存→読込で全状態一致、さらに 600 tick 進めても一致（float は 1e-6 で比較） | PASS |
 | 長時間 | 10 日間放置（小隊 Auto・飛行船 Auto） | PASS: 負の資源・NaN なし、ユニット 94 以下、探索約 15 万タイル、拠点約 25 発見、約 2 ms/tick |
 | 生成 | 品質分布 2 万回、NPC 才能の偏り 500 人、名前の重複、データ相互参照 | PASS |
 | 見た目 | 全建物 × 全様式 × 段階、全小物の予算、全アイコンが互いに異なる、全 VFX | PASS |
 | AI 層 | 未設定で無効 / ローカルのモックサーバーで実際に HTTP 往復し文章だけ書き換わる | PASS |
-| 実プレイ（ウィンドウ） | `tests/probe/explore_day.json`（探索と報告）、`combat_camp.json`（世界シード 11 で野営地を掃討・戦利品 8 個）、`build_windmill.json`（UI クリックで配置→住民が建設）、`save_load.json`（F5→F9 で続行）、`night.json`、`showcase.json`、`battle_shots.json`、タイトル→作成→開始 | すべて PASS（2026-09-27 に現行版で再実行） |
+| 実プレイ（ウィンドウ） | `tests/probe/explore_day.json`（探索と報告）、`combat_camp.json`（世界シード 11 で野営地を掃討）、`build_windmill.json`（UI クリックで配置→住民が建設、電力 +3.65）、`save_load.json`（F5→F9 で続行）、`night.json`、`showcase.json`、`battle_shots.json`、`crossing.json`（泳ぐ・登る・橋と階段の建設）、`camera_rotate.json`（4 方向・Q/E・ボタン・ねじり・回転後の選択）、`perf_showcase.json` / `perf_exploration_spikes.json`（x1 の計測）、タイトル→作成→開始 | すべて PASS（2026-09-27 その 3 に現行版で再実行） |
 | ブラウザ版 | ローカルの Web 書き出しを Chrome（実 GPU）で開き、PC 表示と iPhone 12 横向きのエミュレーションで操作 | タイトル・設定・作成・開始・選択・移動・ピンチ・建設まで動作 |
 | 公開版（GitHub Pages） | Actions の書き出し（1 分 12 秒）→ 公開。Chrome で PC 表示: タイトル→作成→開始、吹き出しの表示。iPhone 12 横向きエミュレーション: タイトル→作成→「見た目 2/2」→開始→タッチで探索命令 | 動作（`docs/screenshots/mobile_pages.png`）。ダウンロードは pck 52 MB + wasm 40 MB（転送時は wasm が 10 MB に圧縮される）。キャッシュ後の再読み込みは約 4 秒でタイトル。キャッシュなしの初回は、この PC がメモリ逼迫中だったため一度途中で止まり、タブの再読み込み後に読み込めた（curl では pck を 3.5〜6 秒で取得） |
+| ブラウザ版（その 3） | ローカルの Web 書き出しを Chrome で開き、PC 表示（日本語: タイトル→作成「見た目 3/3」→開始→E で回転→建設メニューに川の橋・崖の階段）と iPhone 12 横向きエミュレーション（開始→2 本指ねじりで回転→態勢を「慎重」に変更→吹き出し「距離を保て！」） | 動作、コンソールのエラー 0。回転ボタンの矢印が豆腐になっていたのを見つけて SVG に修正 |
 
 ## パフォーマンス（初回計測: Intel Iris Xe、1600×900、Mobile レンダラー、vsync なし。現在の値は冒頭の更新を参照）
 
@@ -158,14 +209,24 @@
 
 ## 既知の問題
 
-- 届かない拠点がある（上記）。開始地点付近の必須拠点は高さを揃えて配置し、川の浅瀬を増やして減らしている。
-- ユニット同士の押し合い（回避）はない。重なることがある。
+- 川・崖は泳ぐ・登るで越えられる。自然の湖に囲まれた場所など、泳げない水の向こうには届かない（小隊は通知して待機する）。
+- ユニット同士の押し合い（回避）はない。戦闘では同じ目標を別々の角度から囲むので重なりは減ったが、移動中は重なることがある。
 - セーブ/ロード後の継続は float の末尾誤差を除いて一致（完全なビット一致ではない）。
-- 人物の絵は 84 種（種族 × 見た目 × 性別 × 2 種）の使い回し。建物の絵は 1 方向のみ（そのためカメラは回転しない）。
+- 人物の絵は 124 種（種族 × 見た目 × 性別 × 3 種）。建物の絵は 1 方向のみで、±90° のカメラでは左右反転で代用している（扉や看板の位置が変わる）。
 - 世界の広さは開始点から ±320 m（設定値）。
 - スマホは実機未確認（デスクトップ Chrome のエミュレーションのみ）。
 
 ## 変更ファイル（新規プロジェクト。主要なもの）
+
+2026-09-27（その 3）の更新で追加・変更したもの:
+
+- カメラの回転: `game/src/view/{camera_rig,input_controller}.gd`、`game/src/visual/{look_dev,building_visual,building_visuals,sprite_unit_visual,prop_meshes}.gd`、`game/src/visual/shaders/sprite_*`、`game/src/ui/{hud,minimap}.gd`、`game/assets/icons/ui_rotate_{left,right}.svg`、`game/data/i18n/camera-*.json`
+- 住民の見た目 v3: `tools/art/{make_prompts.py,process.py}`、`art_src/prompts.json`、`game/assets/{sprites/chars,portraits}/*_v3.png`、`game/data/art/*.json`、`game/src/visual/sprite_library.gd`、`game/src/sim/{world,faction_ai}.gd`（絵の割り当て）、`game/src/ui/roster_panel.gd`
+- 戦術: `game/src/sim/{squad,squad_ai,unit,combat}.gd`、`game/data/generation/tactics_abilities.json`、`game/src/ui/squad_panel.gd`、`game/data/i18n/tactics-*.json`、`game/src/view/chatter.gd`、`game/data/i18n/chatter-*.json`
+- 川と崖: `game/src/sim/{world,save_game}.gd`、`game/src/world/{tiles,world_gen}.gd`、`game/data/buildings/buildings.json`、`game/src/visual/world/bld_frontier.gd`、`game/src/ui/build_menu.gd`、`game/assets/icons/bld_{bridge_segment,cliff_stairs}.svg`、`game/data/i18n/crossing-*.json`
+- カクつき: `game/src/view/world_view.gd`（拠点の見た目を 1 フレーム 1 棟）、`game/src/ui/minimap.gd`、`game/src/visual/vfx.gd`
+- ブラウザ版: `game/web_shell.html`、`game/export_presets.cfg`（PWA）、`tools/web/apply_import_presets.py` と各 `.import`、`game/src/ui/ui_theme.gd`（太字の合成）、`game/assets/fonts/`（太字を削除）
+- テストと確認: `game/tests/{test_tactics,test_crossing,run_tests}.gd`、`game/tests/probe/{crossing,camera_*,showcase_camera135,perf_*}.json`
 
 2026-09-27（その 2）の更新で追加・変更したもの:
 
@@ -221,9 +282,11 @@ Git: 新規リポジトリに初回コミット `e87e29b`（以降の修正は�
 
 ## スクリーンショット
 
-`docs/screenshots/`（画像生成アート。2026-09-27 に現行版で撮り直し）: `title.png`, `character_creation.png`, `settlement_day.png`（商人の交易パネル付き）, `settlement_evening.png`（吹き出し）, `night.png`, `construction.png`（建設中の風車）, `windmill_built_via_ui.png`, `build_menu.png`（日本語）, `bandit_camp.png`, `combat_retreat.png`（撤退のかけ声）, `speech_battle.png`（戦闘中の吹き出し）, `speech_ja.png`, `speech_en.png`, `speech_mobile.png`（1170×540）, `world_overview_zoomed_out.png`, `world_map_seed11.png`。
+`docs/screenshots/`（画像生成アート。2026-09-27 その 3 に現行版で撮り直し）: `title.png`, `character_creation.png`, `settlement_day.png`（商人の交易パネル・技の通知）, `settlement_evening.png`（吹き出し）, `night.png`, `construction.png`（建設中の風車）, `windmill_built_via_ui.png`, `build_menu.png`（日本語、川の橋・崖の階段）, `bandit_camp.png`, `combat_retreat.png`（撤退のかけ声）, `speech_battle.png`（戦闘中の吹き出し）, `speech_ja.png`, `speech_en.png`, `speech_mobile.png`（1170×540）, `world_overview_zoomed_out.png`, `world_map_seed11.png`。
 
-人物の v1 / v2 の比較は `docs/screenshots/dev/units_variants.png`。
+その 3 で追加: `camera_rotated.png`（135° から見た開拓地、建物は左右反転）, `crossing_swim.png`, `crossing_climb.png`, `crossing_bridge.png`, `crossing_stairs.png`, `tactics_abilities.png`（盾打ち・狙い撃ちの通知と態勢・隊形の選択）, `roster_faces.png`（12 人の肖像がすべて違う）。
+
+人物の v1 / v2 / v3 の比較は `docs/screenshots/dev/units_variants.png`。
 
 公開版をスマホ表示（iPhone 12 横向きのエミュレーション）で遊んでいる画面: `docs/screenshots/mobile_pages.png`。
 
