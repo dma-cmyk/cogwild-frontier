@@ -157,6 +157,16 @@
    "source": "portrait_human_worker_v3"
   },
   {
+   "id": "human_worker_f@v4",
+   "texture": "res://assets/portraits/human_worker_f_v4.png",
+   "source": "portrait_human_worker_v4"
+  },
+  {
+   "id": "human_worker_f@v5",
+   "texture": "res://assets/portraits/human_worker_f_v5.png",
+   "source": "portrait_human_worker_v5"
+  },
+  {
    "id": "human_worker_m",
    "texture": "res://assets/portraits/human_worker_m.png",
    "source": "portrait_human_worker"
@@ -170,6 +180,16 @@
    "id": "human_worker_m@v3",
    "texture": "res://assets/portraits/human_worker_m_v3.png",
    "source": "portrait_human_worker_v3"
+  },
+  {
+   "id": "human_worker_m@v4",
+   "texture": "res://assets/portraits/human_worker_m_v4.png",
+   "source": "portrait_human_worker_v4"
+  },
+  {
+   "id": "human_worker_m@v5",
+   "texture": "res://assets/portraits/human_worker_m_v5.png",
+   "source": "portrait_human_worker_v5"
   },
   {
    "id": "stoutkin_engineer_f",
@@ -307,6 +327,16 @@
    "source": "portrait_stoutkin_worker_v3"
   },
   {
+   "id": "stoutkin_worker_f@v4",
+   "texture": "res://assets/portraits/stoutkin_worker_f_v4.png",
+   "source": "portrait_stoutkin_worker_v4"
+  },
+  {
+   "id": "stoutkin_worker_f@v5",
+   "texture": "res://assets/portraits/stoutkin_worker_f_v5.png",
+   "source": "portrait_stoutkin_worker_v5"
+  },
+  {
    "id": "stoutkin_worker_m",
    "texture": "res://assets/portraits/stoutkin_worker_m.png",
    "source": "portrait_stoutkin_worker"
@@ -320,6 +350,16 @@
    "id": "stoutkin_worker_m@v3",
    "texture": "res://assets/portraits/stoutkin_worker_m_v3.png",
    "source": "portrait_stoutkin_worker_v3"
+  },
+  {
+   "id": "stoutkin_worker_m@v4",
+   "texture": "res://assets/portraits/stoutkin_worker_m_v4.png",
+   "source": "portrait_stoutkin_worker_v4"
+  },
+  {
+   "id": "stoutkin_worker_m@v5",
+   "texture": "res://assets/portraits/stoutkin_worker_m_v5.png",
+   "source": "portrait_stoutkin_worker_v5"
   },
   {
    "id": "sylvan_engineer_f",
@@ -457,6 +497,11 @@
    "source": "portrait_sylvan_worker_v3"
   },
   {
+   "id": "sylvan_worker_f@v4",
+   "texture": "res://assets/portraits/sylvan_worker_f_v4.png",
+   "source": "portrait_sylvan_worker_v4"
+  },
+  {
    "id": "sylvan_worker_m",
    "texture": "res://assets/portraits/sylvan_worker_m.png",
    "source": "portrait_sylvan_worker"
@@ -470,6 +515,11 @@
    "id": "sylvan_worker_m@v3",
    "texture": "res://assets/portraits/sylvan_worker_m_v3.png",
    "source": "portrait_sylvan_worker_v3"
+  },
+  {
+   "id": "sylvan_worker_m@v4",
+   "texture": "res://assets/portraits/sylvan_worker_m_v4.png",
+   "source": "portrait_sylvan_worker_v4"
   },
   {
    "id": "vulpin_engineer_f",
@@ -607,6 +657,16 @@
    "source": "portrait_vulpin_worker_v3"
   },
   {
+   "id": "vulpin_worker_f@v4",
+   "texture": "res://assets/portraits/vulpin_worker_f_v4.png",
+   "source": "portrait_vulpin_worker_v4"
+  },
+  {
+   "id": "vulpin_worker_f@v5",
+   "texture": "res://assets/portraits/vulpin_worker_f_v5.png",
+   "source": "portrait_vulpin_worker_v5"
+  },
+  {
    "id": "vulpin_worker_m",
    "texture": "res://assets/portraits/vulpin_worker_m.png",
    "source": "portrait_vulpin_worker"
@@ -620,6 +680,16 @@
    "id": "vulpin_worker_m@v3",
    "texture": "res://assets/portraits/vulpin_worker_m_v3.png",
    "source": "portrait_vulpin_worker_v3"
+  },
+  {
+   "id": "vulpin_worker_m@v4",
+   "texture": "res://assets/portraits/vulpin_worker_m_v4.png",
+   "source": "portrait_vulpin_worker_v4"
+  },
+  {
+   "id": "vulpin_worker_m@v5",
+   "texture": "res://assets/portraits/vulpin_worker_m_v5.png",
+   "source": "portrait_vulpin_worker_v5"
   }
  ]
 }

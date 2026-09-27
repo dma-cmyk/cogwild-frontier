@@ -4,6 +4,7 @@ extends Node3D
 ## scrolling and middle-drag panning, wheel zoom, focusing, and ray picking against the terrain.
 
 signal moved
+signal yaw_step_finished
 
 const EDGE := 6.0
 
@@ -97,7 +98,12 @@ func rotate_step(direction: int) -> void:
 	_yaw_tween = create_tween()
 	_yaw_tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	_yaw_tween.tween_property(self, "yaw", _yaw_goal, 0.3)
+	_yaw_tween.finished.connect(_on_yaw_step_finished)
 
+
+
+func _on_yaw_step_finished() -> void:
+	yaw_step_finished.emit()
 
 func pan_screen(delta: Vector2) -> void:
 	var px := zoom / get_viewport().get_visible_rect().size.y

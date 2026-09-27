@@ -147,7 +147,76 @@ func test_built_crossing_reduces_navigation_cost_and_survives_save_load() -> voi
 	var bridge := w.place_building("bridge_segment", bridge_origin, true)
 	var stairs := w.place_building("cliff_stairs", stairs_origin, true)
 	w._nav_update_tile(bridge_origin)
-	w._nav_update_tile(stairs_origin)
+	var bank_tile := Vector2i(-99999, -99999)
+	for direction: Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+		var candidate := bridge_origin + direction
+		if w.is_walkable(candidate) and not Tiles.is_water(w.terrain_at(candidate)):
+			bank_tile = candidate
+			break
+	assert_ne(bank_tile.x, -99999, "built bridge has a land approach tile")
+	if bank_tile.x != -99999:
+		var target := Vector2(bridge_origin) + Vector2(0.5, 0.5)
+		var unit := Unit.new()
+		unit.id = w.new_id()
+		unit.kind = "character"
+		unit.faction = "player"
+		unit.pos = Vector2(bank_tile) + Vector2(0.5, 0.5)
+		unit.stats = {"move_speed": 2.0}
+		w.units[unit.id] = unit
+		w.unit_list.append(unit)
+		assert_true(w.is_walkable(bridge_origin), "built bridge tile is walkable before pathfinding")
+		assert_true(w.move_unit(unit, target), "single unit accepts a move order onto a built bridge")
+		assert_eq(Vector2i(floori(unit.goal.x), floori(unit.goal.y)), bridge_origin,
+			"single-unit move goal remains on the bridge rather than adjacent shallows")
+		var squad := Squad.new()
+		squad.id = w.new_id()
+		for i in 3:
+			var member := Unit.new()
+			member.id = w.new_id()
+			member.kind = "character"
+			member.faction = "player"
+			member.squad_id = squad.id
+			member.pos = Vector2(bank_tile) + Vector2(0.5, 0.5)
+			member.stats = {"move_speed": 2.0}
+			w.units[member.id] = member
+			w.unit_list.append(member)
+			squad.members.append(member.id)
+		w.squads.append(squad)
+		w.squad_ai.order_squad(squad, {"type": "move", "pos": target})
+		for member_id: int in squad.members:
+			var member := w.get_unit(member_id)
+			var goal_tile := Vector2i(floori(member.goal.x), floori(member.goal.y))
+			assert_false(Tiles.is_water(w.terrain_at(goal_tile))
+					and w.gen.is_river_water(float(goal_tile.x) + 0.5, float(goal_tile.y) + 0.5)
+					and w.crossing_building_at(goal_tile) == null,
+				"squad formation slots stay on the bridge or land banks")
+		w.squad_ai.order_squad(squad,
+			{"type": "move", "pos": Vector2(bank_tile) + Vector2(0.5, 0.5)})
+		for member_id: int in squad.members:
+			var member := w.get_unit(member_id)
+			var goal_tile := Vector2i(floori(member.goal.x), floori(member.goal.y))
+			assert_false(Tiles.is_water(w.terrain_at(goal_tile))
+					and w.gen.is_river_water(float(goal_tile.x) + 0.5, float(goal_tile.y) + 0.5)
+					and w.crossing_building_at(goal_tile) == null,
+				"squad formations crossing to the bank avoid the shallow water next to the bridge")
+	assert_true(w.is_walkable(stairs_origin), "built cliff stair tile is walkable")
+	var stair_bank := Vector2i(-99999, -99999)
+	for direction: Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+		var candidate := stairs_origin + direction
+		if w.is_walkable(candidate):
+			stair_bank = candidate
+			break
+	if stair_bank.x != -99999:
+		var stair_unit := Unit.new()
+		stair_unit.id = w.new_id()
+		stair_unit.kind = "character"
+		stair_unit.faction = "player"
+		stair_unit.pos = Vector2(stair_bank) + Vector2(0.5, 0.5)
+		stair_unit.stats = {"move_speed": 2.0}
+		assert_true(w.move_unit(stair_unit, Vector2(stairs_origin) + Vector2(0.5, 0.5)),
+			"single unit accepts a move order onto built stairs")
+		assert_eq(Vector2i(floori(stair_unit.goal.x), floori(stair_unit.goal.y)), stairs_origin,
+			"stair move goal remains on the built stair tile")
 	assert_true(w.nav.get_point_weight_scale(bridge_origin) < Tiles.COST[w.terrain_at(bridge_origin)], "bridge uses road-speed path cost")
 	assert_true(w.nav.get_point_weight_scale(stairs_origin) < Tiles.COST[Tiles.CLIFF], "stairs use trail-speed path cost")
 	var loaded := SaveGame.from_dict(SaveGame.to_dict(w))

@@ -16,7 +16,9 @@ var state := "idle"  # what the squad is doing right now (for the HUD)
 var state_message: Dictionary = {"key": "sim.squad.state.idle", "params": {}}
 var mem: Dictionary = {}  # AI scratch data (explore target, patrol index, ...)
 var report: Array = []  # discoveries during the current expedition
+var auto_abilities := true
 var formation := "line"  # line | wedge | loose
+
 
 
 func color() -> Color:
@@ -26,7 +28,7 @@ func color() -> Color:
 func to_dict() -> Dictionary:
 	return {"id": id, "name": name, "members": members, "order": Unit._vec_safe(order), "stance": stance,
 		"retreat_threshold": retreat_threshold, "state": state, "state_message": state_message, "mem": Unit._vec_safe(mem),
-		"report": report, "formation": formation}
+		"report": report, "formation": formation, "auto_abilities": auto_abilities}
 
 
 static func from_dict(d: Dictionary) -> Squad:
@@ -43,4 +45,5 @@ static func from_dict(d: Dictionary) -> Squad:
 	s.mem = Unit._vec_restore(d.get("mem", {}))
 	s.report = d.get("report", [])
 	s.formation = str(d.get("formation", "line"))
+	s.auto_abilities = bool(d.get("auto_abilities", true))
 	return s

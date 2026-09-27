@@ -8,8 +8,10 @@ const RES_ORDER := ["wood", "stone", "ore", "metal", "food", "gold"]
 const KIND_ICON := {"good": "ui_star", "bad": "ui_skull", "discover": "ui_target", "loot": "ui_chest", "levelup": "ui_star", "info": "ui_bell"}
 const KIND_COLOR := {"good": UiTheme.GOOD, "bad": UiTheme.BAD, "discover": UiTheme.ACCENT, "loot": UiTheme.GOLD, "levelup": UiTheme.GOLD, "info": UiTheme.TEXT}
 const COMMANDS := [["move", "Move", "cmd_move", "M"], ["attack", "Attack", "cmd_attack", "F"], ["defend", "Defend", "cmd_defend", "H"],
-	["explore", "Explore", "cmd_explore", "X"], ["build", "Build", "cmd_build", "B"], ["gather", "Gather", "cmd_gather", "G"],
-	["patrol", "Patrol", "cmd_patrol", "P"], ["auto", "Auto", "cmd_auto", "U"], ["retreat", "Retreat", "cmd_retreat", "R"]]
+	["explore", "Explore", "cmd_explore", "X"], ["patrol", "Patrol", "cmd_patrol", "P"], ["escort", "Escort", "cmd_escort", "Y"],
+	["auto", "Auto", "cmd_auto", "U"], ["retreat", "Retreat", "cmd_retreat", "R"]]
+## Ability shortcut slots bound in App ("ability_1".."ability_9").
+const ABILITY_HOTKEYS := 9
 
 var g: Game
 var root: Control
@@ -43,6 +45,11 @@ var _t := 0.0
 var _seen_notes := 0
 var _top_bar: Control
 var _command_panel: Control
+var _command_scroll: ScrollContainer
+var _command_stack: VBoxContainer
+var _command_row: HBoxContainer
+var _order_row: HBoxContainer
+var _order_buttons: Array[Button] = []
 var _touch_controls: Control
 var _box_select_button: Button
 var _minimap_button: Button
@@ -53,6 +60,17 @@ var _place_confirm: Button
 var _portrait_panel: PanelContainer
 var _top_row: HBoxContainer
 var _compact := false
+var _recipient_label: Label
+var _recipient_icon: TextureRect
+var _recipient_swatch: ColorRect
+var _ability_row: HBoxContainer
+var _ability_scroll: ScrollContainer
+var _ability_separator: VSeparator
+var _colony_buttons: Array[Button] = []
+var _ability_signature := ""
+var _ability_buttons: Dictionary = {}
+var _squad_toggle: Button
+var _ability_shortcuts: Array[String] = []
 
 
 func setup(game: Game) -> void:
@@ -77,6 +95,20 @@ func setup(game: Game) -> void:
 	squad_panel = SquadPanel.new()
 	root.add_child(squad_panel)
 	squad_panel.setup(g, self)
+	_squad_toggle = UiTheme.button(Loc.t("Squad menu"), "ui_squad")
+	_squad_toggle.custom_minimum_size = Vector2(108, 44)
+	_squad_toggle.anchor_left = 0.0
+	_squad_toggle.anchor_right = 0.0
+	_squad_toggle.anchor_top = 0.0
+	_squad_toggle.anchor_bottom = 0.0
+	_squad_toggle.offset_left = 8
+	_squad_toggle.offset_right = 116
+	_squad_toggle.offset_top = 64
+	_squad_toggle.offset_bottom = 108
+	_squad_toggle.pressed.connect(func() -> void:
+		squad_panel.visible = not squad_panel.visible
+		_squad_toggle.visible = not squad_panel.visible)
+	root.add_child(_squad_toggle)
 	_build_command_bar()
 	info_panel = InfoPanel.new()
 	root.add_child(info_panel)
@@ -108,11 +140,22 @@ func setup(game: Game) -> void:
 	Loc.language_changed.connect(_refresh_language)
 
 
+
 func _refresh_language() -> void:
 	_update_top()
+	_squad_toggle.text = Loc.t("Squad menu")
 	_on_mode(g.input_ctl.mode)
 	info_panel.refresh(true)
 	squad_panel.refresh(true)
+	for i in _colony_buttons.size():
+		_colony_buttons[i].text = Loc.t("Build" if i == 0 else "Gather")
+	for command: Array in COMMANDS:
+		var id := str(command[0])
+		var button: Button = _cmd_buttons[id]
+		var box := button.get_child(0) as VBoxContainer
+		(box.get_child(1) as Label).text = Loc.t(str(command[1]))
+		button.tooltip_text = "%s (%s)\\n%s" % [Loc.t(str(command[1])), command[3], Loc.t(_cmd_help(id))]
+	_update_commands()
 	roster._sig = ""
 	roster.refresh()
 	_trade_count = -1
@@ -246,7 +289,7 @@ func _build_touch_controls() -> void:
 	_minimap_button.offset_right = -8
 	_minimap_button.offset_top = 72
 	_minimap_button.offset_bottom = 116
-	_minimap_button.pressed.connect(func() -> void: minimap.visible = not minimap.visible)
+	_minimap_button.pressed.connect(_toggle_minimap)
 	_touch_controls.add_child(_minimap_button)
 	_details_button = UiTheme.button(Loc.t("Details"), "ui_people")
 	_details_button.custom_minimum_size = Vector2(100, 44)
@@ -307,11 +350,21 @@ func show_touch_detail(text: String) -> void:
 	_tooltip_panel.position = Vector2(12, 70)
 
 
+func _toggle_minimap() -> void:
+	minimap.visible = not minimap.visible
+	if _compact:
+		_rotate_left.visible = minimap.visible
+		_rotate_right.visible = minimap.visible
+		root.move_child(_touch_controls, -1)
+
+
 func _update_responsive() -> void:
 	if not is_instance_valid(root):
 		return
 	var size := App.screen_size()
-	_compact = size.x < 1300.0 or size.y < 720.0
+	var layout_size := get_viewport().get_visible_rect().size
+	_compact = size.x < 950.0 or size.y < 560.0
+	_recipient_label.custom_minimum_size = Vector2(100, 0) if _compact else Vector2(150, 0)
 	squad_panel.set_compact(_compact)
 	if is_instance_valid(_portrait_panel):
 		_portrait_panel.visible = size.y > size.x
@@ -319,43 +372,58 @@ func _update_responsive() -> void:
 		_portrait_panel.offset_left = -portrait_width * 0.5
 		_portrait_panel.offset_right = portrait_width * 0.5
 	if _compact:
+		_squad_toggle.visible = false
+		squad_panel.visible = true
 		squad_panel.anchor_left = 0.0
 		squad_panel.anchor_right = 0.0
+		squad_panel.anchor_top = 1.0
+		squad_panel.anchor_bottom = 1.0
 		squad_panel.offset_left = 8
-		squad_panel.offset_right = minf(500.0, size.x - 16.0)
-		squad_panel.offset_top = -380
-		squad_panel.offset_bottom = -124
-		# the minimap becomes a drawer under the Map button, above the other panels
-		minimap.anchor_left = 1.0
-		minimap.anchor_right = 1.0
+		squad_panel.offset_right = 480
+		squad_panel.offset_bottom = -8
+		squad_panel.grow_horizontal = Control.GROW_DIRECTION_END
+		squad_panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
+		minimap.anchor_left = 0.0
+		minimap.anchor_right = 0.0
 		minimap.anchor_top = 0.0
 		minimap.anchor_bottom = 0.0
-		minimap.offset_left = -(Minimap.SIZE + 24 + 52) - 8
-		minimap.offset_right = -8
+		minimap.offset_left = 8
+		minimap.offset_right = 8 + Minimap.SIZE + 24 + 52
 		minimap.offset_top = 124
 		minimap.offset_bottom = 124 + Minimap.SIZE + 30
 		minimap.visible = false
 		root.move_child(minimap, -1)
+		info_panel.anchor_top = 0.0
+		info_panel.anchor_bottom = 0.0
 		info_panel.anchor_left = 1.0
 		info_panel.anchor_right = 1.0
-		info_panel.offset_left = -minf(380.0, size.x - 16.0)
+		info_panel.offset_left = -340.0
 		info_panel.offset_right = -8
-		info_panel.offset_top = 60
-		info_panel.offset_bottom = -112
+		info_panel.offset_top = 176
+		info_panel.offset_bottom = layout_size.y - 112
 		_notes.custom_minimum_size.x = minf(340.0, size.x * 0.42)
 		for pair: Array in _speed_buttons:
 			(pair[1] as Button).custom_minimum_size = Vector2(40, 44)
 	else:
-		squad_panel.anchor_left = 0.5
-		squad_panel.anchor_right = 0.5
-		squad_panel.offset_left = -625
-		squad_panel.offset_right = -80
-		squad_panel.offset_top = -380
-		squad_panel.offset_bottom = -140
+		_squad_toggle.visible = false
+		_squad_toggle.custom_minimum_size = Vector2(108, 44)
+		# Squad roster bottom-left beside the minimap; it sizes itself to its content and grows
+		# upward, so the command bar can sit apart from it at the bottom right.
+		squad_panel.visible = true
+		squad_panel.anchor_left = 0.0
+		squad_panel.anchor_right = 0.0
+		squad_panel.anchor_top = 1.0
+		squad_panel.anchor_bottom = 1.0
+		squad_panel.grow_horizontal = Control.GROW_DIRECTION_END
+		squad_panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
+		squad_panel.offset_left = 10 + Minimap.SIZE + 24 + 52 + 8
+		squad_panel.offset_right = squad_panel.offset_left
+		squad_panel.offset_bottom = -10
+		squad_panel.offset_top = -10
+		info_panel.anchor_top = 1.0
+		info_panel.anchor_bottom = 1.0
 		info_panel.offset_left = -352
 		info_panel.offset_right = -10
-		info_panel.offset_top = -660
-		info_panel.offset_bottom = -10
 		minimap.anchor_left = 0.0
 		minimap.anchor_right = 0.0
 		minimap.anchor_top = 1.0
@@ -367,17 +435,18 @@ func _update_responsive() -> void:
 		minimap.visible = true
 	if is_instance_valid(_rotate_left) and is_instance_valid(_rotate_right):
 		if _compact:
-			for pair: Array in [[_rotate_left, 8.0], [_rotate_right, 52.0]]:
+			for pair: Array in [[_rotate_left, 18.0], [_rotate_right, 62.0]]:
 				var button := pair[0] as Button
 				button.custom_minimum_size = Vector2(40, 40)
 				button.anchor_left = 0.0
 				button.anchor_right = 0.0
-				button.anchor_top = 1.0
-				button.anchor_bottom = 1.0
+				button.anchor_top = 0.0
+				button.anchor_bottom = 0.0
 				button.offset_left = float(pair[1])
 				button.offset_right = float(pair[1]) + 40.0
-				button.offset_top = -54.0
-				button.offset_bottom = -14.0
+				button.offset_top = 124.0 + Minimap.SIZE - 48.0
+				button.offset_bottom = 124.0 + Minimap.SIZE - 8.0
+				button.visible = minimap.visible
 		else:
 			for pair: Array in [[_rotate_left, 10.0 + Minimap.SIZE - 112.0], [_rotate_right, 10.0 + Minimap.SIZE - 74.0]]:
 				var button := pair[0] as Button
@@ -391,11 +460,12 @@ func _update_responsive() -> void:
 				button.offset_right = float(pair[1]) + 32.0
 				button.offset_top = -(Minimap.SIZE + 30.0) + 2.0
 				button.offset_bottom = -(Minimap.SIZE + 30.0) + 34.0
+				button.visible = true
 	if is_instance_valid(_box_select_button):
 		var touch_ui := App.is_touch() or App.is_mobile_web()
 		_box_select_button.visible = touch_ui
-		_minimap_button.visible = touch_ui
-		_details_button.visible = touch_ui and _compact
+		_minimap_button.visible = touch_ui or _compact
+		_details_button.visible = _compact
 		_place_confirm.visible = touch_ui and g.input_ctl.mode.begins_with("build:")
 		_touch_controls.get_child(_touch_controls.get_child_count() - 2).visible = touch_ui and g.input_ctl.mode != ""
 	if _compact and _top_row:
@@ -450,23 +520,70 @@ func _update_responsive() -> void:
 		_day_label.add_theme_font_size_override("font_size", 20)
 		for pair: Array in _speed_buttons:
 			(pair[1] as Button).custom_minimum_size = Vector2(44, 40)
-	if _compact and _command_panel:
-		var half_width := minf(316.0, size.x * 0.5 - 8.0)
-		_command_panel.offset_left = -half_width
-		_command_panel.offset_right = half_width
-		_command_panel.offset_top = -108
-		_command_panel.offset_bottom = -4
-		for id: String in _cmd_buttons:
-			var button: Button = _cmd_buttons[id]
-			button.custom_minimum_size = Vector2(48, 72) if size.x < 700.0 else Vector2(62, 88)
+	if _compact:
+		for colony_button: Button in _colony_buttons:
+			colony_button.custom_minimum_size = Vector2(90, 64)
+		for button: Button in _cmd_buttons.values():
+			button.custom_minimum_size = Vector2(64, 64)
 			var box := button.get_child(0) as VBoxContainer
-			(box.get_child(0) as TextureRect).custom_minimum_size = Vector2(28, 28) if size.x < 700.0 else Vector2(40, 40)
-			(box.get_child(1) as Label).add_theme_font_size_override("font_size", 11 if size.x < 700.0 else 14)
+			(box.get_child(0) as TextureRect).custom_minimum_size = Vector2(26, 26)
+			(box.get_child(1) as Label).add_theme_font_size_override("font_size", 10)
+		for button: Button in _ability_buttons.values():
+			button.custom_minimum_size = Vector2(64, 64)
+		_ability_scroll.custom_minimum_size.y = 64
 	else:
-		_command_panel.offset_left = -72
-		_command_panel.offset_right = -72 + 9 * 68 + 24
-		_command_panel.offset_top = -118
+		for colony_button: Button in _colony_buttons:
+			colony_button.custom_minimum_size = Vector2(96, 58)
+		for button: Button in _cmd_buttons.values():
+			button.custom_minimum_size = Vector2(66, 58)
+			var box := button.get_child(0) as VBoxContainer
+			(box.get_child(0) as TextureRect).custom_minimum_size = Vector2(26, 26)
+			(box.get_child(1) as Label).add_theme_font_size_override("font_size", 12)
+		for button: Button in _ability_buttons.values():
+			button.custom_minimum_size = Vector2(58, 58)
+		_ability_scroll.custom_minimum_size.y = 58
+	_update_ability_scroll_width()
+	if _compact:
+		_command_panel.anchor_left = 0.0
+		_command_panel.anchor_right = 0.0
+		_command_panel.grow_horizontal = Control.GROW_DIRECTION_END
+		_command_panel.offset_left = 490
+		_command_panel.offset_right = layout_size.x - 8
+		_command_panel.offset_bottom = -8
+	else:
+		# Bottom-right, apart from the squad roster; sized to its two rows of buttons.
+		_command_panel.anchor_left = 1.0
+		_command_panel.anchor_right = 1.0
+		_command_panel.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+		_command_panel.offset_left = -10
+		_command_panel.offset_right = -10
 		_command_panel.offset_bottom = -10
+	_command_panel.anchor_top = 1.0
+	_command_panel.anchor_bottom = 1.0
+	_command_panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_configure_command_rows()
+	_update_command_bar_height()
+
+
+func _configure_command_rows() -> void:
+	if not is_instance_valid(_command_row):
+		return
+	if _compact:
+		_command_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+		_order_row.visible = false
+		for button: Button in _order_buttons:
+			if button.get_parent() == _order_row:
+				_order_row.remove_child(button)
+				_command_row.add_child(button)
+				_command_row.move_child(button, _command_row.get_child_count() - 3)
+	else:
+		_command_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		_order_row.visible = true
+		for button: Button in _order_buttons:
+			if button.get_parent() == _command_row:
+				_command_row.remove_child(button)
+				_order_row.add_child(button)
+	_command_scroll.scroll_horizontal = 0
 func _on_speed(s: int) -> void:
 	for pair: Array in _speed_buttons:
 		(pair[1] as Button).set_pressed_no_signal(int(pair[0]) == s)
@@ -567,104 +684,439 @@ func _note_clicked(n: Dictionary) -> void:
 # --- command bar -------------------------------------------------------------------------------
 
 func _build_command_bar() -> void:
-	var p := UiTheme.panel()
-	p.name = "CommandBar"
-	root.add_child(p)
-	_command_panel = p
-	p.anchor_left = 0.5
-	p.anchor_right = 0.5
-	p.anchor_top = 1.0
-	p.anchor_bottom = 1.0
-	p.offset_left = -72
-	p.offset_right = -72 + 9 * 68 + 24
-	p.offset_top = -118
-	p.offset_bottom = -10
-	var h := UiTheme.hbox(6)
-	p.add_child(h)
-	for c: Array in COMMANDS:
-		var id := str(c[0])
-		var b := Button.new()
-		b.focus_mode = Control.FOCUS_NONE
-		b.custom_minimum_size = Vector2(62, 88)
-		b.tooltip_text = "%s (%s)\n%s" % [Loc.t(str(c[1])), c[3], Loc.t(_cmd_help(id))]
-		var v := UiTheme.vbox(2)
-		v.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		v.alignment = BoxContainer.ALIGNMENT_CENTER
-		b.add_child(v)
-		var ic := UiTheme.icon(str(c[2]), 40)
-		ic.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		v.add_child(ic)
-		var l := UiTheme.label(Loc.t(str(c[1])), 14)
-		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		v.add_child(l)
-		b.pressed.connect(func() -> void: command(id))
-		h.add_child(b)
-		_cmd_buttons[id] = b
-
+	var panel := UiTheme.panel()
+	panel.name = "CommandBar"
+	root.add_child(panel)
+	_command_panel = panel
+	panel.anchor_left = 0.0
+	panel.anchor_right = 0.0
+	panel.anchor_top = 1.0
+	panel.anchor_bottom = 1.0
+	panel.offset_left = 330
+	panel.offset_right = 1912
+	panel.offset_top = -150
+	panel.offset_bottom = -8
+	_command_scroll = ScrollContainer.new()
+	_command_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_command_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	panel.add_child(_command_scroll)
+	_command_stack = VBoxContainer.new()
+	_command_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_command_stack.add_theme_constant_override("separation", 4)
+	_command_scroll.add_child(_command_stack)
+	_command_row = UiTheme.hbox(6)
+	_command_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_order_row = UiTheme.hbox(6)
+	_order_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_command_stack.add_child(_command_row)
+	_command_stack.add_child(_order_row)
+	var recipient := UiTheme.hbox(4)
+	_recipient_swatch = ColorRect.new()
+	_recipient_swatch.custom_minimum_size = Vector2(6, 24)
+	recipient.add_child(_recipient_swatch)
+	_recipient_icon = UiTheme.icon("ui_squad", 22)
+	recipient.add_child(_recipient_icon)
+	_recipient_label = UiTheme.label(Loc.t("No squad"), 13)
+	_recipient_label.custom_minimum_size = Vector2(126, 0)
+	_recipient_label.clip_text = true
+	recipient.add_child(_recipient_label)
+	_command_row.add_child(recipient)
+	var colony_row := UiTheme.hbox(4)
+	for entry: Array in [["build", "Build", "cmd_build"], ["gather", "Gather", "cmd_gather"]]:
+		var colony_button := UiTheme.button(Loc.t(str(entry[1])), str(entry[2]))
+		colony_button.custom_minimum_size = Vector2(88, 54)
+		colony_button.tooltip_text = Loc.t(_cmd_help(str(entry[0])))
+		var command_id := str(entry[0])
+		colony_button.pressed.connect(func() -> void: command(command_id))
+		colony_row.add_child(colony_button)
+		_colony_buttons.append(colony_button)
+	_command_row.add_child(colony_row)
+	for command: Array in COMMANDS:
+		var id := str(command[0])
+		var button := Button.new()
+		button.focus_mode = Control.FOCUS_NONE
+		button.custom_minimum_size = Vector2(52, 50)
+		button.tooltip_text = "%s (%s)\\n%s" % [Loc.t(str(command[1])), command[3], Loc.t(_cmd_help(id))]
+		var box := UiTheme.vbox(2)
+		box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		box.alignment = BoxContainer.ALIGNMENT_CENTER
+		button.add_child(box)
+		var icon := UiTheme.icon(str(command[2]), 22)
+		icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		box.add_child(icon)
+		var label := UiTheme.label(Loc.t(str(command[1])), 10)
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		box.add_child(label)
+		button.pressed.connect(func() -> void: command(id))
+		_order_row.add_child(button)
+		_order_buttons.append(button)
+		_cmd_buttons[id] = button
+	_ability_separator = VSeparator.new()
+	_ability_separator.visible = false
+	_command_row.add_child(_ability_separator)
+	_ability_scroll = ScrollContainer.new()
+	_ability_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_ability_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_ability_scroll.custom_minimum_size.y = 56
+	_ability_scroll.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_ability_scroll.visible = false
+	_command_row.add_child(_ability_scroll)
+	_ability_row = UiTheme.hbox(5)
+	_ability_row.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_ability_scroll.add_child(_ability_row)
 
 func _cmd_help(id: String) -> String:
 	return {"move": "Click a destination.", "attack": "Click an enemy or camp (right-click also attacks).",
 		"defend": "Hold an area and engage anything that comes close.", "explore": "Pick a region: they explore it, loot what they find and report back.",
 		"build": "Place buildings for your settlers to construct.", "gather": "Designate logging, mining, forage and farm zones; set work priorities.",
-		"patrol": "Walk between here and the clicked point, fighting on the way.", "auto": "Full delegation: defend home, explore, clear weak camps, patrol.",
+		"patrol": "Walk between here and the clicked point, fighting on the way.", "escort": "Follow and protect one of your units.",
+		"auto": "Full delegation: defend home, explore, clear weak camps, patrol.",
 		"retreat": "Fall back to the hearth to heal, then resume."}.get(id, "")
+
+
+func command_squad_ids() -> Array[int]:
+	var ids: Array[int] = []
+	if squad_panel.all_squads_active:
+		for squad: Squad in g.world.squads:
+			if not squad.members.is_empty():
+				ids.append(squad.id)
+		return ids
+	var selected: Dictionary = {}
+	for unit: Unit in g.selected_units():
+		if unit.squad_id >= 0:
+			selected[unit.squad_id] = true
+	if not selected.is_empty():
+		for squad_id_variant in selected.keys():
+			ids.append(int(squad_id_variant))
+		ids.sort()
+		return ids
+	var viewed := g.world.get_squad(g.viewed_squad_id)
+	if viewed:
+		ids.append(viewed.id)
+	return ids
+
+
+func command_units() -> Array:
+	var units: Array = []
+	for squad_id: int in command_squad_ids():
+		var squad := g.world.get_squad(squad_id)
+		if squad == null:
+			continue
+		for unit_id: int in squad.members:
+			var unit := g.world.get_unit(unit_id)
+			if unit:
+				units.append(unit)
+	return units
+
+
+func _select_command_recipients(squad_ids: Array[int]) -> void:
+	var unit_ids: Array[int] = []
+	var focus := g.focus_unit()
+	if focus and squad_ids.has(focus.squad_id):
+		unit_ids.append(focus.id)
+	for squad_id: int in squad_ids:
+		var squad := g.world.get_squad(squad_id)
+		if squad == null:
+			continue
+		for unit_id: int in squad.members:
+			if not unit_ids.has(unit_id):
+				unit_ids.append(unit_id)
+	if not unit_ids.is_empty():
+		g.select_units(unit_ids)
 
 
 func command(id: String) -> void:
 	Sfx.play(&"ui_select")
-	match id:
-		"build":
-			build_menu.toggle("build")
-		"gather":
-			build_menu.toggle("gather")
-		"auto":
-			g.input_ctl.issue("auto")
-		"retreat":
-			g.input_ctl.issue("retreat")
-		_:
-			if g.selected_units().is_empty():
-				add_note({"text": Loc.t("Select a squad or unit first (click, drag, or keys 1–4)."), "kind": "info"}, 3.0)
-				return
-			g.input_ctl.set_mode("cmd:" + id)
+	if id == "build" or id == "gather":
+		build_menu.toggle(id)
+		return
+	var squad_ids := command_squad_ids()
+	if squad_ids.is_empty():
+		add_note({"text": Loc.t("Select a squad first."), "kind": "info"}, 3.0)
+		return
+	_select_command_recipients(squad_ids)
+	if id == "auto" or id == "retreat":
+		g.input_ctl.issue(id)
+		return
+	g.input_ctl.set_mode("cmd:" + id)
 
 
 func _update_commands() -> void:
-	var has_units := not g.selected_units().is_empty()
-	var sq := g.world.get_squad(g.sel_squad) if g.sel_squad >= 0 else null
-	var active := str(sq.order.get("type", "")) if sq else ""
-	var fu := g.focus_unit()
-	if sq == null and fu and not fu.order.is_empty():
-		active = str(fu.order.get("type", ""))
+	var squad_ids := command_squad_ids()
+	var active := ""
+	if not squad_ids.is_empty():
+		var first := g.world.get_squad(squad_ids[0])
+		active = str(first.order.get("type", "")) if first else ""
+		for squad_id: int in squad_ids.slice(1):
+			var squad := g.world.get_squad(squad_id)
+			if squad == null or str(squad.order.get("type", "")) != active:
+				active = ""
+				break
+	var recipient_color: Color = UiTheme.BORDER_DIM
+	if squad_panel.all_squads_active:
+		_recipient_label.text = Loc.t("All squads")
+		recipient_color = UiTheme.ACCENT
+	elif squad_ids.size() == 1:
+		var squad := g.world.get_squad(squad_ids[0])
+		_recipient_label.text = squad.name if squad else Loc.t("No squad")
+		recipient_color = squad.color() if squad else UiTheme.BORDER_DIM
+	elif squad_ids.size() > 1:
+		_recipient_label.text = Loc.t("%d squads") % squad_ids.size()
+		recipient_color = UiTheme.ACCENT
+	else:
+		_recipient_label.text = Loc.t("No squad")
+	_recipient_label.tooltip_text = _recipient_label.text
+	_recipient_swatch.color = recipient_color
+	_recipient_icon.texture = Icons.get_icon("ui_squad" if not squad_ids.is_empty() else "ui_target")
 	for id: String in _cmd_buttons:
-		var b: Button = _cmd_buttons[id]
-		b.disabled = not has_units and not (id in ["build", "gather"])
-		var on := (g.input_ctl.mode == "cmd:" + id) or (active == id and id in ["auto", "explore", "patrol", "defend", "retreat"])
-		if id == "build":
-			on = build_menu.visible and build_menu.tab == "build"
-		elif id == "gather":
-			on = build_menu.visible and build_menu.tab == "gather"
-		b.add_theme_stylebox_override("normal", UiTheme.button_box("pressed" if on else "normal"))
+		var button: Button = _cmd_buttons[id]
+		button.disabled = squad_ids.is_empty()
+		var on := (g.input_ctl.mode == "cmd:" + id) or (active != "" and active == id)
+		button.add_theme_stylebox_override("normal", UiTheme.button_box("pressed" if on else "normal"))
+	squad_panel.refresh(false)
+	_refresh_abilities(command_units())
+	_update_command_bar_height()
+
+
+func _update_command_bar_height() -> void:
+	if _command_panel == null:
+		return
+	if _compact:
+		_command_panel.offset_top = _command_panel.offset_bottom - 80.0
+		return
+	# Desktop: the panel grows upward to its two rows; the details panel ends above it.
+	_command_panel.offset_top = _command_panel.offset_bottom
+	var bar_height := _command_panel.get_combined_minimum_size().y
+	info_panel.offset_bottom = _command_panel.offset_bottom - bar_height - 10.0
+
+
+func _refresh_abilities(units: Array) -> void:
+	var grouped: Dictionary = {}
+	for unit: Unit in units:
+		for group_ability_id: String in g.world.combat.ability_ids(unit):
+			if not grouped.has(group_ability_id):
+				grouped[group_ability_id] = []
+			(grouped[group_ability_id] as Array).append(unit)
+	var signature_ids: Array = grouped.keys()
+	signature_ids.sort()
+	var signature_parts: Array[String] = []
+	for signature_variant in signature_ids:
+		var signature_ability_id := str(signature_variant)
+		var owner_ids: Array[int] = []
+		for owner: Unit in grouped[signature_ability_id]:
+			owner_ids.append(owner.id)
+		owner_ids.sort()
+		var owner_keys: Array[String] = []
+		for owner_id: int in owner_ids:
+			owner_keys.append(str(owner_id))
+		signature_parts.append("%s:%s" % [signature_ability_id, ",".join(owner_keys)])
+	var signature := ";".join(signature_parts)
+	if signature != _ability_signature:
+		_rebuild_ability_row(grouped)
+		_ability_signature = signature
+	_ability_scroll.visible = not grouped.is_empty()
+	_ability_separator.visible = not grouped.is_empty()
+	if grouped.is_empty():
+		return
+	var ability_ids: Array = grouped.keys()
+	ability_ids.sort()
+	for ability_variant in ability_ids:
+		var ability_id := str(ability_variant)
+		var owners: Array = grouped[ability_id]
+		var button: Button = _ability_buttons.get(ability_id)
+		if button == null:
+			continue
+		var ready_count := 0
+		var remaining := 0.0
+		var cooldown := 0.0
+		var ability_name := ability_id.replace("_", " ").capitalize()
+		for unit: Unit in owners:
+			var info := g.world.combat.ability_info(unit, ability_id)
+			if bool(info.get("ready", false)):
+				ready_count += 1
+			else:
+				remaining = maxf(remaining, float(info.get("cooldown_left", 0.0)))
+			cooldown = maxf(cooldown, float(info.get("cooldown", 0.0)))
+			ability_name = Loc.t(str(info.get("name", ability_name)))
+		button.disabled = ready_count == 0
+		var badge := button.get_meta("ability_badge") as Label
+		badge.text = "%d/%d" % [ready_count, owners.size()]
+		var cooldown_overlay := button.get_meta("cooldown_overlay") as ColorRect
+		var ratio := clampf(remaining / cooldown, 0.0, 1.0) if cooldown > 0.0 else (1.0 if remaining > 0.0 else 0.0)
+		cooldown_overlay.visible = ratio > 0.0
+		cooldown_overlay.offset_bottom = -16.0 + 32.0 * ratio
+		var key_label := _ability_key_label(_ability_shortcuts.find(ability_id))
+		var status := Loc.t("Ready: %d/%d") % [ready_count, owners.size()]
+		if ready_count == 0:
+			status += " · %.0fs" % remaining
+		button.tooltip_text = ("%s (%s) · %s" % [ability_name, key_label, status]) if key_label != "" else ("%s · %s" % [ability_name, status])
+
+
+## Key bound to the ability shortcut slot `index` (App's "ability_N" actions), or "".
+func _ability_key_label(index: int) -> String:
+	if index < 0 or index >= ABILITY_HOTKEYS:
+		return ""
+	for event: InputEvent in InputMap.action_get_events("ability_%d" % (index + 1)):
+		if event is InputEventKey:
+			var key := event as InputEventKey
+			return OS.get_keycode_string(key.keycode if key.keycode != KEY_NONE else key.physical_keycode)
+	return ""
+
+
+
+func _rebuild_ability_row(grouped: Dictionary) -> void:
+	_ability_shortcuts.clear()
+	_ability_buttons.clear()
+	for child in _ability_row.get_children():
+		if child is Button:
+			child.queue_free()
+	var ability_ids: Array = grouped.keys()
+	ability_ids.sort()
+	for ability_variant in ability_ids:
+		var ability_id := str(ability_variant)
+		var shortcut := _ability_shortcuts.size()
+		if shortcut < ABILITY_HOTKEYS:
+			_ability_shortcuts.append(ability_id)
+		var button := Button.new()
+		button.focus_mode = Control.FOCUS_NONE
+		button.custom_minimum_size = Vector2(64, 64) if _compact else Vector2(58, 58)
+		button.set_meta("ability_id", ability_id)
+		var icon := TextureRect.new()
+		icon.anchor_left = 0.5
+		icon.anchor_right = 0.5
+		icon.anchor_top = 0.5
+		icon.anchor_bottom = 0.5
+		icon.offset_left = -16
+		icon.offset_right = 16
+		icon.offset_top = -16
+		icon.offset_bottom = 16
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.texture = Icons.get_icon("abl_" + ability_id)
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		button.add_child(icon)
+		var cooldown_overlay := ColorRect.new()
+		cooldown_overlay.color = Color(0.02, 0.03, 0.06, 0.62)
+		cooldown_overlay.anchor_left = 0.5
+		cooldown_overlay.anchor_right = 0.5
+		cooldown_overlay.anchor_top = 0.5
+		cooldown_overlay.anchor_bottom = 0.5
+		cooldown_overlay.offset_left = -16
+		cooldown_overlay.offset_right = 16
+		cooldown_overlay.offset_top = -16
+		cooldown_overlay.offset_bottom = -16
+		cooldown_overlay.visible = false
+		cooldown_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		button.add_child(cooldown_overlay)
+		button.set_meta("cooldown_overlay", cooldown_overlay)
+		var badge := Label.new()
+		badge.anchor_left = 1.0
+		badge.anchor_right = 1.0
+		badge.anchor_top = 1.0
+		badge.anchor_bottom = 1.0
+		badge.offset_left = -34
+		badge.offset_right = 0
+		badge.offset_top = -16
+		badge.offset_bottom = 0
+		badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		badge.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		badge.add_theme_font_size_override("font_size", 9)
+		badge.add_theme_color_override("font_color", Color.WHITE)
+		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		button.add_child(badge)
+		button.set_meta("ability_badge", badge)
+		var aid: String = ability_id
+		button.pressed.connect(func() -> void: _activate_ability(aid))
+		_ability_buttons[ability_id] = button
+		_ability_row.add_child(button)
+	_update_ability_scroll_width()
+
+
+func _update_ability_scroll_width() -> void:
+	var width := 0.0
+	for button: Button in _ability_buttons.values():
+		width += button.custom_minimum_size.x
+	if _ability_buttons.size() > 1:
+		width += 5.0 * float(_ability_buttons.size() - 1)
+	_ability_scroll.custom_minimum_size.x = maxf(56.0, width)
+
+
+func _activate_ability(ability_id: String) -> void:
+	var owners: Array = []
+	var target_type := "none"
+	for unit: Unit in command_units():
+		if g.world.combat.ability_ids(unit).has(ability_id):
+			owners.append(unit)
+			target_type = str(g.world.combat.ability_info(unit, ability_id).get("target", target_type))
+	if owners.is_empty():
+		return
+	if target_type == "none":
+		var used := 0
+		var failure := ""
+		for unit: Unit in owners:
+			if bool(g.world.combat.ability_info(unit, ability_id).get("ready", false)):
+				failure = g.world.combat.use_ability(unit, ability_id, {})
+				if failure == "":
+					used += 1
+		if failure != "":
+			var reason_keys := {
+				"cooldown": "reason.cooldown",
+				"no_target": "reason.no_target",
+				"downed": "reason.downed",
+				"unknown": "reason.unknown",
+			}
+			add_note({"text": Loc.t(str(reason_keys.get(failure, "reason.unknown"))), "kind": "info"}, 2.0)
+		elif used > 0:
+			add_note({"text": Loc.t("%d used ability: %s") % [used, Loc.t(ability_id.replace("_", " ").capitalize())], "kind": "good"}, 2.0)
+	else:
+		_select_command_recipients(command_squad_ids())
+		g.input_ctl.set_mode("ability:" + ability_id)
+
+
+
+func ability_button_for(ability_id: String) -> Button:
+	for child in _ability_row.get_children():
+		if child is Button and str((child as Button).get_meta("ability_id", "")) == ability_id:
+			return child as Button
+	return null
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if get_viewport().gui_get_focus_owner() is LineEdit:
+		return
+	for i in mini(ABILITY_HOTKEYS, _ability_shortcuts.size()):
+		if event.is_action_pressed("ability_%d" % (i + 1)):
+			_activate_ability(_ability_shortcuts[i])
+			get_viewport().set_input_as_handled()
+			return
 	for c: Array in COMMANDS:
 		if event.is_action_pressed("cmd_" + str(c[0])):
 			command(str(c[0]))
 			get_viewport().set_input_as_handled()
 			return
-	if event.is_action_pressed("cmd_escort") and not g.selected_units().is_empty():
-		g.input_ctl.set_mode("cmd:escort")
+	if event.is_action_pressed("cmd_build"):
+		command("build")
+		get_viewport().set_input_as_handled()
+		return
+	if event.is_action_pressed("cmd_gather"):
+		command("gather")
 		get_viewport().set_input_as_handled()
 		return
 	if event.is_action_pressed("toggle_help"):
 		_help.visible = not _help.visible
-	elif event.is_action_pressed("cancel") and g.input_ctl.mode == "" and g.sel_units.is_empty() and g.sel_building < 0 and g.sel_site < 0:
-		if build_menu.visible:
+	elif event.is_action_pressed("cancel") and g.input_ctl.mode == "":
+		if squad_panel.picker_open():
+			squad_panel.close_picker()
+		elif build_menu.visible:
 			build_menu.hide()
+		elif _help.visible:
+			_help.hide()
+		elif info_panel.mobile_collapsed == false and (App.is_touch() or App.is_mobile_web()):
+			info_panel.mobile_collapsed = true
+			info_panel.visible = false
 		else:
 			pause_menu.open()
 		get_viewport().set_input_as_handled()
-
 
 # --- trade -------------------------------------------------------------------------------------
 
@@ -766,7 +1218,8 @@ func _build_overlays() -> void:
 		"Left click: select unit / squad / building / site     Drag: box-select",
 		"Right click: move · attack enemy or camp · gather resource · trade (airship on a trade post)",
 		"W A S D / arrows / screen edge / middle drag: pan     Wheel: zoom     Q / E: rotate 90°",
-		"1–4 or Tab: select squads     Home: back to the hearth",
+		"1–9 or Tab: select squads (press twice to centre)     Home: back to the hearth",
+		"Z C V T N J K O I: squad abilities (shown on the command bar)",
 		"M Move  F Attack  H Defend  X Explore  P Patrol  Y Escort  U Auto  R Retreat",
 		"B Build menu  G Gather zones & work priorities",
 		"Space: pause     [ ] or , . : game speed",
@@ -783,13 +1236,15 @@ func _on_mode(m: String) -> void:
 	var text := ""
 	if m.begins_with("cmd:"):
 		text = Loc.t("%s: click a target  (right-click / Esc to cancel, Shift to keep)") % Loc.t(m.substr(4).capitalize())
+	elif m.begins_with("ability:"):
+		text = Loc.t("Target %s (right-click / Esc to cancel)") % Loc.t(m.substr(8).replace("_", " ").capitalize())
 	elif m.begins_with("build:"):
 		text = Loc.t("Place %s  (right-click / Esc to cancel, Shift to place several)") % Loc.def_name("buildings", m.substr(6))
 	elif m.begins_with("zone:"):
 		text = Loc.t("Drag a rectangle to mark a %s zone  (right-click / Esc to cancel)") % Loc.t(m.substr(5))
 	if App.is_touch() or App.is_mobile_web():
-		if m.begins_with("cmd:"):
-			text = Loc.t("Tap the target for %s  (Cancel to leave)") % Loc.t(m.substr(4).capitalize())
+		if m.begins_with("cmd:") or m.begins_with("ability:"):
+			text = Loc.t("Tap the target for %s  (Cancel to leave)") % Loc.t(m.substr(m.find(":") + 1).capitalize())
 		elif m.begins_with("build:"):
 			text = Loc.t("Tap a site for placement, then confirm or cancel.")
 		elif m.begins_with("zone:"):
@@ -800,7 +1255,9 @@ func _on_mode(m: String) -> void:
 
 func _on_selection() -> void:
 	info_panel.refresh(true)
-	squad_panel.refresh(true)
+	# not forced: rebuilding the member cards here would free the card under a click between
+	# its press and release, so the release fell through to the world and cleared the selection
+	squad_panel.refresh(false)
 
 
 func _process(delta: float) -> void:
@@ -832,5 +1289,11 @@ func _process(delta: float) -> void:
 	if _tooltip_panel.visible:
 		_tooltip.text = Loc.t(tip)
 		var mp := root.get_local_mouse_position()
-		_tooltip_panel.position = mp + (Vector2(18, -64) if touch_ui else Vector2(18, 22))
+		var tip_position := mp + (Vector2(18, -64) if touch_ui else Vector2(18, 22))
+		if _compact and info_panel.visible:
+			var tip_size := _tooltip_panel.get_combined_minimum_size()
+			var drawer_rect := info_panel.get_global_rect()
+			if Rect2(tip_position, tip_size).intersects(drawer_rect):
+				tip_position.x = maxf(8.0, drawer_rect.position.x - tip_size.x - 8.0)
+		_tooltip_panel.position = tip_position
 		_tooltip_panel.size = Vector2.ZERO

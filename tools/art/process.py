@@ -7,7 +7,7 @@ Needs numpy, Pillow and scipy:
 
 Outputs (all under game/):
 	assets/sprites/chars/<sheet>.png     3 frames x 4 rows (down, left, right, up) character / machine chips
-	assets/portraits/<id>.png            256 px square portraits
+	assets/portraits/<id>.png            128 px square portraits for UI display.
 	assets/sprites/props_atlas.png       tree / rock / plant billboards in one atlas
 	assets/textures/terrain_array.png    512 px seamless ground textures stacked vertically (Texture2DArray)
 	assets/sprites/buildings/<id>.png    building billboards (+ <id>_glow.png emission masks)
@@ -15,6 +15,7 @@ Outputs (all under game/):
 """
 import json
 import pathlib
+import re
 import sys
 
 import numpy as np
@@ -34,6 +35,8 @@ LOOKS = ["worker", "fighter", "ranger", "engineer", "scholar"]
 CHIP_SHEETS = {f"chip_{r}_{l}": (f"{r}_{l}_m", f"{r}_{l}_f", "feet") for r in RACES for l in LOOKS}
 CHIP_SHEETS.update({f"chip_{r}_{l}_v2": (f"{r}_{l}_m@v2", f"{r}_{l}_f@v2", "feet") for r in RACES for l in LOOKS})
 CHIP_SHEETS.update({f"chip_{r}_{l}_v3": (f"{r}_{l}_m@v3", f"{r}_{l}_f@v3", "feet") for r in RACES for l in LOOKS})
+CHIP_SHEETS.update({f"chip_{r}_worker_v4": (f"{r}_worker_m@v4", f"{r}_worker_f@v4", "feet") for r in RACES})
+CHIP_SHEETS.update({f"chip_{r}_worker_v5": (f"{r}_worker_m@v5", f"{r}_worker_f@v5", "feet") for r in RACES if r != "sylvan"})
 CHIP_SHEETS.update({
 	"chip_bandit_a": ("bandit_m", "bandit_f", "feet"),
 	"chip_bandit_b": ("bandit_archer", "bandit_captain", "feet"),
@@ -186,10 +189,14 @@ def save_png(rgba: np.ndarray, path: pathlib.Path, preset: str = "sprite") -> No
 
 
 IMPORT_PRESETS = {
-	# world sprites: mipmaps (zoomed-out cards stay clean), VRAM compressed with BPTC (BC7) so the
-	# painted art costs a quarter of the video memory of RGBA8 on integrated GPUs
+	# Character chips retain HEAD VRAM-compressed imports; 128px portraits limit UI residency.
 	"sprite": ('importer="texture"\ntype="CompressedTexture2D"', {
-		"compress/mode": 2, "compress/high_quality": "true", "mipmaps/generate": "true", "mipmaps/limit": -1,
+		"compress/mode": 1, "compress/high_quality": "false", "compress/lossy_quality": 0.85,
+		"compress/rdo_quality_loss": 1.0, "mipmaps/generate": "true", "mipmaps/limit": -1,
+		"process/fix_alpha_border": "true", "process/premult_alpha": "false", "process/size_limit": 0, "detect_3d/compress_to": 0}),
+	"portrait": ('importer="texture"\ntype="CompressedTexture2D"', {
+		"compress/mode": 1, "compress/high_quality": "false", "compress/lossy_quality": 0.9,
+		"compress/rdo_quality_loss": 1.0, "mipmaps/generate": "true", "mipmaps/limit": -1,
 		"process/fix_alpha_border": "true", "process/premult_alpha": "false", "process/size_limit": 0, "detect_3d/compress_to": 0}),
 	"ui": ('importer="texture"\ntype="CompressedTexture2D"', {
 		"compress/mode": 0, "mipmaps/generate": "false", "process/fix_alpha_border": "true", "detect_3d/compress_to": 0}),
@@ -204,28 +211,70 @@ def write_import(path: pathlib.Path, preset: str) -> None:
 	values differs (Godot then reimports the file on the next scan)."""
 	imp = path.with_name(path.name + ".import")
 	head, params = IMPORT_PRESETS[preset]
+	uid_line = ""
 	if imp.exists():
 		text = imp.read_text()
 		if head.split("\n")[0] in text and all(f"\n{k}={v}\n" in text for k, v in params.items()):
 			return
-	lines = ["[remap]", "", head, "", "[params]", ""] + [f"{k}={v}" for k, v in params.items()]
+		uid_match = re.search(r"(?m)^uid=.*$", text)
+		if uid_match:
+			uid_line = uid_match.group(0)
+	lines = ["[remap]", "", head]
+	if uid_line:
+		lines.append(uid_line)
+	lines += ["", "[params]", ""] + [f"{k}={v}" for k, v in params.items()]
 	imp.write_text("\n".join(lines) + "\n")
 
 
+def variant_suffix(asset_id: str) -> str:
+	match = re.search(r"@v(\d+)$", asset_id)
+	return f"_v{match.group(1)}" if match else ""
+
+
 def match_v2_import_settings(path: pathlib.Path) -> None:
-	if not path.stem.endswith("_v3"):
+	variant_match = re.search(r"_v(\d+)$", path.stem)
+	if not variant_match or int(variant_match.group(1)) < 3:
 		return
-	v2_import = path.with_name(path.name.removesuffix("_v3.png") + "_v2.png.import")
-	v3_import = path.with_name(path.name + ".import")
-	if not v2_import.is_file() or not v3_import.is_file():
+	base_stem = path.stem[:variant_match.start()]
+	source_import = path.with_name(f"{base_stem}_v2.png.import")
+	target_import = path.with_name(path.name + ".import")
+	if not source_import.is_file() or not target_import.is_file():
 		return
-	v2_text = v2_import.read_text()
-	v3_text = v3_import.read_text()
-	if "[params]" not in v2_text or "[params]" not in v3_text:
+	source_text = source_import.read_text()
+	target_text = target_import.read_text()
+	if "[params]" not in source_text or "[params]" not in target_text:
 		return
-	head = v3_text.split("[params]", 1)[0]
-	params = v2_text.split("[params]", 1)[1]
-	v3_import.write_text(head + "[params]" + params)
+	head = target_text.split("[params]", 1)[0]
+	params = source_text.split("[params]", 1)[1]
+	target_import.write_text(head + "[params]" + params)
+
+
+def match_building_view_import_settings(path: pathlib.Path, front_path: pathlib.Path) -> None:
+	"""Keep a back view's sampler settings identical to its matching front texture."""
+	source_import = front_path.with_name(front_path.name + ".import")
+	target_import = path.with_name(path.name + ".import")
+	if not source_import.is_file() or not target_import.is_file():
+		return
+	source_text = source_import.read_text()
+	target_text = target_import.read_text()
+	if "[params]" not in source_text or "[params]" not in target_text:
+		return
+	target_import.write_text(target_text.split("[params]", 1)[0] + "[params]" + source_text.split("[params]", 1)[1])
+
+
+def save_building_png(rgba: np.ndarray, path: pathlib.Path) -> None:
+	"""Stage a building image under build/ and atomically replace it without changing presets."""
+	staging = ROOT / "build" / "BuildingViews" / "process_staging"
+	staging.mkdir(parents=True, exist_ok=True)
+	temp_path = staging / path.name
+	save_png(rgba, temp_path)
+	temp_path.replace(path)
+	temp_import = temp_path.with_name(temp_path.name + ".import")
+	import_path = path.with_name(path.name + ".import")
+	if import_path.exists():
+		temp_import.unlink(missing_ok=True)
+	else:
+		temp_import.replace(import_path)
 
 
 def write_table(name: str, entries: list[dict]) -> None:
@@ -234,10 +283,10 @@ def write_table(name: str, entries: list[dict]) -> None:
 	old = {}
 	if path.exists():
 		for e in json.loads(path.read_text()).get("entries", []):
-			if v3_pair_files_exist(e["id"]):
+			if variant_pair_files_exist(e["id"]):
 				old[e["id"]] = e
 	for e in entries:
-		if v3_pair_files_exist(e["id"]):
+		if variant_pair_files_exist(e["id"]):
 			old[e["id"]] = e
 	doc = {"table": name, "entries": [old[k] for k in sorted(old)]}
 	path.write_text(json.dumps(doc, indent=1) + "\n")
@@ -247,11 +296,11 @@ def res(path: pathlib.Path) -> str:
 	return "res://" + str(path.relative_to(GAME))
 
 
-
-def v3_pair_files_exist(asset_id: str) -> bool:
-	if not asset_id.endswith("@v3"):
+def variant_pair_files_exist(asset_id: str) -> bool:
+	suffix = variant_suffix(asset_id)
+	if not suffix:
 		return True
-	file_id = asset_id.removesuffix("@v3") + "_v3.png"
+	file_id = asset_id.split("@", 1)[0] + suffix + ".png"
 	sprite = GAME / "assets" / "sprites" / "chars" / file_id
 	portrait = GAME / "assets" / "portraits" / file_id
 	return all(p.is_file() and p.with_name(p.name + ".import").is_file() for p in (sprite, portrait))
@@ -320,8 +369,8 @@ def process_chips(only: set[str]) -> None:
 		for half, out_id in ((0, left_id), (1, right_id)):
 			frames = [[trim(union_crop(img, cells[(r, half * 3 + c)])) for c in range(3)] for r in range(4)]
 			sheet, meta = build_chip(frames, mode)
-			variant = "_v3" if out_id.endswith("@v3") else "_v2" if out_id.endswith("@v2") else ""
-			file_id = out_id.split("@")[0] + variant
+			variant = variant_suffix(out_id)
+			file_id = out_id.split("@", 1)[0] + variant
 			out = GAME / "assets" / "sprites" / "chars" / f"{file_id}.png"
 			save_png(sheet, out)
 			entries.append({"id": out_id, "texture": res(out), "source": sheet_id, **meta})
@@ -369,6 +418,8 @@ def process_portraits(only: set[str]) -> None:
 	pairs = {f"portrait_{r}_{l}": (f"{r}_{l}_m", f"{r}_{l}_f") for r in RACES for l in LOOKS}
 	pairs.update({f"portrait_{r}_{l}_v2": (f"{r}_{l}_m@v2", f"{r}_{l}_f@v2") for r in RACES for l in LOOKS})
 	pairs.update({f"portrait_{r}_{l}_v3": (f"{r}_{l}_m@v3", f"{r}_{l}_f@v3") for r in RACES for l in LOOKS})
+	pairs.update({f"portrait_{r}_worker_v4": (f"{r}_worker_m@v4", f"{r}_worker_f@v4") for r in RACES})
+	pairs.update({f"portrait_{r}_worker_v5": (f"{r}_worker_m@v5", f"{r}_worker_f@v5") for r in RACES if r != "sylvan"})
 	pairs.update({"portrait_bandit_a": ("bandit_m", "bandit_f"), "portrait_bandit_b": ("bandit_archer", "bandit_captain")})
 	for pid, (left_id, right_id) in pairs.items():
 		if only and pid not in only:
@@ -385,13 +436,13 @@ def process_portraits(only: set[str]) -> None:
 			x0 = int(np.clip(cx - side // 2, half * i, half * (i + 1) - side))
 			# heads sit near the top of the generated busts: keep hats/ears, trim the chest
 			y0 = int(np.clip(h * 0.02, 0, h - side))
-			crop = Image.fromarray(img[y0:y0 + side, x0:x0 + side]).resize((256, 256), Image.Resampling.LANCZOS)
-			variant = "_v3" if out_id.endswith("@v3") else "_v2" if out_id.endswith("@v2") else ""
-			file_id = out_id.split("@")[0] + variant
+			crop = Image.fromarray(img[y0:y0 + side, x0:x0 + side]).resize((128, 128), Image.Resampling.LANCZOS)
+			variant = variant_suffix(out_id)
+			file_id = out_id.split("@", 1)[0] + variant
 			out = GAME / "assets" / "portraits" / f"{file_id}.png"
 			out.parent.mkdir(parents=True, exist_ok=True)
 			crop.save(out, optimize=True)
-			write_import(out, "ui")
+			write_import(out, "portrait")
 			match_v2_import_settings(out)
 			entries.append({"id": out_id, "texture": res(out), "source": pid})
 	if entries:
@@ -556,6 +607,16 @@ def glow_mask(rgba: np.ndarray) -> np.ndarray:
 	return (np.clip(soft * 1.6, 0, 1) * 255).astype(np.uint8)
 
 
+def cap_building_glow(glow: np.ndarray) -> np.ndarray:
+	"""Keep soft emission masks at or below the documented 512 px cap."""
+	h, w = glow.shape
+	scale = min(1.0, 512.0 / max(w, h))
+	if scale >= 1.0:
+		return glow
+	size = (max(1, round(w * scale)), max(1, round(h * scale)))
+	return np.asarray(Image.fromarray(glow).resize(size, Image.Resampling.LANCZOS))
+
+
 def base_width(mask: np.ndarray) -> tuple[float, float, float]:
 	"""Width and centre of the footprint diamond from the lower silhouette: (width, cx, bottom y)."""
 	ys, xs = np.nonzero(mask)
@@ -573,6 +634,74 @@ BUILDING_SHEETS = {"walls": ["palisade@0", "wall@0"]}
 # structures without lights: warm highlights on wood / stone must not glow at night
 NO_GLOW = {"palisade", "wall", "ruin_arch", "ruin_pillar", "ruin_wall", "ruin_statue", "construction",
 	"trade_mast", "windmill_sails", "wreck_airship", "bandit_tent"}
+BACK_VIEW_SOURCES = {
+	"b_hearth1_back": "b_hearth1", "b_hearth2_back": "b_hearth2", "b_hearth3_back": "b_hearth3",
+	"b_house_back": "b_house", "b_storehouse_back": "b_storehouse",
+	"b_smelter_back": "b_smelter", "b_windmill_back": "b_windmill", "b_workshop_back": "b_workshop",
+	"b_sky_dock_back": "b_sky_dock", "b_watchtower_back": "b_watchtower", "b_outpost_back": "b_outpost",
+	"b_bandit_tent_back": "b_bandit_tent", "b_bandit_hut_back": "b_bandit_hut",
+	"b_bandit_tower_back": "b_bandit_tower", "b_machine_spire_back": "b_machine_spire",
+	"b_machine_block_back": "b_machine_block", "b_machine_foundry_back": "b_machine_foundry",
+	"b_trade_hall_back": "b_trade_hall", "b_trade_stall_back": "b_trade_stall",
+	"b_wanderer_tent_back": "b_wanderer_tent", "b_ruin_vault_back": "b_ruin_vault",
+}
+SYMMETRIC_BUILDINGS = {
+	"campfire", "construction", "palisade", "wall", "ruin_arch", "ruin_pillar", "ruin_wall",
+	"ruin_statue", "trade_mast", "windmill_sails", "wreck_airship",
+}
+
+
+def process_building_backs(entries: list[dict], only: set[str]) -> None:
+	"""Attach opposite-side paintings to their matching front entry, using the front's scale."""
+	by_source = {raw_id: targets for raw_id, targets in BUILDING_IDS.items()}
+	for back_raw, front_raw in BACK_VIEW_SOURCES.items():
+		if only and front_raw not in only:
+			continue
+		path = raw_path(back_raw)
+		if path is None:
+			continue
+		img = load_rgba(path)
+		img = despill(img, foreground(img))
+		comps = components(img[..., 3] > 0, min_area=400, merge=3)
+		if not comps:
+			print(f"  WARN {back_raw}: empty")
+			continue
+		main = comps[0]
+		pad = 24
+		keep = [c for c in comps if c["x1"] > main["x0"] - pad and c["x0"] < main["x1"] + pad
+			and c["y1"] > main["y0"] - pad and c["y0"] < main["y1"] + pad]
+		crop = trim(union_crop(img, keep))
+		spr = bleed(resize(crop, min(1.0, BUILDING_MAX_W / crop.shape[1])))
+		bw, bcx, bby = base_width(spr[..., 3] > 128)
+		targets = by_source[front_raw]
+		glow = cap_building_glow(glow_mask(spr))
+		bid0, lv0 = targets[0].split("@")
+		stem = bid0 if lv0 == "0" else f"{bid0}_{lv0}"
+		out = GAME / "assets" / "sprites" / "buildings" / f"{stem}_back.png"
+		save_building_png(spr, out)
+		match_building_view_import_settings(out, out.with_name(f"{stem}.png"))
+		glow_path = None
+		if bid0 not in NO_GLOW and glow.max() > 0 and (glow > 128).sum() > 20:
+			glow_path = out.with_name(f"{stem}_back_glow.png")
+			save_building_png(glow, glow_path)
+			match_building_view_import_settings(glow_path, out.with_name(f"{stem}_glow.png"))
+		for target in targets:
+			bid, lv = target.split("@")
+			key = bid if lv == "0" else f"{bid}@{lv}"
+			front_key = "house@v1" if front_raw == "b_house2" else key
+			entry = next((e for e in entries if e["id"] == front_key), None)
+			if entry is None:
+				continue
+			entry["back_texture"] = res(out)
+			entry["back_size_px"] = [int(spr.shape[1]), int(spr.shape[0])]
+			entry["back_base_w_px"] = round(bw, 1)
+			entry["back_base_cx_px"] = round(bcx, 1)
+			entry["back_base_bottom_px"] = round(bby, 1)
+			if glow_path is not None:
+				entry["back_glow"] = res(glow_path)
+		print(f"  {back_raw} -> {targets} {spr.shape[1]}x{spr.shape[0]} base {bw:.0f}px")
+
+
 
 
 def process_buildings(only: set[str]) -> None:
@@ -614,15 +743,15 @@ def process_buildings(only: set[str]) -> None:
 		spr = bleed(resize(crop, scale))
 		m = spr[..., 3] > 128
 		bw, bcx, bby = base_width(m)
-		glow = glow_mask(spr)
+		glow = cap_building_glow(glow_mask(spr))
 		bid0, lv0 = targets[0].split("@")
 		stem = bid0 if lv0 == "0" else f"{bid0}_{lv0}"
 		out = GAME / "assets" / "sprites" / "buildings" / f"{stem}.png"
-		save_png(spr, out)
+		save_building_png(spr, out)
 		glow_path = None
 		if bid0 not in NO_GLOW and glow.max() > 0 and (glow > 128).sum() > 20:
 			glow_path = out.with_name(f"{stem}_glow.png")
-			save_png(glow, glow_path)
+			save_building_png(glow, glow_path)
 		for t in targets:
 			bid, lv = t.split("@")
 			key = bid if lv == "0" else f"{bid}@{lv}"
@@ -632,8 +761,11 @@ def process_buildings(only: set[str]) -> None:
 				"base_w_px": round(bw, 1), "base_cx_px": round(bcx, 1), "base_bottom_px": round(bby, 1), "source": raw_id}
 			if glow_path is not None:
 				entry["glow"] = res(glow_path)
+			if bid0 in SYMMETRIC_BUILDINGS:
+				entry["back_symmetric"] = True
 			entries.append(entry)
 		print(f"  {raw_id} -> {targets} {spr.shape[1]}x{spr.shape[0]} base {bw:.0f}px glow {'yes' if glow_path else 'no'}")
+	process_building_backs(entries, only)
 	if entries:
 		# hand-measured points on the pictures (windmill hub, chimneys, mooring height)
 		over_path = pathlib.Path(__file__).with_name("overrides.json")

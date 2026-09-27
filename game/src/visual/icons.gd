@@ -6,11 +6,14 @@ extends RefCounted
 const REQUIRED_IDS := [
 	"res_wood", "res_stone", "res_metal", "res_ore", "res_gold", "res_food", "res_energy", "res_pop",
 	"cmd_move", "cmd_attack", "cmd_defend", "cmd_explore", "cmd_build", "cmd_gather", "cmd_patrol", "cmd_auto", "cmd_retreat", "cmd_escort", "cmd_stop", "cmd_farm", "cmd_trade", "cmd_cancel",
-	"ui_home", "ui_buildings", "ui_people", "ui_target", "ui_search", "ui_pause", "ui_play", "ui_fast", "ui_faster", "ui_sun", "ui_moon", "ui_save", "ui_load", "ui_menu", "ui_close", "ui_squad", "ui_bell", "ui_crest", "ui_skull", "ui_star", "ui_heart", "ui_bolt", "ui_chest", "ui_scroll", "ui_gear", "ui_dice", "ui_rotate_left", "ui_rotate_right",
+	"ui_home", "ui_buildings", "ui_people", "ui_target", "ui_search", "ui_pause", "ui_play", "ui_fast", "ui_faster", "ui_sun", "ui_moon", "ui_save", "ui_load", "ui_menu", "ui_close", "ui_squad", "ui_bell", "ui_crest", "ui_skull", "ui_star", "ui_heart", "ui_bolt", "ui_chest", "ui_scroll", "ui_gear", "ui_dice", "ui_rotate_left", "ui_rotate_right", "ui_rename", "ui_expand", "ui_collapse",
 	"class_shield", "class_spear", "class_archer", "class_scout", "class_engineer", "class_commander", "class_worker", "class_robot", "class_drone", "class_airship", "class_medic", "class_merchant",
 	"zone_logging", "zone_mining", "zone_forage", "zone_farm", "zone_clear",
 	"bld_hearth", "bld_house", "bld_storehouse", "bld_workshop", "bld_smelter", "bld_windmill", "bld_sky_dock", "bld_watchtower", "bld_wall", "bld_outpost", "bld_farm_plot", "bld_road", "bld_bridge_segment", "bld_cliff_stairs",
-	"poi_ruins", "poi_bandit", "poi_machine", "poi_trade", "poi_wanderer", "poi_wreck", "poi_crystal", "poi_ore"
+	"poi_ruins", "poi_bandit", "poi_machine", "poi_trade", "poi_wanderer", "poi_wreck", "poi_crystal", "poi_ore",
+	"abl_shield_bash", "abl_aimed_shot", "abl_blast_charge", "abl_field_dressing", "abl_rallying_call", "abl_steady_focus",
+	"abl_volley", "abl_overclock", "abl_hearthsong", "abl_scatterfire", "abl_iron_resolve",
+	"stance_aggressive", "stance_balanced", "stance_cautious", "stance_hold"
 ]
 const SHAPES := ["sword", "dagger", "axe", "spear", "bow", "crossbow", "hammer", "mace", "staff", "rifle", "pistol", "wrench", "pickaxe", "shield", "vest", "coat", "plate", "helmet", "boots", "gloves", "scope", "lantern", "compass", "goggles", "gear", "servo", "sensor", "core", "plating", "propeller", "envelope", "engine", "orb", "idol", "relic", "amulet", "ring", "tonic", "ration", "repair_kit", "shard", "ingot", "timber", "pelt", "book", "map"]
 static var _icon_cache: Dictionary = {}
@@ -36,11 +39,22 @@ static func item_icon(item: Dictionary, size: int = 64) -> Texture2D:
 	if not app.has("quality") and item.has("quality"):
 		app = app.duplicate()
 		app["quality"] = item["quality"]
-	var uid := str(item.get("uid", item.get("id", "")))
-	var key := "%s|%d|%s" % [uid, size, str(app)]
+	var raw_shape := str(app.get("shape", ""))
+	var paint_size := int(round(size * 0.82))
+	var painted := SpriteLibrary.icon_image(raw_shape, paint_size)
+	var shape_key := raw_shape if painted != null or SHAPES.has(raw_shape) else "orb"
+	var accent := _hex(app.get("accent", "#f1d260"), "#f1d260")
+	var glow := clampf(float(app.get("glow", 0.0)), 0.0, 1.0)
+	var quality := str(app.get("quality", "common"))
+	var key: String
+	if painted != null:
+		key = "%d|%s|painted|%s|%.6f|%s" % [size, shape_key, accent, glow, quality]
+	else:
+		var primary := _hex(app.get("primary", "#5a78a8"), "#5a78a8")
+		var secondary := _hex(app.get("secondary", "#b9a06c"), "#b9a06c")
+		key = "%d|%s|procedural|%s|%s|%s|%.6f|%s" % [size, shape_key, primary, secondary, accent, glow, quality]
 	if _item_cache.has(key):
 		return _item_cache[key] as Texture2D
-	var painted := SpriteLibrary.icon_image(str(app.get("shape", "")), int(round(size * 0.82)))
 	var tex: Texture2D
 	if painted != null:
 		var frame := Image.new()

@@ -175,9 +175,22 @@ func language_selector() -> HBoxContainer:
 	option.add_item("日本語")
 	option.select(1 if language == "ja" else 0)
 	option.custom_minimum_size = Vector2(140, 36)
-	option.item_selected.connect(func(index: int) -> void: set_language("ja" if index == 1 else "en"))
-	language_changed.connect(func() -> void:
-		if is_instance_valid(option):
-			option.select(1 if language == "ja" else 0))
+	option.item_selected.connect(_on_language_option_selected)
+	var sync_language: Callable = _sync_language_option.bind(option)
+	language_changed.connect(sync_language)
+	row.tree_exiting.connect(_disconnect_language_selector.bind(sync_language))
 	row.add_child(option)
 	return row
+
+func _on_language_option_selected(index: int) -> void:
+	set_language("ja" if index == 1 else "en")
+
+
+func _sync_language_option(option: OptionButton) -> void:
+	if is_instance_valid(option):
+		option.select(1 if language == "ja" else 0)
+
+
+func _disconnect_language_selector(sync_language: Callable) -> void:
+	if language_changed.is_connected(sync_language):
+		language_changed.disconnect(sync_language)

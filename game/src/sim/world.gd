@@ -255,7 +255,12 @@ func set_terrain(t: Vector2i, tt: int) -> void:
 
 
 func is_walkable(t: Vector2i) -> bool:
-	return in_bounds(t) and not nav.is_point_solid(t)
+	if not in_bounds(t):
+		return false
+	var crossing := crossing_building_at(t)
+	if crossing != null:
+		return crossing.is_built()
+	return not nav.is_point_solid(t)
 
 
 ## Terrain height at a world position (bilinear), gen fallback outside generated chunks.
@@ -290,6 +295,23 @@ func rebuild_crossing_index() -> void:
 	for b: Building in buildings.values():
 		if b.type in ["bridge_segment", "cliff_stairs"]:
 			_crossing_index[b.origin] = b
+
+
+
+## Orient each stair tile uphill across its footprint so adjacent segments form a rising run.
+func _cliff_stairs_rotation(t: Vector2i) -> int:
+	var center := Vector2(t) + Vector2(0.5, 0.5)
+	var up_height := height_at(center + Vector2(0.0, -1.0))
+	var down_height := height_at(center + Vector2(0.0, 1.0))
+	var left_height := height_at(center + Vector2(-1.0, 0.0))
+	var right_height := height_at(center + Vector2(1.0, 0.0))
+	var best_delta := down_height - up_height
+	var rotation := 2 if best_delta > 0.0 else 0
+	var x_delta := right_height - left_height
+	if absf(x_delta) > absf(best_delta):
+		rotation = 3 if x_delta > 0.0 else 1
+	return rotation
+
 
 func world_pos(u: Unit) -> Vector3:
 	var y := ground_y(u.pos)
@@ -843,6 +865,8 @@ func place_building(type: String, origin: Vector2i, instant: bool = false, facti
 	b.faction = faction
 	b.origin = origin
 	b.size = Vector2i(int(d["size"][0]), int(d["size"][1]))
+	if type == "cliff_stairs":
+		b.rot = _cliff_stairs_rotation(origin)
 	b.variant = rng.randi_range(0, 9999)
 	b.progress = 1.0 if instant else 0.0
 	b.hp = b.max_hp()

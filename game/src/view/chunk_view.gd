@@ -8,6 +8,7 @@ extends Node3D
 ## Terrain is rebuilt only when the ground changes; props when resources change.
 
 const S := ChunkData.S
+const TERRAIN_ROWS_PER_SLICE := 8
 const PROP_VARIANTS_MAX := 2
 const SHADOW_PROPS := ["tree_pine", "tree_oak", "tree_birch", "tree_dead", "rock_large", "ore_iron", "ore_crystal"]
 ## Ground texture layer per tile type (Tiles enum order). Layers: 0 grass, 1 meadow, 2 forest
@@ -35,6 +36,7 @@ var props_root: Node3D
 var built_version := -1
 var built_res_version := -1
 var _rock_tint := false
+var _terrain_build_generation: int = 0
 
 
 static func clear_cache() -> void:
@@ -103,7 +105,9 @@ func _tile_type(t: Vector2i) -> int:
 
 
 func rebuild_terrain() -> void:
-	built_version = ch.version
+	_terrain_build_generation += 1
+	var build_generation: int = _terrain_build_generation
+	var terrain_version: int = ch.version
 	var ox := ch.cx * S
 	var oz := ch.cz * S
 	# tile layers and brightness jitter including a one-tile border (smooth blends across chunks)
@@ -182,11 +186,15 @@ func rebuild_terrain() -> void:
 			var vt_ := vt if use_layers else vcol
 			# split along the diagonal with the smaller height difference
 			if absf(p00.y - p11.y) <= absf(p10.y - p01.y):
-				vi = _tri(buf, vi, [p00, p11, p10], [i00, i11, i10], vt_, vw0, vw1, cliff)
-				vi = _tri(buf, vi, [p00, p01, p11], [i00, i01, i11], vt_, vw0, vw1, cliff)
+				vi = _tri(buf, vi, p00, p11, p10, i00, i11, i10, vt_, vw0, vw1, cliff)
+				vi = _tri(buf, vi, p00, p01, p11, i00, i01, i11, vt_, vw0, vw1, cliff)
 			else:
-				vi = _tri(buf, vi, [p00, p01, p10], [i00, i01, i10], vt_, vw0, vw1, cliff)
-				vi = _tri(buf, vi, [p10, p01, p11], [i10, i01, i11], vt_, vw0, vw1, cliff)
+				vi = _tri(buf, vi, p00, p01, p10, i00, i01, i10, vt_, vw0, vw1, cliff)
+				vi = _tri(buf, vi, p10, p01, p11, i10, i01, i11, vt_, vw0, vw1, cliff)
+		if (z + 1) % TERRAIN_ROWS_PER_SLICE == 0 and z + 1 < S:
+			await get_tree().process_frame
+			if not is_inside_tree() or build_generation != _terrain_build_generation or ch.version != terrain_version:
+				return
 	var mesh := ArrayMesh.new()
 	var arrays := []
 	arrays.resize(Mesh.ARRAY_MAX)
@@ -199,23 +207,29 @@ func rebuild_terrain() -> void:
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, [], {}, flags)
 	mesh.surface_set_material(0, terrain_material())
 	_add_decor_surface(mesh)
+	if not is_inside_tree() or build_generation != _terrain_build_generation or ch.version != terrain_version:
+		return
 	terrain_mi.mesh = mesh
 	_rebuild_water()
+	built_version = terrain_version
 
 
 ## Appends one terrain triangle (points counter-clockwise seen from above) in Godot's clockwise
 ## front-face order with a flat normal; steep faces shift their layer weights to rock.
 ## buf = [verts, normals, tints, weights0, weights1].
-func _tri(buf: Array, vi: int, p: Array, idx: Array, tint: PackedColorArray,
-		w0: PackedColorArray, w1: PackedColorArray, cliff: bool) -> int:
-	var a: Vector3 = p[0]
-	var b: Vector3 = p[1]
-	var c: Vector3 = p[2]
-	var order := [0, 2, 1]
+func _tri(buf: Array, vi: int, a: Vector3, b: Vector3, c: Vector3, ia: int, ib: int, ic: int,
+		tint: PackedColorArray, w0: PackedColorArray, w1: PackedColorArray, cliff: bool) -> int:
 	var nrm := (b - a).cross(c - a).normalized()
+	var point_1: Vector3 = c
+	var point_2: Vector3 = b
+	var index_1: int = ic
+	var index_2: int = ib
 	if nrm.y < 0.0:
 		nrm = -nrm
-		order = [0, 1, 2]
+		point_1 = b
+		point_2 = c
+		index_1 = ib
+		index_2 = ic
 	var steep := clampf((0.8 - nrm.y) / 0.35, 0.0, 1.0)
 	if cliff:
 		steep = maxf(steep, 0.75)
@@ -225,14 +239,20 @@ func _tri(buf: Array, vi: int, p: Array, idx: Array, tint: PackedColorArray,
 	var cw0: PackedFloat32Array = buf[3]
 	var cw1: PackedFloat32Array = buf[4]
 	for k in 3:
-		var s: int = order[k]
-		var vid: int = idx[s]
+		var point: Vector3 = a
+		var vid: int = ia
+		if k == 1:
+			point = point_1
+			vid = index_1
+		elif k == 2:
+			point = point_2
+			vid = index_2
 		var ww0 := w0[vid].lerp(Color(0, 0, 0, 0), steep)
 		var ww1 := w1[vid].lerp(Color(0, 1, 0, 0), steep)
 		var tc := tint[vid]
 		if steep > 0.0 and _rock_tint:
 			tc = tc.lerp(Color("#8f887b"), steep)
-		verts[vi + k] = p[s]
+		verts[vi + k] = point
 		norms[vi + k] = nrm
 		cols[vi + k] = tc.srgb_to_linear()
 		var o := (vi + k) * 4

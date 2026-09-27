@@ -95,6 +95,12 @@ func _ready() -> void:
 		full.pressed.connect(_toggle_fullscreen)
 		add_child(full)
 	Loc.language_changed.connect(func() -> void: get_tree().reload_current_scene.call_deferred())
+	if OS.has_feature("web"):
+		# A newer export waits behind the cached service worker until every tab closes; switch to
+		# it here on the title menu, where reloading loses nothing.
+		JavaScriptBridge.pwa_update_available.connect(_apply_pwa_update)
+		if JavaScriptBridge.pwa_needs_update():
+			_apply_pwa_update.call_deferred()
 	Sfx.start_music()
 
 
@@ -105,6 +111,11 @@ func _open_settings() -> void:
 func _toggle_fullscreen() -> void:
 	var next := DisplayServer.WINDOW_MODE_WINDOWED if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN else DisplayServer.WINDOW_MODE_FULLSCREEN
 	DisplayServer.window_set_mode(next)
+
+
+func _apply_pwa_update() -> void:
+	if is_inside_tree() and _menu.visible:
+		JavaScriptBridge.pwa_update()
 
 
 func _big_button(text: String, icon: String, cb: Callable) -> Button:
@@ -164,16 +175,22 @@ func _build_create() -> void:
 	_create.offset_bottom = -12
 	add_child(_create)
 	var viewport_size := App.screen_size()
+	var form_width := 640.0 if viewport_size.x >= 700.0 else 500.0
+	var big_preview := viewport_size.x >= 1300.0 and viewport_size.y >= 720.0
+	# the founder preview stays beside the form whenever both fit (phones in landscape too);
+	# only the form scrolls, so the character stays in view while choosing
+	var show_preview := viewport_size.x >= form_width + 18.0 + 300.0 + 48.0
+	var h := UiTheme.hbox(18)
+	_create.add_child(h)
 	var scroll := ScrollContainer.new()
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
-	_create.add_child(scroll)
-	var h := UiTheme.hbox(18)
-	h.custom_minimum_size = Vector2(660.0 if viewport_size.x >= 700.0 else 520.0, 0)
-	scroll.add_child(h)
+	scroll.custom_minimum_size = Vector2(minf(form_width + 14.0, viewport_size.x - 48.0), 0)
+	scroll.size_flags_horizontal = Control.SIZE_FILL if show_preview else Control.SIZE_EXPAND_FILL
+	h.add_child(scroll)
 	var form := UiTheme.vbox(8)
-	form.custom_minimum_size = Vector2(640.0 if viewport_size.x >= 700.0 else 500.0, 0)
-	h.add_child(form)
+	form.custom_minimum_size = Vector2(form_width, 0)
+	scroll.add_child(form)
 	form.add_child(UiTheme.title(Loc.t("Your founder"), 28))
 	var nrow := UiTheme.hbox(6)
 	nrow.add_child(_field_label(Loc.t("Name")))
@@ -290,12 +307,18 @@ func _build_create() -> void:
 	start.pressed.connect(_start)
 	brow.add_child(start)
 	form.add_child(brow)
+	var right_scroll := ScrollContainer.new()
+	right_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	right_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	right_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	right_scroll.visible = show_preview
+	h.add_child(right_scroll)
 	var right := UiTheme.vbox(8)
-	right.custom_minimum_size = Vector2(360, 0)
-	right.visible = viewport_size.x >= 1300.0 and viewport_size.y >= 720.0
-	h.add_child(right)
+	right.custom_minimum_size = Vector2(360.0 if big_preview else 300.0, 0)
+	right_scroll.add_child(right)
 	var svc := SubViewportContainer.new()
-	svc.custom_minimum_size = Vector2(360, 360)
+	svc.custom_minimum_size = Vector2(360, 360) if big_preview else Vector2(220, 220)
+	svc.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	svc.stretch = true
 	right.add_child(svc)
 	_preview_vp = SubViewport.new()
@@ -326,8 +349,9 @@ func _build_create() -> void:
 	_summary = RichTextLabel.new()
 	_summary.bbcode_enabled = true
 	_summary.fit_content = true
-	_summary.custom_minimum_size = Vector2(420, 300)
-	_summary.add_theme_font_size_override("normal_font_size", 16)
+	_summary.custom_minimum_size = Vector2(420, 300) if big_preview else Vector2(300, 0)
+	_summary.add_theme_font_size_override("normal_font_size", 16 if big_preview else 13)
+	_summary.add_theme_font_size_override("italics_font_size", 16 if big_preview else 13)
 	_summary.add_theme_color_override("default_color", UiTheme.TEXT)
 	right.add_child(_summary)
 

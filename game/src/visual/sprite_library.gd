@@ -37,6 +37,74 @@ static func clear_cache() -> void:
 	SpriteUnitVisual._quad = null
 	BuildingVisual._quad = null
 
+## Release cache references that no live node in the view tree is using.
+static func prune_unused(scene_root: Node) -> void:
+	var live_materials: Dictionary = {}
+	var live_textures: Dictionary = {}
+	for node: Node in scene_root.find_children("*", "", true, false):
+		if node is CanvasItem:
+			_retain_material((node as CanvasItem).material, live_materials, live_textures)
+		if node is GeometryInstance3D:
+			_retain_material((node as GeometryInstance3D).material_override, live_materials, live_textures)
+		if node is MeshInstance3D:
+			var mesh_instance: MeshInstance3D = node as MeshInstance3D
+			if mesh_instance.mesh != null:
+				for surface: int in mesh_instance.mesh.get_surface_count():
+					_retain_material(mesh_instance.get_active_material(surface), live_materials, live_textures)
+		if node is TextureRect:
+			_retain_texture((node as TextureRect).texture, live_textures)
+		elif node is TextureButton:
+			var button: TextureButton = node as TextureButton
+			for texture: Texture2D in [button.texture_normal, button.texture_pressed, button.texture_hover,
+					button.texture_disabled, button.texture_focused]:
+				_retain_texture(texture, live_textures)
+		elif node is TextureProgressBar:
+			var bar: TextureProgressBar = node as TextureProgressBar
+			for texture: Texture2D in [bar.texture_under, bar.texture_over, bar.texture_progress]:
+				_retain_texture(texture, live_textures)
+		elif node is Sprite2D:
+			_retain_texture((node as Sprite2D).texture, live_textures)
+		elif node is Sprite3D:
+			_retain_texture((node as Sprite3D).texture, live_textures)
+		elif node is AnimatedSprite2D:
+			var sprite: AnimatedSprite2D = node as AnimatedSprite2D
+			if sprite.sprite_frames != null:
+				for animation: StringName in sprite.sprite_frames.get_animation_names():
+					for frame_index: int in sprite.sprite_frames.get_frame_count(animation):
+						_retain_texture(sprite.sprite_frames.get_frame_texture(animation, frame_index), live_textures)
+	for key: Variant in _materials.keys():
+		var material: Variant = _materials[key]
+		if material is ShaderMaterial and not live_materials.has((material as ShaderMaterial).get_instance_id()):
+			_materials.erase(key)
+	_prune_texture_cache(_textures, live_textures)
+	_prune_texture_cache(_portraits, live_textures)
+	_prune_texture_cache(_icon_textures, live_textures)
+
+
+static func _retain_material(material: Material, live_materials: Dictionary, live_textures: Dictionary) -> void:
+	if not material is ShaderMaterial:
+		return
+	var shader_material: ShaderMaterial = material as ShaderMaterial
+	live_materials[shader_material.get_instance_id()] = true
+	for parameter: String in ["sheet", "atlas", "tex", "glow_tex", "layers", "terrain_tex"]:
+		_retain_texture(shader_material.get_shader_parameter(parameter), live_textures)
+
+
+static func _retain_texture(value: Variant, live_textures: Dictionary) -> void:
+	if value is AtlasTexture:
+		var atlas_texture: AtlasTexture = value as AtlasTexture
+		live_textures[atlas_texture.get_instance_id()] = true
+		_retain_texture(atlas_texture.atlas, live_textures)
+	elif value is Texture:
+		live_textures[(value as Texture).get_instance_id()] = true
+
+
+static func _prune_texture_cache(cache: Dictionary, live_textures: Dictionary) -> void:
+	for key: Variant in cache.keys():
+		var texture: Variant = cache[key]
+		if texture == null or not live_textures.has((texture as Object).get_instance_id()):
+			cache.erase(key)
+
 
 static func texture(path: String) -> Texture2D:
 	if path.is_empty():
@@ -102,7 +170,8 @@ static func variant_count(dna: Dictionary, hints: Dictionary = {}) -> int:
 	var base_id := chip_id(dna, hints)
 	var count := 0
 	# existence only: loading every variant's sheet here would put unused textures in video memory
-	for variant_id: String in [base_id, base_id + "@v2", base_id + "@v3"]:
+	for variant: int in range(6):
+		var variant_id := _variant_id(base_id, variant)
 		var entry := DB.get_def("art/sprites", variant_id)
 		if entry.is_empty() or not ResourceLoader.exists(str(entry.get("texture", ""))):
 			continue
@@ -131,9 +200,9 @@ static func art_variant(dna: Dictionary, hints: Dictionary = {}) -> int:
 
 
 static func _variant_id(base_id: String, variant: int) -> String:
-	if variant == 2:
-		return base_id + "@v3"
-	return base_id + "@v2" if variant == 1 else base_id
+	if variant <= 0:
+		return base_id
+	return "%s@v%d" % [base_id, variant + 1]
 
 static func _variant_entry(table: String, base_id: String, variant: int) -> Dictionary:
 	var entry := DB.get_def(table, _variant_id(base_id, variant))

@@ -1,0 +1,13 @@
+{"scene": "res://scenes/game.tscn", "frames": 90,
+ "events": [
+  {"frame": 1, "do": "scene.set_speed(1)"},
+  {"frame": 3, "do": "scene.select_squad(scene.world.squads[0].id)"},
+  {"frame": 4, "do": "scene.clear_selection()"},
+  {"frame": 20, "mouse": "click", "pos": [421, 752]},
+  {"frame": 24, "watch": "scene.focus_unit().id if scene.focus_unit() else -1", "label": "focus after click"},
+  {"frame": 24, "watch": "scene.world.squads[0].members", "label": "members"},
+  {"frame": 24, "expect": "scene.focus_unit() != null and scene.focus_unit().id == scene.world.squads[0].members[1]", "label": "card 2 focused by one click"},
+  {"frame": 24, "expect": "scene.hud.info_panel.visible", "label": "details visible"},
+  {"frame": 70, "expect": "scene.hud.info_panel.visible and scene.focus_unit().id == scene.world.squads[0].members[1]", "label": "details still open"},
+  {"frame": 72, "screenshot": "card_clicked"}
+ ]}

@@ -100,6 +100,7 @@ func order_squad(s: Squad, order: Dictionary) -> void:
 		s.report.clear()
 		s.mem["mapped0"] = _mapped(s)
 	for u: Unit in members(s):
+		w.combat.cancel_manual_ability(u)
 		if order.get("type", "") != "attack":
 			u.target_id = -1
 	match str(order.get("type", "")):
@@ -119,6 +120,7 @@ func order_unit(u: Unit, order: Dictionary) -> void:
 	if u.squad_id >= 0:
 		return
 	w.colony.release(u)
+	w.combat.cancel_manual_ability(u)
 	u.order = order
 	u.target_id = -1
 	match str(order.get("type", "")):
@@ -130,14 +132,30 @@ func order_unit(u: Unit, order: Dictionary) -> void:
 
 func _move_all(s: Squad, p: Vector2) -> void:
 	var ms := members(s)
+	var goal_tile := Vector2i(int(floor(p.x)), int(floor(p.y)))
+	var goal_crossing := w.crossing_building_at(goal_tile)
+	var keep_slots_on_land := goal_crossing != null or _has_nearby_built_bridge(goal_tile)
 	for i in ms.size():
 		var u: Unit = ms[i]
 		var dest := p + _slot(i, s, u, p)
 		var t := Vector2i(int(floor(dest.x)), int(floor(dest.y)))
-		if not u.flying and not w.is_walkable(t):
+		var invalid_slot := not u.flying and not w.is_walkable(t)
+		if not u.flying and keep_slots_on_land and Tiles.is_water(w.terrain_at(t)) \
+				and w.gen.is_river_water(float(t.x) + 0.5, float(t.y) + 0.5) \
+				and w.crossing_building_at(t) == null:
+			invalid_slot = true
+		if invalid_slot:
 			dest = p
 		w.move_unit(u, dest)
 
+
+func _has_nearby_built_bridge(t: Vector2i) -> bool:
+	for dx in range(-2, 3):
+		for dz in range(-2, 3):
+			var crossing := w.crossing_building_at(t + Vector2i(dx, dz))
+			if crossing != null and crossing.type == "bridge_segment" and crossing.is_built():
+				return true
+	return false
 
 func _all_arrived(s: Squad) -> bool:
 	for u: Unit in members(s):

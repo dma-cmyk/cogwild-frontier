@@ -4,14 +4,15 @@
 RPG 要素のある自律型 RTS の **Playable Vertical Slice**（Godot 4.7 製）。
 自分で部隊を動かしても、指示だけ出して眺めていても世界が進みます。
 キャラチップ・肖像・建物・木や岩・地面・アイテムアイコン・タイトル画像は画像生成した絵で、3D の地形の上に置いています（手順は `docs/art_pipeline.md`）。
-住民は種族 × 見た目 × 性別ごとに 3 種類の絵があり、入植者には同じ組み合わせの住民の中で一番使われていない絵が割り当てられるので、同じ顔が並びにくくなっています。
+住民は種族 × 見た目 × 性別ごとに 3 種類（いちばん多い作業着の見た目は 4〜5 種類）の絵があり、入植者には同じ組み合わせの住民の中で一番使われていない絵が割り当てられるので、同じ顔が並びにくくなっています。建物はカメラを回すと裏側の絵に切り替わります。
 住民は RimWorld のように吹き出しでしゃべります（仕事の一言、近くの仲間との雑談、戦闘中のかけ声、川を泳ぐ・崖を登るときの一言）。
-小隊には態勢（攻勢・均衡・慎重・防衛）と隊形（横列・楔形・散開）があり、役割ごとの技（盾打ち・狙い撃ち・爆破チャージ・野戦手当・鼓舞の号令）、側面攻撃、木や岩の遮蔽が戦闘に効きます。
+部隊は小隊単位で動かします。左下の **小隊パネル**（顔・体力・態勢・隊形・隊員の出し入れ・名前）で小隊を選び、右下の **命令バー**（建設・採集・移動・攻撃・技など）で命令します。1 人だけ別に動かしたいときは、その人だけの小隊を作ります。
+小隊には態勢（攻勢・均衡・慎重・防衛）と隊形（横列・楔形・散開）があり、役割ごとの技（盾打ち・狙い撃ち・爆破チャージ・野戦手当・鼓舞の号令）は自動でも自分のタイミングでも使えます。側面攻撃、木や岩の遮蔽も戦闘に効きます。
 川は泳いで、崖はよじ登って越えられます（遅い）。住民に橋や崖の階段を建てさせると速く通れます。カメラは 90° ずつ 4 方向に回せます。
 UI は日本語 / 英語に対応しています。
 
 **ブラウザで遊ぶ（PC・スマホ）: https://dma-cmyk.github.io/cogwild-frontier/**
-（初回は約 50 MB のダウンロードがあります。読み込み画面の MB 表示は展開後の大きさです。2 回目からはブラウザのキャッシュで数秒。読み込みが 20 秒止まったら再読み込みボタンが出ます。スマホは横向き推奨）
+（初回は約 54 MB のダウンロードがあります。読み込み画面の MB 表示は展開後の大きさです。2 回目からはブラウザのキャッシュで数秒。新しい版が公開されていると、タイトル画面で自動的に読み込み直します。読み込みが 20 秒止まったら再読み込みボタンが出ます。スマホは横向き推奨）
 
 ![開拓地の昼](docs/screenshots/settlement_day.png)
 
@@ -55,18 +56,19 @@ godot --path game -- --lang=en
 
 | 入力 | 動作 |
 |---|---|
-| 左クリック / ドラッグ | 選択（ユニット・小隊・建物・拠点）/ 範囲選択 |
-| 右クリック | 文脈命令: 地面へ移動 / 敵・敵拠点を攻撃 / 資源を採取（住民）/ 交易所へ交易（飛行船） |
-| M F H X P Y U R | Move / Attack / Defend / Explore / Patrol / Escort / Auto / Retreat（小隊・選択ユニット） |
+| 左クリック / ドラッグ | 選択（ユニット・小隊・建物・拠点）/ 範囲選択。小隊の隊員をクリックするとその小隊が命令の対象になる |
+| 右クリック | 命令の対象の小隊へ文脈命令: 地面へ移動 / 敵・敵拠点を攻撃 / 資源を採取（住民）/ 交易所へ交易（飛行船） |
+| M F H X P Y U R | Move / Attack / Defend / Explore / Patrol / Escort / Auto / Retreat（命令バーの対象: 表示中の小隊・全小隊） |
+| Z C V T N J K O I | 小隊の技（命令バーの技ボタンと同じ。対象が要る技は続けて敵・味方・地面をクリック） |
 | B / G | 建設メニュー（川の橋・崖の階段は壁と同じく線で配置）/ 採取ゾーンと仕事の優先度 |
-| 1–4, Tab | 小隊を選択 |
-| 小隊パネルの 態勢 / 隊形 | 攻勢・均衡・慎重・防衛 / 横列・楔形・散開 |
+| 1–9, Tab | 小隊を選択（同じキーを 2 回押すとその小隊へカメラを移動） |
+| 小隊パネル | タブで小隊を切り替え（**全小隊** で全部に命令）。顔カードをクリックで詳細、✕ で隊から外す、左上のボタンでその人だけの小隊を作る、＋ で隊員を追加。鉛筆ボタンで小隊の名前を変更。態勢 / 隊形 / 撤退の目安 / 技の自動使用 |
 | W A S D・矢印・画面端・中ボタンドラッグ | カメラ移動 |
 | ホイール | ズーム |
 | Q / E | カメラを90°ずつ左右に回転 |
 | Space / `[` `]` | 一時停止 / 速度（x1 x2 x4） |
 | F5 / F9（ブラウザ版は Ctrl+S / Ctrl+L） | クイックセーブ / クイックロード |
-| Esc / F1 | キャンセル・メニュー（セーブ 3 枠・ロード・設定）/ 操作説明 |
+| Esc / F1 | 命令・配置の取り消し（選択は外れない）→ 開いている小窓を閉じる → メニュー（セーブ 3 枠・ロード・設定）/ 操作説明 |
 
 タッチ操作（スマホ・タブレット）:
 
@@ -77,7 +79,8 @@ godot --path game -- --lang=en
 | 長押し | 指の下にあるものの詳細 |
 | 右上の **範囲選択** | オンの間はドラッグで範囲選択 |
 | 右上の **マップ** / **詳細** | ミニマップ / 選択中の詳細パネルを開閉 |
-| 命令ボタン（移動・攻撃・巡回など） | 次にタップした場所が目標 |
+| 命令ボタン（移動・攻撃・巡回など） | 表示中の小隊が対象。次にタップした場所が目標 |
+| 小隊パネル（左下） | 普段は顔の並ぶ 1 行。ボタンで広げると態勢・隊形・隊員の出し入れ |
 | 建設 | 建物を選び、場所をタップして **決定**（壁はドラッグか両端をタップ） |
 
 縦向きでは横向きを勧める案内が出ます（「このまま続ける」で縦のまま遊べます）。タイトル画面の **全画面** でブラウザの全画面表示に切り替えられます。
@@ -87,9 +90,9 @@ godot --path game -- --lang=en
 1. 最初から Alpha 小隊（創設者・護衛・弓兵・Walker）、住民 5 人、Work Bot、Scout Drone、飛行船がいます。
    住民は最初から伐採・採掘・畑を自分で回しています。
 2. **Build**（B）で Windmill を建てると電力がプラスになり、ロボットの消費をまかなえます。House で人口上限が増え、移住者が来ます。
-3. 小隊を選んで **Explore**（X）→ 地面をクリック。領域を調べ、遺跡の宝を拾い、強すぎる拠点を避けて、帰還時に報告します。
+3. 小隊パネルのタブ（または 1–9）で小隊を選び、**Explore**（X）→ 地面をクリック。領域を調べ、遺跡の宝を拾い、強すぎる拠点を避けて、帰還時に報告します。
 4. 見つけた盗賊の野営地は右クリック（または拠点パネル）で攻撃。倒すと装備や宝箱を落とします。
-   弓兵が多い小隊は **慎重**（距離を取って早めに引く）、守りたい場所があるなら **防衛**、押し切るなら **攻勢** に。
+   弓兵が多い小隊は **慎重**（距離を取って撃ち、被害を抑える）、守りたい場所があるなら **防衛**、押し切るなら **攻勢** に。技を温存したいときは小隊の **技を自動使用** を切り、命令バーの技ボタンで使います。
    川や崖の向こうの拠点へは泳ぐ・登るで行けますが遅いので、よく通る場所には **川の橋** や **崖の階段** を建てます。
    キャラクター詳細の **Equipment → Change** で武器庫の品を装備できます。
 5. 任せたいときは小隊を **Auto**（U）に。飛行船は詳細パネルの **Trade run / Auto** で交易所へ余剰を売りに行きます。
@@ -105,7 +108,7 @@ game/
   src/gen/       NpcGen・ItemGen・NameGen・NamedEnemyGen
   src/visual/    SpriteLibrary（画像生成の絵の検索）・SpriteUnitVisual・MeshKit（低ポリの代替表示）・LookDev・建物/小物/アイコン/VFX・シェーダー
   src/view/      Game（ループ・選択）・WorldView・ChunkView・UnitView・CameraRig・InputController
-  src/ui/        HUD・情報パネル・小隊パネル・ミニマップ・建設メニュー・ポーズメニュー・タイトル
+  src/ui/        HUD（命令バー）・情報パネル・小隊パネル・隊員選び（SquadPicker）・ミニマップ・建設メニュー・ポーズメニュー・タイトル
   tests/         ヘッドレステスト（test_*.gd）・ギャラリー・probe シナリオ
   tools/         world_map_dump（生成した世界を PNG に）
 tools/art/       make_prompts.py（画像生成のプロンプト）・process.py（生成画像 → ゲーム用素材）・overrides.json
@@ -134,7 +137,11 @@ COGWILD_WORLD_SEED=11 python3 $P game --scenario game/tests/probe/combat_camp.js
 python3 $P game --scenario game/tests/probe/build_windmill.json --godot-arg=--time-scale --godot-arg=4   # 世界はシナリオの乱数シードから
 COGWILD_WORLD_SEED=7  python3 $P game --scenario game/tests/probe/save_load.json      --godot-arg=--time-scale --godot-arg=4
 COGWILD_WORLD_SEED=7  python3 $P game --scenario game/tests/probe/crossing.json        # 川を泳ぐ・崖を登る・橋と階段の建設
-COGWILD_WORLD_SEED=7  python3 $P game --scenario game/tests/probe/camera_rotate.json   # 4 方向の回転・タッチのねじり
+COGWILD_WORLD_SEED=7  python3 $P game --scenario game/tests/probe/camera_rotate.json   # 4 方向の回転・建物の裏側の絵・タッチのねじり
+python3 $P game --scenario game/tests/probe/ui_squad_menu.json      # 小隊パネル: 隊員の追加・外す・一人小隊・全小隊・名前変更・Esc
+python3 $P game --scenario game/tests/probe/ui_squad_menu_compact.json --resolution 844x390   # スマホ幅の配置
+python3 $P game --scenario game/tests/probe/ui_card_click.json      # 顔カードを 1 回クリックで詳細が開いたままになる
+COGWILD_WORLD_SEED=11 python3 $P game --scenario game/tests/probe/ui_abilities_manual.json   # 技の手動使用と自動使用の切り替え
 COGWILD_WORLD_SEED=7  python3 $P game --scenario game/tests/probe/perf_exploration_spikes.json   # 3 分の探索で時間を測る（x1）
 godot --headless --path game res://tools/world_map_dump.tscn -- --seed=123 --radius=6 --out=/tmp/map.png
 ```
@@ -148,7 +155,7 @@ tools/web/build_web.sh                                   # テンプレート取
 python3 -m http.server -d build/web 8060 --bind 127.0.0.1  # http://127.0.0.1:8060/ を開く
 ```
 
-スレッドなしの Web テンプレート（COOP/COEP ヘッダ不要）を使います。人物・建物などの絵は Basis Universal で 1 種類だけ配布し、読み込み時に GPU の形式（PC は BC 系、スマホは ASTC / ETC2）に変換します。
+スレッドなしの Web テンプレート（COOP/COEP ヘッダ不要）を使います。建物・木や岩などの絵は Basis Universal で 1 種類だけ配布し、読み込み時に GPU の形式（PC は BC 系、スマホは ASTC / ETC2）に変換します。キャラチップと肖像は WebP です。
 
 ## 任意の AI 文章生成
 

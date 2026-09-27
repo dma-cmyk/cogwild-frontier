@@ -26,12 +26,16 @@ var _initial_chunk_keys: Dictionary = {}
 var _crops_dirty := true
 var _crop_root: Node3D
 var _zone_mesh: MeshInstance3D
+var _squad_markers: SquadMarkers
 var _zones_dirty := true
 var _fog_t := 0.0
 var _projectiles: Array = []
 var _time_scale := 1.0
 var _pending_site_visuals: Array[int] = []
 var _queued_site_visuals: Dictionary = {}
+var _pending_unit_views: Array[int] = []
+var _queued_unit_views: Dictionary = {}
+var _initializing_views := true
 
 
 func setup(world: World) -> void:
@@ -52,6 +56,9 @@ func setup(world: World) -> void:
 	_zone_mesh.name = "Zones"
 	_zone_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_zone_mesh)
+	_squad_markers = SquadMarkers.new()
+	add_child(_squad_markers)
+	_squad_markers.setup(w)
 	fog_tex = ImageTexture.create_from_image(w.fog_image)
 	RenderingServer.global_shader_parameter_set("fog_tex", fog_tex)
 	RenderingServer.global_shader_parameter_set("fog_rect", Vector4(w.gen.min_tile, w.gen.min_tile, w.W, w.W))
@@ -93,6 +100,7 @@ func setup(world: World) -> void:
 		_add_unit(u)
 	for bag: Dictionary in w.loot_bags.values():
 		_add_loot(bag)
+	_initializing_views = false
 
 
 func _exit_tree() -> void:
@@ -202,11 +210,14 @@ func _on_site_changed(sid: int) -> void:
 	var list: Array = (g.get("structures", []) as Array) + (st.get("extra", []) as Array)
 	if root.get_child_count() < list.size() and not _queued_site_visuals.has(sid):
 		_pending_site_visuals.append(sid)
-		_queued_site_visuals[sid] = true
+		_queued_site_visuals[sid] = Engine.get_process_frames()
 
 
 func _build_next_site_visual() -> void:
 	if _pending_site_visuals.is_empty():
+		return
+	var queued_sid: int = _pending_site_visuals[0]
+	if int(_queued_site_visuals.get(queued_sid, -1)) >= Engine.get_process_frames():
 		return
 	var sid: int = _pending_site_visuals.pop_front()
 	_queued_site_visuals.erase(sid)
@@ -232,21 +243,41 @@ func _build_next_site_visual() -> void:
 	v.set_active(str(s["type"]) in ["campfire", "machine_foundry", "machine_spire"])
 	if root.get_child_count() < list.size() and not _queued_site_visuals.has(sid):
 		_pending_site_visuals.append(sid)
-		_queued_site_visuals[sid] = true
-
+		_queued_site_visuals[sid] = Engine.get_process_frames()
 # --- units ---------------------------------------------------------------------------------
 
 func _add_unit(u: Unit) -> void:
-	if unit_views.has(u.id):
+	if unit_views.has(u.id) or _queued_unit_views.has(u.id):
 		return
+	if not _initializing_views:
+		_pending_unit_views.append(u.id)
+		_queued_unit_views[u.id] = Engine.get_process_frames()
+		return
+	_build_unit_view(u)
 
+
+func _build_unit_view(u: Unit) -> void:
 	var v := UnitView.new()
 	add_child(v)
 	v.setup(w, u)
 	unit_views[u.id] = v
 
 
+func _build_next_unit_view() -> void:
+	if _pending_unit_views.is_empty():
+		return
+	var queued_id: int = _pending_unit_views[0]
+	if int(_queued_unit_views.get(queued_id, -1)) >= Engine.get_process_frames():
+		return
+	var id: int = _pending_unit_views.pop_front()
+	_queued_unit_views.erase(id)
+	var u := w.get_unit(id)
+	if u != null and u.alive and not unit_views.has(id):
+		_build_unit_view(u)
+
+
 func _remove_unit(u: Unit) -> void:
+	_queued_unit_views.erase(u.id)
 	var v: Node = unit_views.get(u.id)
 	if v:
 		v.queue_free()
@@ -438,15 +469,24 @@ func set_show_zones(on: bool) -> void:
 # --- frame ---------------------------------------------------------------------------------
 
 func _process(delta: float) -> void:
-	var started_usec := Time.get_ticks_usec()
-
-	var builds := 0
+	var started_usec: int = Time.get_ticks_usec()
+	var builds: int = 0
 	while not _chunk_queue.is_empty():
 		if builds > 0 and float(Time.get_ticks_usec() - started_usec) / 1000.0 >= CHUNK_BUILD_BUDGET_MS:
 			break
 		_build_chunk(_chunk_queue.pop_front())
 		builds += 1
-	_build_next_site_visual()
+	var elapsed_ms := float(Time.get_ticks_usec() - started_usec) / 1000.0
+	if elapsed_ms < CHUNK_BUILD_BUDGET_MS:
+		var unit_pending := not _pending_unit_views.is_empty()
+		var site_pending := not _pending_site_visuals.is_empty()
+		var unit_first := Engine.get_process_frames() % 2 == 0
+		if unit_pending and (not site_pending or unit_first):
+			_build_next_unit_view()
+		elif site_pending:
+			_build_next_site_visual()
+		elif unit_pending:
+			_build_next_unit_view()
 	for v: UnitView in unit_views.values():
 		v.sync(alpha, delta)
 	for b: Building in w.buildings.values():
@@ -474,8 +514,9 @@ func _process(delta: float) -> void:
 		_fog_t = 0.25
 		w.refresh_fog_image()
 		fog_tex.update(w.fog_image)
+	if _squad_markers != null:
+		_squad_markers.refresh(w)
 	_update_light()
-
 
 var _cull_t := 0.0
 var cam_target := Vector3.ZERO
@@ -506,3 +547,15 @@ func _update_light() -> void:
 	e.ambient_light_color = Color("#b4c0d6").lerp(Color("#7080b0"), night)
 	e.ambient_light_energy = lerpf(0.62, 0.55, night)
 	e.background_color = Color("#8ea6bb").lerp(Color("#1c2438"), night)
+
+func _ready() -> void:
+	var cache_sweep_timer := Timer.new()
+	cache_sweep_timer.name = "SpriteCacheSweep"
+	cache_sweep_timer.wait_time = 5.0
+	cache_sweep_timer.timeout.connect(_prune_sprite_cache)
+	add_child(cache_sweep_timer)
+	cache_sweep_timer.start()
+
+
+func _prune_sprite_cache() -> void:
+	SpriteLibrary.prune_unused(get_tree().root)

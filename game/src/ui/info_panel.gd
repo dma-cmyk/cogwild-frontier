@@ -251,22 +251,6 @@ func _build_unit(u: Unit) -> void:
 func _unit_actions(u: Unit) -> void:
 	var row := UiTheme.hbox(4)
 	_body.add_child(row)
-	if u.is_person():
-		if u.squad_id >= 0:
-			var b := UiTheme.button(Loc.t("Return to work"), "cmd_gather", Loc.t("Leave the squad and go back to settlement jobs."))
-			b.pressed.connect(func() -> void:
-				g.world.unassign_from_squad(u)
-				refresh(true))
-			row.add_child(b)
-		else:
-			var s := _first_open_squad()
-			if s:
-				var b := UiTheme.button(Loc.t("Draft to %s") % s.name.split(" ")[0], "ui_squad", Loc.t("Join %s as a fighter.") % s.name)
-				b.pressed.connect(func() -> void:
-					if g.world.assign_to_squad(u, s):
-						g.world.combat.enlist(u)
-					refresh(true))
-				row.add_child(b)
 	if u.kind == "airship":
 		for a: Array in [["Explore", "cmd_explore", {"type": "explore", "pos": g.world.home_pos(), "radius": 140.0}], ["Trade run", "cmd_trade", {"type": "trade", "phase": "out"}],
 				["Auto", "cmd_auto", {"type": "auto"}], ["Dock", "ui_home", {"type": "dock"}]]:

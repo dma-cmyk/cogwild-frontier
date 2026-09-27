@@ -54,13 +54,14 @@ func test_every_person_has_three_painted_variants() -> void:
 				dna["offhand"] = "none"
 				dna["outfit"] = "robe" if look == "scholar" else "tunic"
 				var hints: Dictionary = {}
-				assert_eq(SpriteLibrary.variant_count(dna, hints), 3, "%s has three loadable chips" % id)
-				var entries: Array[Dictionary] = [
-					DB.get_def("art/sprites", id),
-					DB.get_def("art/sprites", id + "@v2"),
-					DB.get_def("art/sprites", id + "@v3"),
-				]
-				for variant: int in 3:
+				var expected_count := 4 if race == "sylvan" and look == "worker" else 5 if look == "worker" else 3
+				assert_eq(SpriteLibrary.variant_count(dna, hints), expected_count,
+					"%s has %d loadable chips" % [id, expected_count])
+				var entries: Array[Dictionary] = []
+				for variant: int in expected_count:
+					var variant_id := id if variant == 0 else "%s@v%d" % [id, variant + 1]
+					entries.append(DB.get_def("art/sprites", variant_id))
+				for variant: int in expected_count:
 					var entry := entries[variant]
 					assert_true(not entry.is_empty(), "%s has chip metadata variant %d" % [id, variant])
 					assert_true(SpriteLibrary.texture(str(entry.get("texture", ""))) != null, "%s chip texture loads v%d" % [id, variant + 1])
@@ -72,10 +73,11 @@ func test_every_person_has_three_painted_variants() -> void:
 				assert_true(old_variant >= 0 and old_variant < 2, "%s legacy look is in v1/v2 range" % id)
 				var old_id := id if old_variant == 0 else id + "@v2"
 				assert_eq(str(SpriteLibrary.chip(old_save, hints).get("id", "")), old_id, "%s legacy look uses its v1/v2 painting" % id)
-				for selected: int in 3:
+				for selected: int in expected_count:
 					dna["art_variant"] = selected
-					var selected_id := id if selected == 0 else id + ("@v2" if selected == 1 else "@v3")
-					assert_eq(str(SpriteLibrary.chip(dna, hints).get("id", "")), selected_id, "%s explicit chip variant %d" % [id, selected])
+					var selected_id := id if selected == 0 else "%s@v%d" % [id, selected + 1]
+					assert_eq(str(SpriteLibrary.chip(dna, hints).get("id", "")), selected_id,
+						"%s explicit chip variant %d" % [id, selected])
 					var portrait_entry := DB.get_def("art/portraits", selected_id)
 					var expected_portrait := SpriteLibrary.texture(str(portrait_entry.get("texture", "")))
 					assert_true(expected_portrait != null and SpriteLibrary.portrait(dna, hints) == expected_portrait,
@@ -86,7 +88,7 @@ func test_joining_residents_get_least_used_painting_and_save_stably() -> void:
 	var w := World.new()
 	w.setup(3703)
 	var people: Array[Unit] = []
-	for i in 6:
+	for i in 5:
 		var u := Unit.new()
 		u.faction = "player"
 		u.dna = {"kind":"character", "race":"human", "gender":"female", "seed":i + 10,
@@ -98,9 +100,9 @@ func test_joining_residents_get_least_used_painting_and_save_stably() -> void:
 	for u: Unit in people:
 		var v := int(u.dna["art_variant"])
 		used[v] = int(used.get(v, 0)) + 1
-	assert_eq(used.size(), 3, "same-combo residents use all three available paintings")
+	assert_eq(used.size(), 5, "same-combo residents use all five available paintings")
 	for count: int in used.values():
-		assert_eq(count, 2, "least-used assignment balances six residents across three paintings")
+		assert_eq(count, 1, "five residents have distinct paintings")
 	var save := SaveGame.to_dict(w)
 	var loaded := SaveGame.from_dict(save)
 	assert_true(loaded is World, "world save reload succeeds")
@@ -180,6 +182,8 @@ func test_buildings_props_and_ground_are_painted() -> void:
 	for level in [1, 2, 3]:
 		assert_true(not SpriteLibrary.building("hearth", level).is_empty(), "hearth level %d picture" % level)
 	assert_true(not SpriteLibrary.building("construction").is_empty(), "construction site picture")
+
+
 	for prop: String in ["tree_pine", "tree_oak", "tree_birch", "tree_dead", "rock_small", "rock_large", "ore_iron",
 			"ore_crystal", "bush", "berry_bush", "stump", "reeds", "grass_tuft", "flowers"]:
 		assert_true(not SpriteLibrary.prop_variants(prop).is_empty(), "painted prop " + prop)
@@ -187,6 +191,16 @@ func test_buildings_props_and_ground_are_painted() -> void:
 	assert_true(layers != null and layers.get_layered_type() == TextureLayered.LAYERED_TYPE_2D_ARRAY and layers.get_layers() == 8, "8 ground texture layers")
 	assert_true(bool(ChunkView.terrain_material().get_shader_parameter("use_layers")), "terrain draws the painted layers")
 	assert_eq(DB.ids("art/terrain").size(), 8, "terrain layer table")
+func test_buildings_have_loadable_back_views_or_explicit_symmetry() -> void:
+	for id: String in DB.ids("art/buildings"):
+		var entry := DB.get_def("art/buildings", id)
+		if bool(entry.get("back_symmetric", false)):
+			continue
+		var back_path := str(entry.get("back_texture", ""))
+		assert_true(not back_path.is_empty(), "%s needs a back texture or symmetric flag" % id)
+		assert_true(SpriteLibrary.texture(back_path) != null, "%s back texture loads" % id)
+
+
 
 
 func test_every_art_table_texture_loads() -> void:
@@ -196,5 +210,7 @@ func test_every_art_table_texture_loads() -> void:
 			assert_true(SpriteLibrary.texture(str(e.get("texture", ""))) != null, "%s %s texture" % [table, id])
 			if e.has("glow"):
 				assert_true(SpriteLibrary.texture(str(e["glow"])) != null, "%s %s glow" % [table, id])
+			if e.has("back_glow"):
+				assert_true(SpriteLibrary.texture(str(e["back_glow"])) != null, "%s %s back glow" % [table, id])
 	for shape: String in Icons.SHAPES:
 		assert_true(SpriteLibrary.icon_image(shape, 48) != null, "painted icon for item shape " + shape)

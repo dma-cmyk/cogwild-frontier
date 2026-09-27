@@ -78,10 +78,19 @@ func _engage(u: Unit) -> void:
 	var cautious := squad != null and squad.stance == "cautious"
 	var ranged_weapon := str(wpn.get("kind", "melee")) == "ranged"
 	var reach := float(wpn.get("range", 1.3)) + (0.6 if t.kind == "airship" or t.kind == "robot" else 0.2)
-	if cautious and ranged_weapon and u.pos.distance_to(t.pos) < reach * 0.72:
-		if not u.moving:
-			w.move_unit(u, u.pos - (t.pos - u.pos).normalized() * reach * 0.8)
+	if squad != null and squad.stance == "aggressive" and ranged_weapon:
+		reach *= 0.55
+	var distance_to_target := u.pos.distance_to(t.pos)
+	if cautious and ranged_weapon and distance_to_target < reach * 0.72:
+		var direction_to_target := t.pos - u.pos
+		var moving_toward_target := u.moving and (u.goal - u.pos).dot(direction_to_target) > 0.0
+		if not u.moving or moving_toward_target:
+			var retreat_distance := maxf(0.5, reach * 0.80 - distance_to_target + 0.25)
+			w.move_unit(u, u.pos - direction_to_target.normalized() * retreat_distance)
 		u.state = Unit.State.MOVE
+		if distance_to_target <= reach and u.attack_cd <= 0.0:
+			u.attack_cd = float(wpn.get("cooldown", 1.0)) / maxf(0.2, float(u.stats.get("attack_speed", 1.0)))
+			attack(u, t, wpn)
 		return
 	var attack_pos := t.pos
 	if u.squad_id >= 0:
@@ -112,8 +121,9 @@ func _engage(u: Unit) -> void:
 	if dir.length() > 0.01:
 		u.facing = dir.normalized()
 	u.state = Unit.State.FIGHT
+	var stance_attack_speed := 1.15 if squad != null and squad.stance == "aggressive" else 1.0
 	if u.attack_cd <= 0.0:
-		u.attack_cd = float(wpn.get("cooldown", 1.0)) / maxf(0.2, float(u.stats.get("attack_speed", 1.0)))
+		u.attack_cd = float(wpn.get("cooldown", 1.0)) / (maxf(0.2, float(u.stats.get("attack_speed", 1.0))) * stance_attack_speed)
 		attack(u, t, wpn)
 func attack(u: Unit, t: Unit, wpn: Dictionary) -> void:
 	var ranged := str(wpn.get("kind", "melee")) == "ranged"
@@ -203,6 +213,12 @@ func apply_damage(t: Unit, amount: float, attacker: Unit, crit: bool = false, fe
 	if not t.alive or t.state == Unit.State.DOWNED:
 		return
 	var dmg := maxf(1.0, amount - float(t.stats.get("armor", 0.0)) * 0.6)
+	var squad := w.get_squad(t.squad_id) if t.is_player() and t.squad_id >= 0 else null
+	if squad:
+		if squad.stance == "cautious":
+			dmg = maxf(1.0, dmg * 0.75)
+		elif squad.stance == "aggressive":
+			dmg *= 1.25
 	t.hp -= dmg
 	t.last_hit_t = 0.0
 	t.push_fx(&"hit")
@@ -224,6 +240,7 @@ func apply_damage(t: Unit, amount: float, attacker: Unit, crit: bool = false, fe
 func _fall(t: Unit, attacker: Unit) -> void:
 	t.hp = 0.0
 	w.stop_unit(t)
+	_cancel_pending_ability(t)
 	t.target_id = -1
 	if t.is_player() and t.is_person():
 		t.state = Unit.State.DOWNED
@@ -402,6 +419,10 @@ func _abilities() -> void:
 	for u: Unit in w.unit_list:
 		for key: Variant in u.ability_cd.keys():
 			u.ability_cd[key] = maxf(0.0, float(u.ability_cd[key]) - 1.0)
+		if not u.alive or u.state == Unit.State.DOWNED:
+			_cancel_pending_ability(u)
+		if _process_pending_ability(u):
+			continue
 		if u.ability_windup > 0.0:
 			u.ability_windup = maxf(0.0, u.ability_windup - 1.0)
 			if u.ability_windup <= 0.0:
@@ -409,85 +430,43 @@ func _abilities() -> void:
 				var aimed := DB.get_def("generation/abilities", "aimed_shot")
 				if aim_target and aim_target.alive and aim_target.state != Unit.State.DOWNED and u.last_hit_t > 0.9:
 					var weapon: Dictionary = u.stats.get("weapon", Unit.FISTS)
-					var saved_damage := float(weapon.get("damage", 3.0))
 					var empowered := weapon.duplicate(true)
-					empowered["damage"] = saved_damage * float(aimed.get("damage_mult", 2.0))
+					empowered["damage"] = float(weapon.get("damage", 3.0)) * float(aimed.get("damage_mult", 2.0))
 					attack(u, aim_target, empowered)
 					_use_feedback(u, "aimed_shot")
 					u.ability_cd["aimed_shot"] = float(aimed.get("cooldown", 18.0))
 				u.ability_target_id = -1
 		if not u.alive or u.state == Unit.State.DOWNED:
 			continue
-		var ids := _ability_ids(u)
-		for aid: String in ids:
+		var squad := w.get_squad(u.squad_id) if u.squad_id >= 0 else null
+		if squad and not squad.auto_abilities:
+			continue
+		if int(u.named.get("_manual_used_tick", -1)) == w.tick_count:
+			continue
+		for aid: String in ability_ids(u):
 			var a := DB.get_def("generation/abilities", aid)
 			if a.is_empty() or float(u.ability_cd.get(aid, 0.0)) > 0.0 or u.target_id < 0:
 				continue
 			var target := w.get_unit(u.target_id)
 			if target == null or not target.alive or target.state == Unit.State.DOWNED:
 				continue
-			var distance := u.pos.distance_to(target.pos)
-			if distance > float(a.get("range", 10.0)):
+			if u.pos.distance_to(target.pos) > float(a.get("range", 10.0)):
 				continue
-			var used := false
-			match str(a.get("kind", "")):
-				"stun":
-					target.ability_cd["stunned"] = float(a.get("duration", 1.2))
-					w.fx.emit(&"hit_spark", w.world_pos(target) + Vector3(0, 1.0, 0), Color("#8feaff"))
-					used = true
-				"aimed_shot":
-					if u.ability_windup <= 0.0:
-						u.ability_windup = float(a.get("windup", 1.2))
-						u.ability_target_id = target.id
-						w.fx.emit(StringName("combat_ability|aimed_shot"), w.world_pos(u) + Vector3(0, 1.3, 0), Color("#ffd36a"))
-						used = true
-				"blast":
-					w.emit_fx(&"explosion_small", target.pos, float(a.get("radius", 2.2)))
-					for victim: Unit in w.units_near(target.pos, float(a.get("radius", 2.2))):
-						if w.hostile(u.faction, victim.faction):
-							apply_damage(victim, float(a.get("damage", 18.0)), u, false)
-					used = true
-				"heal_ally":
-					var ally := _most_wounded_ally(u, float(a.get("range", 5.0)))
-					if ally:
-						var amount := float(ally.stats.get("max_hp", 100.0)) * float(a.get("amount_pct", 0.22))
-						if ally.state == Unit.State.DOWNED:
-							ally.state = Unit.State.IDLE
-							ally.downed_t = 0.0
-							ally.hp = maxf(1.0, amount)
-							ally.injured_days = 2.0
-							ally.recompute_stats()
-						else:
-							ally.hp = minf(float(ally.stats.get("max_hp", 100.0)), ally.hp + amount)
-						w.fx.emit(&"heal", w.world_pos(ally) + Vector3(0, 0.9, 0), Color("#73ff9b"))
-						w.fx.emit(StringName("combat_heal|%d" % roundi(amount)), w.world_pos(ally) + Vector3(0, 1.3, 0), Color("#73ff9b"))
-						used = true
-				"buff_allies":
-					for ally: Unit in w.units_near(u.pos, float(a.get("radius", 6.0))):
-						if ally.faction == u.faction:
-							ally.buffs.append({"mods": a.get("mods", {}), "t": float(a.get("duration", 8.0))})
-							ally.recompute_stats()
-					used = true
-				"buff_self":
-					u.buffs.append({"mods": a.get("mods", {}), "t": float(a.get("duration", 6.0))})
-					u.recompute_stats()
-					used = true
-				"heal_self":
-					if u.hp_ratio() < float(a.get("trigger_hp", 0.5)):
-						u.hp = minf(float(u.stats["max_hp"]), u.hp + float(u.stats["max_hp"]) * float(a.get("amount_pct", 0.25)))
-						w.fx.emit(&"heal", w.world_pos(u) + Vector3(0, 1.0, 0), Color("#ffb070"))
-						used = true
-				"multi_shot":
-					for shot in int(a.get("shots", 3)):
-						attack(u, target, u.stats.get("weapon", Unit.FISTS))
-					used = true
-			if used:
-				u.ability_cd[aid] = float(a.get("cooldown", 18.0))
-				_use_feedback(u, aid)
+			var kind := str(a.get("kind", ""))
+			if kind == "heal_ally":
+				var ally := _most_wounded_ally(u, float(a.get("range", 5.0)))
+				if ally and _execute_ability(u, aid, ally, ally.pos):
+					break
+				continue
+			if kind in ["heal_self", "buff_self", "buff_allies"]:
+				if _execute_ability(u, aid, null, u.pos):
+					break
+				continue
+			if _execute_ability(u, aid, target, target.pos):
 				break
 
 
-func _ability_ids(u: Unit) -> Array[String]:
+func ability_ids(u: Unit) -> Array[String]:
 	var ids: Array[String] = []
 	var role := str(u.character.get("role", "")) if u.is_person() else ""
 	for ability: Dictionary in DB.entries("generation/abilities"):
@@ -499,6 +478,166 @@ func _ability_ids(u: Unit) -> Array[String]:
 				ids.append(str(id))
 	return ids
 
+
+func ability_info(u: Unit, aid: String) -> Dictionary:
+	if not ability_ids(u).has(aid):
+		return {}
+	var a := DB.get_def("generation/abilities", aid)
+	if a.is_empty():
+		return {}
+	var kind := str(a.get("kind", ""))
+	var target := "none"
+	if kind in ["stun", "aimed_shot", "multi_shot"]:
+		target = "enemy"
+	elif kind == "blast":
+		target = "ground"
+	elif kind == "heal_ally":
+		target = "ally"
+	return {"id": aid, "name": str(a.get("name", aid)), "icon": "abl_" + aid,
+		"cooldown": float(a.get("cooldown", 0.0)), "cooldown_left": float(u.ability_cd.get(aid, 0.0)),
+		"ready": float(u.ability_cd.get(aid, 0.0)) <= 0.0, "target": target,
+		"range": float(a.get("range", a.get("radius", 0.0)))}
+
+
+func use_ability(u: Unit, aid: String, target: Dictionary) -> String:
+	if not u.alive or u.state == Unit.State.DOWNED:
+		return "downed"
+	if not ability_ids(u).has(aid) or DB.get_def("generation/abilities", aid).is_empty():
+		return "unknown"
+	if float(u.ability_cd.get(aid, 0.0)) > 0.0:
+		return "cooldown"
+	var info := ability_info(u, aid)
+	var target_unit: Unit = null
+	var target_pos := u.pos
+	match str(info["target"]):
+		"enemy", "ally":
+			if not target.has("unit"):
+				return "no_target"
+			target_unit = w.get_unit(int(target["unit"]))
+			if target_unit == null or not target_unit.alive:
+				return "no_target"
+			if info["target"] == "enemy" and (target_unit.state == Unit.State.DOWNED or not w.hostile(u.faction, target_unit.faction)):
+				return "no_target"
+			if info["target"] == "ally" and target_unit.faction != u.faction:
+				return "no_target"
+			target_pos = target_unit.pos
+		"ground":
+			if not target.has("pos") or not (target["pos"] is Vector2):
+				return "no_target"
+			target_pos = target["pos"]
+	if float(info["range"]) > 0.0 and u.pos.distance_to(target_pos) > float(info["range"]):
+		u.named["_pending_ability"] = {"id": aid, "unit": target_unit.id if target_unit else -1, "pos": [target_pos.x, target_pos.y]}
+		w.move_unit(u, target_pos)
+		return ""
+	if not _execute_ability(u, aid, target_unit, target_pos):
+		return "no_target"
+	u.named["_manual_used_tick"] = w.tick_count
+	return ""
+
+
+func cancel_manual_ability(u: Unit) -> void:
+	_cancel_pending_ability(u)
+
+
+func _cancel_pending_ability(u: Unit) -> void:
+	u.named.erase("_pending_ability")
+
+
+func _process_pending_ability(u: Unit) -> bool:
+	if not u.named.has("_pending_ability"):
+		return false
+	var pending: Dictionary = u.named["_pending_ability"]
+	var aid := str(pending.get("id", ""))
+	var target_id := int(pending.get("unit", -1))
+	var target: Unit = w.get_unit(target_id) if target_id >= 0 else null
+	var pos_data: Variant = pending.get("pos", [u.pos.x, u.pos.y])
+	var pos := Vector2(float(pos_data[0]), float(pos_data[1]))
+	var info := ability_info(u, aid)
+	if info.is_empty() or float(u.ability_cd.get(aid, 0.0)) > 0.0:
+		_cancel_pending_ability(u)
+		return false
+	if target_id >= 0 and (target == null or not target.alive or
+			(target.state == Unit.State.DOWNED and info["target"] != "ally")):
+		_cancel_pending_ability(u)
+		return false
+	var destination: Vector2 = target.pos if target else pos
+	if u.pos.distance_to(destination) > float(info["range"]):
+		if target and (not u.moving or u.goal.distance_to(destination) > 1.0):
+			w.move_unit(u, destination)
+		return true
+	if u.moving:
+		w.stop_unit(u)
+	_cancel_pending_ability(u)
+	_execute_ability(u, aid, target, target.pos if target else pos)
+	return true
+
+
+func _execute_ability(u: Unit, aid: String, target: Unit, target_pos: Vector2) -> bool:
+	var a := DB.get_def("generation/abilities", aid)
+	if a.is_empty():
+		return false
+	var used := false
+	match str(a.get("kind", "")):
+		"stun":
+			if target == null:
+				return false
+			target.ability_cd["stunned"] = float(a.get("duration", 1.2))
+			w.fx.emit(&"hit_spark", w.world_pos(target) + Vector3(0, 1.0, 0), Color("#8feaff"))
+			used = true
+		"aimed_shot":
+			if target == null or u.ability_windup > 0.0:
+				return false
+			u.ability_windup = float(a.get("windup", 1.2))
+			u.ability_target_id = target.id
+			w.fx.emit(StringName("combat_ability|aimed_shot"), w.world_pos(u) + Vector3(0, 1.3, 0), Color("#ffd36a"))
+			used = true
+		"blast":
+			w.emit_fx(&"explosion_small", target_pos, float(a.get("radius", 2.2)))
+			for victim: Unit in w.units_near(target_pos, float(a.get("radius", 2.2))):
+				if w.hostile(u.faction, victim.faction):
+					apply_damage(victim, float(a.get("damage", 18.0)), u, false)
+			used = true
+		"heal_ally":
+			var ally := target if target else _most_wounded_ally(u, float(a.get("range", 5.0)))
+			if ally == null:
+				return false
+			var amount := float(ally.stats.get("max_hp", 100.0)) * float(a.get("amount_pct", 0.22))
+			if ally.state == Unit.State.DOWNED:
+				ally.state = Unit.State.IDLE
+				ally.downed_t = 0.0
+				ally.hp = maxf(1.0, amount)
+				ally.injured_days = 2.0
+				ally.recompute_stats()
+			else:
+				ally.hp = minf(float(ally.stats.get("max_hp", 100.0)), ally.hp + amount)
+			w.fx.emit(&"heal", w.world_pos(ally) + Vector3(0, 0.9, 0), Color("#73ff9b"))
+			w.fx.emit(StringName("combat_heal|%d" % roundi(amount)), w.world_pos(ally) + Vector3(0, 1.3, 0), Color("#73ff9b"))
+			used = true
+		"buff_allies":
+			for ally: Unit in w.units_near(u.pos, float(a.get("radius", 6.0))):
+				if ally.faction == u.faction:
+					ally.buffs.append({"mods": a.get("mods", {}), "t": float(a.get("duration", 8.0))})
+					ally.recompute_stats()
+			used = true
+		"buff_self":
+			u.buffs.append({"mods": a.get("mods", {}), "t": float(a.get("duration", 6.0))})
+			u.recompute_stats()
+			used = true
+		"heal_self":
+			if u.hp_ratio() < float(a.get("trigger_hp", 0.5)):
+				u.hp = minf(float(u.stats["max_hp"]), u.hp + float(u.stats["max_hp"]) * float(a.get("amount_pct", 0.25)))
+				w.fx.emit(&"heal", w.world_pos(u) + Vector3(0, 1.0, 0), Color("#ffb070"))
+				used = true
+		"multi_shot":
+			if target == null:
+				return false
+			for shot in int(a.get("shots", 3)):
+				attack(u, target, u.stats.get("weapon", Unit.FISTS))
+			used = true
+	if used:
+		u.ability_cd[aid] = float(a.get("cooldown", 18.0))
+		_use_feedback(u, aid)
+	return used
 
 func _most_wounded_ally(u: Unit, radius: float) -> Unit:
 	var best: Unit = null

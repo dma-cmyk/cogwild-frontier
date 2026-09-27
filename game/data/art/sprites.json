@@ -739,6 +739,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "human_worker_f@v4",
+   "texture": "res://assets/sprites/chars/human_worker_f_v4.png",
+   "source": "chip_human_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "human_worker_f@v5",
+   "texture": "res://assets/sprites/chars/human_worker_f_v5.png",
+   "source": "chip_human_worker_v5",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "human_worker_m",
    "texture": "res://assets/sprites/chars/human_worker_m.png",
    "source": "chip_human_worker",
@@ -788,6 +834,52 @@
    "id": "human_worker_m@v3",
    "texture": "res://assets/sprites/chars/human_worker_m_v3.png",
    "source": "chip_human_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "human_worker_m@v4",
+   "texture": "res://assets/sprites/chars/human_worker_m_v4.png",
+   "source": "chip_human_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "human_worker_m@v5",
+   "texture": "res://assets/sprites/chars/human_worker_m_v5.png",
+   "source": "chip_human_worker_v5",
    "cell": [
     128,
     128
@@ -1523,6 +1615,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "stoutkin_worker_f@v4",
+   "texture": "res://assets/sprites/chars/stoutkin_worker_f_v4.png",
+   "source": "chip_stoutkin_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "stoutkin_worker_f@v5",
+   "texture": "res://assets/sprites/chars/stoutkin_worker_f_v5.png",
+   "source": "chip_stoutkin_worker_v5",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "stoutkin_worker_m",
    "texture": "res://assets/sprites/chars/stoutkin_worker_m.png",
    "source": "chip_stoutkin_worker",
@@ -1572,6 +1710,52 @@
    "id": "stoutkin_worker_m@v3",
    "texture": "res://assets/sprites/chars/stoutkin_worker_m_v3.png",
    "source": "chip_stoutkin_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "stoutkin_worker_m@v4",
+   "texture": "res://assets/sprites/chars/stoutkin_worker_m_v4.png",
+   "source": "chip_stoutkin_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "stoutkin_worker_m@v5",
+   "texture": "res://assets/sprites/chars/stoutkin_worker_m_v5.png",
+   "source": "chip_stoutkin_worker_v5",
    "cell": [
     128,
     128
@@ -2213,6 +2397,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "sylvan_worker_f@v4",
+   "texture": "res://assets/sprites/chars/sylvan_worker_f_v4.png",
+   "source": "chip_sylvan_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "sylvan_worker_m",
    "texture": "res://assets/sprites/chars/sylvan_worker_m.png",
    "source": "chip_sylvan_worker",
@@ -2262,6 +2469,29 @@
    "id": "sylvan_worker_m@v3",
    "texture": "res://assets/sprites/chars/sylvan_worker_m_v3.png",
    "source": "chip_sylvan_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "sylvan_worker_m@v4",
+   "texture": "res://assets/sprites/chars/sylvan_worker_m_v4.png",
+   "source": "chip_sylvan_worker_v4",
    "cell": [
     128,
     128
@@ -2951,6 +3181,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "vulpin_worker_f@v4",
+   "texture": "res://assets/sprites/chars/vulpin_worker_f_v4.png",
+   "source": "chip_vulpin_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "vulpin_worker_f@v5",
+   "texture": "res://assets/sprites/chars/vulpin_worker_f_v5.png",
+   "source": "chip_vulpin_worker_v5",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "vulpin_worker_m",
    "texture": "res://assets/sprites/chars/vulpin_worker_m.png",
    "source": "chip_vulpin_worker",
@@ -3020,6 +3296,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "vulpin_worker_m@v4",
+   "texture": "res://assets/sprites/chars/vulpin_worker_m_v4.png",
+   "source": "chip_vulpin_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "vulpin_worker_m@v5",
+   "texture": "res://assets/sprites/chars/vulpin_worker_m_v5.png",
+   "source": "chip_vulpin_worker_v5",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "walker",
    "texture": "res://assets/sprites/chars/walker.png",
    "source": "chip_mach_a",
@@ -3060,10 +3382,10 @@
    ],
    "anchor": [
     64.0,
-    64.0
+    124
    ],
    "height_px": 112,
-   "anchor_mode": "center",
+   "anchor_mode": "feet",
    "clipped_frames": 12
   },
   {

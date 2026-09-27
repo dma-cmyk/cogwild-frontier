@@ -10,15 +10,12 @@ ROOT = Path(__file__).resolve().parents[2]
 GAME = ROOT / "game"
 
 
-# Painted world and building sprites use UASTC Basis so game textures remain GPU-compressed.
-# Building art caps at 768 px; its grayscale night-glow masks cap at 512 px. Character chip sheets
-# use lossy WebP q=0.85; portraits use q=0.9. Both get mipmaps because the game minifies them. The title
-# JPEG source is preserved; WebP avoids inflating its full 1920x1080 pixels into a lossless RGBA map.
+# Character sheets use the original VRAM-compressed web payload; portrait source PNGs are generated at 128px.
 BASIS, LOSSY, LOSSLESS = 4, 1, 0
 PRESETS = {
     "ui/title_keyart.jpg": {"compress/mode": LOSSY, "compress/lossy_quality": "0.9", "mipmaps/generate": False, "process/size_limit": 0},
-    "portraits/": {"compress/mode": LOSSY, "compress/lossy_quality": "0.9", "mipmaps/generate": True, "process/size_limit": 0},
-    "sprites/chars/": {"compress/mode": LOSSY, "compress/lossy_quality": "0.85", "mipmaps/generate": True, "process/size_limit": 0},
+    "portraits/": {"compress/mode": LOSSY, "compress/high_quality": "false", "compress/lossy_quality": "0.9", "compress/rdo_quality_loss": "1.0", "mipmaps/generate": True, "process/size_limit": 0},
+    "sprites/chars/": {"compress/mode": LOSSY, "compress/high_quality": "false", "compress/lossy_quality": "0.85", "compress/rdo_quality_loss": "1.0", "mipmaps/generate": True, "process/size_limit": 0},
     "sprites/buildings/": {"compress/mode": BASIS, "mipmaps/generate": True, "process/size_limit": 768},
     "sprites/": {"compress/mode": BASIS, "compress/rdo_quality_loss": 1.5, "mipmaps/generate": True, "process/size_limit": 0},
     "ui/": {"compress/mode": LOSSLESS, "mipmaps/generate": False, "process/size_limit": 0},
@@ -52,6 +49,8 @@ def apply(path: Path) -> bool:
         "mipmaps/limit": "-1",
         "process/size_limit": str(preset["process/size_limit"]),
     }
+    if "compress/high_quality" in preset:
+        values["compress/high_quality"] = str(preset["compress/high_quality"])
     if "compress/lossy_quality" in preset:
         values["compress/lossy_quality"] = str(preset["compress/lossy_quality"])
     before = text

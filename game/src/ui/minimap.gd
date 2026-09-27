@@ -13,7 +13,8 @@ var _mat: ShaderMaterial
 var _img: Image
 var _tex: ImageTexture
 var _painted: Dictionary = {}  # chunk key -> version painted
-var _dirty := true
+var _pending_paints: Array[Vector2i] = []
+var _queued_paints: Dictionary = {}
 var _t := 0.0
 var _site_cycle := 0
 var _dragging := false
@@ -65,34 +66,44 @@ func setup(game: Game) -> void:
 		btn.custom_minimum_size = Vector2(44, 42)
 		btn.pressed.connect(b[2])
 		col.add_child(btn)
-	g.world.chunk_ready.connect(func(_k: Vector2i) -> void: _dirty = true)
+	g.world.chunk_ready.connect(_queue_chunk)
 	g.world.chunk_changed.connect(func(k: Vector2i) -> void:
 		_painted.erase(k)
-		_dirty = true)
-
+		_queue_chunk(k))
+	var initial_painted := false
+	for key: Vector2i in g.world.chunks:
+		var ch: ChunkData = g.world.chunks[key]
+		var version := ch.version + ch.res_version * 7919
+		if int(_painted.get(key, -1)) != version:
+			_paint(ch)
+			_painted[key] = version
+			initial_painted = true
+	if initial_painted:
+		_tex.update(_img)
 
 func _view_rect() -> Rect2:
 	var c := Vector2(g.rig.target.x, g.rig.target.z)
 	return Rect2(c - Vector2(SPAN, SPAN) * 0.5, Vector2(SPAN, SPAN))
 
 
+func _queue_chunk(key: Vector2i) -> void:
+	if not _queued_paints.has(key):
+		_pending_paints.append(key)
+		_queued_paints[key] = true
+
+
 func _paint_chunks() -> void:
-	_dirty = false
-	var changed := false
-	var n := 0
-	for key: Vector2i in g.world.chunks:
-		var ch: ChunkData = g.world.chunks[key]
-		if int(_painted.get(key, -1)) == ch.version + ch.res_version * 7919:
-			continue
-		_painted[key] = ch.version + ch.res_version * 7919
+	if _pending_paints.is_empty():
+		return
+	var key: Vector2i = _pending_paints.pop_front()
+	_queued_paints.erase(key)
+	var ch: ChunkData = g.world.chunks.get(key)
+	if ch == null:
+		return
+	var version := ch.version + ch.res_version * 7919
+	if int(_painted.get(key, -1)) != version:
+		_painted[key] = version
 		_paint(ch)
-		changed = true
-		n += 1
-		# Keep discovery painting bounded; the dirty flag resumes remaining chunks next frame.
-		if n >= 1:
-			_dirty = true
-			break
-	if changed:
 		_tex.update(_img)
 
 
@@ -121,7 +132,7 @@ func _paint(ch: ChunkData) -> void:
 
 
 func _process(delta: float) -> void:
-	if _dirty:
+	if not _pending_paints.is_empty():
 		_paint_chunks()
 	var r := _view_rect()
 	_mat.set_shader_parameter("view_rect", Vector4(r.position.x, r.position.y, r.size.x, r.size.y))

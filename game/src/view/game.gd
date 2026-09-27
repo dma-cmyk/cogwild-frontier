@@ -28,6 +28,7 @@ var sel_building := -1
 var sel_site := -1
 var sel_loot := -1
 
+var viewed_squad_id := -1
 
 func _ready() -> void:
 	var req := App.pending
@@ -63,6 +64,8 @@ func _build_scene() -> void:
 	rig.name = "CameraRig"
 	rig.world = world
 	add_child(rig)
+	rig.yaw_step_finished.connect(func() -> void:
+		get_tree().call_group(BuildingVisual.BACK_VIEW_GROUP, &"update_card_view"))
 	var home := world.home_pos()
 	rig.focus(Vector3(home.x, 0, home.y), true)
 	input_ctl = InputController.new()
@@ -89,8 +92,7 @@ func _build_scene() -> void:
 						ai.enrich_item(it))
 		ai.enriched.connect(func(_k: String, _t: Variant) -> void: hud.info_panel.refresh(true))
 	if world.squads.size() > 0:
-		select_squad(world.squads[0].id)
-
+		view_squad(world.squads[0].id)
 
 func _exit_tree() -> void:
 	if world:
@@ -153,6 +155,8 @@ func _update_camera_bounds() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if get_viewport().gui_get_focus_owner() is LineEdit:
+		return
 	if event.is_action_pressed("toggle_pause"):
 		toggle_pause()
 	elif event.is_action_pressed("speed_up"):
@@ -165,10 +169,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		App.load_game(0)
 	elif event.is_action_pressed("focus_home"):
 		focus_home()
-	for i in 4:
-		if event.is_action_pressed("squad_%d" % (i + 1)) and i < world.squads.size():
-			select_squad(world.squads[i].id)
-			focus_selection()
 	if event.is_action_pressed("squad_cycle") and not world.squads.is_empty():
 		var idx := 0
 		for i in world.squads.size():
@@ -179,6 +179,15 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 # --- verification helpers (used by automated probe scenarios, e.g. tests/probe/*.json) ---------
+## Number of buildings currently showing their painted back view.
+func dbg_back_views_shown() -> int:
+	var shown := 0
+	for node: Node in get_tree().get_nodes_in_group(BuildingVisual.BACK_VIEW_GROUP):
+		if (node as BuildingVisual)._showing_back:
+			shown += 1
+	return shown
+
+
 func dbg_touch_press(index: int, pos: Vector2) -> void:
 	var event := InputEventScreenTouch.new()
 	event.index = index
@@ -316,7 +325,7 @@ func dbg_prepare_crossing_probe(kind: String) -> bool:
 						var line: Array[Vector2i] = [tile]
 						for axis: Vector2i in [Vector2i.RIGHT, Vector2i.DOWN]:
 							var trial: Array[Vector2i] = [tile]
-							for step in range(1, 4):
+							for step in range(1, 3):
 								var next := tile + axis * step
 								var matches := world.gen.is_river_water(float(next.x) + 0.5, float(next.y) + 0.5) \
 									if feature == "river" else world.terrain_at(next) == Tiles.CLIFF
@@ -325,6 +334,8 @@ func dbg_prepare_crossing_probe(kind: String) -> bool:
 								trial.append(next)
 							if trial.size() > line.size():
 								line = trial
+						if kind == "stairs" and line.size() < 3:
+							continue
 						world.reveal(Vector2(tile), 40.0)
 						world.economy.add("wood", maxi(0, 300 - int(world.res.get("wood", 0))))
 						world.economy.add("stone", maxi(0, 300 - int(world.res.get("stone", 0))))
@@ -338,11 +349,17 @@ func dbg_prepare_crossing_probe(kind: String) -> bool:
 								world.colony.release(worker)
 						var building_type := "bridge_segment" if kind == "bridge" else "cliff_stairs"
 						var planned: Array[Vector2i] = []
+						var can_build_line := true
 						for segment: Vector2i in line:
-							if world.can_place(building_type, segment) == "":
+							if world.can_place(building_type, segment) != "":
+								can_build_line = false
+								break
+						if can_build_line:
+							for segment: Vector2i in line:
 								world.place_building(building_type, segment)
 								planned.append(segment)
-						if not planned.is_empty():
+						if (kind == "stairs" and planned.size() >= 3) \
+								or (kind != "stairs" and not planned.is_empty()):
 							rig.zoom_goal = 12.0
 							rig.focus(Vector3(tile.x + 0.5, world.ground_y(Vector2(tile) + Vector2(0.5, 0.5)),
 								tile.y + 0.5), true)
@@ -387,11 +404,12 @@ func dbg_walk_on_crossing(building_type: String) -> bool:
 				world.ensure_chunk(world.chunk_key(start))
 				if world.is_walkable(start):
 					unit.pos = Vector2(start) + Vector2(0.5, 0.5)
-					if world.move_unit(unit, Vector2(origin) + Vector2(0.5, 0.5)):
-						rig.zoom_goal = 12.0
-						rig.focus(Vector3(origin.x + 0.5, world.ground_y(Vector2(origin) + Vector2(0.5, 0.5)),
-							origin.y + 0.5), true)
-						return true
+					var target := Vector2(origin) + Vector2(0.5, 0.5)
+					if not world.move_unit(unit, target):
+						continue
+					rig.zoom_goal = 12.0
+					rig.focus(Vector3(origin.x + 0.5, world.ground_y(target), origin.y + 0.5), true)
+					return Vector2i(floori(unit.goal.x), floori(unit.goal.y)) == origin
 	return false
 
 
@@ -461,14 +479,13 @@ func clear_selection() -> void:
 	_refresh_rings()
 	selection_changed.emit()
 
-
 func select_units(ids: Array) -> void:
 	sel_units = ids.duplicate()
 	sel_building = -1
 	sel_site = -1
 	sel_loot = -1
 	sel_squad = -1
-	# a selection that is exactly one squad selects that squad
+	# A squad's member click updates the persistent viewed squad; unrelated selections do not.
 	if not ids.is_empty():
 		var sq := -2
 		for id: int in ids:
@@ -479,13 +496,11 @@ func select_units(ids: Array) -> void:
 				sq = u.squad_id
 			elif sq != u.squad_id:
 				sq = -1
-		if sq >= 0 and ids.size() == 1:
+		if sq >= 0:
 			sel_squad = sq
-		elif sq >= 0:
-			sel_squad = sq
+			viewed_squad_id = sq
 	_refresh_rings()
 	selection_changed.emit()
-
 
 func select_squad(id: int) -> void:
 	var s := world.get_squad(id)
@@ -493,11 +508,21 @@ func select_squad(id: int) -> void:
 		return
 	sel_units = s.members.duplicate()
 	sel_squad = id
+	viewed_squad_id = id
 	sel_building = -1
 	sel_site = -1
 	sel_loot = -1
 	_refresh_rings()
 	selection_changed.emit()
+
+
+func view_squad(id: int) -> void:
+	if world.get_squad(id) == null:
+		return
+	viewed_squad_id = id
+	selection_changed.emit()
+
+
 
 
 func select_building(id: int) -> void:
@@ -523,8 +548,11 @@ func focus_member(id: int) -> void:
 	var u := world.get_unit(id)
 	if u == null:
 		return
-	if u.squad_id >= 0 and sel_squad != u.squad_id:
-		select_squad(u.squad_id)
+	if u.squad_id >= 0:
+		if sel_squad != u.squad_id:
+			select_squad(u.squad_id)
+		else:
+			viewed_squad_id = u.squad_id
 	sel_units.erase(id)
 	sel_units.push_front(id)
 	_refresh_rings()

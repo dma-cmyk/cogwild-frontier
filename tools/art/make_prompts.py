@@ -96,6 +96,35 @@ V3_LOOKS = {
 	"scholar": "wearing a plum and muted-gold robe with a royal-blue company sash and dark leather satchel, holding a wooden staff with a small hanging lantern",
 }
 
+V4_APPEARANCE = {
+	"human": ("a human man with dark curly hair, a short beard and a leather cap",
+		"a human woman with auburn hair in two braids, freckles and a green headscarf"),
+	"sylvan": ("an older Sylvan man with long pointed ears, white hair in a loose braid and a narrow moustache",
+		"a young Sylvan woman with long pointed ears, midnight-blue hair in a bob and a small nose ring"),
+	"stoutkin": ("a broad Stoutkin man with long iron-grey braids, a square beard and a brass ear cuff",
+		"a sturdy Stoutkin woman with black curls in two high buns, a braided beard and a cheek scar"),
+	"vulpin": ("a Vulpin man with tall russet fox ears, a russet tail with white tip, black curls and a neat beard",
+		"a Vulpin woman with russet fox ears, a russet tail with white tip, pale blond curls and a red hair ribbon"),
+}
+V5_APPEARANCE = {
+	"human": ("an older human man with wavy silver hair, a thick moustache and round spectacles",
+		"a young human woman with short black curls, a copper hair clip and a strong jaw"),
+	"sylvan": ("an older Sylvan man with long pointed ears, white hair in a loose braid and a narrow moustache",
+		"a young Sylvan woman with long pointed ears, midnight-blue hair in a bob and a small nose ring"),
+	"stoutkin": ("an older stocky Stoutkin man with a bald crown, russet side braids and a large white beard",
+		"a young broad Stoutkin woman with sandy hair in one thick braid, spectacles and a strong jaw"),
+	"vulpin": ("an older Vulpin man with large russet fox ears, russet tail with cream tip, a cream beard and dark hair",
+		"a young Vulpin woman with large russet fox ears, russet tail with cream tip, dark auburn curls and freckles"),
+}
+ADDITIONAL_WORKER_LOOK = "wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt"
+ADDITIONAL_WORKER_V5_LOOK = "wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt"
+
+def additional_worker_variants(race: str) -> list:
+	if race == "sylvan":
+		return [(4, V4_APPEARANCE[race], ADDITIONAL_WORKER_V5_LOOK)]
+	return [(4, V4_APPEARANCE[race], ADDITIONAL_WORKER_LOOK),
+		(5, V5_APPEARANCE[race], ADDITIONAL_WORKER_V5_LOOK)]
+
 
 
 def chip_args(left: str, right: str, frames: str = "walking frames: left foot forward, standing, right foot forward",
@@ -148,6 +177,45 @@ def building_args(subject: str) -> dict:
 	return {"subject": subject, "style": WORLD_STYLE,
 		"scene": BG + ", isolated structure only, no ground tile, no grass, no people",
 		"composition": ISO, "aspect_ratio": "1:1", "image_size": "1024x1024", "model": MODEL}
+
+
+def building_back_args(front_id: str, feature: str) -> dict:
+	return {
+		"subject": ("Create a genuine opposite-diagonal rear view of Image 1, the same building. "
+			"Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. "
+			f"Hide the front entrance, door, signs and front-only details ({feature}); show plausible plain rear planes without a door or sign. "
+			"This must be a true opposite-side view, not a mirrored front."),
+		"style": WORLD_STYLE,
+		"scene": BG + ", same building only, no ground, shadows, people or text",
+		"composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+		"aspect_ratio": "1:1", "image_size": "1024x1024", "model": MODEL,
+		"input": [{"path": f"art_src/raw/{front_id}.webp"}],
+	}
+
+
+BUILDING_BACK_REFERENCES = {
+	"b_hearth1_back": ("b_hearth1", "entrance and banner"),
+	"b_hearth2_back": ("b_hearth2", "entrance and banner"),
+	"b_hearth3_back": ("b_hearth3", "entrance and banner"),
+	"b_house_back": ("b_house", "door, lantern and company banner"),
+	"b_storehouse_back": ("b_storehouse", "double doors and loading sign"),
+	"b_smelter_back": ("b_smelter", "entrance and furnace mouth"),
+	"b_windmill_back": ("b_windmill", "door and company banner; do not include sails"),
+	"b_workshop_back": ("b_workshop", "garage entrance and crane"),
+	"b_sky_dock_back": ("b_sky_dock", "entrance and company banner"),
+	"b_watchtower_back": ("b_watchtower", "door and company banner"),
+	"b_outpost_back": ("b_outpost", "entrance and banner"),
+	"b_bandit_tent_back": ("b_bandit_tent", "entrance flap and red pennant"),
+	"b_bandit_hut_back": ("b_bandit_hut", "entrance and red sign"),
+	"b_bandit_tower_back": ("b_bandit_tower", "entrance and red insignia"),
+	"b_machine_spire_back": ("b_machine_spire", "entrance and front insignia"),
+	"b_machine_block_back": ("b_machine_block", "front panel markings"),
+	"b_machine_foundry_back": ("b_machine_foundry", "entrance and furnace port"),
+	"b_trade_hall_back": ("b_trade_hall", "door and merchant banners"),
+	"b_trade_stall_back": ("b_trade_stall", "display counter and wares"),
+	"b_wanderer_tent_back": ("b_wanderer_tent", "entrance flap and lantern"),
+	"b_ruin_vault_back": ("b_ruin_vault", "doorway and glowing front runes"),
+}
 
 
 FRONTIER = "frontier fantasy style: dark timber frames, cream plaster, deep-blue slate roofs, grey stone foundations, blue company banners with a white emblem, warm glowing windows"
@@ -239,6 +307,12 @@ def build() -> list:
 			v3_right = f"{v3_female}, {v3_outfit}"
 			out.append({"id": f"{cid}_v3", "kind": "chip",
 				"args": chip_args(v3_left, v3_right, reference=cid)})
+			if look == "worker":
+				for version, appearances, worker_outfit in additional_worker_variants(race):
+					v_left = f"{appearances[0]}, {worker_outfit}"
+					v_right = f"{appearances[1]}, {worker_outfit}"
+					out.append({"id": f"{cid}_v{version}", "kind": "chip",
+						"args": chip_args(v_left, v_right, reference=cid)})
 	bandit_a = ("a human man bandit in a patched brown leather coat, a red bandana and a red scarf over the mouth, holding a rusty hand axe",
 		"a human woman bandit in a red hood and patched brown leather, holding a rusty hand axe")
 	bandit_b = ("a bandit crossbowman: a human man in a red hood and patched leather armour, holding a crossbow",
@@ -294,6 +368,8 @@ def build() -> list:
 		out.append({"id": tid, "kind": "texture", "args": texture_args(text)})
 	for bid, text in BUILDINGS.items():
 		out.append({"id": bid, "kind": "building", "args": building_args(text)})
+	for back_id, (front_id, feature) in BUILDING_BACK_REFERENCES.items():
+		out.append({"id": back_id, "kind": "building_back", "args": building_back_args(front_id, feature)})
 	for race, (male, female) in RACES.items():
 		for look, outfit in LOOKS.items():
 			cid = f"chip_{race}_{look}"
@@ -307,6 +383,12 @@ def build() -> list:
 			v3_outfit = V3_LOOKS[look]
 			out.append({"id": f"portrait_{race}_{look}_v3", "kind": "portrait",
 				"args": portrait_args(f"{cid}_v3", f"{v3_male}, {v3_outfit}", f"{v3_female}, {v3_outfit}")})
+			if look == "worker":
+				for version, appearances, worker_outfit in additional_worker_variants(race):
+					v_left = f"{appearances[0]}, {worker_outfit}"
+					v_right = f"{appearances[1]}, {worker_outfit}"
+					out.append({"id": f"portrait_{race}_{look}_v{version}", "kind": "portrait",
+						"args": portrait_args(f"{cid}_v{version}", v_left, v_right)})
 	out.append({"id": "portrait_bandit_a", "kind": "portrait", "args": portrait_args("chip_bandit_a", *bandit_a)})
 	out.append({"id": "portrait_bandit_b", "kind": "portrait", "args": portrait_args("chip_bandit_b", *bandit_b)})
 	return sorted(out, key=_priority)

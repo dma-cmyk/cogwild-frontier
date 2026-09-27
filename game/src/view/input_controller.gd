@@ -60,6 +60,7 @@ var _wall_start: Variant = null
 
 func setup(game: Game) -> void:
 	g = game
+	process_priority = -100  # Cancel orders before focused popups consume Escape.
 	_foot = MeshInstance3D.new()
 	var pm := PlaneMesh.new()
 	pm.size = Vector2.ONE
@@ -108,6 +109,15 @@ func _mouse() -> Vector2:
 
 
 func _input(event: InputEvent) -> void:
+	if get_viewport().gui_get_focus_owner() is LineEdit:
+		return
+	if event.is_action_pressed("cancel") and mode != "":
+		var preserve_picker := g.hud != null and g.hud.squad_panel.picker_open()
+		set_mode("")
+		if preserve_picker:
+			g.hud.squad_panel.keep_picker_open_after_mode_cancel()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouse and event.device == InputEvent.DEVICE_ID_EMULATION:
 		return
 	if event is InputEventMouse:
@@ -245,6 +255,9 @@ func _touch_tap(p: Vector2) -> void:
 	hover_ground = g.rig.screen_to_ground(p)
 	if mode.begins_with("cmd:"):
 		_target_command(mode.substr(4), p)
+		set_mode("")
+	elif mode.begins_with("ability:"):
+		_target_ability(mode.substr(8), p)
 		set_mode("")
 	elif mode.begins_with("build:"):
 		if hover_ground is Vector3:
@@ -393,6 +406,8 @@ func _describe_hover() -> String:
 # --- input ---------------------------------------------------------------------------------
 
 func _unhandled_input(event: InputEvent) -> void:
+	if get_viewport().gui_get_focus_owner() is LineEdit:
+		return
 	if event is InputEventMouse and event.device == InputEvent.DEVICE_ID_EMULATION:
 		return
 	if event is InputEventScreenTouch or event is InputEventScreenDrag:
@@ -414,10 +429,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		if mode != "":
 			set_mode("")
 			g.get_viewport().set_input_as_handled()
-		elif not g.sel_units.is_empty() or g.sel_building >= 0 or g.sel_site >= 0:
-			g.clear_selection()
-			g.get_viewport().set_input_as_handled()
-
 
 func _left_press(p: Vector2) -> void:
 	_left_down = true
@@ -429,11 +440,19 @@ func _left_press(p: Vector2) -> void:
 
 
 func _left_release(p: Vector2, shift: bool) -> void:
+	# a release whose press landed on the HUD (e.g. a card rebuilt mid-click) is not a world click
+	if not _left_down:
+		return
 	var was_drag := dragging
 	_left_down = false
 	dragging = false
 	if mode.begins_with("cmd:"):
 		_target_command(mode.substr(4), p)
+		if not shift:
+			set_mode("")
+		return
+	if mode.begins_with("ability:"):
+		_target_ability(mode.substr(8), p)
 		if not shift:
 			set_mode("")
 		return
@@ -466,6 +485,9 @@ func _click_select(p: Vector2, shift: bool, finger: bool = false) -> void:
 			g.selection_changed.emit()
 		else:
 			g.select_units([u.id])
+		if u.is_player() and u.squad_id >= 0 and g.hud != null:
+			g.hud.squad_panel.all_squads_active = false
+			g.hud._update_commands()
 		Sfx.play(&"ui_select")
 		return
 	if hover_ground is Vector3:
@@ -506,7 +528,7 @@ func _box_select(r: Rect2) -> void:
 
 ## Right click: attack what is hostile, gather resources, otherwise move.
 func _context_order(p: Vector2) -> void:
-	var units := g.selected_units()
+	var units: Array = g.hud.command_units() if g.hud != null else g.selected_units()
 	if units.is_empty():
 		return
 	var target := pick_unit(p, true)
@@ -538,6 +560,51 @@ func _context_order(p: Vector2) -> void:
 	issue("move", {"pos": Vector2(hover_ground.x, hover_ground.z)})
 
 
+func _target_ability(ability_id: String, screen_pos: Vector2) -> void:
+	var prefer_hostile := false
+	for unit: Unit in g.selected_units():
+		if g.world.combat.ability_ids(unit).has(ability_id):
+			prefer_hostile = str(g.world.combat.ability_info(unit, ability_id).get("target", "")) == "enemy"
+			break
+	var target_unit := pick_unit(screen_pos, prefer_hostile)
+	var target_pos := Vector2(hover_ground.x, hover_ground.z) if hover_ground is Vector3 else Vector2.ZERO
+	var used := 0
+	var reason := ""
+	for unit: Unit in g.selected_units():
+		var info := g.world.combat.ability_info(unit, ability_id)
+		var target: Dictionary = {}
+		match str(info.get("target", "none")):
+			"enemy":
+				if target_unit and g.world.hostile("player", target_unit.faction):
+					target = {"unit": target_unit.id}
+			"ally":
+				if target_unit and target_unit.is_player():
+					target = {"unit": target_unit.id}
+			"ground":
+				if hover_ground is Vector3:
+					target = {"pos": target_pos}
+			"none":
+				target = {}
+		if target.is_empty() and str(info.get("target", "none")) != "none":
+			reason = "no_target"
+			continue
+		var result := g.world.combat.use_ability(unit, ability_id, target)
+		if result == "":
+			used += 1
+		else:
+			reason = result
+	if used == 0 and reason != "":
+		var reason_keys := {
+			"cooldown": "reason.cooldown",
+			"no_target": "reason.no_target",
+			"downed": "reason.downed",
+			"unknown": "reason.unknown",
+		}
+		g.toast.emit(Loc.t(str(reason_keys.get(reason, "reason.unknown"))), "info")
+	elif used > 0:
+		g.toast.emit(Loc.t("%d used ability: %s") % [used, Loc.t(ability_id.replace("_", " ").capitalize())], "good")
+
+
 func _target_command(type: String, p: Vector2) -> void:
 	var target := pick_unit(p, type == "attack")
 	var params := {}
@@ -566,7 +633,7 @@ func _target_command(type: String, p: Vector2) -> void:
 
 ## Sends an order to the selected squad and/or individually selected units.
 func issue(type: String, params: Dictionary = {}) -> void:
-	var units := g.selected_units()
+	var units: Array = g.hud.command_units() if g.hud != null else g.selected_units()
 	if units.is_empty():
 		return
 	var order := params.duplicate()

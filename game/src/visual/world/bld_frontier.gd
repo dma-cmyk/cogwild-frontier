@@ -524,16 +524,17 @@ static func bridge_segment(k: MeshKit, p: BuildPalette) -> void:
 			k.box(Vector3(s * 0.43, 0.23, z), Vector3(0.035, 0.04, 0.035), p.metal)
 
 
-## Single metre of stout cliff stair: stone foot, visible treads and timber side rails.
+## Single metre of stone stairs, with landings and rails rising along the tile.
 static func cliff_stairs(k: MeshKit, p: BuildPalette) -> void:
-	k.box(Vector3(0, 0.06, 0), Vector3(0.92, 0.12, 0.92), p.stone, p.stone_top)
+	# Level end landings let consecutive segments meet without a visible gap.
+	k.box(Vector3(0, 0.08, 0.39), Vector3(0.88, 0.16, 0.2), p.stone, p.stone_top)
+	k.box(Vector3(0, 0.82, -0.39), Vector3(0.88, 0.16, 0.2), p.stone, p.stone_top)
 	for i in 4:
-		var z := -0.36 + float(i) * 0.24
-		var y := 0.18 + float(i) * 0.2
-		k.box(Vector3(0, y, z), Vector3(0.78, 0.1, 0.28), p.wood, p.wood.lightened(0.12))
+		var z := 0.25 - float(i) * 0.17
+		var y := 0.2 + float(i) * 0.17
+		k.box(Vector3(0, y, z), Vector3(0.76, 0.14, 0.25), p.stone, p.stone_top)
 	for s: float in [-1.0, 1.0]:
-		k.tube(Vector3(s * 0.43, 0.22, 0.43), Vector3(s * 0.43, 1.0, -0.43), 0.055, p.timber, 5)
-		for i in 3:
-			var z := 0.28 - float(i) * 0.24
-			var y := 0.48 + float(i) * 0.2
-			k.box(Vector3(s * 0.43, y, z), Vector3(0.12, 0.12, 0.12), p.wood_dark)
+		k.box(Vector3(s * 0.43, 0.37, 0.18), Vector3(0.1, 0.74, 0.1), p.stone_dark)
+		k.box(Vector3(s * 0.43, 1.08, -0.38), Vector3(0.1, 0.22, 0.1), p.stone_dark)
+		k.tube(Vector3(s * 0.43, 0.72, 0.18), Vector3(s * 0.43, 1.18, -0.38),
+			0.045, p.timber, 4)

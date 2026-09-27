@@ -49,6 +49,42 @@
   }
  },
  {
+  "id": "chip_human_worker_v4",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a human man with dark curly hair, a short beard and a leather cap, wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt. RIGHT HALF (columns 4-6): a human woman with auburn hair in two braids, freckles and a green headscarf, wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_worker.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_human_worker_v5",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an older human man with wavy silver hair, a thick moustache and round spectacles, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. RIGHT HALF (columns 4-6): a young human woman with short black curls, a copper hair clip and a strong jaw, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_worker.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_human_fighter",
   "kind": "chip",
   "args": {
@@ -280,6 +316,24 @@
   "kind": "chip",
   "args": {
    "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young Sylvan man with long pointed ears and dark forest-green curls, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. RIGHT HALF (columns 4-6): an older Sylvan woman with long pointed ears, white hair in a high knot and freckles, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_sylvan_worker.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_sylvan_worker_v4",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an older Sylvan man with long pointed ears, white hair in a loose braid and a narrow moustache, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. RIGHT HALF (columns 4-6): a young Sylvan woman with long pointed ears, midnight-blue hair in a bob and a small nose ring, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
    "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
    "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
    "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
@@ -539,6 +593,42 @@
   }
  },
  {
+  "id": "chip_stoutkin_worker_v4",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a broad Stoutkin man with long iron-grey braids, a square beard and a brass ear cuff, wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt. RIGHT HALF (columns 4-6): a sturdy Stoutkin woman with black curls in two high buns, a braided beard and a cheek scar, wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_worker.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_stoutkin_worker_v5",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an older stocky Stoutkin man with a bald crown, russet side braids and a large white beard, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. RIGHT HALF (columns 4-6): a young broad Stoutkin woman with sandy hair in one thick braid, spectacles and a strong jaw, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_worker.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_stoutkin_fighter",
   "kind": "chip",
   "args": {
@@ -770,6 +860,42 @@
   "kind": "chip",
   "args": {
    "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a young Vulpin man with large pointed fox ears, a russet tail with cream tip, and dark brown swept-back hair, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. RIGHT HALF (columns 4-6): an older Vulpin woman with large fox ears, a russet tail with cream tip, silver hair and round spectacles, wearing an ochre work shirt, charcoal trousers, a royal-blue company neck scarf, leather tool belt and dark green cap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_worker.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_vulpin_worker_v4",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): a Vulpin man with tall russet fox ears, a russet tail with white tip, black curls and a neat beard, wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt. RIGHT HALF (columns 4-6): a Vulpin woman with russet fox ears, a russet tail with white tip, pale blond curls and a red hair ribbon, wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_worker.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_vulpin_worker_v5",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an older Vulpin man with large russet fox ears, russet tail with cream tip, a cream beard and dark hair, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. RIGHT HALF (columns 4-6): a young Vulpin woman with large russet fox ears, russet tail with cream tip, dark auburn curls and freckles, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, scale and sprite-sheet layout reference; create different hair, hair colour, accessories and outfit accent colours. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas.",
    "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
    "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
    "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
@@ -1344,6 +1470,204 @@
   }
  },
  {
+  "id": "b_hearth1_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance and banner); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_hearth1.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_hearth2_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance and banner); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_hearth2.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_hearth3_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance and banner); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_hearth3.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_house_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (door, lantern and company banner); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_house.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_storehouse_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (double doors and loading sign); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_storehouse.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_smelter_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance and furnace mouth); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_smelter.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_windmill_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (door and company banner; do not include sails); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_windmill.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_workshop_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (garage entrance and crane); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_workshop.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_sky_dock_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance and company banner); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_sky_dock.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_watchtower_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (door and company banner); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_watchtower.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_outpost_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance and banner); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_outpost.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_mach_a",
   "kind": "chip",
   "args": {
@@ -1470,6 +1794,42 @@
    "input": [
     {
      "path": "art_src/raw/chip_human_worker_v3.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_human_worker_v4",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a human man with dark curly hair, a short beard and a leather cap, wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt. RIGHT portrait: the character from the right half of Image 1 - a human woman with auburn hair in two braids, freckles and a green headscarf, wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_worker_v4.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_human_worker_v5",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an older human man with wavy silver hair, a thick moustache and round spectacles, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. RIGHT portrait: the character from the right half of Image 1 - a young human woman with short black curls, a copper hair clip and a strong jaw, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_worker_v5.webp"
     }
    ],
    "model": "openai-codex/gpt-image-1"
@@ -1746,6 +2106,24 @@
   }
  },
  {
+  "id": "portrait_sylvan_worker_v4",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an older Sylvan man with long pointed ears, white hair in a loose braid and a narrow moustache, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. RIGHT portrait: the character from the right half of Image 1 - a young Sylvan woman with long pointed ears, midnight-blue hair in a bob and a small nose ring, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_sylvan_worker_v4.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "portrait_sylvan_fighter",
   "kind": "portrait",
   "args": {
@@ -2016,6 +2394,42 @@
   }
  },
  {
+  "id": "portrait_stoutkin_worker_v4",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a broad Stoutkin man with long iron-grey braids, a square beard and a brass ear cuff, wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt. RIGHT portrait: the character from the right half of Image 1 - a sturdy Stoutkin woman with black curls in two high buns, a braided beard and a cheek scar, wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_worker_v4.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_stoutkin_worker_v5",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an older stocky Stoutkin man with a bald crown, russet side braids and a large white beard, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. RIGHT portrait: the character from the right half of Image 1 - a young broad Stoutkin woman with sandy hair in one thick braid, spectacles and a strong jaw, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_stoutkin_worker_v5.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "portrait_stoutkin_fighter",
   "kind": "portrait",
   "args": {
@@ -2280,6 +2694,42 @@
    "input": [
     {
      "path": "art_src/raw/chip_vulpin_worker_v3.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_vulpin_worker_v4",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - a Vulpin man with tall russet fox ears, a russet tail with white tip, black curls and a neat beard, wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt. RIGHT portrait: the character from the right half of Image 1 - a Vulpin woman with russet fox ears, a russet tail with white tip, pale blond curls and a red hair ribbon, wearing a cream work shirt, deep-brown trousers, a royal-blue company neck scarf, a leather tool belt and a rust-red cap, a hand axe at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_worker_v4.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_vulpin_worker_v5",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an older Vulpin man with large russet fox ears, russet tail with cream tip, a cream beard and dark hair, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. RIGHT portrait: the character from the right half of Image 1 - a young Vulpin woman with large russet fox ears, russet tail with cream tip, dark auburn curls and freckles, wearing a muted-olive work shirt, charcoal trousers, a royal-blue company neck scarf, a leather tool belt and a pale linen head wrap, a hand axe at the belt. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_vulpin_worker_v5.webp"
     }
    ],
    "model": "openai-codex/gpt-image-1"
@@ -2847,6 +3297,186 @@
    "aspect_ratio": "1:1",
    "image_size": "1024x1024",
    "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_bandit_tent_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance flap and red pennant); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_bandit_tent.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_bandit_hut_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance and red sign); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_bandit_hut.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_bandit_tower_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance and red insignia); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_bandit_tower.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_machine_spire_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance and front insignia); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_machine_spire.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_machine_block_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (front panel markings); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_machine_block.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_machine_foundry_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance and furnace port); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_machine_foundry.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_trade_hall_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (door and merchant banners); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_trade_hall.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_trade_stall_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (display counter and wares); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_trade_stall.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_wanderer_tent_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance flap and lantern); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_wanderer_tent.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_ruin_vault_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (doorway and glowing front runes); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-1",
+   "input": [
+    {
+     "path": "art_src/raw/b_ruin_vault.webp"
+    }
+   ]
   }
  }
 ]

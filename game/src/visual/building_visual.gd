@@ -7,6 +7,10 @@ extends Node3D
 ## stays as an invisible shadow caster, construction reveals the picture from the bottom behind a
 ## painted scaffold, and smoke outlets follow the picture's chimneys.
 
+## Buildings with a painted back view; Game calls `update_card_view` on this group after each
+## 90° camera step.
+const BACK_VIEW_GROUP := &"building_back_views"
+
 var footprint: Vector2i = Vector2i.ONE
 var type_id: String = ""
 var style: String = "frontier"
@@ -32,7 +36,10 @@ var _sails: MeshInstance3D
 var _sails_offset := Vector2.ZERO
 var _sails_angle := 0.0
 var _smoke_card: Array[Vector2] = []
+var _sprite_entry: Dictionary = {}
+var _showing_back := false
 var _cam_basis := Basis()
+var _back_notifier: VisibleOnScreenNotifier3D
 
 
 func configure(id: String, faction_style: String, seed: int, building_level: int,
@@ -138,6 +145,7 @@ func set_sprite(entry: Dictionary, scaffold: Dictionary, hue_shift: float, sails
 	_body.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 	_card = _make_card("Picture", entry, 0.05)
 	(_card.material_override as ShaderMaterial).set_shader_parameter("hue_shift", hue_shift)
+	_sprite_entry = entry
 	if not scaffold.is_empty():
 		_scaffold = _make_card("Scaffold", scaffold, 0.6)
 	if _moving != null:
@@ -146,6 +154,24 @@ func set_sprite(entry: Dictionary, scaffold: Dictionary, hue_shift: float, sails
 	if not sails.is_empty():
 		_add_sails(entry, sails)
 	var size := SpriteLibrary.building_card_size(entry, footprint)
+	if not str(entry.get("back_texture", "")).is_empty():
+		_back_notifier = VisibleOnScreenNotifier3D.new()
+		_back_notifier.name = "BackViewVisibility"
+		var back_dimensions: Dictionary = entry.duplicate()
+		back_dimensions["size_px"] = entry.get("back_size_px", entry.get("size_px", [512, 512]))
+		back_dimensions["base_w_px"] = entry.get("back_base_w_px", entry.get("base_w_px", 512.0))
+		back_dimensions["base_cx_px"] = entry.get("back_base_cx_px", entry.get("base_cx_px", 256.0))
+		back_dimensions["base_bottom_px"] = entry.get("back_base_bottom_px", entry.get("base_bottom_px", 512.0))
+		var back_size: Vector2 = SpriteLibrary.building_card_size(back_dimensions, footprint)
+		var width: float = maxf(size.x, back_size.x)
+		var height: float = maxf(size.y, back_size.y)
+		var half_width: float = width * 0.5
+		_back_notifier.aabb = AABB(Vector3(-half_width, 0.0, -half_width),
+			Vector3(width, height, width))
+		_back_notifier.screen_entered.connect(update_card_view)
+		add_child(_back_notifier)
+		add_to_group(BACK_VIEW_GROUP)
+		update_card_view.call_deferred()
 	var px: Array = entry.get("size_px", [512, 512])
 	var anchor := SpriteLibrary.building_anchor(entry)
 	for p: Variant in entry.get("smoke_px", []):
@@ -160,6 +186,46 @@ func set_sprite(entry: Dictionary, scaffold: Dictionary, hue_shift: float, sails
 	if float(entry.get("mooring_h", 0.0)) > 0.0 and _anchors.has(&"mooring"):
 		_anchors[&"mooring"] = Vector3(0.0, float(entry["mooring_h"]), 0.0)
 	set_construction(_construction)
+
+
+## Shows the back picture while the camera looks at the building's back faces (loaded lazily, the
+## first time the building is on screen from that side), the front picture otherwise.
+func update_card_view() -> void:
+	if _card == null or _sprite_entry.is_empty() or not is_inside_tree():
+		return
+	var camera := get_viewport().get_camera_3d()
+	if camera == null:
+		return
+	var camera_transform: Transform3D = camera.global_transform
+	var yaw := wrapf(rad_to_deg(atan2(camera_transform.basis.z.x, camera_transform.basis.z.z)), 0.0, 360.0)
+	var quadrant := posmod(roundi((yaw - 45.0) / 90.0), 4)
+	var use_back := quadrant == 1 or quadrant == 2
+	if use_back and not _showing_back \
+			and (_back_notifier == null or not _back_notifier.is_on_screen()):
+		return
+	if use_back == _showing_back:
+		return
+	var path := str(_sprite_entry.get("back_texture", "")) if use_back else str(_sprite_entry.get("texture", ""))
+	if use_back and path.is_empty():
+		return
+	var tex := SpriteLibrary.texture(path)
+	if tex == null:
+		return
+	var mat := _card.material_override as ShaderMaterial
+	mat.set_shader_parameter("tex", tex)
+	var glow_path := str(_sprite_entry.get("back_glow", "")) if use_back else str(_sprite_entry.get("glow", ""))
+	var glow := SpriteLibrary.texture(glow_path)
+	mat.set_shader_parameter("glow_tex", glow if glow != null else SpriteLibrary.texture(""))
+	var dimensions: Dictionary = _sprite_entry.duplicate()
+	if use_back:
+		dimensions["size_px"] = _sprite_entry.get("back_size_px", _sprite_entry.get("size_px", [512, 512]))
+		dimensions["base_w_px"] = _sprite_entry.get("back_base_w_px", _sprite_entry.get("base_w_px", 512.0))
+		dimensions["base_cx_px"] = _sprite_entry.get("back_base_cx_px", _sprite_entry.get("base_cx_px", 256.0))
+		dimensions["base_bottom_px"] = _sprite_entry.get("back_base_bottom_px", _sprite_entry.get("base_bottom_px", 512.0))
+	var card_size := SpriteLibrary.building_card_size(dimensions, footprint)
+	_card.scale = Vector3(card_size.x, card_size.y, 1.0)
+	mat.set_shader_parameter("anchor", SpriteLibrary.building_anchor(dimensions))
+	_showing_back = use_back
 
 
 func _make_card(node_name: String, entry: Dictionary, toward: float) -> MeshInstance3D:
