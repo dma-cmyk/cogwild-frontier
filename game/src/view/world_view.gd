@@ -4,7 +4,6 @@ extends Node3D
 ## projectiles, crops, zone outlines, fog-of-war texture and the day/night light. Reads the sim
 ## and listens to its signals; never changes simulation state.
 
-const CHUNK_BUILD_BUDGET_MS := 3.5
 const FIRST_VIEW_CHUNKS := 2  # chunk radius around home built synchronously at setup
 const SITE_STYLE := {"bandit_camp": "bandit", "machine_outpost": "ancient", "trade_post": "merchant",
 	"wanderer_camp": "neutral", "ruins": "neutral", "wreck": "neutral", "crystal_grove": "neutral", "ore_field": "neutral"}
@@ -22,6 +21,7 @@ var alpha := 1.0
 var show_zones := false
 var ghost: Node3D
 var _chunk_queue: Array = []
+var _chunk_building := false
 var _initial_chunk_keys: Dictionary = {}
 var _crops_dirty := true
 var _crop_root: Node3D
@@ -63,6 +63,9 @@ func setup(world: World) -> void:
 	RenderingServer.global_shader_parameter_set("fog_tex", fog_tex)
 	RenderingServer.global_shader_parameter_set("fog_rect", Vector4(w.gen.min_tile, w.gen.min_tile, w.W, w.W))
 	RenderingServer.global_shader_parameter_set("fog_enabled", 1.0)
+	# Warm the shared resource/loot atlas during loading, not on the first hauling frame.
+	SpriteLibrary.icon_texture("res_wood")
+	SpriteLibrary.icon_image("res_wood", 32)
 	w.chunk_ready.connect(_on_chunk_ready)
 	w.chunk_changed.connect(_on_chunk_changed)
 	w.unit_added.connect(_add_unit)
@@ -78,8 +81,8 @@ func setup(world: World) -> void:
 	w.projectile_fired.connect(_on_projectile)
 	w.farm_changed.connect(func(_t: Vector2i) -> void: _crops_dirty = true)
 	w.zones_changed.connect(func() -> void: _zones_dirty = true)
-	# Chunks around home are built now so the first frame has no holes; the rest are built
-	# nearest-first until the per-frame budget is reached (one atomic chunk may exceed it).
+	# Build the initial terrain synchronously during loading. Exploration builds are serialized:
+	# only one chunk coroutine may consume its row slice on any frame.
 	var home_key := w.chunk_key(Vector2i(w.home_pos()))
 	var keys: Array = w.chunks.keys()
 	_initial_chunk_keys.clear()
@@ -89,7 +92,7 @@ func setup(world: World) -> void:
 	# Initial chunk data is already complete, so adjacent meshes can sample their borders on first build.
 	for key: Vector2i in keys:
 		if absi(key.x - home_key.x) <= FIRST_VIEW_CHUNKS and absi(key.y - home_key.y) <= FIRST_VIEW_CHUNKS:
-			_build_chunk(key)
+			_build_chunk(key, true)
 		elif not _chunk_queue.has(key):
 			_chunk_queue.append(key)
 	for b: Building in w.buildings.values():
@@ -120,19 +123,19 @@ func _on_chunk_changed(key: Vector2i) -> void:
 		_chunk_queue.append(key)
 
 
-func _build_chunk(key: Vector2i) -> void:
+func _build_chunk(key: Vector2i, immediate: bool = false) -> void:
 	var ch: ChunkData = w.chunks.get(key)
 	if ch == null:
 		return
 	var is_initial_chunk := _initial_chunk_keys.has(key)
 	_initial_chunk_keys.erase(key)
 	if chunk_views.has(key):
-		(chunk_views[key] as ChunkView).refresh()
+		await (chunk_views[key] as ChunkView).refresh()
 		return
 	var cv := ChunkView.new()
 	add_child(cv)
-	cv.setup(w, ch)
 	chunk_views[key] = cv
+	await cv.setup(w, ch, immediate)
 	# neighbours re-blend their border colours once
 	if is_initial_chunk:
 		return
@@ -468,16 +471,17 @@ func set_show_zones(on: bool) -> void:
 
 # --- frame ---------------------------------------------------------------------------------
 
+func _build_queued_chunk() -> void:
+	_chunk_building = true
+	await _build_chunk(_chunk_queue.pop_front())
+	_chunk_building = false
+
+
 func _process(delta: float) -> void:
-	var started_usec: int = Time.get_ticks_usec()
-	var builds: int = 0
-	while not _chunk_queue.is_empty():
-		if builds > 0 and float(Time.get_ticks_usec() - started_usec) / 1000.0 >= CHUNK_BUILD_BUDGET_MS:
-			break
-		_build_chunk(_chunk_queue.pop_front())
-		builds += 1
-	var elapsed_ms := float(Time.get_ticks_usec() - started_usec) / 1000.0
-	if elapsed_ms < CHUNK_BUILD_BUDGET_MS:
+	var chunk_pending := _chunk_building or not _chunk_queue.is_empty()
+	if not _chunk_building and not _chunk_queue.is_empty():
+		_build_queued_chunk()
+	if not chunk_pending:
 		var unit_pending := not _pending_unit_views.is_empty()
 		var site_pending := not _pending_site_visuals.is_empty()
 		var unit_first := Engine.get_process_frames() % 2 == 0

@@ -446,15 +446,21 @@ func chunk_in_bounds(cx: int, cz: int) -> bool:
 
 
 func generate_chunk(cx: int, cz: int) -> ChunkData:
+	var profile := World.profile_chunks()
 	var ch := ChunkData.new(cx, cz)
 	var ox := cx * S
 	var oz := cz * S
 	var rect := Rect2(ox, oz, S, S)
+	var site_lookup_start_usec: int = Time.get_ticks_usec() if profile else 0
 	var local_sites := sites_affecting(rect)
+	var site_lookup_usec: int = Time.get_ticks_usec() - site_lookup_start_usec if profile else 0
+	var height_start_usec: int = Time.get_ticks_usec() if profile else 0
 	# corner heights
 	for lz in S + 1:
 		for lx in S + 1:
 			ch.heights[lz * (S + 1) + lx] = height_at(ox + lx, oz + lz, local_sites)
+	var height_usec: int = Time.get_ticks_usec() - height_start_usec if profile else 0
+	var tiles_start_usec: int = Time.get_ticks_usec() if profile else 0
 	var cliff := float(t["cliff_slope"])
 	var core := float(t["river_core"])
 	var bank := float(t["river_bank"])
@@ -534,11 +540,17 @@ func generate_chunk(cx: int, cz: int) -> ChunkData:
 				_set_res(ch, i, res, wx, wz)
 			else:
 				_decor_for(ch, tt, lx, lz, wx, wz, rv, false)
+	var tiles_usec: int = Time.get_ticks_usec() - tiles_start_usec if profile else 0
+	var site_apply_start_usec: int = Time.get_ticks_usec() if profile else 0
 	_apply_sites(ch, local_sites)
+	var site_apply_usec: int = Time.get_ticks_usec() - site_apply_start_usec if profile else 0
 	for s: Dictionary in local_sites:
 		var sc: Vector2i = s["center"]
 		if sc.x >= ox and sc.x < ox + S and sc.y >= oz and sc.y < oz + S:
 			ch.site_ids.append(s["id"])
+	if profile:
+		print("PERF_WORLDGEN key=(%d,%d) site_lookup_ms=%.2f heights_ms=%.2f tiles_noise_veg_ms=%.2f site_apply_ms=%.2f" % [
+			cx, cz, site_lookup_usec / 1000.0, height_usec / 1000.0, tiles_usec / 1000.0, site_apply_usec / 1000.0])
 	return ch
 
 
@@ -553,9 +565,6 @@ func _set_res(ch: ChunkData, i: int, res: int, wx: int, wz: int) -> void:
 
 func _decor_for(ch: ChunkData, tt: int, lx: int, lz: int, wx: int, wz: int, rv: float, near_start: bool) -> void:
 	var r := RngUtil.hash01(seed, wx, wz, 21)
-	var jx := RngUtil.hash01(seed, wx, wz, 22)
-	var jz := RngUtil.hash01(seed, wx, wz, 23)
-	var rot := RngUtil.hash01(seed, wx, wz, 24) * TAU
 	var prop := ""
 	match tt:
 		Tiles.GRASS, Tiles.FOREST:
@@ -573,6 +582,9 @@ func _decor_for(ch: ChunkData, tt: int, lx: int, lz: int, wx: int, wz: int, rv: 
 			if r < 0.22:
 				prop = "rock_small" if r < 0.16 else "rock_large"
 	if prop != "":
+		var jx := RngUtil.hash01(seed, wx, wz, 22)
+		var jz := RngUtil.hash01(seed, wx, wz, 23)
+		var rot := RngUtil.hash01(seed, wx, wz, 24) * TAU
 		ch.decor.append([prop, lx + 0.15 + jx * 0.7, lz + 0.15 + jz * 0.7, rot, 0.8 + r * 0.5])
 
 

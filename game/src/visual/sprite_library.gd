@@ -23,6 +23,7 @@ static var _textures: Dictionary = {}
 static var _materials: Dictionary = {}
 static var _portraits: Dictionary = {}
 static var _icon_atlas_image: Image
+static var _icon_atlas_texture: Texture2D
 static var _icon_images: Dictionary = {}
 static var _icon_textures: Dictionary = {}
 
@@ -32,6 +33,7 @@ static func clear_cache() -> void:
 	_materials.clear()
 	_portraits.clear()
 	_icon_atlas_image = null
+	_icon_atlas_texture = null
 	_icon_images.clear()
 	_icon_textures.clear()
 	SpriteUnitVisual._quad = null
@@ -41,6 +43,7 @@ static func clear_cache() -> void:
 static func prune_unused(scene_root: Node) -> void:
 	var live_materials: Dictionary = {}
 	var live_textures: Dictionary = {}
+	_retain_texture(_icon_atlas_texture, live_textures)
 	for node: Node in scene_root.find_children("*", "", true, false):
 		if node is CanvasItem:
 			_retain_material((node as CanvasItem).material, live_materials, live_textures)
@@ -111,7 +114,15 @@ static func texture(path: String) -> Texture2D:
 		return null
 	if not _textures.has(path):
 		var texture_exists := ResourceLoader.exists(path)
+		var profile := World.profile_chunks()
+		var load_start_usec: int = Time.get_ticks_usec() if profile else 0
 		_textures[path] = load(path) if texture_exists else null
+		if profile:
+			print("PERF_TEXTURE_FIRST_USE path=%s exists=%s load_ms=%.2f" % [
+				path, texture_exists, (Time.get_ticks_usec() - load_start_usec) / 1000.0])
+		# Jobs reuse this shared atlas intermittently; do not decode it again after pruning.
+		if path == str(DB.get_def("art/icons", "res_wood").get("texture", "")):
+			_icon_atlas_texture = _textures[path] as Texture2D
 	return _textures[path] as Texture2D
 
 

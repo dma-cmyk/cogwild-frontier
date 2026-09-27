@@ -74,6 +74,8 @@ func set_construction(progress: float) -> void:
 		idx = 2
 	elif _construction >= 0.18:
 		idx = 1
+	if _stage_meshes[idx] == null:
+		_stage_meshes[idx] = BuildingVisuals.stage_mesh(type_id, style, variant_seed, level, idx)
 	_body.mesh = _stage_meshes[idx]
 	if _card != null:
 		(_card.material_override as ShaderMaterial).set_shader_parameter("reveal", clampf(_construction / 0.82, 0.0, 1.0))

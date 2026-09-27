@@ -103,8 +103,15 @@ func _paint_chunks() -> void:
 	var version := ch.version + ch.res_version * 7919
 	if int(_painted.get(key, -1)) != version:
 		_painted[key] = version
+		var profile := World.profile_chunks()
+		var paint_start_usec: int = Time.get_ticks_usec() if profile else 0
 		_paint(ch)
+		var paint_usec: int = Time.get_ticks_usec() - paint_start_usec if profile else 0
+		var update_start_usec: int = Time.get_ticks_usec() if profile else 0
 		_tex.update(_img)
+		if profile:
+			print("PERF_MINIMAP key=(%d,%d) paint_ms=%.2f texture_update_ms=%.2f" % [
+				key.x, key.y, paint_usec / 1000.0, (Time.get_ticks_usec() - update_start_usec) / 1000.0])
 
 
 func _paint(ch: ChunkData) -> void:

@@ -32,16 +32,14 @@ static var _cache: Dictionary = {}
 
 
 static func create(type_id: String, style: String, variant_seed: int, level: int = 1) -> BuildingVisual:
+	var profile := World.profile_chunks()
+	var create_start_usec: int = Time.get_ticks_usec() if profile else 0
 	var id := type_id if FOOTPRINTS.has(type_id) else "house"
 	var faction: String = FIXED_STYLE.get(id, style if STYLES.has(style) else "frontier")
 	var lv := clampi(level, 1, 3)
 	var fp: Vector2i = FOOTPRINTS[id]
-	var stages: Array[ArrayMesh] = []
-	for stage in 4:
-		var skey := "%s|%s|%d|%d|%d" % [id, faction, variant_seed, lv, stage]
-		if not _cache.has(skey):
-			_cache[skey] = _make_mesh(id, faction, variant_seed, lv, stage)
-		stages.append(_cache[skey] as ArrayMesh)
+	var stages: Array[ArrayMesh] = [null, null, null, stage_mesh(id, faction, variant_seed, lv, 3)]
+	var mesh_cache_usec: int = Time.get_ticks_usec() - create_start_usec if profile else 0
 	var fx := _effects(id, variant_seed, lv)
 	var visual := BuildingVisual.new()
 	visual.name = "Building_%s" % id
@@ -68,7 +66,18 @@ static func create(type_id: String, style: String, variant_seed: int, level: int
 	if not picture.is_empty():
 		visual.set_sprite(picture, SpriteLibrary.building("construction"), 0.0,
 			SpriteLibrary.building("windmill_sails") if id == "windmill" else {})
+	if profile:
+		print("PERF_BUILDING_VISUAL type=%s mesh_stage_ms=%.2f total_ms=%.2f" % [
+			id, mesh_cache_usec / 1000.0, (Time.get_ticks_usec() - create_start_usec) / 1000.0])
 	return visual
+
+
+## Finished sites never use construction meshes. Build intermediate stages only on demand.
+static func stage_mesh(id: String, faction: String, seed: int, lv: int, stage: int) -> ArrayMesh:
+	var key := "%s|%s|%d|%d|%d" % [id, faction, seed, lv, stage]
+	if not _cache.has(key):
+		_cache[key] = _make_mesh(id, faction, seed, lv, stage)
+	return _cache[key] as ArrayMesh
 
 
 static func _make_mesh(id: String, style: String, seed: int, lv: int, stage: int) -> ArrayMesh:
