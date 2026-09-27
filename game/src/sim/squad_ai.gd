@@ -186,7 +186,12 @@ func _engage(s: Squad, anchor: Vector2, radius: float) -> bool:
 		var engage_radius := radius + 4.0 if s.stance == "aggressive" else radius
 		if s.stance == "hold":
 			engage_radius = minf(radius, 6.0)
-		if enemy and enemy.pos.distance_to(anchor) <= engage_radius and not (s.stance == "cautious" and str(enemy.order.get("type", "")) == "retreat"):
+		# self-defence: a member always answers an enemy that is attacking it or already in its
+		# weapon reach, even when a straggler drags the squad anchor far behind the front
+		var reach := float((u.stats.get("weapon", Unit.FISTS) as Dictionary).get("range", 1.3)) + 1.0
+		var self_defence := enemy != null and (enemy.target_id == u.id or enemy.pos.distance_to(u.pos) <= reach)
+		if enemy and (enemy.pos.distance_to(anchor) <= engage_radius or self_defence) \
+				and not (s.stance == "cautious" and str(enemy.order.get("type", "")) == "retreat"):
 			u.target_id = enemy.id
 			fighting = true
 	return fighting

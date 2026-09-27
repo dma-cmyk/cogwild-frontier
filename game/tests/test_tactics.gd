@@ -183,8 +183,8 @@ func test_auto_abilities_can_be_disabled() -> void:
 	assert_eq(float(enemy.ability_cd.get("stunned", 0.0)), 0.0, "disabled auto abilities do not stun")
 	assert_eq(float(unit.ability_cd.get("shield_bash", 0.0)), 0.0, "disabled auto abilities do not start cooldown")
 
-func _run_ab_fight(stance: String, formation: String) -> Dictionary:
-	var w := NewGame.create(11)
+func _run_ab_fight(stance: String, formation: String, seed: int = 11) -> Dictionary:
+	var w := NewGame.create(seed)
 	_worlds.append(w)
 	var squad := w.squads[0]
 	squad.stance = stance
@@ -253,8 +253,14 @@ func test_stances_and_formations_change_scripted_fight_metrics() -> void:
 		"cautious and aggressive stances produce measurable engagement distances")
 	assert_ne(hold["mean_enemy_distance"], aggressive["mean_enemy_distance"],
 		"hold and aggressive stances produce measurably different engagement distances")
-	assert_true(float(cautious["damage_taken"]) < float(balanced["damage_taken"]),
-		"cautious positioning reduces squad damage taken")
+	# one scripted fight depends on the generated crew; compare the total over several worlds
+	var balanced_total := float(balanced["damage_taken"])
+	var cautious_total := float(cautious["damage_taken"])
+	for seed: int in [3, 7]:
+		balanced_total += float(_run_ab_fight("balanced", "line", seed)["damage_taken"])
+		cautious_total += float(_run_ab_fight("cautious", "line", seed)["damage_taken"])
+	assert_true(cautious_total < balanced_total * 0.9,
+		"cautious positioning reduces squad damage taken (%.0f vs %.0f over three worlds)" % [cautious_total, balanced_total])
 	assert_true(float(aggressive["duration_seconds"]) < float(balanced["duration_seconds"]),
 		"aggressive stance clears the engagement fastest")
 	assert_true(float(aggressive["damage_taken"]) >= float(balanced["damage_taken"]) * 0.95,
