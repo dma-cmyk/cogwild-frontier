@@ -1162,7 +1162,9 @@ func emit_fx(kind: StringName, p: Vector2, y_off: float = 0.6, color: Color = Co
 
 func tick() -> void:
 	tick_count += 1
-	process_chunk_queue(2)
+	# one chunk per tick: generating a chunk costs ~25-30 ms in GDScript, two in one tick made
+	# 60+ ms hitches while exploring; 10 chunks/s at x1 still stays ahead of every explorer
+	process_chunk_queue(1)
 	_rebuild_grid()
 	for u: Unit in unit_list:
 		u.prev_pos = u.pos
