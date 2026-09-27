@@ -1,38 +1,189 @@
 {
-  "scene": "res://scenes/game.tscn",
-  "frames": 100,
-  "seed": 11,
-  "events": [
-    {"frame": 1, "do": "scene.set_speed(0)"},
-    {"frame": 2, "do": "scene.rig.rotate_step(1)"},
-    {"frame": 30, "expect": "absf(scene.rig.yaw - 135.0) < 1.0", "label": "mirrored camera yaw"},
-    {"frame": 31, "do": "scene.rig.focus(Vector3(scene.world.home_pos().x, 0, scene.world.home_pos().y), true)"},
-    {"frame": 35, "mouse": "click", "pos": [1292, 808], "button": "left"},
-    {"frame": 38, "screenshot": "build_menu"},
-    {"frame": 40, "mouse": "click", "pos": [560, 560], "button": "left"},
-    {"frame": 45, "mouse": "move", "pos": [500, 300]},
-    {"frame": 48, "expect": "scene.input_ctl.mode == 'build:house'", "label": "house selected from build menu"},
-    {"frame": 49, "do": "scene.set_meta('house_ghost_origin', scene.input_ctl._ghost_origin('house'))"},
-    {"frame": 49, "do": "scene.set_meta('house_count_before', scene.world.buildings_of('house', false).size())"},
-    {"frame": 49, "expect": "scene.input_ctl.ghost_reason() == '' and scene.input_ctl._ghost.visible", "label": "house ghost valid"},
-    {"frame": 50, "screenshot": "house_ghost"},
-    {"frame": 52, "mouse": "click", "pos": [500, 300], "button": "left"},
-    {"frame": 55, "expect": "scene.world.buildings_of('house', false).size() == int(scene.get_meta('house_count_before')) + 1", "label": "house placed by UI"},
-    {"frame": 55, "expect": "scene.world.buildings_of('house', false).back().origin == scene.get_meta('house_ghost_origin')", "label": "placed origin matches ghost"},
-    {"frame": 55, "expect": "scene.world.building_at(scene.get_meta('house_ghost_origin')) == scene.world.buildings_of('house', false).back()", "label": "ghost origin tile occupied"},
-    {"frame": 55, "expect": "scene.world.building_at(scene.get_meta('house_ghost_origin') + Vector2i(2, 0)) == scene.world.buildings_of('house', false).back()", "label": "far horizontal edge occupied"},
-    {"frame": 55, "expect": "scene.world.building_at(scene.get_meta('house_ghost_origin') + Vector2i(0, 2)) == scene.world.buildings_of('house', false).back()", "label": "far vertical edge occupied"},
-    {"frame": 55, "expect": "scene.world.building_at(scene.get_meta('house_ghost_origin') + Vector2i(2, 2)) == scene.world.buildings_of('house', false).back()", "label": "opposite footprint corner occupied"},
-    {"frame": 57, "screenshot": "house_placed"},
-    {"frame": 60, "mouse": "click", "pos": [1292, 808], "button": "left"},
-    {"frame": 62, "expect": "scene.hud.build_menu.visible", "label": "build menu reopened"},
-    {"frame": 62, "screenshot": "wall_build_menu"},
-    {"frame": 65, "mouse": "click", "pos": [800, 510], "button": "left"},
-    {"frame": 68, "expect": "scene.input_ctl.mode == 'build:wall'", "label": "wall selected from build menu"},
-    {"frame": 69, "do": "scene.set_meta('wall_count_before', scene.world.buildings_of('wall', false).size())"},
-    {"frame": 70, "mouse": "move", "pos": [350, 440]},
-    {"frame": 72, "mouse": "drag", "from": [350, 440], "to": [430, 440], "hold": 4},
-    {"frame": 80, "expect": "scene.world.buildings_of('wall', false).size() >= int(scene.get_meta('wall_count_before')) + 2", "label": "wall line placed"},
-    {"frame": 82, "screenshot": "wall_line_placed"}
-  ]
+ "scene": "res://scenes/game.tscn",
+ "frames": 173,
+ "seed": 11,
+ "events": [
+  {
+   "frame": 1,
+   "do": "scene.set_speed(0)"
+  },
+  {
+   "frame": 1,
+   "do": "scene.rig.set('edge_scroll', false)"
+  },
+  {
+   "frame": 2,
+   "do": "scene.rig.rotate_step(1)"
+  },
+  {
+   "frame": 30,
+   "expect": "absf(scene.rig.yaw - 135.0) < 1.0",
+   "label": "mirrored camera yaw"
+  },
+  {
+   "frame": 31,
+   "do": "scene.rig.focus(Vector3(scene.world.home_pos().x, 0, scene.world.home_pos().y), true)"
+  },
+  {
+   "frame": 125,
+   "mouse": "click",
+   "pos": [
+    1292,
+    808
+   ],
+   "button": "left"
+  },
+  {
+   "frame": 128,
+   "screenshot": "build_menu"
+  },
+  {
+   "frame": 130,
+   "mouse": "click",
+   "pos": [
+    560,
+    560
+   ],
+   "button": "left"
+  },
+  {
+   "frame": 135,
+   "mouse": "move",
+   "pos": [
+    560,
+    380
+   ]
+  },
+  {
+   "frame": 138,
+   "expect": "scene.input_ctl.mode == 'build:house'",
+   "label": "house selected from build menu"
+  },
+  {
+   "frame": 139,
+   "do": "scene.set_meta('house_ghost_origin', scene.input_ctl._ghost_origin('house'))"
+  },
+  {
+   "frame": 139,
+   "do": "scene.set_meta('house_count_before', scene.world.buildings_of('house', false).size())"
+  },
+  {
+   "frame": 139,
+   "expect": "scene.input_ctl.ghost_reason() == '' and scene.input_ctl._ghost.visible",
+   "label": "house ghost valid"
+  },
+  {
+   "frame": 140,
+   "screenshot": "house_ghost"
+  },
+  {
+   "frame": 142,
+   "mouse": "click",
+   "pos": [
+    560,
+    380
+   ],
+   "button": "left"
+  },
+  {
+   "frame": 145,
+   "expect": "scene.world.buildings_of('house', false).size() == int(scene.get_meta('house_count_before')) + 1",
+   "label": "house placed by UI"
+  },
+  {
+   "frame": 145,
+   "expect": "scene.world.buildings_of('house', false).back().origin == scene.get_meta('house_ghost_origin')",
+   "label": "placed origin matches ghost"
+  },
+  {
+   "frame": 145,
+   "expect": "scene.world.building_at(scene.get_meta('house_ghost_origin')) == scene.world.buildings_of('house', false).back()",
+   "label": "ghost origin tile occupied"
+  },
+  {
+   "frame": 145,
+   "expect": "scene.world.building_at(scene.get_meta('house_ghost_origin') + Vector2i(2, 0)) == scene.world.buildings_of('house', false).back()",
+   "label": "far horizontal edge occupied"
+  },
+  {
+   "frame": 145,
+   "expect": "scene.world.building_at(scene.get_meta('house_ghost_origin') + Vector2i(0, 2)) == scene.world.buildings_of('house', false).back()",
+   "label": "far vertical edge occupied"
+  },
+  {
+   "frame": 145,
+   "expect": "scene.world.building_at(scene.get_meta('house_ghost_origin') + Vector2i(2, 2)) == scene.world.buildings_of('house', false).back()",
+   "label": "opposite footprint corner occupied"
+  },
+  {
+   "frame": 147,
+   "screenshot": "house_placed"
+  },
+  {
+   "frame": 150,
+   "mouse": "click",
+   "pos": [
+    1292,
+    808
+   ],
+   "button": "left"
+  },
+  {
+   "frame": 152,
+   "expect": "scene.hud.build_menu.visible",
+   "label": "build menu reopened"
+  },
+  {
+   "frame": 152,
+   "screenshot": "wall_build_menu"
+  },
+  {
+   "frame": 155,
+   "mouse": "click",
+   "pos": [
+    800,
+    510
+   ],
+   "button": "left"
+  },
+  {
+   "frame": 158,
+   "expect": "scene.input_ctl.mode == 'build:wall'",
+   "label": "wall selected from build menu"
+  },
+  {
+   "frame": 159,
+   "do": "scene.set_meta('wall_count_before', scene.world.buildings_of('wall', false).size())"
+  },
+  {
+   "frame": 160,
+   "mouse": "move",
+   "pos": [
+    350,
+    440
+   ]
+  },
+  {
+   "frame": 162,
+   "mouse": "drag",
+   "from": [
+    350,
+    440
+   ],
+   "to": [
+    430,
+    440
+   ],
+   "hold": 4
+  },
+  {
+   "frame": 170,
+   "expect": "scene.world.buildings_of('wall', false).size() >= int(scene.get_meta('wall_count_before')) + 2",
+   "label": "wall line placed"
+  },
+  {
+   "frame": 172,
+   "screenshot": "wall_line_placed"
+  }
+ ]
 }
