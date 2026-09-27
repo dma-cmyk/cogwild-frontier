@@ -57,6 +57,12 @@ func setup(g: Game) -> void:
 	director.spoke.connect(_on_spoke)
 
 func _on_spoke(unit: Unit, text: String, combat: bool) -> void:
+	# in a melee several downed or hit fighters often shout the same line at once: one bubble reads
+	# better than an identical stack
+	for b: Dictionary in _bubbles:
+		var other := game.world.get_unit(int(b["unit_id"]))
+		if (b["card"] as BubbleCard).text == _wrap_text(text, 220) and other != null and other.pos.distance_to(unit.pos) < 8.0:
+			return
 	var card := BubbleCard.new()
 	card.text = _wrap_text(text, 220)
 	card.combat = combat
