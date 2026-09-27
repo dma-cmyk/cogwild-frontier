@@ -44,6 +44,7 @@ var _back_notifier: VisibleOnScreenNotifier3D
 
 func configure(id: String, faction_style: String, seed: int, building_level: int,
 		data: Dictionary) -> void:
+	add_to_group("web_extra_art_refresh")
 	type_id = id
 	style = faction_style
 	variant_seed = seed
@@ -226,6 +227,20 @@ func update_card_view() -> void:
 	_card.scale = Vector3(card_size.x, card_size.y, 1.0)
 	mat.set_shader_parameter("anchor", SpriteLibrary.building_anchor(dimensions))
 	_showing_back = use_back
+
+## A newly mounted pack may add a painted front card or the back view for an existing building.
+func refresh_after_web_extra_art() -> void:
+	if not is_inside_tree():
+		return
+	var picture := SpriteLibrary.building(type_id, level, variant_seed)
+	if picture.is_empty():
+		return
+	if _card == null:
+		var sails: Dictionary = SpriteLibrary.building("windmill_sails") if type_id == "windmill" else {}
+		set_sprite(picture, SpriteLibrary.building("construction"), 0.0, sails)
+	else:
+		_sprite_entry = picture
+		update_card_view()
 
 
 func _make_card(node_name: String, entry: Dictionary, toward: float) -> MeshInstance3D:

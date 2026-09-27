@@ -36,6 +36,18 @@ static func clear_cache() -> void:
 	_icon_textures.clear()
 	SpriteUnitVisual._quad = null
 	BuildingVisual._quad = null
+## Drop negative lookup results after a resource pack is mounted; live nodes retain their own
+## texture references while new lookups can now resolve the added files.
+static func clear_missing_cache() -> void:
+	_clear_missing(_textures)
+	_clear_missing(_portraits)
+	_clear_missing(_icon_textures)
+
+
+static func _clear_missing(cache: Dictionary) -> void:
+	for key: Variant in cache.keys():
+		if cache[key] == null:
+			cache.erase(key)
 
 ## Release cache references that no live node in the view tree is using.
 static func prune_unused(scene_root: Node) -> void:

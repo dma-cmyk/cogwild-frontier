@@ -25,8 +25,9 @@
      - 地面テクスチャ: 半分ずらした自分自身と分散保存ブレンドして継ぎ目を消す。
    - 出力: `game/assets/{sprites,portraits,textures,ui}/` と、メタデータ `game/data/art/*.json`（DB テーブル `art/sprites` `art/portraits` `art/props` `art/buildings` `art/terrain` `art/icons`）。
    - Godot の取り込み設定（`.import`）も書く。
-    - Web 書き出し用の設定（`tools/web/apply_import_presets.py`）: 建物の絵は Basis UASTC・ミップマップ付き・最大 768 px（夜の窓明かりのマスクは 512 px）。キャラチップは WebP 品質 0.85、肖像は 128×128 の WebP 品質 0.9（どちらもゲーム内で縮小表示するのでミップマップ付き）。その他の世界の絵は Basis UASTC（ミップマップ付き、RDO quality_loss 1.5）。UI の絵は可逆・ミップマップなし。ただしタイトル画像 `assets/ui/title_keyart.jpg` は WebP 品質 0.9（元の JPEG はそのまま）。
-    - チップと肖像を Basis にすると GPU メモリは減るが、書き出しが約 17 MiB 増える（gzip でもほぼ減らない）ので WebP のままにしている。
+    - Web は最初の core pack に UI・フォント・地形・小物・既存4種族の v1–v3 キャラ絵・プレイヤー建物の正面を含める。新種族・v4/v5・建物の裏側・村/盗賊/機械/拠点の絵は filename pattern で別パックに分け、ゲーム開始後に読み込む（分類は `game/export_presets.cfg`）。キャラチップと肖像は WebP・ミップマップなし、肖像原本は 128 px。建物は Basis UASTC・ミップマップ付き・最大 768 px（glow mask は 256 px・ミップマップなし）。その他の世界の絵は Basis UASTC（ミップマップ付き、RDO quality_loss 1.5）。UI の絵は可逆・ミップマップなし。ただしタイトル画像 `assets/ui/title_keyart.jpg` は WebP 品質 0.9（元の JPEG はそのまま）。
+    - `WebExtraPack` はゲーム開始後に追加パックを `user://`（Web の IndexedDB）へ保存して `ProjectSettings.load_resource_pack` で取り込み、テクスチャを使う表示を更新する。PWA service worker も追加パックを初回取得時にキャッシュし、PWA 更新で cache version を切り替える。パック未取得時は既存のローポリ/正面カード/基本 look に戻す。ネイティブ版では分割しない。
+    - チップ/肖像の Basis 化は従来どおり Core の転送量を増やすため避け、ミップマップなしと glow mask 縮小で GPU メモリを抑える。
      - 地面: 8 層の Texture2DArray。
    - 手で測った点（風車の軸、煙突、係留の高さ）は `tools/art/overrides.json` に書き、加工時に合流させる。
 4. **取り込み**: `cd game && godot --headless --path . --import`

@@ -12,7 +12,7 @@ RPG 要素のある自律型 RTS の **Playable Vertical Slice**（Godot 4.7 製
 UI は日本語 / 英語に対応しています。
 
 **ブラウザで遊ぶ（PC・スマホ）: https://dma-cmyk.github.io/cogwild-frontier/**
-（初回は約 54 MB のダウンロードがあります。読み込み画面の MB 表示は展開後の大きさです。2 回目からはブラウザのキャッシュで数秒。新しい版が公開されていると、タイトル画面で自動的に読み込み直します。読み込みが 20 秒止まったら再読み込みボタンが出ます。スマホは横向き推奨）
+（最初はタイトル表示に必要な core pack を取得し、追加の種族・look・建物アートはゲーム開始後に別パックをバックグラウンド取得します。追加パックは IndexedDB / PWA キャッシュに保存され、次回はすぐ利用できます。新しい版が公開されていると、タイトル画面で自動的に読み込み直します。読み込みが 20 秒止まったら再読み込みボタンが出ます。スマホは横向き推奨）
 
 ![開拓地の昼](docs/screenshots/settlement_day.png)
 
@@ -148,14 +148,12 @@ godot --headless --path game res://tools/world_map_dump.tscn -- --seed=123 --rad
 
 `COGWILD_WORLD_SEED`（またはユーザー引数 `--world-seed=`）で世界を固定します。combat_camp のシナリオはシード 11 の地形（近くの野営地の位置）に合わせて書いてあります。
 
-Web 版（GitHub Pages と同じもの）をローカルで作って確かめる:
-
 ```bash
-tools/web/build_web.sh                                   # テンプレート取得 → インポート → build/web/ に書き出し
-python3 -m http.server -d build/web 8060 --bind 127.0.0.1  # http://127.0.0.1:8060/ を開く
+tools/web/build_web.sh                                        # テンプレート取得 → インポート → core + optional pack を build/web に書き出す
+python3 -m http.server -d build/web 8072 --bind 127.0.0.1    # http://127.0.0.1:8072/ を開く
 ```
 
-スレッドなしの Web テンプレート（COOP/COEP ヘッダ不要）を使います。建物・木や岩などの絵は Basis Universal で 1 種類だけ配布し、読み込み時に GPU の形式（PC は BC 系、スマホは ASTC / ETC2）に変換します。キャラチップと肖像は WebP です。
+スレッドなしの Web テンプレート（COOP/COEP ヘッダ不要）を使います。地形・木や岩などの絵は Basis Universal で 1 種類だけ配布し、読み込み時に GPU 形式（PC は BC 系、スマホは ASTC / ETC2）へ変換します。キャラチップと肖像は WebP で、ミップマップを作らず GPU メモリを節約します。追加アートは versioned PCK として分離し、開始後に取得して更新時に自動的に差し替えます。
 
 ## 任意の AI 文章生成
 

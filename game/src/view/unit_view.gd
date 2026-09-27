@@ -81,6 +81,7 @@ func setup(world: World, unit: Unit) -> void:
 	u = unit
 	_meshes()
 	name = "Unit_%d" % u.id
+	add_to_group("web_extra_art_refresh")
 	ring = MeshInstance3D.new()
 	ring.mesh = _ring_mesh
 	ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -132,6 +133,12 @@ func rebuild_visual() -> void:
 		shadow.scale = Vector3(r * 1.3, 1.0, r * (2.2 if u.kind == "airship" else 1.3)) / 0.5
 	bar.scale = Vector3.ONE * (1.9 if u.kind == "airship" else 1.0)
 
+
+func refresh_after_web_extra_art() -> void:
+	if u == null or not is_inside_tree():
+		return
+	rebuild_visual()
+	sync(1.0, 0.0)
 
 func _ring_color() -> Color:
 	if squad_color.a > 0.0:
