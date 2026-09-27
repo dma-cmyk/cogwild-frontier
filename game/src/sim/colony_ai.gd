@@ -10,6 +10,7 @@ const REACH := 1.65
 
 var w: World
 var reserved: Dictionary = {}  # target key -> unit id
+
 var _blacklist: Dictionary = {}  # target key -> tick until which it is skipped
 
 
@@ -46,16 +47,20 @@ func _finish(u: Unit) -> void:
 
 func tick() -> void:
 	var assign := w.tick_count % 10 == 3
+	var assignments_left := 3
 	var cands: Array = []
-	var cands_built := false
-	for u: Unit in w.unit_list:
+	var worker_count := w.unit_list.size()
+	var start_index := (w.tick_count / 10 * 3) % worker_count if worker_count > 0 else 0
+	for offset in worker_count:
+		var i := (start_index + offset) % worker_count if worker_count > 0 else 0
+		var u: Unit = w.unit_list[i]
 		if not is_worker(u):
 			continue
 		_energy(u)
 		if not u.job.is_empty():
 			_run(u)
 			continue
-		if not assign:
+		if not assign or assignments_left <= 0:
 			continue
 		u.ai_cd -= 1.0
 		if u.ai_cd > 0.0:
@@ -64,7 +69,8 @@ func tick() -> void:
 			cands = _collect()
 			cands_built = true
 		_assign(u, cands)
-
+		assignments_left -= 1
+		# The start index is derived from tick_count, so save/load preserves ordering.
 
 func _energy(u: Unit) -> void:
 	if not u.is_person():

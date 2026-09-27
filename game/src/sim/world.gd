@@ -1247,6 +1247,7 @@ var _last_reveal: Dictionary = {}  # seer key -> Vector3(x, z, radius) of its la
 func _update_vision() -> void:
 	# exploration by player units and buildings; visibility of others
 	var seers: Array = []
+	var reveal_changed := false
 	for u: Unit in unit_list:
 		if u.alive and u.is_player() and not u.hidden:
 			var v := float(u.stats.get("vision", 9.0))
@@ -1266,6 +1267,7 @@ func _update_vision() -> void:
 			continue
 		_last_reveal[key] = anchor
 		var n := reveal(Vector2(tile) + Vector2(0.5, 0.5), anchor.z)
+		reveal_changed = true
 		if n > 0 and s[2] != null:
 			(s[2] as Unit).counter_add("tiles_explored", n)
 	for u: Unit in unit_list:
@@ -1280,7 +1282,8 @@ func _update_vision() -> void:
 		if seen and not u.visible:
 			factions.on_unit_spotted(u)
 		u.visible = seen
-	factions.check_site_discovery(seers)
+	if reveal_changed:
+		factions.check_site_discovery(seers)
 
 
 func _cleanup() -> void:
