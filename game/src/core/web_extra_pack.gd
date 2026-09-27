@@ -63,6 +63,9 @@ func is_mounted() -> bool:
 func _make_request(timeout: float, handler: Callable) -> HTTPRequest:
 	var request := HTTPRequest.new()
 	request.timeout = timeout
+	# The browser's fetch already undoes Content-Encoding (GitHub Pages gzips .pck); letting
+	# HTTPRequest inflate again fails with RESULT_BODY_DECOMPRESS_FAILED.
+	request.accept_gzip = false
 	request.request_completed.connect(handler)
 	add_child(request)
 	return request
