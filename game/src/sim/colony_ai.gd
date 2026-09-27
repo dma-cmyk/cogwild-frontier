@@ -48,7 +48,7 @@ func _finish(u: Unit) -> void:
 func tick() -> void:
 	var assign := w.tick_count % 10 == 3
 	var assignments_left := 3
-	var cands_built := false
+	var cands: Array = []
 	var worker_count := w.unit_list.size()
 	var start_index := (w.tick_count / 10 * 3) % worker_count if worker_count > 0 else 0
 	for offset in worker_count:
