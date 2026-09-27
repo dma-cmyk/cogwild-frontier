@@ -52,7 +52,7 @@ func tick() -> void:
 	var cands: Array = []
 	var worker_count := w.unit_list.size()
 	var start_index := (w.tick_count / 10 * 3) % worker_count if worker_count > 0 else 0
-	for offset in worker_count
+	for offset in worker_count:
 		var i := (start_index + offset) % worker_count if worker_count > 0 else 0
 		var u: Unit = w.unit_list[i]
 		if not is_worker(u):
