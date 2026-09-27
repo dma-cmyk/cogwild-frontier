@@ -5,6 +5,12 @@ extends RefCounted
 
 static var _mats: Dictionary = {}
 static var _mesh: SphereMesh
+static var _combat_texts: Dictionary = {}  # parent instance id -> floater key -> Label3D
+static var _next_combat_text_id := 0
+
+const MAX_COMBAT_TEXTS := 32
+const COMBAT_TEXT_MERGE_MSEC := 220
+const COMBAT_TEXT_MERGE_DISTANCE := 0.8
 static var _slash_mesh: ArrayMesh
 
 const KINDS := [&"hit_spark", &"dust_puff", &"chop_chips", &"rock_chips", &"smoke_puff", &"level_up", &"loot_beam", &"heal", &"discover_ping", &"build_dust", &"muzzle_flash", &"explosion_small", &"death_poof", &"slash_arc"]
@@ -31,52 +37,153 @@ static func _make_text(parent: Node) -> Label3D:
 
 
 ## Floating combat values are world-space labels, pooled separately from particle effects.
+## Floating combat values merge nearby hits on the same target before the short display window ends.
 static func spawn_combat_text(parent: Node, kind: StringName, pos: Vector3, _color: Color = Color.WHITE) -> void:
 	if parent == null:
 		return
-	var label := _make_text(parent)
-	var text := Loc.t("Miss")
-	var color := Color("#aeb7c5")
-	var size := 34
-	var rise := 1.05
 	var kind_text := String(kind)
+	var style := _combat_text_style(kind_text)
+	var now := Time.get_ticks_msec()
+	var parent_id := parent.get_instance_id()
+	var active := _combat_registry(parent_id)
+	var merge_kind := str(style.get("merge", ""))
+	if merge_kind != "":
+		for key: Variant in active.keys():
+			var existing := active[key] as Label3D
+			if not is_instance_valid(existing):
+				active.erase(key)
+				continue
+			if str(existing.get_meta("combat_kind", "")) != merge_kind \
+					or now - int(existing.get_meta("combat_last_event_msec", 0)) > COMBAT_TEXT_MERGE_MSEC:
+				continue
+			var old_pos: Vector3 = existing.get_meta("combat_target_pos", Vector3.ZERO)
+			if Vector2(old_pos.x, old_pos.z).distance_to(Vector2(pos.x, pos.z)) > COMBAT_TEXT_MERGE_DISTANCE:
+				continue
+			_merge_combat_text(existing, style, now, pos)
+			return
+	if active.size() >= MAX_COMBAT_TEXTS:
+		var oldest: Label3D
+		var oldest_time := 9223372036854775807
+		var oldest_key: Variant
+		for key: Variant in active.keys():
+			var existing := active[key] as Label3D
+			if not is_instance_valid(existing):
+				active.erase(key)
+				continue
+			var spawned := int(existing.get_meta("combat_spawn_msec", 0))
+			if spawned < oldest_time:
+				oldest = existing
+				oldest_time = spawned
+				oldest_key = key
+		if is_instance_valid(oldest):
+			active.erase(oldest_key)
+			parent.remove_child(oldest)
+			oldest.queue_free()
+		else:
+			return
+	var label := _make_text(parent)
+	label.name = "CombatText"
+	var color: Color = style["color"]
+	label.text = str(style["text"])
+	label.font_size = int(style["size"])
+	label.modulate = color
+	label.outline_modulate = Color("#19202a", 0.95)
+	label.set_meta("combat_float", true)
+	label.set_meta("combat_kind", merge_kind)
+	label.set_meta("combat_target_pos", pos)
+	label.set_meta("combat_last_event_msec", now)
+	label.set_meta("combat_spawn_msec", now)
+	label.set_meta("combat_amount", int(style.get("amount", 0)))
+	label.set_meta("combat_crit", bool(style.get("crit", false)))
+	label.set_meta("combat_suffix", str(style.get("suffix", "")))
+	_next_combat_text_id += 1
+	var key := str(_next_combat_text_id)
+	active[key] = label
+	var label_id := label.get_instance_id()
+	label.tree_exiting.connect(func() -> void: _forget_combat_text(parent_id, key, label_id))
+	_restart_combat_text(parent, label, pos, float(style["rise"]))
+
+
+static func _combat_registry(parent_id: int) -> Dictionary:
+	if not _combat_texts.has(parent_id):
+		_combat_texts[parent_id] = {}
+	return _combat_texts[parent_id]
+
+
+static func _forget_combat_text(parent_id: int, key: String, label_id: int) -> void:
+	if not _combat_texts.has(parent_id):
+		return
+	var active: Dictionary = _combat_texts[parent_id]
+	var label := active.get(key) as Label3D
+	if is_instance_valid(label) and label.get_instance_id() == label_id:
+		active.erase(key)
+	if active.is_empty():
+		_combat_texts.erase(parent_id)
+
+
+static func _combat_text_style(kind_text: String) -> Dictionary:
+	var style := {"text": Loc.t("Miss"), "color": Color("#aeb7c5"), "size": 34, "rise": 1.05, "merge": ""}
 	if kind_text.begins_with("combat_damage|"):
 		var damage_fields := kind_text.split("|")
 		var amount := int(damage_fields[1]) if damage_fields.size() > 1 else 0
 		var crit := damage_fields.size() > 2 and damage_fields[2] == "1"
-		text = "-%d" % amount
-		if damage_fields.size() > 3 and damage_fields[3] != "":
-			text += " " + Loc.t(damage_fields[3])
-		color = Color("#ffd05c") if crit else Color("#fff1dc")
-		size = 56 if crit else 44
-		rise = 1.35 if crit else 1.0
+		var suffix := Loc.t(damage_fields[3]) if damage_fields.size() > 3 and damage_fields[3] != "" else ""
+		style["text"] = "-%d%s" % [amount, " " + suffix if suffix != "" else ""]
+		style["color"] = Color("#ffd05c") if crit else Color("#fff1dc")
+		style["size"] = 56 if crit else 44
+		style["rise"] = 1.35 if crit else 1.0
+		style["merge"] = "damage"
+		style["amount"] = amount
+		style["crit"] = crit
+		style["suffix"] = suffix
 	elif kind_text.begins_with("combat_heal|"):
 		var heal_fields := kind_text.split("|")
-		text = "+%d" % (int(heal_fields[1]) if heal_fields.size() > 1 else 0)
-		color = Color("#73ff9b")
-		size = 40
+		var amount := int(heal_fields[1]) if heal_fields.size() > 1 else 0
+		style["text"] = "+%d" % amount
+		style["color"] = Color("#73ff9b")
+		style["size"] = 40
+		style["merge"] = "heal"
+		style["amount"] = amount
 	elif kind_text.begins_with("combat_ability|"):
 		var ability_id := kind_text.get_slice("|", 1)
-		text = Loc.t(str(DB.get_def("generation/abilities", ability_id).get("name", ability_id))) + "!"
-		color = Color("#ffd36a")
-		size = 34
+		style["text"] = Loc.t(str(DB.get_def("generation/abilities", ability_id).get("name", ability_id))) + "!"
+		style["color"] = Color("#ffd36a")
 	elif kind_text.begins_with("combat_tactic|") or kind_text.begins_with("combat_miss|"):
 		var feedback := kind_text.get_slice("|", 1)
-		text = Loc.t(feedback) if feedback != "" else Loc.t("Miss")
-		color = Color("#ffd36a") if kind_text.begins_with("combat_tactic|") else Color("#d5a2a2")
-		size = 34
-	label.text = text
-	label.font_size = size
-	label.modulate = color
-	label.outline_modulate = Color("#19202a", 0.95)
+		style["text"] = Loc.t(feedback) if feedback != "" else Loc.t("Miss")
+		style["color"] = Color("#ffd36a") if kind_text.begins_with("combat_tactic|") else Color("#d5a2a2")
+	return style
+
+
+static func _merge_combat_text(label: Label3D, style: Dictionary, now: int, pos: Vector3) -> void:
+	var amount := int(label.get_meta("combat_amount", 0)) + int(style.get("amount", 0))
+	var crit := bool(label.get_meta("combat_crit", false)) or bool(style.get("crit", false))
+	var suffix := str(label.get_meta("combat_suffix", ""))
+	if suffix == "":
+		suffix = str(style.get("suffix", ""))
+	var merge_kind := str(style["merge"])
+	label.text = ("-%d%s" % [amount, " " + suffix if suffix != "" else ""]) if merge_kind == "damage" else "+%d" % amount
+	label.font_size = 56 if crit and merge_kind == "damage" else (44 if merge_kind == "damage" else 40)
+	label.modulate = Color("#ffd05c") if crit and merge_kind == "damage" else (Color("#73ff9b") if merge_kind == "heal" else Color("#fff1dc"))
+	label.set_meta("combat_amount", amount)
+	label.set_meta("combat_crit", crit)
+	label.set_meta("combat_suffix", suffix)
+	label.set_meta("combat_target_pos", pos)
+	label.set_meta("combat_last_event_msec", now)
+	_restart_combat_text(label.get_parent(), label, pos, 1.35 if crit else float(style["rise"]))
+
+
+static func _restart_combat_text(parent: Node, label: Label3D, pos: Vector3, rise: float) -> void:
+	var prior: Variant = label.get_meta("combat_tween") if label.has_meta("combat_tween") else null
+	if prior is Tween and prior.is_valid():
+		prior.kill()
 	label.position = pos + Vector3(0, 0.28, 0)
-	label.scale = Vector3.ONE
 	var tween := parent.create_tween()
+	label.set_meta("combat_tween", tween)
 	tween.set_parallel(true)
 	tween.tween_property(label, "position", label.position + Vector3(0.0, rise, 0.0), 0.9).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tween.tween_property(label, "modulate:a", 0.0, 0.9).set_delay(0.38)
 	tween.tween_callback(label.queue_free).set_delay(0.95)
-
 
 static func _make_slash_mesh() -> ArrayMesh:
 	var tool := SurfaceTool.new()

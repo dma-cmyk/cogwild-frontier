@@ -435,16 +435,16 @@ func _update_responsive() -> void:
 		minimap.visible = true
 	if is_instance_valid(_rotate_left) and is_instance_valid(_rotate_right):
 		if _compact:
-			for pair: Array in [[_rotate_left, 18.0], [_rotate_right, 62.0]]:
+			for pair: Array in [[_rotate_left, 18.0], [_rotate_right, 66.0]]:
 				var button := pair[0] as Button
-				button.custom_minimum_size = Vector2(40, 40)
+				button.custom_minimum_size = Vector2(44, 44)
 				button.anchor_left = 0.0
 				button.anchor_right = 0.0
 				button.anchor_top = 0.0
 				button.anchor_bottom = 0.0
 				button.offset_left = float(pair[1])
-				button.offset_right = float(pair[1]) + 40.0
-				button.offset_top = 124.0 + Minimap.SIZE - 48.0
+				button.offset_right = float(pair[1]) + 44.0
+				button.offset_top = 124.0 + Minimap.SIZE - 52.0
 				button.offset_bottom = 124.0 + Minimap.SIZE - 8.0
 				button.visible = minimap.visible
 		else:
@@ -521,17 +521,26 @@ func _update_responsive() -> void:
 		for pair: Array in _speed_buttons:
 			(pair[1] as Button).custom_minimum_size = Vector2(44, 40)
 	if _compact:
+		_command_row.add_theme_constant_override("separation", 3)
+		_recipient_label.visible = false
+		_recipient_icon.custom_minimum_size = Vector2(24, 24)
+		_recipient_swatch.custom_minimum_size = Vector2(4, 24)
 		for colony_button: Button in _colony_buttons:
-			colony_button.custom_minimum_size = Vector2(90, 64)
+			colony_button.custom_minimum_size = Vector2(48, 48)
+			colony_button.add_theme_font_size_override("font_size", 10)
 		for button: Button in _cmd_buttons.values():
-			button.custom_minimum_size = Vector2(64, 64)
+			button.custom_minimum_size = Vector2(48, 48)
 			var box := button.get_child(0) as VBoxContainer
-			(box.get_child(0) as TextureRect).custom_minimum_size = Vector2(26, 26)
-			(box.get_child(1) as Label).add_theme_font_size_override("font_size", 10)
+			(box.get_child(0) as TextureRect).custom_minimum_size = Vector2(22, 22)
+			(box.get_child(1) as Label).add_theme_font_size_override("font_size", 9)
 		for button: Button in _ability_buttons.values():
-			button.custom_minimum_size = Vector2(64, 64)
-		_ability_scroll.custom_minimum_size.y = 64
+			button.custom_minimum_size = Vector2(48, 48)
+		_ability_scroll.custom_minimum_size.y = 48
 	else:
+		_command_row.add_theme_constant_override("separation", 6)
+		_recipient_label.visible = true
+		_recipient_icon.custom_minimum_size = Vector2(22, 22)
+		_recipient_swatch.custom_minimum_size = Vector2(6, 24)
 		for colony_button: Button in _colony_buttons:
 			colony_button.custom_minimum_size = Vector2(96, 58)
 		for button: Button in _cmd_buttons.values():
@@ -545,10 +554,10 @@ func _update_responsive() -> void:
 	_update_ability_scroll_width()
 	if _compact:
 		_command_panel.anchor_left = 0.0
-		_command_panel.anchor_right = 0.0
-		_command_panel.grow_horizontal = Control.GROW_DIRECTION_END
-		_command_panel.offset_left = 490
-		_command_panel.offset_right = layout_size.x - 8
+		_command_panel.anchor_right = 1.0
+		_command_panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
+		_command_panel.offset_left = 8
+		_command_panel.offset_right = -8
 		_command_panel.offset_bottom = -8
 	else:
 		# Bottom-right, apart from the squad roster; sized to its two rows of buttons.
@@ -569,13 +578,13 @@ func _configure_command_rows() -> void:
 	if not is_instance_valid(_command_row):
 		return
 	if _compact:
-		_command_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+		_command_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 		_order_row.visible = false
 		for button: Button in _order_buttons:
 			if button.get_parent() == _order_row:
 				_order_row.remove_child(button)
 				_command_row.add_child(button)
-				_command_row.move_child(button, _command_row.get_child_count() - 3)
+				_command_row.move_child(button, _ability_separator.get_index())
 	else:
 		_command_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 		_order_row.visible = true
@@ -882,7 +891,9 @@ func _update_command_bar_height() -> void:
 	if _command_panel == null:
 		return
 	if _compact:
-		_command_panel.offset_top = _command_panel.offset_bottom - 80.0
+		_command_panel.offset_top = _command_panel.offset_bottom - 64.0
+		if is_instance_valid(info_panel):
+			info_panel.offset_bottom = _command_panel.offset_top - 8.0
 		return
 	# Desktop: the panel grows upward to its two rows; the details panel ends above it.
 	_command_panel.offset_top = _command_panel.offset_bottom
@@ -979,7 +990,7 @@ func _rebuild_ability_row(grouped: Dictionary) -> void:
 			_ability_shortcuts.append(ability_id)
 		var button := Button.new()
 		button.focus_mode = Control.FOCUS_NONE
-		button.custom_minimum_size = Vector2(64, 64) if _compact else Vector2(58, 58)
+		button.custom_minimum_size = Vector2(48, 48) if _compact else Vector2(58, 58)
 		button.set_meta("ability_id", ability_id)
 		var icon := TextureRect.new()
 		icon.anchor_left = 0.5
@@ -1038,7 +1049,7 @@ func _update_ability_scroll_width() -> void:
 		width += button.custom_minimum_size.x
 	if _ability_buttons.size() > 1:
 		width += 5.0 * float(_ability_buttons.size() - 1)
-	_ability_scroll.custom_minimum_size.x = maxf(56.0, width)
+	_ability_scroll.custom_minimum_size.x = maxf(48.0 if _compact else 56.0, width)
 
 
 func _activate_ability(ability_id: String) -> void:
