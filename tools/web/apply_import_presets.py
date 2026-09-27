@@ -21,13 +21,9 @@ PRESETS = {
     "ui/": {"compress/mode": LOSSLESS, "mipmaps/generate": False, "process/size_limit": 0},
     "icons/": {"compress/mode": LOSSLESS, "mipmaps/generate": False, "process/size_limit": 0},
 }
-<<<<<<< HEAD
-GLOW_PRESET = {"compress/mode": BASIS, "mipmaps/generate": True, "process/size_limit": 512}
+GLOW_PRESET = {"compress/mode": BASIS, "mipmaps/generate": False, "process/size_limit": 256}
 # The 3x3 village homes are small on screen; half the texture budget of a full-size building.
 VILLAGE_HOME_PRESET = {**PRESETS["sprites/buildings/"], "process/size_limit": 512}
-=======
-GLOW_PRESET = {"compress/mode": BASIS, "mipmaps/generate": False, "process/size_limit": 256}
->>>>>>> r5-webload
 
 
 def preset_for(path: Path) -> dict | None:
