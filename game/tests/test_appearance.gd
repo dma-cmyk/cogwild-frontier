@@ -35,9 +35,10 @@ func test_determinism() -> void:
 
 func test_domains_and_budgets() -> void:
 	var rng := _new_rng(90210)
+	var races := AppearanceGen.race_ids()
 	for i in 500:
-		var c := AppearanceGen.character(rng, AppearanceGen.RACES[i % 4], "settler", "frontier", Color("#3a5da8"))
-		assert_true(AppearanceGen.RACES.has(str(c["race"])), "character race domain")
+		var c := AppearanceGen.character(rng, races[i % races.size()], "settler", "frontier", Color("#3a5da8"))
+		assert_true(races.has(str(c["race"])), "character race domain")
 		var cv := UnitVisualFactory.create_mesh(c)
 		var tris = _mesh_triangles(cv)
 		if tris > 1800:
@@ -65,7 +66,7 @@ func test_race_role_style_matrix() -> void:
 	var roles: Array[String] = ["settler", "mercenary", "commander", "merchant", "engineer", "explorer", "scholar", "researcher", "farmer", "woodcutter", "miner", "builder", "guard", "archer", "hunter", "medic", "cook", "tinkerer", "trader", "bandit", "bandit_archer", "bandit_captain", "unknown"]
 	var rng := _new_rng(777)
 	for style: String in AppearanceGen.STYLES:
-		for race: String in AppearanceGen.RACES:
+		for race: String in AppearanceGen.race_ids():
 			for role: String in roles:
 				var visual := UnitVisualFactory.create(AppearanceGen.character(rng, race, role, style, Color("#3a5da8")))
 				visual.set_anim(UnitVisual.Anim.WALK)
@@ -75,6 +76,23 @@ func test_race_role_style_matrix() -> void:
 				visual.set_carry("ore")
 				assert_true(visual.get_visual_height() > 0.0, "valid visual height")
 				visual.free()
+
+func test_racial_fallback_silhouettes() -> void:
+	var rng := _new_rng(1776)
+	var human := AppearanceGen.character(rng, "human", "settler", "frontier", Color("#3a5da8"))
+	var harpy := AppearanceGen.character(rng, "harpy", "settler", "frontier", Color("#3a5da8"))
+	var centaur := AppearanceGen.character(rng, "centaur", "settler", "frontier", Color("#3a5da8"))
+	var lamia := AppearanceGen.character(rng, "lamia", "settler", "frontier", Color("#3a5da8"))
+	var human_body := CharMesh.body(human)
+	var harpy_body := CharMesh.body(harpy)
+	var centaur_body := CharMesh.body(centaur)
+	assert_true(harpy_body.get_aabb().size.x > human_body.get_aabb().size.x + 0.8,
+		"harpy fallback has prominent wings")
+	assert_true(centaur_body.get_aabb().size.z > human_body.get_aabb().size.z + 0.5,
+		"centaur fallback has a distinct horse body")
+	assert_eq(CharMesh.leg(centaur, -1).get_surface_count(), 0, "centaur uses its horse legs")
+	assert_eq(CharMesh.leg(lamia, 1).get_surface_count(), 0, "lamia uses its snake lower body")
+
 
 func test_all_actions() -> void:
 	var visual := UnitVisualFactory.create(AppearanceGen.character(_new_rng(1), "human", "settler", "neutral", Color.TRANSPARENT))

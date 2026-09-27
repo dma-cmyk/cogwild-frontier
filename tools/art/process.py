@@ -28,15 +28,18 @@ GAME = ROOT / "game"
 DATA = GAME / "data" / "art"
 
 ROW_ORDER = ["down", "left", "right", "up"]
-RACES = ["human", "sylvan", "stoutkin", "vulpin"]
+OLD_RACES = ["human", "sylvan", "stoutkin", "vulpin"]
+NEW_RACES = ["minotaur", "centaur", "harpy", "lamia", "oni", "tengu"]
+RACES = OLD_RACES + NEW_RACES
 LOOKS = ["worker", "fighter", "ranger", "engineer", "scholar"]
 
 # chip sheet id -> (left sheet id, right sheet id, anchor mode)
 CHIP_SHEETS = {f"chip_{r}_{l}": (f"{r}_{l}_m", f"{r}_{l}_f", "feet") for r in RACES for l in LOOKS}
 CHIP_SHEETS.update({f"chip_{r}_{l}_v2": (f"{r}_{l}_m@v2", f"{r}_{l}_f@v2", "feet") for r in RACES for l in LOOKS})
-CHIP_SHEETS.update({f"chip_{r}_{l}_v3": (f"{r}_{l}_m@v3", f"{r}_{l}_f@v3", "feet") for r in RACES for l in LOOKS})
-CHIP_SHEETS.update({f"chip_{r}_worker_v4": (f"{r}_worker_m@v4", f"{r}_worker_f@v4", "feet") for r in RACES})
-CHIP_SHEETS.update({f"chip_{r}_worker_v5": (f"{r}_worker_m@v5", f"{r}_worker_f@v5", "feet") for r in RACES if r != "sylvan"})
+CHIP_SHEETS.update({f"chip_{r}_{l}_v3": (f"{r}_{l}_m@v3", f"{r}_{l}_f@v3", "feet") for r in OLD_RACES for l in LOOKS})
+CHIP_SHEETS.update({f"chip_{r}_worker_v4": (f"{r}_worker_m@v4", f"{r}_worker_f@v4", "feet") for r in OLD_RACES})
+CHIP_SHEETS.update({f"chip_{r}_worker_v5": (f"{r}_worker_m@v5", f"{r}_worker_f@v5", "feet") for r in OLD_RACES if r != "sylvan"})
+CHIP_SHEETS.update({f"chip_{r}_{l}_v4": (f"{r}_{l}_m@v4", f"{r}_{l}_f@v4", "feet") for r in OLD_RACES for l in LOOKS if l != "worker"})
 CHIP_SHEETS.update({
 	"chip_bandit_a": ("bandit_m", "bandit_f", "feet"),
 	"chip_bandit_b": ("bandit_archer", "bandit_captain", "feet"),
@@ -51,6 +54,7 @@ CENTER_ANCHOR = {"scout_drone", "repair_drone", "war_drone"}
 CELL = (128, 128)       # output chip cell (w, h)
 CHIP_HEIGHT = 112       # standing figure height in the cell
 CHIP_FOOT = 124         # y of the feet line inside the cell
+CHIP_HEIGHT_BY_RACE = {"centaur": 104, "harpy": 108, "tengu": 108}
 
 
 # --- basic image helpers -------------------------------------------------------------------
@@ -283,10 +287,10 @@ def write_table(name: str, entries: list[dict]) -> None:
 	old = {}
 	if path.exists():
 		for e in json.loads(path.read_text()).get("entries", []):
-			if variant_pair_files_exist(e["id"]):
+			if variant_file_exists(name, e["id"]):
 				old[e["id"]] = e
 	for e in entries:
-		if variant_pair_files_exist(e["id"]):
+		if variant_file_exists(name, e["id"]):
 			old[e["id"]] = e
 	doc = {"table": name, "entries": [old[k] for k in sorted(old)]}
 	path.write_text(json.dumps(doc, indent=1) + "\n")
@@ -296,14 +300,19 @@ def res(path: pathlib.Path) -> str:
 	return "res://" + str(path.relative_to(GAME))
 
 
-def variant_pair_files_exist(asset_id: str) -> bool:
+VARIANT_DIRS = {"sprites": "sprites/chars", "portraits": "portraits"}
+
+
+def variant_file_exists(table: str, asset_id: str) -> bool:
+	"""A `@vN` row survives only while its own PNG is on disk. Chips and busts are checked apart:
+	a look may have a painted chip without a painted bust (the game then shows the chip's front
+	frame), and no other table uses the @vN suffix."""
+	folder = VARIANT_DIRS.get(table)
 	suffix = variant_suffix(asset_id)
-	if not suffix:
+	if folder is None or not suffix:
 		return True
-	file_id = asset_id.split("@", 1)[0] + suffix + ".png"
-	sprite = GAME / "assets" / "sprites" / "chars" / file_id
-	portrait = GAME / "assets" / "portraits" / file_id
-	return all(p.is_file() and p.with_name(p.name + ".import").is_file() for p in (sprite, portrait))
+	png = GAME / "assets" / folder / (asset_id.split("@", 1)[0] + suffix + ".png")
+	return png.is_file() and png.with_name(png.name + ".import").is_file()
 
 # --- character / machine chips --------------------------------------------------------------
 
@@ -316,10 +325,15 @@ def figure_anchor_x(frame: np.ndarray) -> float:
 	return float(xs.mean())
 
 
-def build_chip(frames: list[list[np.ndarray]], anchor_mode: str) -> tuple[np.ndarray, dict]:
-	"""frames[row][col] trimmed RGBA -> normalized 3x4 sheet + metadata."""
-	stand_h = np.median([frames[r][1].shape[0] for r in range(4)])
-	scale = CHIP_HEIGHT / stand_h
+def build_chip(frames: list[list[np.ndarray]], anchor_mode: str, race_id: str = "") -> tuple[np.ndarray, dict]:
+	"""Scale all twelve frames to fit one cell, preserving a shared foot anchor."""
+	stand_h = float(np.median([frames[r][1].shape[0] for r in range(4)]))
+	max_h = max(frame.shape[0] for row in frames for frame in row)
+	max_w = max(frame.shape[1] for row in frames for frame in row)
+	target_height = float(CHIP_HEIGHT_BY_RACE.get(race_id, CHIP_HEIGHT))
+	scale = min(target_height / max(1.0, stand_h), (CELL[1] - 12) / max(1.0, float(max_h)),
+		(CELL[0] - 8) / max(1.0, float(max_w)))
+	resolved_height = max(1, round(stand_h * scale))
 	cw, ch = CELL
 	sheet = np.zeros((ch * 4, cw * 3, 4), np.uint8)
 	clipped = 0
@@ -341,7 +355,7 @@ def build_chip(frames: list[list[np.ndarray]], anchor_mode: str) -> tuple[np.nda
 			dst = sheet[r * ch:(r + 1) * ch, c * cw:(c + 1) * cw]
 			dst[y0:y1, x0:x1] = sub
 	meta = {"cell": [cw, ch], "cols": 3, "rows": 4, "rows_order": ROW_ORDER,
-		"anchor": [cw / 2, ch / 2 if anchor_mode == "center" else CHIP_FOOT], "height_px": CHIP_HEIGHT,
+		"anchor": [cw / 2, ch / 2 if anchor_mode == "center" else CHIP_FOOT], "height_px": resolved_height,
 		"anchor_mode": anchor_mode}
 	if clipped:
 		meta["clipped_frames"] = clipped
@@ -368,7 +382,8 @@ def process_chips(only: set[str]) -> None:
 			continue
 		for half, out_id in ((0, left_id), (1, right_id)):
 			frames = [[trim(union_crop(img, cells[(r, half * 3 + c)])) for c in range(3)] for r in range(4)]
-			sheet, meta = build_chip(frames, mode)
+			race_id = out_id.split("_", 1)[0]
+			sheet, meta = build_chip(frames, mode, race_id)
 			variant = variant_suffix(out_id)
 			file_id = out_id.split("@", 1)[0] + variant
 			out = GAME / "assets" / "sprites" / "chars" / f"{file_id}.png"
@@ -417,9 +432,10 @@ def process_portraits(only: set[str]) -> None:
 	entries = []
 	pairs = {f"portrait_{r}_{l}": (f"{r}_{l}_m", f"{r}_{l}_f") for r in RACES for l in LOOKS}
 	pairs.update({f"portrait_{r}_{l}_v2": (f"{r}_{l}_m@v2", f"{r}_{l}_f@v2") for r in RACES for l in LOOKS})
-	pairs.update({f"portrait_{r}_{l}_v3": (f"{r}_{l}_m@v3", f"{r}_{l}_f@v3") for r in RACES for l in LOOKS})
-	pairs.update({f"portrait_{r}_worker_v4": (f"{r}_worker_m@v4", f"{r}_worker_f@v4") for r in RACES})
-	pairs.update({f"portrait_{r}_worker_v5": (f"{r}_worker_m@v5", f"{r}_worker_f@v5") for r in RACES if r != "sylvan"})
+	pairs.update({f"portrait_{r}_{l}_v3": (f"{r}_{l}_m@v3", f"{r}_{l}_f@v3") for r in OLD_RACES for l in LOOKS})
+	pairs.update({f"portrait_{r}_worker_v4": (f"{r}_worker_m@v4", f"{r}_worker_f@v4") for r in OLD_RACES})
+	pairs.update({f"portrait_{r}_worker_v5": (f"{r}_worker_m@v5", f"{r}_worker_f@v5") for r in OLD_RACES if r != "sylvan"})
+	pairs.update({f"portrait_{r}_{l}_v4": (f"{r}_{l}_m@v4", f"{r}_{l}_f@v4") for r in OLD_RACES for l in LOOKS if l != "worker"})
 	pairs.update({"portrait_bandit_a": ("bandit_m", "bandit_f"), "portrait_bandit_b": ("bandit_archer", "bandit_captain")})
 	for pid, (left_id, right_id) in pairs.items():
 		if only and pid not in only:
@@ -589,6 +605,11 @@ BUILDING_IDS = {
 	"b_ruin_pillar": ["ruin_pillar@0"], "b_ruin_wall": ["ruin_wall@0"], "b_ruin_statue": ["ruin_statue@0"],
 	"b_ruin_vault": ["ruin_vault@0"], "b_wreck_airship": ["wreck_airship@0"], "props_sails": ["windmill_sails@0"],
 }
+BUILDING_IDS.update({
+	f"b_v_{race}_{kind}": [f"v_{race}_{kind}@0"] for race in RACES for kind in ["home", "hall"]
+})
+BUILDING_FOOTPRINTS = {f"v_{race}_home": [3, 3] for race in RACES}
+BUILDING_FOOTPRINTS.update({f"v_{race}_hall": [5, 5] for race in RACES})
 BUILDING_MAX_W = 640
 
 
@@ -645,10 +666,14 @@ BACK_VIEW_SOURCES = {
 	"b_trade_hall_back": "b_trade_hall", "b_trade_stall_back": "b_trade_stall",
 	"b_wanderer_tent_back": "b_wanderer_tent", "b_ruin_vault_back": "b_ruin_vault",
 }
+BACK_VIEW_SOURCES.update({
+	f"b_v_{race}_hall_back": f"b_v_{race}_hall" for race in RACES
+})
 SYMMETRIC_BUILDINGS = {
 	"campfire", "construction", "palisade", "wall", "ruin_arch", "ruin_pillar", "ruin_wall",
 	"ruin_statue", "trade_mast", "windmill_sails", "wreck_airship",
 }
+SYMMETRIC_BUILDINGS.update({f"v_{race}_home" for race in RACES})
 
 
 def process_building_backs(entries: list[dict], only: set[str]) -> None:
@@ -759,6 +784,8 @@ def process_buildings(only: set[str]) -> None:
 				key = "house@v1"
 			entry = {"id": key, "texture": res(out), "size_px": [int(spr.shape[1]), int(spr.shape[0])],
 				"base_w_px": round(bw, 1), "base_cx_px": round(bcx, 1), "base_bottom_px": round(bby, 1), "source": raw_id}
+			if key in BUILDING_FOOTPRINTS:
+				entry["footprint"] = BUILDING_FOOTPRINTS[key]
 			if glow_path is not None:
 				entry["glow"] = res(glow_path)
 			if bid0 in SYMMETRIC_BUILDINGS:
@@ -766,6 +793,11 @@ def process_buildings(only: set[str]) -> None:
 			entries.append(entry)
 		print(f"  {raw_id} -> {targets} {spr.shape[1]}x{spr.shape[0]} base {bw:.0f}px glow {'yes' if glow_path else 'no'}")
 	process_building_backs(entries, only)
+	for e in entries:
+		# Until an opposite-side painting arrives, render the mirrored front rather than a blank card.
+		if "back_texture" not in e:
+			e["back_symmetric"] = True
+			e["back_pending"] = True
 	if entries:
 		# hand-measured points on the pictures (windmill hub, chimneys, mooring height)
 		over_path = pathlib.Path(__file__).with_name("overrides.json")

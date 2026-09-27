@@ -13,7 +13,10 @@ const UNIT_SHADER := "res://src/visual/shaders/sprite_unit.gdshader"
 const PROP_SHADER := "res://src/visual/shaders/sprite_prop.gdshader"
 const BUILDING_SHADER := "res://src/visual/shaders/sprite_building.gdshader"
 ## Standing height (metres) of a character chip figure per race.
-const RACE_HEIGHT := {"human": 1.55, "sylvan": 1.65, "stoutkin": 1.3, "vulpin": 1.5}
+const RACE_HEIGHT := {
+	"human": 1.55, "sylvan": 1.65, "stoutkin": 1.3, "vulpin": 1.5,
+	"minotaur": 1.78, "centaur": 1.85, "harpy": 1.62, "lamia": 1.68, "oni": 1.7, "tengu": 1.68
+}
 ## Figure height (metres) for machines; airships use their side-view length instead.
 const MACHINE_HEIGHT := {"work_bot": 1.15, "walker": 2.5, "sentry": 1.7, "turret": 1.8, "machine_warden": 3.1,
 	"scout_drone": 0.75, "repair_drone": 0.75, "war_drone": 0.95}
@@ -176,20 +179,16 @@ static func chip_id(dna: Dictionary, hints: Dictionary = {}) -> String:
 	return "%s_%s_%s" % [str(dna.get("race", "human")), look_for(dna), g]
 
 
-## Number of loadable painted looks for this unit's base sheet.
+## Number of loadable painted looks for this unit's base sheet. A look counts as soon as its chip
+## sheet loads: a painted bust is optional (`portrait()` then shows the chip's front frame).
 static func variant_count(dna: Dictionary, hints: Dictionary = {}) -> int:
 	var base_id := chip_id(dna, hints)
 	var count := 0
 	# existence only: loading every variant's sheet here would put unused textures in video memory
 	for variant: int in range(6):
-		var variant_id := _variant_id(base_id, variant)
-		var entry := DB.get_def("art/sprites", variant_id)
+		var entry := DB.get_def("art/sprites", _variant_id(base_id, variant))
 		if entry.is_empty() or not ResourceLoader.exists(str(entry.get("texture", ""))):
 			continue
-		if str(dna.get("kind", "character")) == "character":
-			var portrait_entry := DB.get_def("art/portraits", variant_id)
-			if portrait_entry.is_empty() or not ResourceLoader.exists(str(portrait_entry.get("texture", ""))):
-				continue
 		count += 1
 	return count
 
@@ -296,8 +295,9 @@ static func chip_front_frame(entry: Dictionary) -> Texture2D:
 	return at
 
 
-## Painted portrait for a unit: the generated bust for people, the chip's front frame for
-## machines, or null (caller renders the procedural fallback).
+## Painted portrait for a unit: the bust painted for this exact look, otherwise the front frame of
+## the look's own chip (machines and looks whose bust is not painted), or null (caller renders the
+## procedural fallback). A different look's bust is never shown: it would be a different face.
 static func portrait(dna: Dictionary, hints: Dictionary = {}) -> Texture2D:
 	if not enabled:
 		return null
@@ -307,7 +307,7 @@ static func portrait(dna: Dictionary, hints: Dictionary = {}) -> Texture2D:
 	if _portraits.has(key):
 		return _portraits[key] as Texture2D
 	var tex: Texture2D = null
-	var entry := _variant_entry("art/portraits", id, variant)
+	var entry := DB.get_def("art/portraits", key)
 	if not entry.is_empty():
 		tex = texture(str(entry.get("texture", "")))
 	if tex == null:

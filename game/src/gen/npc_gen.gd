@@ -11,10 +11,12 @@ static func _role(rng: RandomNumberGenerator, requested: String) -> Dictionary:
 	var rows := GenUtil.entries("roles")
 	return GenUtil.pick(rng, rows) as Dictionary
 
+## An explicitly requested race is used exactly; otherwise races are drawn by `spawn_weight`
+## (data/races/races.json), which keeps the rarer mythic peoples uncommon among newcomers.
 static func _race(rng: RandomNumberGenerator, requested: String) -> Dictionary:
 	if requested != "" and DB.has_def("races", requested):
 		return DB.get_def("races", requested)
-	return GenUtil.pick(rng, GenUtil.entries("races")) as Dictionary
+	return GenUtil.weighted(rng, GenUtil.entries("races"), "spawn_weight")
 
 static func _talent(rng: RandomNumberGenerator, requested: String) -> String:
 	if requested in ["prodigy", "skilled", "average", "mediocre", "poor"]:

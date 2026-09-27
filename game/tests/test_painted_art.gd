@@ -7,6 +7,17 @@ const LOOKS := ["worker", "fighter", "ranger", "engineer", "scholar"]
 const ROLES := ["settler", "mercenary", "commander", "merchant", "engineer", "explorer", "scholar", "researcher",
 	"farmer", "woodcutter", "miner", "builder", "guard", "archer", "hunter", "medic", "cook", "tinkerer", "trader",
 	"bandit", "bandit_archer", "bandit_captain"]
+## Painted looks per race and look group. The mythic peoples were painted twice; the four founding
+## peoples have a third look everywhere and a fourth (workers: a fifth) on top.
+const OLD_RACES := ["human", "sylvan", "stoutkin", "vulpin"]
+
+
+func _expected_variants(race: String, look: String) -> int:
+	if not OLD_RACES.has(race):
+		return 2
+	if look != "worker":
+		return 4
+	return 4 if race == "sylvan" else 5
 
 
 func _rng(seed: int) -> RandomNumberGenerator:
@@ -29,10 +40,11 @@ func test_every_person_the_game_makes_is_painted() -> void:
 	for race: String in AppearanceGen.RACES:
 		for look: String in LOOKS:
 			for g: String in ["m", "f"]:
-				assert_true(DB.has_def("art/portraits", "%s_%s_%s" % [race, look, g]), "painted bust %s_%s_%s" % [race, look, g])
+				var id := "%s_%s_%s" % [race, look, g]
+				assert_true(not DB.get_def("art/sprites", id).is_empty(), "painted chip " + id)
 
 
-func test_every_person_has_three_painted_variants() -> void:
+func test_every_person_has_all_its_painted_variants() -> void:
 	for race: String in AppearanceGen.RACES:
 		for look: String in LOOKS:
 			for gender: String in ["m", "f"]:
@@ -54,7 +66,7 @@ func test_every_person_has_three_painted_variants() -> void:
 				dna["offhand"] = "none"
 				dna["outfit"] = "robe" if look == "scholar" else "tunic"
 				var hints: Dictionary = {}
-				var expected_count := 4 if race == "sylvan" and look == "worker" else 5 if look == "worker" else 3
+				var expected_count := _expected_variants(race, look)
 				assert_eq(SpriteLibrary.variant_count(dna, hints), expected_count,
 					"%s has %d loadable chips" % [id, expected_count])
 				var entries: Array[Dictionary] = []
@@ -65,9 +77,10 @@ func test_every_person_has_three_painted_variants() -> void:
 					var entry := entries[variant]
 					assert_true(not entry.is_empty(), "%s has chip metadata variant %d" % [id, variant])
 					assert_true(SpriteLibrary.texture(str(entry.get("texture", ""))) != null, "%s chip texture loads v%d" % [id, variant + 1])
-					assert_true(not DB.get_def("art/portraits", str(entry["id"])).is_empty(), "%s portrait metadata v%d" % [id, variant + 1])
 					var portrait_entry := DB.get_def("art/portraits", str(entry["id"]))
-					assert_true(SpriteLibrary.texture(str(portrait_entry.get("texture", ""))) != null, "%s portrait texture loads v%d" % [id, variant + 1])
+					if not portrait_entry.is_empty():
+						assert_true(SpriteLibrary.texture(str(portrait_entry.get("texture", ""))) != null,
+							"%s portrait texture loads v%d" % [id, variant + 1])
 				var old_save := dna.duplicate()
 				var old_variant := SpriteLibrary.art_variant(old_save, hints)
 				assert_true(old_variant >= 0 and old_variant < 2, "%s legacy look is in v1/v2 range" % id)
@@ -79,9 +92,15 @@ func test_every_person_has_three_painted_variants() -> void:
 					assert_eq(str(SpriteLibrary.chip(dna, hints).get("id", "")), selected_id,
 						"%s explicit chip variant %d" % [id, selected])
 					var portrait_entry := DB.get_def("art/portraits", selected_id)
-					var expected_portrait := SpriteLibrary.texture(str(portrait_entry.get("texture", "")))
-					assert_true(expected_portrait != null and SpriteLibrary.portrait(dna, hints) == expected_portrait,
-						"%s explicit portrait variant %d" % [id, selected])
+					var painted_bust := SpriteLibrary.texture(str(portrait_entry.get("texture", "")))
+					var shown := SpriteLibrary.portrait(dna, hints)
+					if painted_bust != null:
+						assert_true(shown == painted_bust, "%s explicit portrait variant %d" % [id, selected])
+					else:
+						# no bust painted for this look: the look's own chip front frame stands in
+						assert_true(shown is AtlasTexture and (shown as AtlasTexture).atlas ==
+							SpriteLibrary.texture(str(DB.get_def("art/sprites", selected_id).get("texture", ""))),
+							"%s falls back to its own chip face v%d" % [id, selected])
 
 
 func test_joining_residents_get_least_used_painting_and_save_stably() -> void:

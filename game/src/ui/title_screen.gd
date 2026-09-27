@@ -207,6 +207,7 @@ func _build_create() -> void:
 	nrow.add_child(dice)
 	form.add_child(nrow)
 	form.add_child(_field_label(Loc.t("Race")))
+	form.add_child(UiTheme.label(Loc.t("Your people can be any of ten playable races."), 14, UiTheme.TEXT_DIM))
 	var rrow := GridContainer.new()
 	rrow.columns = 4 if viewport_size.x >= 700.0 else 2
 	rrow.add_theme_constant_override("h_separation", 6)
@@ -372,7 +373,10 @@ func _open_create() -> void:
 	_load_box.visible = false
 	_create.visible = true
 	_look_seed = _rng.randi()
-	var races := DB.ids("races")
+	var races: Array[String] = []
+	for race: Dictionary in DB.entries("races"):
+		if bool(race.get("playable", true)):
+			races.append(str(race.get("id", "")))
 	_race = str(races[_rng.randi_range(0, races.size() - 1)]) if not races.is_empty() else "human"
 	_regenerate(true)
 	_random_name()

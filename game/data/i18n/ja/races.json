@@ -2,5 +2,11 @@
 	"human": {"name": "人間", "plural": "人間", "description": "どんな辺境も故郷に変える、適応力に優れた入植者。"},
 	"sylvan": {"name": "シルヴァン", "plural": "シルヴァン", "description": "落ち着いた眼差しと軽い足取りを持つ、長命の森の民。"},
 	"stoutkin": {"name": "スタウトキン", "plural": "スタウトキン", "description": "真鍮とパンを愛する、肩幅の広い坑道職人の民。"},
-	"vulpin": {"name": "ヴァルピン", "plural": "ヴァルピン", "description": "手先の早さと、それを上回る商才で知られる狐耳の旅人。"}
+	"vulpin": {"name": "ヴァルピン", "plural": "ヴァルピン", "description": "手先の早さと、それを上回る商才で知られる狐耳の旅人。"},
+	"minotaur": {"name": "ミノタウロス", "plural": "ミノタウロス", "description": "重い荷を運び、長い遠征にも耐える、力強い角持ちの民。"},
+	"centaur": {"name": "ケンタウロス", "plural": "ケンタウロス", "description": "弓術と広い視界を備え、危険から仲間を遠ざける俊足の馬人。"},
+	"harpy": {"name": "ハーピー", "plural": "ハーピー", "description": "危険を早く見つける鋭い目を持つ翼の民。力より速さを生かして戦う。"},
+	"lamia": {"name": "ラミア", "plural": "ラミア", "description": "薬草と知識を守り伝える蛇身の民。物静かで、ものづくりと学問を好む。"},
+	"oni": {"name": "鬼", "plural": "鬼", "description": "頑丈な体と力を持つ鍛冶師であり、頼もしい近接戦士。恐ろしい姿ほど凶暴ではない。"},
+	"tengu": {"name": "天狗", "plural": "天狗", "description": "偵察、弓術、工夫を凝らした細工に秀でる山の守り手。"}
 }

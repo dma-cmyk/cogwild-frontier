@@ -34,17 +34,20 @@ func _add_units() -> void:
 		{"race":"sylvan", "role":"guard"},
 		{"race":"stoutkin", "role":"archer"},
 		{"race":"vulpin", "role":"engineer"},
-		{"race":"human", "role":"scholar"}]
-	for pair: int in gallery_people.size():
-		var spec: Dictionary = gallery_people[pair]
-		for variant: int in 2:
-			var role := str(spec["role"])
-			var style := "frontier"
-			var dna := AppearanceGen.character(rng, str(spec["race"]), role, style, Color("#3a5da8"))
-			dna["art_variant"] = variant
-			var visual := UnitVisualFactory.create(dna)
-			visual.position = Vector3(-8.4 + float(pair) * 4.2 + float(variant) * 1.35, 0, -2.4)
-			add_child(visual)
+		{"race":"minotaur", "role":"guard"},
+		{"race":"centaur", "role":"explorer"},
+		{"race":"harpy", "role":"archer"},
+		{"race":"lamia", "role":"scholar"},
+		{"race":"oni", "role":"guard"},
+		{"race":"tengu", "role":"explorer"}]
+	for i: int in gallery_people.size():
+		var spec: Dictionary = gallery_people[i]
+		var role := str(spec["role"])
+		var dna := AppearanceGen.character(rng, str(spec["race"]), role, "frontier", Color("#3a5da8"))
+		dna["art_variant"] = 0
+		var visual := UnitVisualFactory.create(dna)
+		visual.position = Vector3(-8.2 + float(i % 5) * 4.1, 0, -2.4 + float(i / 5) * 5.2)
+		add_child(visual)
 	var robots: Array[String] = ["work_bot", "hauler", "walker", "sentry", "turret"]
 	for i in robots.size():
 		var visual := UnitVisualFactory.create(AppearanceGen.robot(rng, robots[i], "frontier" if i < 3 else "ancient", Color("#3a5da8")))
@@ -86,22 +89,19 @@ func _add_portrait_ui() -> void:
 	portrait_strip.add_theme_constant_override("separation", 8)
 	layer.add_child(portrait_strip)
 	
-	var count := 12 if portrait_only else 8
+	var count := 10 if portrait_only else 8
 	var p_size := 128 if portrait_only else 80
 	
 	panel.position = Vector2(24, 790) if not portrait_only else Vector2(24, 600)
-	panel.size = Vector2(850, 96) if not portrait_only else Vector2(1600, 140)
+	panel.size = Vector2(850, 96) if not portrait_only else Vector2(1400, 140)
 	portrait_strip.position = Vector2(32, 798) if not portrait_only else Vector2(32, 606)
-	portrait_strip.size = Vector2(830, 80) if not portrait_only else Vector2(1580, 128)
+	portrait_strip.size = Vector2(830, 80) if not portrait_only else Vector2(1360, 128)
 	
 	var rng := RngUtil.make(["portrait_gallery", 7])
 	for i in count:
-		var dna: Dictionary
-		if i < 8:
-			var race := AppearanceGen.RACES[i % 4]
-			dna = AppearanceGen.character(rng, race, "guard" if i % 3 == 0 else "explorer", "frontier", Color("#3a5da8"))
-		else:
-			dna = AppearanceGen.robot(rng, AppearanceGen.ROBOT_ARCHETYPES[i % 5], "ancient", Color("#a07a4a"))
+		var races := AppearanceGen.race_ids()
+		var dna := AppearanceGen.character(rng, races[i % races.size()], "guard" if i % 3 == 0 else "explorer",
+			"frontier", Color("#3a5da8"))
 		var tex := portraits.get_portrait("gallery_%d" % i, dna, p_size)
 		var image := TextureRect.new()
 		image.custom_minimum_size = Vector2(p_size, p_size)
