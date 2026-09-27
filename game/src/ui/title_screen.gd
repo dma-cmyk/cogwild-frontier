@@ -20,6 +20,7 @@ var _color_i := 0
 var _char: Dictionary = {}
 var _preview_vp: SubViewport
 var _preview_node: Node3D
+var _preview_cam: Camera3D
 var _summary: RichTextLabel
 var _look_button: Button
 var _race_buttons: Dictionary = {}
@@ -358,9 +359,8 @@ func _build_create() -> void:
 	_preview_vp.add_child(env)
 	var cam := Camera3D.new()
 	cam.projection = Camera3D.PROJECTION_ORTHOGONAL
-	cam.size = 1.9
-	cam.position = Vector3(2.2, 1.9, 2.6)
-	cam.look_at_from_position(cam.position, Vector3(0, 0.62, 0))
+	_preview_cam = cam
+	_fit_preview_camera(1.55)
 	_preview_vp.add_child(cam)
 	var ground := MeshInstance3D.new()
 	var k := MeshKit.new()
@@ -456,6 +456,14 @@ func _show_preview(dna: Dictionary) -> void:
 	_preview_node = UnitVisualFactory.create(dna)
 	_preview_vp.add_child(_preview_node)
 	MeshKit.apply_preview_material(_preview_node)
+	_fit_preview_camera(float(SpriteLibrary.RACE_HEIGHT.get(str(dna.get("race", "human")), 1.55)))
+
+
+## Frames the whole figure: taller or wider bodies (centaur, minotaur) get a larger ortho window.
+func _fit_preview_camera(figure_height: float) -> void:
+	var target_y := 0.62 * figure_height / 1.55
+	_preview_cam.size = 1.9 * maxf(1.0, figure_height / 1.55) + 0.15
+	_preview_cam.look_at_from_position(Vector3(2.2, 1.9 + target_y - 0.62, 2.6), Vector3(0, target_y, 0))
 
 
 func _process(delta: float) -> void:
