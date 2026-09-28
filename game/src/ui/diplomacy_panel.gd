@@ -60,7 +60,7 @@ func toggle() -> void:
 func refresh() -> void:
 	if not visible:
 		return
-	var villages := g.world.diplomacy.known_villages()
+	var villages := g.world.diplomacy.known_communities()
 	var signature := ""
 	for st: Dictionary in villages:
 		signature += "%d:%d:%d;" % [int(st["id"]), int(st.get("relation", 0)),
@@ -102,11 +102,11 @@ func _row(st: Dictionary) -> Control:
 	v.add_child(nm)
 	var detail := Loc.t("%s · %d people") % [Loc.def_name("races", str(st.get("race", ""))),
 		int(st.get("population", 0))]
-	var request: Dictionary = st.get("request", {})
+	var offers: Array = g.world.quests.board(sid)
 	if bool(st.get("ruined", false)):
 		detail += Loc.t("  ·  in ruins")
-	elif not request.is_empty():
-		detail += Loc.t("  ·  wants %d %s") % [int(request.get("amount", 0)), Loc.t(str(request.get("resource", "food")))]
+	elif not offers.is_empty():
+		detail += Loc.t("  ·  %d jobs on the board") % offers.size()
 	v.add_child(UiTheme.label(detail, 13, UiTheme.TEXT_DIM))
 	var right := UiTheme.vbox(2)
 	right.custom_minimum_size = Vector2(120, 0)

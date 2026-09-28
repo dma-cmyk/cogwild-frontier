@@ -1,0 +1,192 @@
+{
+	"table": "dialogue",
+	"entries": [
+		{
+			"id": "generic",
+			"lines": [
+				"village.talk.generic.1",
+				"village.talk.generic.2",
+				"village.talk.generic.3"
+			]
+		},
+		{
+			"id": "tier_hostile",
+			"lines": [
+				"village.talk.hostile.1",
+				"village.talk.hostile.2"
+			]
+		},
+		{
+			"id": "tier_wary",
+			"lines": [
+				"village.talk.wary.1",
+				"village.talk.wary.2"
+			]
+		},
+		{
+			"id": "tier_neutral",
+			"lines": [
+				"village.talk.neutral.1",
+				"village.talk.neutral.2"
+			]
+		},
+		{
+			"id": "tier_friendly",
+			"lines": [
+				"village.talk.friendly.1",
+				"village.talk.friendly.2"
+			]
+		},
+		{
+			"id": "tier_allied",
+			"lines": [
+				"village.talk.allied.1",
+				"village.talk.allied.2"
+			]
+		},
+		{
+			"id": "job_farmer",
+			"lines": [
+				"village.talk.farmer.1",
+				"village.talk.farmer.2"
+			]
+		},
+		{
+			"id": "job_crafter",
+			"lines": [
+				"village.talk.crafter.1",
+				"village.talk.crafter.2"
+			]
+		},
+		{
+			"id": "job_trader",
+			"lines": [
+				"village.talk.trader.1",
+				"village.talk.trader.2"
+			]
+		},
+		{
+			"id": "job_guard",
+			"lines": [
+				"village.talk.guard.1",
+				"village.talk.guard.2"
+			]
+		},
+		{
+			"id": "job_elder",
+			"lines": [
+				"village.talk.elder.1",
+				"village.talk.elder.2"
+			]
+		},
+		{
+			"id": "rumor_site",
+			"lines": [
+				"village.talk.rumor_site.1",
+				"village.talk.rumor_site.2"
+			]
+		},
+		{
+			"id": "rumor_want",
+			"lines": [
+				"village.talk.rumor_want.1"
+			]
+		},
+		{
+			"id": "race_human",
+			"lines": [
+				"village.talk.race.human"
+			]
+		},
+		{
+			"id": "race_sylvan",
+			"lines": [
+				"village.talk.race.sylvan"
+			]
+		},
+		{
+			"id": "race_stoutkin",
+			"lines": [
+				"village.talk.race.stoutkin"
+			]
+		},
+		{
+			"id": "race_vulpin",
+			"lines": [
+				"village.talk.race.vulpin"
+			]
+		},
+		{
+			"id": "race_minotaur",
+			"lines": [
+				"village.talk.race.minotaur"
+			]
+		},
+		{
+			"id": "race_centaur",
+			"lines": [
+				"village.talk.race.centaur"
+			]
+		},
+		{
+			"id": "race_harpy",
+			"lines": [
+				"village.talk.race.harpy"
+			]
+		},
+		{
+			"id": "race_lamia",
+			"lines": [
+				"village.talk.race.lamia"
+			]
+		},
+		{
+			"id": "race_oni",
+			"lines": [
+				"village.talk.race.oni"
+			]
+		},
+		{
+			"id": "race_tengu",
+			"lines": [
+				"village.talk.race.tengu"
+			]
+		},
+		{
+			"id": "race_goblin",
+			"lines": [
+				"village.talk.race.goblin"
+			]
+		},
+		{
+			"id": "race_orc",
+			"lines": [
+				"village.talk.race.orc"
+			]
+		},
+		{
+			"id": "race_kobold",
+			"lines": [
+				"village.talk.race.kobold"
+			]
+		},
+		{
+			"id": "race_lizardfolk",
+			"lines": [
+				"village.talk.race.lizardfolk"
+			]
+		},
+		{
+			"id": "race_gnome",
+			"lines": [
+				"village.talk.race.gnome"
+			]
+		},
+		{
+			"id": "race_halfling",
+			"lines": [
+				"village.talk.race.halfling"
+			]
+		}
+	]
+}

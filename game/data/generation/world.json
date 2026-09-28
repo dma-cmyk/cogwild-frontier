@@ -57,6 +57,7 @@
 			{"kind": "wreck", "dist": [115, 160]},
 			{"kind": "machine_outpost", "dist": [145, 190]},
 			{"kind": "village", "dist": [58, 80]},
+			{"kind": "village", "dist": [66, 96]},
 			{"kind": "village", "dist": [90, 118]},
 			{"kind": "village", "dist": [120, 150]}
 		],

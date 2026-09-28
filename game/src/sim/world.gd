@@ -23,6 +23,7 @@ signal loot_added(bag: Dictionary)
 signal loot_removed(bag_id: int)
 signal squads_changed()
 signal zones_changed()
+signal quests_changed()
 signal farm_changed(tile: Vector2i)
 
 const TICK := 0.1
@@ -77,6 +78,7 @@ var squad_ai: SquadAI
 var factions: FactionAI
 var economy: Economy
 var diplomacy: Diplomacy
+var quests: Quests
 
 var _grid: Dictionary = {}  # spatial hash of units: Vector2i cell -> Array[Unit]
 const GRID := 8.0
@@ -89,6 +91,7 @@ func _init() -> void:
 	factions = FactionAI.new(self)
 	economy = Economy.new(self)
 	diplomacy = Diplomacy.new(self)
+	quests = Quests.new(self)
 	for r: String in RESOURCES:
 		res[r] = 0
 
@@ -113,7 +116,7 @@ func setup(p_seed: int) -> void:
 
 ## Breaks the reference cycles between the world and its systems so everything is freed.
 func dispose() -> void:
-	for sys: Variant in [colony, combat, squad_ai, factions, economy, diplomacy]:
+	for sys: Variant in [colony, combat, squad_ai, factions, economy, diplomacy, quests]:
 		if sys != null:
 			sys.set("w", null)
 	colony = null
@@ -122,6 +125,7 @@ func dispose() -> void:
 	factions = null
 	economy = null
 	diplomacy = null
+	quests = null
 	units.clear()
 	unit_list.clear()
 	buildings.clear()
@@ -1177,10 +1181,14 @@ func tick() -> void:
 	combat.tick()
 	if tick_count % 5 == 0:
 		_update_vision()
+	# quest goals are world state (resources, cleared camps, discovered sites): poll them rarely
+	if tick_count % 20 == 0:
+		quests.refresh_states()
 	if tick_count % DAY_TICKS == 0:
 		day += 1
 		economy.on_new_day()
 		factions.on_new_day()
+		quests.on_new_day()
 		colony.on_new_day()
 	_cleanup()
 

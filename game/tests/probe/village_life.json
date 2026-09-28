@@ -1,0 +1,25 @@
+{
+  "scene": "res://scenes/game.tscn",
+  "frames": 520,
+  "seed": 11,
+  "events": [
+    {"frame": 1, "do": "scene.set_speed(0)"},
+    {"frame": 2, "do": "scene.set_meta('v', scene.dbg_station_squad_at('village'))"},
+    {"frame": 3, "expect": "int(scene.get_meta('v')) >= 0 and scene.world.sites.has(int(scene.get_meta('v')))", "label": "a village is generated near the start"},
+    {"frame": 4, "do": "scene.set_speed(3)"},
+    {"frame": 40, "do": "scene.set_speed(0)"},
+    {"frame": 41, "expect": "bool(scene.world.sites[int(scene.get_meta('v'))]['discovered'])", "label": "the stationed squad discovers the village"},
+    {"frame": 42, "do": "scene.world.res.set('gold', 4000)"},
+    {"frame": 43, "do": "scene.select_site(int(scene.get_meta('v')))"},
+    {"frame": 60, "screenshot": "01_village_panel"},
+    {"frame": 61, "watch": "scene.world.quests.board(int(scene.get_meta('v'))).size()", "label": "jobs on the board"},
+    {"frame": 62, "watch": "scene.dbg_ui_button('受ける')", "label": "accept button"},
+    {"frame": 63, "watch": "scene.dbg_ui_button('話す')", "label": "talk button"},
+    {"frame": 64, "do": "scene.world.diplomacy.change_relation(int(scene.get_meta('v')), 50 - scene.world.diplomacy.relation(int(scene.get_meta('v'))), 'probe')"},
+    {"frame": 65, "do": "scene.hud.info_panel.refresh(true)"},
+    {"frame": 70, "watch": "scene.dbg_ui_button('勧誘')", "label": "invite button"},
+    {"frame": 71, "watch": "scene.world.diplomacy.recruit_blocker(int(scene.get_meta('v')), scene.world.diplomacy.residents(int(scene.get_meta('v')))[0].id)", "label": "recruit blocker for resident 0"},
+    {"frame": 72, "watch": "scene.dbg_resident_screen_pos(int(scene.get_meta('v')), 0)", "label": "resident 0 on screen"},
+    {"frame": 80, "screenshot": "02_friendly_panel"}
+  ]
+}

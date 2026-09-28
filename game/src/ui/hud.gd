@@ -33,6 +33,10 @@ var _day_label: Label
 var _sun_icon: TextureRect
 var _speed_buttons: Array = []
 var _notes: VBoxContainer
+var _quest_tracker: PanelContainer
+var _quest_list: VBoxContainer
+var _quest_sig := 0
+var speech: SpeechBubbles
 var _cmd_buttons: Dictionary = {}
 var _tooltip: Label
 var _tooltip_panel: PanelContainer
@@ -84,7 +88,7 @@ func setup(game: Game) -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var speech: SpeechBubbles = SpeechBubbles.new()
+	speech = SpeechBubbles.new()
 	root.add_child(speech)
 	speech.setup(g)
 	portraits = PortraitRenderer.new()
@@ -125,6 +129,7 @@ func setup(game: Game) -> void:
 	root.add_child(villages)
 	villages.setup(g, self)
 	_build_trade_panel()
+	_build_quest_tracker()
 	_build_touch_controls()
 	get_viewport().size_changed.connect(_update_responsive)
 	_update_responsive()
@@ -137,6 +142,7 @@ func setup(game: Game) -> void:
 	g.toast.connect(func(text: String, kind: String) -> void: add_note({"text": text, "kind": kind}, 4.0))
 	g.mode_changed.connect(_on_mode)
 	g.world.notified.connect(_on_world_note)
+	g.world.quests_changed.connect(_refresh_quest_tracker)
 	_on_speed(g.speed)
 	_seen_notes = g.world.notifications.size()
 	for n: Dictionary in g.world.notifications.slice(maxi(0, g.world.notifications.size() - 3)):
@@ -166,6 +172,7 @@ func _refresh_language() -> void:
 	villages.trade_window._signature = ""
 	villages.diplomacy_panel._signature = ""
 	villages.refresh()
+	_refresh_quest_tracker()
 	_trade_count = -1
 	_update_trade()
 	if is_instance_valid(_rotate_left):
@@ -623,6 +630,70 @@ func _update_top() -> void:
 	var h := w.hour()
 	_day_label.text = Loc.t("Day %d  %02d:%02d") % [w.day, int(h), int(fmod(h, 1.0) * 60.0)]
 	_sun_icon.texture = Icons.get_icon("ui_moon" if w.is_night() else "ui_sun")
+
+
+# --- quest tracker -----------------------------------------------------------------------------
+
+## Compact list of the jobs you are running, top right under the resource bar. Hidden when empty.
+func _build_quest_tracker() -> void:
+	_quest_tracker = UiTheme.panel()
+	_quest_tracker.name = "QuestTracker"
+	_quest_tracker.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_quest_tracker.anchor_left = 1.0
+	_quest_tracker.anchor_right = 1.0
+	_quest_tracker.anchor_top = 0.0
+	_quest_tracker.anchor_bottom = 0.0
+	_quest_tracker.offset_left = -272
+	_quest_tracker.offset_right = -8
+	_quest_tracker.offset_top = 62
+	_quest_tracker.visible = false
+	_quest_list = UiTheme.vbox(2)
+	_quest_tracker.add_child(_quest_list)
+	root.add_child(_quest_tracker)
+	_refresh_quest_tracker()
+
+
+## Cheap fingerprint of what the tracker shows (ids, states, progress), polled with the HUD tick.
+func _quest_signature() -> int:
+	var sig := 0
+	for q: Dictionary in g.world.quests.taken.values():
+		sig = sig * 31 + int(q["id"]) * 7 + int(g.world.quests.progress(q)["have"]) \
+			+ (1 if str(q["state"]) == "done" else 0)
+	return sig
+
+
+func _update_quest_tracker() -> void:
+	if g.world.quests.taken.is_empty() and not _quest_tracker.visible:
+		return
+	if _quest_signature() != _quest_sig:
+		_refresh_quest_tracker()
+
+
+func _refresh_quest_tracker() -> void:
+	if not is_instance_valid(_quest_tracker):
+		return
+	_quest_sig = _quest_signature()
+	var quests := g.world.quests.active()
+	_quest_tracker.visible = not quests.is_empty()
+	for c in _quest_list.get_children():
+		_quest_list.remove_child(c)
+		c.queue_free()
+	if quests.is_empty():
+		return
+	_quest_list.add_child(UiTheme.label(Loc.t("Active jobs"), 13, UiTheme.GOLD))
+	var limit := 3 if _compact else 5
+	for q: Dictionary in quests:
+		if _quest_list.get_child_count() > limit:
+			break
+		var p := g.world.quests.progress(q)
+		var done := bool(p["done"])
+		var text := g.world.quests.describe_text(q)
+		if int(p["need"]) > 1:
+			text += " (%d/%d)" % [int(p["have"]), int(p["need"])]
+		var l := UiTheme.label(text, 13, UiTheme.GOOD if done else UiTheme.TEXT)
+		l.clip_text = true
+		l.custom_minimum_size = Vector2(240, 0)
+		_quest_list.add_child(l)
 
 
 # --- notifications -----------------------------------------------------------------------------
@@ -1295,6 +1366,7 @@ func _process(delta: float) -> void:
 	if _t <= 0.0:
 		_t = 0.25
 		_update_top()
+		_update_quest_tracker()
 		_update_commands()
 		_update_trade()
 		info_panel.refresh(false)

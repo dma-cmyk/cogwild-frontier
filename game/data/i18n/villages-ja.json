@@ -26,11 +26,8 @@
   "%s village · %d people": "%sの村 · 住民%d人",
   "%s · %d people": "%s · 住民%d人",
   "  ·  in ruins": "  ·  廃墟",
-  "  ·  wants %d %s": "  ·  希望: %d %s",
   "Relation": "友好度",
   "Known for: ": "名産: ",
-  "They ask for %d %s by day %d — reward %d gold.": "%d の%sを%d日目までに希望 — 報酬は金貨%d。",
-  "Deliver the goods": "納品する",
   "Gift": "贈り物",
   "Goodwill from this gift: +%d": "この贈り物で得られる友好度: +%d",
   "Make peace (%d gold)": "和平を結ぶ（金貨%d）",
@@ -58,7 +55,6 @@
   "Their storehouse is full.": "村の倉庫が一杯だ。",
   "The village cannot pay for that much.": "村にはそれだけ支払う余裕がない。",
   "The village has sold out.": "村は売り切れだ。",
-  "There is nothing they are asking for.": "今は求められているものがない。",
   "They are not at war with you.": "この村とは交戦していない。",
 
   "travelling": "移動中"

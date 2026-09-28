@@ -62,6 +62,7 @@ static func to_dict(w: World) -> Dictionary:
 		"economy": {"snapshots": w.economy._snapshots, "energy_frac": w.economy._energy_frac},
 		"factions": {"trader_day": w.factions.trader_day, "trade_offers": w.factions.trade_offers,
 			"trader_id": w.factions.trader_id, "raid_announced": w.factions._raid_announced.keys()},
+		"quests": _v(w.quests.to_dict()),
 	}
 
 
@@ -101,24 +102,26 @@ static func from_dict(d: Dictionary) -> World:
 		for id: Variant in st.get("units", []):
 			ids.append(int(id))
 		st["units"] = ids
-		# JSON turns every number into a float; the village bookkeeping compares and stores ints.
-		if str(st.get("kind", "")) == "village":
+		# JSON turns every number into a float; the community bookkeeping compares and stores ints.
+		if w.diplomacy.is_community(st):
 			for key: String in ["relation", "baseline_relation", "population", "ruined_until",
 					"gift_count", "gift_decay_day", "trade_day", "trade_gain_today", "stock_day",
-					"purse", "request_serial", "request_day", "cache_gold", "next_raid_day"]:
+					"purse", "cache_gold", "next_raid_day", "recruit_day", "grow_day",
+					"talk_count", "talk_day", "talk_gain_today"]:
 				if st.has(key):
 					st[key] = int(st[key])
 			var stock: Dictionary = st.get("stock", {})
 			for resource: String in stock:
 				stock[resource] = int(stock[resource])
-			var request: Dictionary = st.get("request", {})
-			for key: String in ["serial", "amount", "due_day", "reward_gold", "relation"]:
-				if request.has(key):
-					request[key] = int(request[key])
 			for row: Dictionary in st.get("goods", []):
 				row["count"] = int(row.get("count", 0))
 	w.sites = fixed_sites
 	w.diplomacy.rebuild_hostile_cache()
+	w.quests.from_dict(_r(d.get("quests", {})))
+	# saves from before the quest board carried one `request` per village: keep the promise
+	for st: Dictionary in w.sites.values():
+		if st.has("request"):
+			w.quests.migrate_site(st)
 	for bd: Dictionary in d.get("buildings", []):
 		var b := Building.from_dict(bd)
 		w.buildings[b.id] = b

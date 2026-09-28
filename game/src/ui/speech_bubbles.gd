@@ -56,6 +56,11 @@ func setup(g: Game) -> void:
 	director.setup(game)
 	director.spoke.connect(_on_spoke)
 
+
+## A line said on purpose (talking to a villager), shown like the ambient chatter.
+func say(unit: Unit, text: String) -> void:
+	_on_spoke(unit, text, false)
+
 func _on_spoke(unit: Unit, text: String, combat: bool) -> void:
 	# in a melee several downed or hit fighters often shout the same line at once: one bubble reads
 	# better than an identical stack

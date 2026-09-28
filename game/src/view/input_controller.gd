@@ -542,8 +542,8 @@ func _context_order(p: Vector2) -> void:
 	if sid >= 0 and bool(g.world.sites[sid].get("hostile", false)) and not bool(g.world.sites[sid].get("cleared", false)):
 		issue("attack", {"site": sid, "pos": Vector2(g.world.sites[sid]["center"])})
 		return
-	if sid >= 0 and str(g.world.sites[sid]["kind"]) == "village" and not bool(g.world.sites[sid].get("ruined", false)):
-		# friendly village: walk over and open the market (hostile ones fell through to attack above)
+	if sid >= 0 and g.world.diplomacy.is_community(g.world.sites[sid]) and not bool(g.world.sites[sid].get("ruined", false)):
+		# friendly community: walk over and open the market (hostile ones fell through to attack above)
 		var squad_ids: Dictionary = {}
 		for u: Unit in units:
 			if u.squad_id >= 0:

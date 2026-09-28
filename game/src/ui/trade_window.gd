@@ -97,7 +97,7 @@ func refresh(force: bool = false) -> void:
 		return
 	var world := g.world
 	var st: Dictionary = world.sites.get(site_id, {})
-	if st.is_empty() or not world.diplomacy.is_village(st):
+	if st.is_empty() or not world.diplomacy.is_community(st):
 		close_window()
 		return
 	var blocker := world.diplomacy.trade_blocker(site_id)

@@ -471,6 +471,79 @@ func dbg_station_squad_at(kind: String) -> int:
 	return sid
 
 
+## Canvas position of the centre of the first visible, enabled HUD button whose label starts with
+## `prefix` (Vector2(-1, -1) when there is none). A button inside a scroll list is scrolled into
+## view first, so call this a frame before reading the position for `dbg_click`.
+func dbg_ui_button(prefix: String) -> Vector2:
+	var stack: Array[Node] = [hud]
+	while not stack.is_empty():
+		var node: Node = stack.pop_front()
+		var button := node as Button
+		if button != null and button.is_visible_in_tree() and not button.disabled \
+				and button.text.begins_with(prefix):
+			var parent := button.get_parent()
+			while parent != null and not (parent is ScrollContainer):
+				parent = parent.get_parent()
+			if parent != null:
+				(parent as ScrollContainer).ensure_control_visible(button)
+			return button.get_global_transform_with_canvas() * (button.size * 0.5)
+		for child: Node in node.get_children():
+			stack.append(child)
+	return Vector2(-1, -1)
+
+
+## Canvas position of a resident of a site (probes click villagers in the 3D world).
+func dbg_resident_screen_pos(sid: int, index: int) -> Vector2:
+	var people: Array = world.diplomacy.residents(sid)
+	if people.is_empty():
+		return Vector2(-1, -1)
+	var u: Unit = people[index % people.size()]
+	return rig.world_to_screen(world.world_pos(u) + Vector3(0, 0.9, 0))
+
+
+## A real left click at a canvas position, injected into the input pipeline like an OS click
+## (motion, press, release — the probe runner's own click does the same with fixed pixels).
+## Returns false when `pos` is the (-1, -1) "not found" marker.
+func dbg_click(pos: Vector2) -> bool:
+	if pos.x < 0.0:
+		return false
+	var at := get_viewport().get_final_transform() * pos
+	var motion := InputEventMouseMotion.new()
+	motion.position = at
+	motion.global_position = at
+	Input.parse_input_event(motion)
+	for pressed: bool in [true, false]:
+		var click := InputEventMouseButton.new()
+		click.button_index = MOUSE_BUTTON_LEFT
+		click.pressed = pressed
+		click.button_mask = MOUSE_BUTTON_MASK_LEFT if pressed else 0
+		click.position = at
+		click.global_position = at
+		Input.parse_input_event(click)
+	return true
+
+
+## Meets the goal of every accepted quest (goods in the store, bounty camp cleared, scouting target
+## found) so a probe can exercise the hand-in button without playing the errand.
+func dbg_fulfil_quests() -> int:
+	var count := 0
+	for q: Dictionary in world.quests.active():
+		match str(q["kind"]):
+			"deliver":
+				var resource := str(q["resource"])
+				world.res[resource] = maxi(int(world.res.get(resource, 0)), int(q["amount"]))
+			"bounty", "scout":
+				var target := int(q["target_sid"])
+				world.factions.instantiate_site(target)
+				var st: Dictionary = world.sites.get(target, {})
+				st["discovered"] = true
+				if str(q["kind"]) == "bounty":
+					st["cleared"] = true
+		count += 1
+	world.quests.refresh_states()
+	return count
+
+
 func quick_save(slot: int) -> void:
 	var err := SaveGame.save(world, slot)
 	if err == "":
