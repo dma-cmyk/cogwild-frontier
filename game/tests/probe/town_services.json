@@ -73,6 +73,10 @@
       "do": "scene.set_meta('wood0', int(scene.world.res.get('wood', 0)))"
     },
     {
+      "frame": 91,
+      "do": "scene.dbg_ui_button('交易')"
+    },
+    {
       "frame": 92,
       "do": "scene.set_meta('p', scene.dbg_ui_button('交易'))"
     },
@@ -83,6 +87,10 @@
     {
       "frame": 110,
       "screenshot": "02_store_trade_window"
+    },
+    {
+      "frame": 110,
+      "do": "scene.dbg_ui_button('購入 ')"
     },
     {
       "frame": 111,
@@ -105,6 +113,10 @@
     {
       "frame": 119,
       "do": "scene.hud.villages.close_top()"
+    },
+    {
+      "frame": 121,
+      "do": "scene.dbg_ui_button('鍛冶屋')"
     },
     {
       "frame": 122,
@@ -152,6 +164,10 @@
       "do": "scene.world.get_unit(scene.world.squads[0].members[0]).set('injured_days', 2.0)"
     },
     {
+      "frame": 153,
+      "do": "scene.dbg_ui_button('宿屋')"
+    },
+    {
       "frame": 154,
       "do": "scene.set_meta('p', scene.dbg_ui_button('宿屋'))"
     },
@@ -188,6 +204,10 @@
     {
       "frame": 180,
       "do": "scene.set_meta('pop0', scene.world.population())"
+    },
+    {
+      "frame": 180,
+      "do": "scene.dbg_ui_button('酒場')"
     },
     {
       "frame": 181,
@@ -247,6 +267,10 @@
     {
       "frame": 220,
       "screenshot": "07_tavern_after"
+    },
+    {
+      "frame": 221,
+      "do": "scene.dbg_ui_button('ギルド')"
     },
     {
       "frame": 222,

@@ -72,6 +72,13 @@
 - 肖像がない見た目はチップの正面コマを肖像として使い（機械と同じ）、裏側がない建物は正面の絵を使う。raw を `art_src/raw/<id>.webp` に置いて `process.py portraits --only <id,...>` / `process.py buildings --only <id>` を実行すれば差し替わる（表は既存の行と合流する）。
 - ケンタウロス・ラミアなど体の大きい種族は `SpriteLibrary.RACE_HEIGHT` で絵の高さを変える。作成画面のプレビューもこの高さに合わせて写す。
 
+### ローグライク定番の種族・町の建物（その 6）
+
+- `make_prompts.py` の `CLASSIC_RACES` / `CLASSIC_RACES_V2` / `CLASSIC_RACE_BODY`（ゴブリン・オーク・コボルト・リザードマン・ノーム・ハーフリング）を `NEW_RACES` 系の表に合流させ、神話の種族と同じ手順（v1 は人間の同じ見た目、v2 は自分の v1 を参照）で 5 見た目 × 男女 × v1/v2 のチップと肖像を作る。`VILLAGE_BUILDINGS` にこの 6 種族の家と集会所、`TOWN_BUILDINGS` に町のギルド会館 5×5・酒場・雑貨屋・鍛冶屋・宿屋 4×4・噴水 3×3（噴水以外は裏側も）を足した。
+- `process.py` は `NEW_RACES` に 6 種族、`TOWN_BUILDINGS` で `b_t_<id>` → 建物の見た目 `t_<id>@0` と足元の大きさを持つ。噴水は `back_symmetric`。
+- 152 枚すべて `openai-codex/gpt-image-1`（新規 149 枚と、頭が切れた肖像 3 枚の作り直し）。途中で利用上限に達し、ノームとハーフリングの肖像など 21 枚は上限の回復後に作った。作り直した 3 枚は構図に「帽子とあごまで全体を入れる」を足している（元の raw は `build/r6spec/rejected/`）。
+- ブラウザ版では `tools/web/pack_split.py` の `LATE_RACES` に 6 種族、`SITE_BUILDINGS` に町（`t_*`）を足し、追加パックに入れている。
+
 ## 制約・注意
 
 - 生成は毎回結果が変わる。同じプロンプトでも別の絵になるので、良い結果の raw を残しておく。

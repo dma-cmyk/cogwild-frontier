@@ -246,7 +246,7 @@ func _weighted_town_race(rng: RandomNumberGenerator, excluded: Array[String]) ->
 	var weights: Dictionary = {}
 	for race: String in _village_races():
 		if not excluded.has(race):
-			weights[race] = int(DB.get_def("races", race).get("spawn_weight", 1))
+			weights[race] = float(DB.get_def("races", race).get("spawn_weight", 1.0))
 	return RngUtil.weighted_key(rng, weights)
 
 

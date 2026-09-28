@@ -3,23 +3,87 @@
   "frames": 3800,
   "seed": 11,
   "events": [
-    {"frame": 1, "do": "scene.set_speed(0)"},
-    {"frame": 2, "do": "scene.set_meta('v', scene.dbg_station_squad_at('village'))"},
-    {"frame": 3, "do": "scene.set_speed(3)"},
-    {"frame": 40, "expect": "bool(scene.world.sites[int(scene.get_meta('v'))]['discovered'])", "label": "the village is discovered"},
-    {"frame": 41, "do": "scene.set_meta('rel0', scene.world.diplomacy.relation(int(scene.get_meta('v'))))"},
-    {"frame": 42, "do": "scene.set_meta('armory0', scene.world.armory.size())"},
-    {"frame": 42, "do": "scene.set_meta('gold0', int(scene.world.res.get('gold', 0)))"},
-    {"frame": 43, "do": "scene.select_site(int(scene.get_meta('v')))"},
-    {"frame": 44, "do": "scene.hud.villages.confirm_village_attack(int(scene.get_meta('v')), scene.world.squads[0].id)"},
-    {"frame": 50, "expect": "scene.hud.villages._confirm.visible", "label": "attacking a non-hostile village asks first"},
-    {"frame": 51, "screenshot": "attack_confirm"},
-    {"frame": 52, "do": "scene.hud.villages._confirm_action.call()"},
-    {"frame": 53, "do": "scene.hud.villages._confirm.set_visible(false)"},
-    {"frame": 60, "expect": "scene.world.hostile('player', 'folk_' + str(scene.world.sites[int(scene.get_meta('v'))]['race']))", "label": "the village turns hostile"},
-    {"frame": 400, "screenshot": "village_fight"},
-    {"frame": 3700, "watch": "[scene.world.sites[int(scene.get_meta('v'))].get('subdued', false), scene.world.armory.size() - int(scene.get_meta('armory0')), int(scene.world.res.get('gold', 0)) - int(scene.get_meta('gold0')), scene.world.squads[0].members.size()]", "label": "subdued, items gained, gold gained, squad size"},
-    {"frame": 3700, "expect": "bool(scene.world.sites[int(scene.get_meta('v'))].get('subdued', false))", "label": "the squad subdues the village"},
-    {"frame": 3790, "screenshot": "village_plundered"}
+    {
+      "frame": 1,
+      "do": "scene.set_speed(0)"
+    },
+    {
+      "frame": 2,
+      "do": "scene.set_meta('v', scene.dbg_station_squad_at('village'))"
+    },
+    {
+      "frame": 3,
+      "do": "scene.set_speed(3)"
+    },
+    {
+      "frame": 40,
+      "expect": "bool(scene.world.sites[int(scene.get_meta('v'))]['discovered'])",
+      "label": "the village is discovered"
+    },
+    {
+      "frame": 41,
+      "do": "scene.set_meta('rel0', scene.world.diplomacy.relation(int(scene.get_meta('v'))))"
+    },
+    {
+      "frame": 42,
+      "do": "scene.set_meta('armory0', scene.world.armory.size())"
+    },
+    {
+      "frame": 42,
+      "do": "scene.set_meta('gold0', int(scene.world.res.get('gold', 0)))"
+    },
+    {
+      "frame": 43,
+      "do": "scene.select_site(int(scene.get_meta('v')))"
+    },
+    {
+      "frame": 44,
+      "do": "scene.hud.villages.confirm_village_attack(int(scene.get_meta('v')), scene.world.squads[0].id)"
+    },
+    {
+      "frame": 50,
+      "expect": "scene.hud.villages._confirm.visible",
+      "label": "attacking a non-hostile village asks first"
+    },
+    {
+      "frame": 51,
+      "screenshot": "attack_confirm"
+    },
+    {
+      "frame": 52,
+      "do": "scene.hud.villages._confirm_action.call()"
+    },
+    {
+      "frame": 53,
+      "do": "scene.hud.villages._confirm.set_visible(false)"
+    },
+    {
+      "frame": 60,
+      "expect": "scene.world.hostile('player', 'folk_' + str(scene.world.sites[int(scene.get_meta('v'))]['race']))",
+      "label": "the village turns hostile"
+    },
+    {
+      "frame": 400,
+      "screenshot": "village_fight"
+    },
+    {
+      "frame": 3700,
+      "watch": "[scene.world.sites[int(scene.get_meta('v'))].get('subdued', false), scene.world.armory.size() - int(scene.get_meta('armory0')), int(scene.world.res.get('gold', 0)) - int(scene.get_meta('gold0')), scene.world.squads[0].members.size()]",
+      "label": "subdued, items gained, gold gained, squad size"
+    },
+    {
+      "frame": 3700,
+      "watch": "scene.dbg_village_jobs(int(scene.get_meta('v')))",
+      "label": "remaining residents"
+    },
+    {
+      "frame": 3700,
+      "expect": "bool(scene.world.sites[int(scene.get_meta('v'))].get('subdued', false))",
+      "label": "the squad subdues the village"
+    },
+    {
+      "frame": 3790,
+      "screenshot": "village_plundered"
+    }
   ]
 }
