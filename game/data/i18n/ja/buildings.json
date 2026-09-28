@@ -49,5 +49,11 @@
 	"v_gnome_home": {"name": "キノコハウス", "description": "キノコに似た丸みを帯びたカラフルな屋根の風変わりな家。"},
 	"v_gnome_hall": {"name": "時計仕掛けの館", "description": "歯車が回り、機械の音が響き渡る複雑な構造の集会所。"},
 	"v_halfling_home": {"name": "丸扉の横穴", "description": "芝屋根と完璧な丸い扉を持つ、居心地の良い横穴の家。"},
-	"v_halfling_hall": {"name": "宴の館", "description": "巨大なダイニングテーブルと温かい暖炉を中心に据えた、広くて歓迎的な館。"}
+	"v_halfling_hall": {"name": "宴の館", "description": "巨大なダイニングテーブルと温かい暖炉を中心に据えた、広くて歓迎的な館。"},
+	"t_fountain": {"name": "町の噴水", "description": "町の広場の中心に立つ石造りの噴水。"},
+	"t_guild_hall": {"name": "ギルド会館", "description": "辺境じゅうの依頼が集まる掲示板のある会館。"},
+	"t_tavern": {"name": "銅釜亭", "description": "傭兵や旅人がうわさ話と温かい食事を求めて集まる酒場。"},
+	"t_general_store": {"name": "雑貨屋", "description": "辺境の五つの資源をそろえた町の店。"},
+	"t_smithy": {"name": "町の鍛冶屋", "description": "旅に備える武器と防具を並べる、にぎやかな鍛冶場。"},
+	"t_inn": {"name": "旅人の宿", "description": "辺境へ戻る前に休み、傷を癒やす宿。"}
 }

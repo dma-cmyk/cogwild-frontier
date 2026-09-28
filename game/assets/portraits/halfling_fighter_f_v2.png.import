@@ -1,0 +1,17 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+
+[params]
+
+compress/mode=1
+compress/high_quality=false
+compress/lossy_quality=0.9
+compress/rdo_quality_loss=1.0
+mipmaps/generate=true
+mipmaps/limit=-1
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/size_limit=0
+detect_3d/compress_to=0

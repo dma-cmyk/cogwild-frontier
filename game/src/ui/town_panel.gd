@@ -3,6 +3,8 @@ extends RefCounted
 ## Town-specific service tabs embedded in the right-hand InfoPanel.
 
 const TABS := ["store", "smithy", "inn", "tavern", "guild"]
+const TAB_KEYS := {"store": "town.tab.store", "smithy": "town.tab.smithy", "inn": "town.tab.inn",
+	"tavern": "town.tab.tavern", "guild": "town.tab.guild"}
 const RESOURCES := ["wood", "stone", "ore", "metal", "food"]
 
 
@@ -80,7 +82,7 @@ static func build(body: VBoxContainer, g: Game, hud: Hud, st: Dictionary, active
 
 	var tabs := UiTheme.hbox(2)
 	for tab: String in TABS:
-		var button := UiTheme.button(Loc.t("town.tab." + tab))
+		var button := UiTheme.button(Loc.t(str(TAB_KEYS[tab])))
 		button.add_theme_font_size_override("font_size", 12)
 		button.custom_minimum_size = Vector2(0, 36)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
