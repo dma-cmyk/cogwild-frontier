@@ -51,7 +51,6 @@
 	"town.healed": "{unit_name} rested at the inn for {gold} gold.",
 	"town.hired": "{unit_name}, a {race}, joins the colony as a mercenary.",
 	"town.rumour_bought": "A tavern rumour reveals {site_name} to the {direction}.",
-	"sim.town.discovered": "Discovered {town_name}, a mixed town of {population} people.",
 	"Town Fountain": "Town Fountain",
 	"Guild Hall": "Guild Hall",
 	"Copper Kettle Tavern": "Copper Kettle Tavern",

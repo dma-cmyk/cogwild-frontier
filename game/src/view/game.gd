@@ -539,6 +539,15 @@ func dbg_click(pos: Vector2) -> bool:
 	return true
 
 
+## How many sites the player knows about (probe evidence for rumours and scouting).
+func dbg_known_sites() -> int:
+	var n := 0
+	for st: Dictionary in world.sites.values():
+		if bool(st.get("discovered", false)):
+			n += 1
+	return n
+
+
 ## Meets the goal of every accepted quest (goods in the store, bounty camp cleared, scouting target
 ## found) so a probe can exercise the hand-in button without playing the errand.
 func dbg_fulfil_quests() -> int:

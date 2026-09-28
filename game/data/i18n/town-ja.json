@@ -51,7 +51,6 @@
 	"town.healed": "{unit_name}は金貨{gold}で宿屋に泊まった。",
 	"town.hired": "{race}の{unit_name}が傭兵として入植地に加わった。",
 	"town.rumour_bought": "酒場の噂により{direction}にある{site_name}が明らかになった。",
-	"sim.town.discovered": "異なる種族が暮らす町、{town_name}（住民{population}人）を発見した。",
 	"Town Fountain": "町の噴水",
 	"Guild Hall": "ギルド会館",
 	"Copper Kettle Tavern": "銅ケトル亭",

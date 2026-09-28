@@ -379,10 +379,13 @@ func mark_discovered(st: Dictionary, _by_name: String = "") -> void:
 
 ## Trading, gifting, quests, talking and recruiting all need a colony unit standing in the
 ## community, the same rule the wanderer camps use for recruiting: walk someone (or a squad) over.
-func is_near_community(sid: int, radius: float = TRADE_RANGE) -> bool:
+func is_near_community(sid: int, radius: float = -1.0) -> bool:
 	var st: Dictionary = w.sites.get(sid, {})
 	if not is_community(st):
 		return false
+	if radius < 0.0:
+		# the town spreads its shops around a wide plaza; a village is walked in a few steps
+		radius = Town.TOWN_RANGE if str(st["kind"]) == "town" else TRADE_RANGE
 	var centre := Vector2(st["center"]) + Vector2(0.5, 0.5)
 	# Do not use World's spatial grid here: callers (and save/load) can move a unit
 	# between simulation rebuilds, and diplomacy must observe the authoritative position.

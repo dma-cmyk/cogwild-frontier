@@ -134,10 +134,11 @@ func service_blocker(sid: int) -> String:
 		return "town.error.not_known"
 	if bool(st.get("hostile", false)) or int(st.get("relation", 0)) <= Diplomacy.HOSTILE_AT:
 		return "town.error.hostile"
+	# the plaza is a fountain and the shops ring it: anywhere inside the town counts
 	var center := Vector2(st.get("center", Vector2i.ZERO)) + Vector2(0.5, 0.5)
 	for u: Unit in w.unit_list:
 		if u.is_player() and u.alive and u.state != Unit.State.DOWNED \
-				and u.pos.distance_to(center) <= Diplomacy.TRADE_RANGE:
+				and u.pos.distance_to(center) <= TOWN_RANGE:
 			return ""
 	return "town.error.no_unit"
 
@@ -487,7 +488,8 @@ func _refresh_mercenaries(st: Dictionary, rng: RandomNumberGenerator) -> void:
 		u.guard_pos = pos
 		u.character["town_job"] = "barkeep"
 		u.character["town_candidate"] = true
-		u.labor = "soldier"
+		# a candidate is a guest, not part of the town watch (hired, the colony sets their labour)
+		u.labor = "worker"
 		(st["units"] as Array).append(u.id)
 		(st["town_mercenary_ids"] as Array).append(u.id)
 	st["town_mercenary_stock_day"] = w.day

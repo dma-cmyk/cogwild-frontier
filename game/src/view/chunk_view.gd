@@ -82,6 +82,9 @@ func setup(world: World, chunk: ChunkData, immediate: bool = false) -> void:
 	props_root.name = "Props"
 	add_child(props_root)
 	await rebuild_terrain(immediate)
+	# the view may leave the tree while it builds (a load swaps the whole world view)
+	if not is_inside_tree():
+		return
 	if not immediate:
 		await get_tree().process_frame
 	if is_inside_tree():

@@ -231,8 +231,9 @@ func on_unit_killed(t: Unit, attacker: Unit) -> void:
 		if not bool(st.get("hostile", false)) or bool(st.get("subdued", false)):
 			w.site_changed.emit(t.home_site)
 			return
+		# the community gives in once its watch is down; the fleeing residents are spared
 		for u: Unit in site_units(t.home_site):
-			if u.is_armed():
+			if u.labor == "soldier":
 				w.site_changed.emit(t.home_site)
 				return
 		w.diplomacy.subdue(t.home_site, attacker)
@@ -311,20 +312,15 @@ func tick() -> void:
 					continue
 				if w.hostile("player", u.faction):
 					u.hidden = false
-					if u.is_armed():
+					# only the watch fights (every person counts as armed); the rest run for it
+					if u.labor == "soldier":
 						_guard(u)
 					else:
 						_flee_villager(u)
-				elif str(st["kind"]) == "village":
-					_village_routine(u, st)
-			elif str(st.get("kind", "")) == "town":
-				if w.hostile("player", u.faction):
-					if str(u.character.get("town_job", "")) == "watch":
-						_guard(u)
-					else:
-						_flee_villager(u)
-				else:
+				elif str(st["kind"]) == "town":
 					w.town.routine(u, st)
+				else:
+					_village_routine(u, st)
 			elif w.hostile("player", u.faction):
 				_guard(u)
 			elif u.faction == "wanderers":

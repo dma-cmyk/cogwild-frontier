@@ -1,0 +1,331 @@
+{
+  "scene": "res://scenes/game.tscn",
+  "frames": 470,
+  "seed": 11,
+  "events": [
+    {
+      "frame": 1,
+      "do": "scene.set_speed(0)"
+    },
+    {
+      "frame": 2,
+      "do": "scene.set_meta('t', scene.dbg_station_squad_at('town'))"
+    },
+    {
+      "frame": 3,
+      "expect": "int(scene.get_meta('t')) >= 0",
+      "label": "the world has a town"
+    },
+    {
+      "frame": 4,
+      "do": "scene.set_speed(3)"
+    },
+    {
+      "frame": 50,
+      "do": "scene.set_speed(0)"
+    },
+    {
+      "frame": 51,
+      "expect": "scene.world.sites.has(int(scene.get_meta('t'))) and bool(scene.world.sites[int(scene.get_meta('t'))]['discovered'])",
+      "label": "the stationed squad discovers the town"
+    },
+    {
+      "frame": 52,
+      "watch": "scene.world.sites[int(scene.get_meta('t'))]['units'].size()",
+      "label": "town residents"
+    },
+    {
+      "frame": 52,
+      "watch": "scene.view.site_views[int(scene.get_meta('t'))].get_child_count()",
+      "label": "town building nodes"
+    },
+    {
+      "frame": 53,
+      "do": "scene.world.res.set('gold', 5000)"
+    },
+    {
+      "frame": 54,
+      "do": "scene.world.get_unit(scene.world.squads[0].members[0]).set('pos', Vector2(scene.world.sites[int(scene.get_meta('t'))]['center']) + Vector2(1.5, 1.5))"
+    },
+    {
+      "frame": 55,
+      "do": "scene.rig.focus(Vector3(scene.world.sites[int(scene.get_meta('t'))]['center'].x, 0, scene.world.sites[int(scene.get_meta('t'))]['center'].y), true)"
+    },
+    {
+      "frame": 70,
+      "screenshot": "00_town_day"
+    },
+    {
+      "frame": 72,
+      "do": "scene.select_site(int(scene.get_meta('t')))"
+    },
+    {
+      "frame": 90,
+      "expect": "scene.world.town.service_blocker(int(scene.get_meta('t'))) == ''",
+      "label": "services open with a colonist on the plaza"
+    },
+    {
+      "frame": 90,
+      "screenshot": "01_store_tab"
+    },
+    {
+      "frame": 91,
+      "do": "scene.set_meta('wood0', int(scene.world.res.get('wood', 0)))"
+    },
+    {
+      "frame": 92,
+      "do": "scene.set_meta('p', scene.dbg_ui_button('交易'))"
+    },
+    {
+      "frame": 93,
+      "do": "scene.dbg_click(scene.get_meta('p'))"
+    },
+    {
+      "frame": 110,
+      "screenshot": "02_store_trade_window"
+    },
+    {
+      "frame": 111,
+      "do": "scene.set_meta('p', scene.dbg_ui_button('購入 '))"
+    },
+    {
+      "frame": 111,
+      "watch": "scene.get_meta('p')",
+      "label": "buy button in the trade window"
+    },
+    {
+      "frame": 112,
+      "do": "scene.dbg_click(scene.get_meta('p'))"
+    },
+    {
+      "frame": 118,
+      "expect": "int(scene.world.res.get('wood', 0)) > int(scene.get_meta('wood0'))",
+      "label": "clicking Buy in the store brings wood"
+    },
+    {
+      "frame": 119,
+      "do": "scene.hud.villages.close_top()"
+    },
+    {
+      "frame": 122,
+      "do": "scene.set_meta('p', scene.dbg_ui_button('鍛冶屋'))"
+    },
+    {
+      "frame": 123,
+      "do": "scene.dbg_click(scene.get_meta('p'))"
+    },
+    {
+      "frame": 135,
+      "screenshot": "03_smithy_tab"
+    },
+    {
+      "frame": 136,
+      "do": "scene.set_meta('arm0', scene.world.armory.size())"
+    },
+    {
+      "frame": 137,
+      "do": "scene.dbg_ui_button('購入')"
+    },
+    {
+      "frame": 139,
+      "do": "scene.set_meta('p', scene.dbg_ui_button('購入'))"
+    },
+    {
+      "frame": 140,
+      "do": "scene.dbg_click(scene.get_meta('p'))"
+    },
+    {
+      "frame": 146,
+      "expect": "scene.world.armory.size() == int(scene.get_meta('arm0')) + 1",
+      "label": "clicking Buy at the smithy puts gear in the armory"
+    },
+    {
+      "frame": 150,
+      "screenshot": "04_smithy_bought"
+    },
+    {
+      "frame": 152,
+      "do": "scene.world.get_unit(scene.world.squads[0].members[0]).set('hp', 12.0)"
+    },
+    {
+      "frame": 153,
+      "do": "scene.world.get_unit(scene.world.squads[0].members[0]).set('injured_days', 2.0)"
+    },
+    {
+      "frame": 154,
+      "do": "scene.set_meta('p', scene.dbg_ui_button('宿屋'))"
+    },
+    {
+      "frame": 155,
+      "do": "scene.dbg_click(scene.get_meta('p'))"
+    },
+    {
+      "frame": 167,
+      "screenshot": "05_inn_tab"
+    },
+    {
+      "frame": 168,
+      "do": "scene.dbg_ui_button('全回復')"
+    },
+    {
+      "frame": 170,
+      "do": "scene.set_meta('p', scene.dbg_ui_button('全回復'))"
+    },
+    {
+      "frame": 170,
+      "watch": "scene.get_meta('p')",
+      "label": "heal button"
+    },
+    {
+      "frame": 171,
+      "do": "scene.dbg_click(scene.get_meta('p'))"
+    },
+    {
+      "frame": 177,
+      "expect": "scene.world.notifications.back()['key'] == 'town.healed' and scene.world.get_unit(scene.world.squads[0].members[0]).injured_days < 2.0",
+      "label": "clicking Heal at the inn heals a colonist"
+    },
+    {
+      "frame": 180,
+      "do": "scene.set_meta('pop0', scene.world.population())"
+    },
+    {
+      "frame": 181,
+      "do": "scene.set_meta('p', scene.dbg_ui_button('酒場'))"
+    },
+    {
+      "frame": 182,
+      "do": "scene.dbg_click(scene.get_meta('p'))"
+    },
+    {
+      "frame": 195,
+      "screenshot": "06_tavern_tab"
+    },
+    {
+      "frame": 196,
+      "do": "scene.dbg_ui_button('雇用')"
+    },
+    {
+      "frame": 198,
+      "do": "scene.set_meta('p', scene.dbg_ui_button('雇用'))"
+    },
+    {
+      "frame": 198,
+      "watch": "scene.get_meta('p')",
+      "label": "hire button"
+    },
+    {
+      "frame": 199,
+      "do": "scene.dbg_click(scene.get_meta('p'))"
+    },
+    {
+      "frame": 205,
+      "expect": "scene.world.population() == int(scene.get_meta('pop0')) + 1",
+      "label": "clicking Hire brings a mercenary into the colony"
+    },
+    {
+      "frame": 206,
+      "do": "scene.set_meta('known0', scene.dbg_known_sites())"
+    },
+    {
+      "frame": 207,
+      "do": "scene.dbg_ui_button('噂を買う')"
+    },
+    {
+      "frame": 209,
+      "do": "scene.set_meta('p', scene.dbg_ui_button('噂を買う'))"
+    },
+    {
+      "frame": 210,
+      "do": "scene.dbg_click(scene.get_meta('p'))"
+    },
+    {
+      "frame": 216,
+      "expect": "scene.dbg_known_sites() == int(scene.get_meta('known0')) + 1",
+      "label": "buying a rumour reveals a site"
+    },
+    {
+      "frame": 220,
+      "screenshot": "07_tavern_after"
+    },
+    {
+      "frame": 222,
+      "do": "scene.set_meta('p', scene.dbg_ui_button('ギルド'))"
+    },
+    {
+      "frame": 223,
+      "do": "scene.dbg_click(scene.get_meta('p'))"
+    },
+    {
+      "frame": 235,
+      "screenshot": "08_guild_tab"
+    },
+    {
+      "frame": 236,
+      "do": "scene.dbg_ui_button('受ける')"
+    },
+    {
+      "frame": 238,
+      "do": "scene.set_meta('p', scene.dbg_ui_button('受ける'))"
+    },
+    {
+      "frame": 239,
+      "do": "scene.dbg_click(scene.get_meta('p'))"
+    },
+    {
+      "frame": 245,
+      "expect": "scene.world.quests.accepted_for(int(scene.get_meta('t'))).size() == 1",
+      "label": "clicking Accept takes a guild job"
+    },
+    {
+      "frame": 250,
+      "screenshot": "09_guild_accepted"
+    },
+    {
+      "frame": 252,
+      "do": "scene.clear_selection()"
+    },
+    {
+      "frame": 253,
+      "do": "scene.world.set('tick_count', int(scene.world.tick_count / scene.world.DAY_TICKS) * scene.world.DAY_TICKS + int(scene.world.DAY_TICKS * 0.84))"
+    },
+    {
+      "frame": 254,
+      "do": "scene.set_speed(1)"
+    },
+    {
+      "frame": 330,
+      "do": "scene.set_speed(0)"
+    },
+    {
+      "frame": 339,
+      "expect": "scene.world.is_night()",
+      "label": "it is night in town"
+    },
+    {
+      "frame": 340,
+      "screenshot": "10_town_night"
+    },
+    {
+      "frame": 340,
+      "watch": "scene.dbg_village_jobs(int(scene.get_meta('t')))",
+      "label": "town jobs at night"
+    },
+    {
+      "frame": 342,
+      "do": "scene.rig.rotate_step(1)"
+    },
+    {
+      "frame": 380,
+      "screenshot": "11_town_night_rotated"
+    },
+    {
+      "frame": 382,
+      "do": "scene.world.set('tick_count', int(scene.world.tick_count / scene.world.DAY_TICKS + 1) * scene.world.DAY_TICKS + int(scene.world.DAY_TICKS * 0.35))"
+    },
+    {
+      "frame": 400,
+      "screenshot": "12_town_day_rotated"
+    }
+  ]
+}
