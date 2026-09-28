@@ -256,7 +256,8 @@ func village_preference_score(race: String, pos: Vector2) -> float:
 		"rocky_hills":
 			return hill * 0.7 + (1.0 - forest) * 0.3
 		"highlands":
-			return clampf((h - 4.0) / 8.0, 0.0, 1.0)
+			# soft ramp from low ground so that even a flat world still ranks the higher spots
+			return clampf((h - 1.0) / 11.0, 0.0, 1.0)
 		"mountain_forest":
 			return clampf((clampf((h - 3.0) / 8.0, 0.0, 1.0) + forest) * 0.5, 0.0, 1.0)
 		"river":

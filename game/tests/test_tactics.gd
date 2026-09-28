@@ -256,12 +256,14 @@ func test_stances_and_formations_change_scripted_fight_metrics() -> void:
 	# one scripted fight depends on the generated crew; compare the total over several worlds
 	var balanced_total := float(balanced["damage_taken"])
 	var cautious_total := float(cautious["damage_taken"])
+	var aggressive_total := float(aggressive["damage_taken"])
 	for seed: int in [3, 7]:
 		balanced_total += float(_run_ab_fight("balanced", "line", seed)["damage_taken"])
 		cautious_total += float(_run_ab_fight("cautious", "line", seed)["damage_taken"])
+		aggressive_total += float(_run_ab_fight("aggressive", "line", seed)["damage_taken"])
 	assert_true(cautious_total < balanced_total * 0.9,
 		"cautious positioning reduces squad damage taken (%.0f vs %.0f over three worlds)" % [cautious_total, balanced_total])
 	assert_true(float(aggressive["duration_seconds"]) < float(balanced["duration_seconds"]),
 		"aggressive stance clears the engagement fastest")
-	assert_true(float(aggressive["damage_taken"]) >= float(balanced["damage_taken"]) * 0.95,
-		"aggressive stance accepts comparable incoming damage while closing")
+	assert_true(aggressive_total >= balanced_total * 0.95,
+		"aggressive stance accepts comparable incoming damage while closing (%.0f vs %.0f over three worlds)" % [aggressive_total, balanced_total])
