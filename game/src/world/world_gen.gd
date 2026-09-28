@@ -224,7 +224,30 @@ func _site_ok(pos: Vector2, radius: float) -> bool:
 
 
 func _kind_radius(kind: String) -> float:
-	return float((site_cfg["kinds"] as Dictionary).get(kind, {}).get("flat_radius", 6))
+	var kind_cfg: Dictionary = (site_cfg["kinds"] as Dictionary).get(kind, {})
+	if kind == "town":
+		return 22.0
+	return float(kind_cfg.get("flat_radius", 6))
+
+
+func _town_flat_score(pos: Vector2) -> float:
+	var center := Vector2i(int(floor(pos.x)), int(floor(pos.y)))
+	var h := raw_height(center.x + 0.5, center.y + 0.5)
+	var max_dev := 0.0
+	for i in 12:
+		var angle := TAU * float(i) / 12.0
+		for radius: float in [7.0, 14.0, 21.0]:
+			var q := Vector2(center) + Vector2(0.5, 0.5) + Vector2(cos(angle), sin(angle)) * radius
+			max_dev = maxf(max_dev, absf(raw_height(q.x, q.y) - h))
+	return -max_dev
+
+
+func _weighted_town_race(rng: RandomNumberGenerator, excluded: Array[String]) -> String:
+	var weights: Dictionary = {}
+	for race: String in _village_races():
+		if not excluded.has(race):
+			weights[race] = int(DB.get_def("races", race).get("spawn_weight", 1))
+	return RngUtil.weighted_key(rng, weights)
 
 
 func _village_races() -> Array[String]:
@@ -287,9 +310,8 @@ func _make_site(id: int, kind: String, pos: Vector2, race: String = "") -> Dicti
 	return site
 
 
-## Guaranteed sites are laid out in the order of `generation/world.json`. Villages come last and
-## take the best-scoring spot for their race inside their distance band, so each race sits in the
-## terrain it likes without displacing the older landmarks.
+## Guaranteed sites are laid out in the order of `generation/world.json`. Villages and the town
+## search harder than landmarks so communities land inside their own distance bands.
 func _place_guaranteed_sites() -> void:
 	var rng := RngUtil.make([seed, "guaranteed"])
 	var village_races := _village_races()
@@ -308,6 +330,8 @@ func _place_guaranteed_sites() -> void:
 		var dmax := float(g["dist"][1])
 		var radius := _kind_radius(kind)
 		var is_village := kind == "village"
+		var is_town := kind == "town"
+		var searches_exact_band := is_village or is_town
 		var race := ""
 		if is_village:
 			if village_races.is_empty():
@@ -316,26 +340,29 @@ func _place_guaranteed_sites() -> void:
 			race = village_races[village_index % village_races.size()]
 			village_index += 1
 		var placed := false
-		var best_score := -1.0
+		var best_score := -INF
 		var best_pos := Vector2.ZERO
 		var best_angle := 0.0
-		# Villages search much harder: they are placed last, they must land in terrain their race
-		# likes, and unlike the landmarks they may share a bearing with a site at another distance.
-		for attempt in (240 if is_village else 60):
+		for attempt in (720 if is_town else (240 if is_village else 60)):
 			var ang := rng.randf() * TAU
 			var spread := rng.randf()
 			var too_close := false
-			if not is_village:
+			if not searches_exact_band:
 				for ua: float in used_angles:
 					if absf(angle_difference(ang, ua)) < 0.5 and attempt < 40:
 						too_close = true
 			if too_close:
 				continue
-			var d := lerpf(dmin, dmax, spread) + (0.0 if is_village else attempt * 0.8)
+			var d := lerpf(dmin, dmax, spread) + (0.0 if searches_exact_band else attempt * 0.8)
 			var pos := Vector2(start_tile) + Vector2(cos(ang), sin(ang)) * d
+			if is_town:
+				var tile := Vector2i(int(floor(pos.x)), int(floor(pos.y)))
+				var tile_dist := Vector2(tile).distance_to(Vector2(start_tile))
+				if tile_dist < dmin or tile_dist > dmax:
+					continue
 			if not _site_ok(pos, radius):
 				continue
-			if not is_village and dmax <= 140.0 and absf(raw_height(pos.x, pos.y) - start_height) > 3.2 and attempt < 50:
+			if not searches_exact_band and dmax <= 140.0 and absf(raw_height(pos.x, pos.y) - start_height) > 3.2 and attempt < 50:
 				continue
 			var clash := false
 			for other: Dictionary in _guaranteed:
@@ -343,17 +370,23 @@ func _place_guaranteed_sites() -> void:
 					clash = true
 			if clash:
 				continue
-			if not is_village:
+			if not is_village and not is_town:
 				_guaranteed.append(_make_site(gid, kind, pos))
 				used_angles.append(ang)
 				placed = true
 				break
-			var score := village_preference_score(race, pos)
+			var score := village_preference_score(race, pos) if is_village else _town_flat_score(pos)
 			if score > best_score:
 				best_score = score
 				best_pos = pos
 				best_angle = ang
-		if is_village and best_score >= 0.0:
+		if is_town and best_score > -INF:
+			var town := _make_site(gid, kind, best_pos)
+			if not town.is_empty():
+				_guaranteed.append(town)
+				used_angles.append(best_angle)
+				placed = true
+		elif is_village and best_score >= 0.0:
 			var village := _make_site(gid, kind, best_pos, race)
 			if not village.is_empty():
 				_guaranteed.append(village)
@@ -458,6 +491,32 @@ func _layout_site(site: Dictionary) -> void:
 			_add_decor(site, "barrel", Vector2(c) + Vector2(-4.0, 2.4), rng)
 			_add_decor(site, "log_pile", Vector2(c) + Vector2(-2.4, -4.2), rng)
 			_add_decor(site, "stone_pile", Vector2(c) + Vector2(3.2, 3.6), rng)
+		"town":
+			_add_structure(site, occupied, "t_fountain", c, 0)
+			for i in 5:
+				_ring_structure(site, occupied, ["t_general_store", "t_tavern", "t_smithy", "t_inn", "t_guild_hall"][i], c, a0 + float(i) * TAU / 5.0, 11.5 if i < 4 else 16.0, rng)
+			var home_count := rng.randi_range(7, 8)
+			var home_races: Array[String] = []
+			var no_exclusions: Array[String] = []
+			for i in mini(3, home_count):
+				home_races.append(_weighted_town_race(rng, home_races))
+			for i in range(home_races.size(), home_count):
+				home_races.append(_weighted_town_race(rng, no_exclusions))
+			for i in home_count:
+				_ring_structure(site, occupied, "v_%s_home" % home_races[i], c, a0 + 0.32 + float(i) * TAU / float(home_count), 21.0, rng)
+			for i in 4:
+				_ring_structure(site, occupied, "trade_stall", c, a0 + 0.45 + float(i) * TAU / 4.0, 19.0, rng)
+			for i in 8:
+				var angle := a0 + TAU * float(i) / 8.0
+				var pos := Vector2(c) + Vector2(cos(angle), sin(angle)) * 7.0
+				_add_decor(site, "fence", pos, rng)
+			for i in 4:
+				var angle := a0 + PI * 0.25 + float(i) * TAU / 4.0
+				var pos := Vector2(c) + Vector2(cos(angle), sin(angle)) * 19.0
+				_add_decor(site, "lantern_post", pos, rng)
+			_add_decor(site, "banner_pole", Vector2(c) + Vector2(cos(a0 + PI) * 5.0, sin(a0 + PI) * 5.0), rng)
+			_add_decor(site, "crate", Vector2(c) + Vector2(4.2, -3.8), rng)
+			_add_decor(site, "barrel", Vector2(c) + Vector2(-4.2, 3.8), rng)
 		"bandit_camp":
 			_add_structure(site, occupied, "campfire", c, 0)
 			for k in 3:
@@ -527,6 +586,9 @@ const STRUCT_SIZE := {
 	"ruin_vault": Vector2i(3, 3), "ruin_statue": Vector2i(2, 2), "ruin_pillar": Vector2i(1, 1), "ruin_wall": Vector2i(3, 1),
 	"ruin_arch": Vector2i(3, 1), "trade_hall": Vector2i(4, 4), "trade_stall": Vector2i(2, 2), "trade_mast": Vector2i(2, 2),
 	"wanderer_tent": Vector2i(2, 2), "wreck_airship": Vector2i(6, 3),
+	"t_fountain": Vector2i(3, 3), "t_guild_hall": Vector2i(5, 5),
+	"t_tavern": Vector2i(4, 4), "t_general_store": Vector2i(4, 4),
+	"t_smithy": Vector2i(4, 4), "t_inn": Vector2i(4, 4),
 	"v_human_home": Vector2i(3, 3), "v_human_hall": Vector2i(5, 5),
 	"v_sylvan_home": Vector2i(3, 3), "v_sylvan_hall": Vector2i(5, 5),
 	"v_stoutkin_home": Vector2i(3, 3), "v_stoutkin_hall": Vector2i(5, 5),

@@ -9,10 +9,10 @@ const ACTIVE_RANGE := 72.0
 const LEASH := 24.0
 const PLACE_KIND := {"ruins": "ruins", "bandit_camp": "bandit_camp", "machine_outpost": "machine_outpost",
 	"trade_post": "trade_post", "wanderer_camp": "wanderer_camp", "wreck": "wreck", "crystal_grove": "crystal",
-	"ore_field": "ore_field", "village": "settlement"}
+	"ore_field": "ore_field", "village": "settlement", "town": "town"}
 const KIND_LABEL := {"ruins": "Ruins", "bandit_camp": "Bandit camp", "machine_outpost": "Machine outpost",
 	"trade_post": "Trade post", "wanderer_camp": "Wanderer camp", "wreck": "Airship wreck", "crystal_grove": "Aether crystals",
-	"ore_field": "Ore field", "village": "Village"}
+	"ore_field": "Ore field", "village": "Village", "town": "Town"}
 const RESERVE := {"wood": 220, "stone": 160, "ore": 60, "metal": 80}
 const PRICE := {"wood": 0.5, "stone": 0.5, "ore": 1.0, "metal": 2.5}
 
@@ -49,6 +49,9 @@ func instantiate_site(sid: int) -> void:
 	if kind == "village":
 		w.diplomacy.initialize(st, rng)
 		w.diplomacy.populate(st, rng)
+	elif kind == "town":
+		w.diplomacy.initialize(st, rng)
+		w.town.initialize(st, rng)
 	var lv := int(g["level"])
 	var c := Vector2(g["center"]) + Vector2(0.5, 0.5)
 	match kind:
@@ -197,6 +200,11 @@ func _discover(st: Dictionary, by: Variant) -> void:
 		(by as Unit).counter_add("sites_found")
 		if (by as Unit).squad_id >= 0:
 			w.squad_ai.add_report(w.get_squad((by as Unit).squad_id), {"key": "sim.report.site_found", "params": {"site_name": st["name"]}})
+	if str(st["kind"]) == "town":
+		w.notify_key("sim.town.discovered", {"town_name": str(st["name"]),
+			"population": int(st.get("population", 0))}, "discover", Vector2(st["center"]), {"site": st["id"]})
+		w.site_changed.emit(int(st["id"]))
+		return
 	if str(st["kind"]) == "village":
 		w.diplomacy.mark_discovered(st, who)
 		w.site_changed.emit(int(st["id"]))
@@ -312,6 +320,14 @@ func tick() -> void:
 						_flee_villager(u)
 				else:
 					_village_routine(u, st)
+			elif str(st.get("kind", "")) == "town":
+				if w.hostile("player", u.faction):
+					if str(u.character.get("town_job", "")) == "watch":
+						_guard(u)
+					else:
+						_flee_villager(u)
+				else:
+					w.town.routine(u, st)
 			elif w.hostile("player", u.faction):
 				_guard(u)
 			elif u.faction == "wanderers":

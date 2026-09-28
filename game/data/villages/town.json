@@ -1,0 +1,22 @@
+{
+	"table": "town",
+	"entries": [
+		{
+			"id": "town",
+			"temperament": "trading",
+			"starting_relation": 12,
+			"stock": {"wood": 180, "stone": 150, "ore": 120, "metal": 110, "food": 200},
+			"specialties": ["sword", "chain_mail", "compass"],
+			"wants": ["food", "wood", "ore"],
+			"guards": 4,
+			"population": [18, 22],
+			"min_population": 16,
+			"services": {
+				"smithy": {"stock_count": 6, "refresh_days": 3, "base_level": 2},
+				"inn": {"base_cost": 12, "cost_per_missing_hp": 0.18, "injury_cost": 35, "injury_days_removed": 1.0},
+				"tavern": {"mercenary_count": 4, "refresh_days": 3, "base_hire_cost": 70, "rumour_cost": 30}
+			},
+			"quests": {"count": 4, "kinds": ["deliver", "bounty", "scout"], "reward_scale": 1.6}
+		}
+	]
+}

@@ -77,6 +77,7 @@ var squad_ai: SquadAI
 var factions: FactionAI
 var economy: Economy
 var diplomacy: Diplomacy
+var town: Town
 
 var _grid: Dictionary = {}  # spatial hash of units: Vector2i cell -> Array[Unit]
 const GRID := 8.0
@@ -89,6 +90,7 @@ func _init() -> void:
 	factions = FactionAI.new(self)
 	economy = Economy.new(self)
 	diplomacy = Diplomacy.new(self)
+	town = Town.new(self)
 	for r: String in RESOURCES:
 		res[r] = 0
 
@@ -113,7 +115,7 @@ func setup(p_seed: int) -> void:
 
 ## Breaks the reference cycles between the world and its systems so everything is freed.
 func dispose() -> void:
-	for sys: Variant in [colony, combat, squad_ai, factions, economy, diplomacy]:
+	for sys: Variant in [colony, combat, squad_ai, factions, economy, diplomacy, town]:
 		if sys != null:
 			sys.set("w", null)
 	colony = null
@@ -122,6 +124,7 @@ func dispose() -> void:
 	factions = null
 	economy = null
 	diplomacy = null
+	town = null
 	units.clear()
 	unit_list.clear()
 	buildings.clear()
