@@ -1,0 +1,8 @@
+[
+	{"id": "t_fountain", "name": "Town Fountain", "size": [3, 3], "category": "town", "buildable": false, "hp": 420, "description": "A stone fountain anchors the town plaza."},
+	{"id": "t_guild_hall", "name": "Guild Hall", "size": [5, 5], "category": "town", "buildable": false, "hp": 760, "description": "The guild board gathers contracts from across the frontier."},
+	{"id": "t_tavern", "name": "Copper Kettle Tavern", "size": [4, 4], "category": "town", "buildable": false, "hp": 620, "description": "Mercenaries, travellers and rumours meet over a warm meal."},
+	{"id": "t_general_store", "name": "General Store", "size": [4, 4], "category": "town", "buildable": false, "hp": 590, "description": "A well-stocked market for the five frontier resources."},
+	{"id": "t_smithy", "name": "Town Smithy", "size": [4, 4], "category": "town", "buildable": false, "hp": 650, "description": "A busy forge offers arms and armour for the road."},
+	{"id": "t_inn", "name": "Wayfarer's Inn", "size": [4, 4], "category": "town", "buildable": false, "hp": 600, "description": "Rest, recover and mend injuries before returning to the frontier."}
+]

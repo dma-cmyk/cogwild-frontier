@@ -10,6 +10,7 @@ var g: Game
 var hud: Hud
 var _body: VBoxContainer
 var _tab := "Equipment"
+var _town_tab := "store"
 var _key := ""
 var _hp: ProgressBar
 var _hp_l: Label
@@ -64,8 +65,9 @@ func refresh(force: bool) -> void:
 		key = "b%d:%d:%d:%s:%d" % [b.id, b.level, int(b.is_built()), str(b.queue), b.needs.hash()]
 	elif g.sel_site >= 0:
 		var st: Dictionary = g.world.sites.get(g.sel_site, {})
-		key = "s%d:%s:%s:%s" % [g.sel_site, str(st.get("cleared", false)), str(st.get("looted", false)),
-			_community_key(st) if g.world.diplomacy.is_community(st) else ""]
+		var town_key := TownPanel.signature(g.world, g.sel_site, _town_tab) if str(st.get("kind", "")) == "town" else ""
+		key = "s%d:%s:%s:%s%s" % [g.sel_site, str(st.get("cleared", false)), str(st.get("looted", false)),
+			_community_key(st) if g.world.diplomacy.is_community(st) else "", town_key]
 	elif g.sel_loot >= 0 and g.world.loot_bags.has(g.sel_loot):
 		var bag: Dictionary = g.world.loot_bags[g.sel_loot]
 		key = "l%d:%d:%d:%d" % [g.sel_loot, (bag.get("items", []) as Array).size(), int(bag.get("gold", 0)), int(bag.get("metal", 0))]
@@ -571,7 +573,15 @@ func _cost_text(cost: Dictionary) -> String:
 
 # --- sites ---------------------------------------------------------------------------------
 
+func _set_town_tab(tab: String) -> void:
+	if tab == _town_tab:
+		return
+	_town_tab = tab
+	refresh(true)
 func _build_site(st: Dictionary) -> void:
+	if str(st.get("kind", "")) == "town":
+		TownPanel.build(_body, g, hud, st, _town_tab, Callable(self, "_set_town_tab"))
+		return
 	if str(st.get("kind", "")) == "village":
 		VillagePanel.build(_body, g, hud, st)
 		return

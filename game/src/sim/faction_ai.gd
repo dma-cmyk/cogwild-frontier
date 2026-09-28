@@ -9,10 +9,10 @@ const ACTIVE_RANGE := 72.0
 const LEASH := 24.0
 const PLACE_KIND := {"ruins": "ruins", "bandit_camp": "bandit_camp", "machine_outpost": "machine_outpost",
 	"trade_post": "trade_post", "wanderer_camp": "wanderer_camp", "wreck": "wreck", "crystal_grove": "crystal",
-	"ore_field": "ore_field", "village": "settlement"}
+	"ore_field": "ore_field", "village": "settlement", "town": "town"}
 const KIND_LABEL := {"ruins": "Ruins", "bandit_camp": "Bandit camp", "machine_outpost": "Machine outpost",
 	"trade_post": "Trade post", "wanderer_camp": "Wanderer camp", "wreck": "Airship wreck", "crystal_grove": "Aether crystals",
-	"ore_field": "Ore field", "village": "Village"}
+	"ore_field": "Ore field", "village": "Village", "town": "Town"}
 const RESERVE := {"wood": 220, "stone": 160, "ore": 60, "metal": 80}
 const PRICE := {"wood": 0.5, "stone": 0.5, "ore": 1.0, "metal": 2.5}
 
@@ -50,6 +50,9 @@ func instantiate_site(sid: int) -> void:
 		w.diplomacy.initialize(st, rng)
 	if kind == "village":
 		w.diplomacy.populate(st, rng)
+	elif kind == "town":
+		w.diplomacy.initialize(st, rng)
+		w.town.initialize(st, rng)
 	var lv := int(g["level"])
 	var c := Vector2(g["center"]) + Vector2(0.5, 0.5)
 	match kind:
@@ -314,6 +317,14 @@ func tick() -> void:
 						_flee_villager(u)
 				elif str(st["kind"]) == "village":
 					_village_routine(u, st)
+			elif str(st.get("kind", "")) == "town":
+				if w.hostile("player", u.faction):
+					if str(u.character.get("town_job", "")) == "watch":
+						_guard(u)
+					else:
+						_flee_villager(u)
+				else:
+					w.town.routine(u, st)
 			elif w.hostile("player", u.faction):
 				_guard(u)
 			elif u.faction == "wanderers":

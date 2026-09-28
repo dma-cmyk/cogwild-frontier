@@ -21,6 +21,8 @@ static var _item_cache: Dictionary = {}
 static var _warned_missing: Dictionary = {}
 
 static func get_icon(id: String) -> Texture2D:
+	if id == "poi_town":
+		return get_icon("poi_village")
 	if _icon_cache.has(id):
 		return _icon_cache[id] as Texture2D
 	var path := "res://assets/icons/%s.svg" % id

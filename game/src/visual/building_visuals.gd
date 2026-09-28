@@ -19,6 +19,7 @@ const SITE_FOOTPRINTS := {
 	"wanderer_tent": Vector2i(2, 2), "ruin_arch": Vector2i(3, 1), "ruin_pillar": Vector2i(1, 1),
 	"ruin_wall": Vector2i(3, 1), "ruin_statue": Vector2i(2, 2), "ruin_vault": Vector2i(3, 3),
 	"wreck_airship": Vector2i(6, 3),
+
 }
 
 ## Footprint in tiles: the `size` of the building definition (player or village/town tables), else SITE_FOOTPRINTS.
@@ -36,7 +37,9 @@ const FIXED_STYLE := {
 	"trade_hall": "merchant", "trade_stall": "merchant", "trade_mast": "merchant",
 	"wanderer_tent": "neutral", "ruin_arch": "neutral", "ruin_pillar": "neutral",
 	"ruin_wall": "neutral", "ruin_statue": "neutral", "ruin_vault": "neutral",
-	"wreck_airship": "frontier"
+	"wreck_airship": "frontier",
+	"t_fountain": "neutral", "t_guild_hall": "neutral", "t_tavern": "neutral",
+	"t_general_store": "neutral", "t_smithy": "neutral", "t_inn": "neutral"
 }
 const STYLES := ["frontier", "bandit", "ancient", "merchant", "neutral"]
 
@@ -105,7 +108,8 @@ static func _make_mesh(id: String, style: String, seed: int, lv: int, stage: int
 	if stage <= 1:
 		_construction(k, p, fp, stage, seed)
 		return k.build()
-	if not BldVillage.build(k, id, p, seed, lv) and not BldFrontier.build(k, id, p, seed, lv):
+	if not BldVillage.build(k, id, p, seed, lv) and not BldTown.build(k, id, p, seed, lv) \
+			and not BldFrontier.build(k, id, p, seed, lv):
 		BldOutland.build(k, id, p, seed, lv)
 	if stage == 2:
 		# nearly finished: the real building wrapped in scaffolding and builders' clutter
@@ -229,6 +233,13 @@ static func _effects(id: String, seed: int, lv: int) -> Dictionary:
 		"trade_hall", "trade_stall", "windmill", "sky_dock", "watchtower", "storehouse", "trade_mast":
 			light = Vector3(0, 1.2, 1.2)
 			light_range = 2.2
+		"t_smithy":
+			smoke.append(Vector3(-1.05, 3.25, -0.9))
+			light = Vector3(-0.2, 0.7, 1.45)
+			light_range = 3.0
+		"t_tavern", "t_inn", "t_general_store", "t_guild_hall", "t_fountain":
+			light = Vector3(0, 1.1, 1.4)
+			light_range = 3.0
 	if BldVillage.race_of(id) != "":
 		var hall := id.ends_with("_hall")
 		light = Vector3(0, 1.0, (2.4 if hall else 1.3))
