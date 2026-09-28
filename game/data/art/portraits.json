@@ -122,6 +122,106 @@
    "source": "portrait_centaur_worker_v2"
   },
   {
+   "id": "goblin_engineer_f",
+   "texture": "res://assets/portraits/goblin_engineer_f.png",
+   "source": "portrait_goblin_engineer"
+  },
+  {
+   "id": "goblin_engineer_f@v2",
+   "texture": "res://assets/portraits/goblin_engineer_f_v2.png",
+   "source": "portrait_goblin_engineer_v2"
+  },
+  {
+   "id": "goblin_engineer_m",
+   "texture": "res://assets/portraits/goblin_engineer_m.png",
+   "source": "portrait_goblin_engineer"
+  },
+  {
+   "id": "goblin_engineer_m@v2",
+   "texture": "res://assets/portraits/goblin_engineer_m_v2.png",
+   "source": "portrait_goblin_engineer_v2"
+  },
+  {
+   "id": "goblin_fighter_f",
+   "texture": "res://assets/portraits/goblin_fighter_f.png",
+   "source": "portrait_goblin_fighter"
+  },
+  {
+   "id": "goblin_fighter_f@v2",
+   "texture": "res://assets/portraits/goblin_fighter_f_v2.png",
+   "source": "portrait_goblin_fighter_v2"
+  },
+  {
+   "id": "goblin_fighter_m",
+   "texture": "res://assets/portraits/goblin_fighter_m.png",
+   "source": "portrait_goblin_fighter"
+  },
+  {
+   "id": "goblin_fighter_m@v2",
+   "texture": "res://assets/portraits/goblin_fighter_m_v2.png",
+   "source": "portrait_goblin_fighter_v2"
+  },
+  {
+   "id": "goblin_ranger_f",
+   "texture": "res://assets/portraits/goblin_ranger_f.png",
+   "source": "portrait_goblin_ranger"
+  },
+  {
+   "id": "goblin_ranger_f@v2",
+   "texture": "res://assets/portraits/goblin_ranger_f_v2.png",
+   "source": "portrait_goblin_ranger_v2"
+  },
+  {
+   "id": "goblin_ranger_m",
+   "texture": "res://assets/portraits/goblin_ranger_m.png",
+   "source": "portrait_goblin_ranger"
+  },
+  {
+   "id": "goblin_ranger_m@v2",
+   "texture": "res://assets/portraits/goblin_ranger_m_v2.png",
+   "source": "portrait_goblin_ranger_v2"
+  },
+  {
+   "id": "goblin_scholar_f",
+   "texture": "res://assets/portraits/goblin_scholar_f.png",
+   "source": "portrait_goblin_scholar"
+  },
+  {
+   "id": "goblin_scholar_f@v2",
+   "texture": "res://assets/portraits/goblin_scholar_f_v2.png",
+   "source": "portrait_goblin_scholar_v2"
+  },
+  {
+   "id": "goblin_scholar_m",
+   "texture": "res://assets/portraits/goblin_scholar_m.png",
+   "source": "portrait_goblin_scholar"
+  },
+  {
+   "id": "goblin_scholar_m@v2",
+   "texture": "res://assets/portraits/goblin_scholar_m_v2.png",
+   "source": "portrait_goblin_scholar_v2"
+  },
+  {
+   "id": "goblin_worker_f",
+   "texture": "res://assets/portraits/goblin_worker_f.png",
+   "source": "portrait_goblin_worker"
+  },
+  {
+   "id": "goblin_worker_f@v2",
+   "texture": "res://assets/portraits/goblin_worker_f_v2.png",
+   "source": "portrait_goblin_worker_v2"
+  },
+  {
+   "id": "goblin_worker_m",
+   "texture": "res://assets/portraits/goblin_worker_m.png",
+   "source": "portrait_goblin_worker"
+  },
+  {
+   "id": "goblin_worker_m@v2",
+   "texture": "res://assets/portraits/goblin_worker_m_v2.png",
+   "source": "portrait_goblin_worker_v2"
+  },
+  {
    "id": "harpy_engineer_f",
    "texture": "res://assets/portraits/harpy_engineer_f.png",
    "source": "portrait_harpy_engineer"
@@ -432,6 +532,106 @@
    "source": "portrait_human_worker_v5"
   },
   {
+   "id": "kobold_engineer_f",
+   "texture": "res://assets/portraits/kobold_engineer_f.png",
+   "source": "portrait_kobold_engineer"
+  },
+  {
+   "id": "kobold_engineer_f@v2",
+   "texture": "res://assets/portraits/kobold_engineer_f_v2.png",
+   "source": "portrait_kobold_engineer_v2"
+  },
+  {
+   "id": "kobold_engineer_m",
+   "texture": "res://assets/portraits/kobold_engineer_m.png",
+   "source": "portrait_kobold_engineer"
+  },
+  {
+   "id": "kobold_engineer_m@v2",
+   "texture": "res://assets/portraits/kobold_engineer_m_v2.png",
+   "source": "portrait_kobold_engineer_v2"
+  },
+  {
+   "id": "kobold_fighter_f",
+   "texture": "res://assets/portraits/kobold_fighter_f.png",
+   "source": "portrait_kobold_fighter"
+  },
+  {
+   "id": "kobold_fighter_f@v2",
+   "texture": "res://assets/portraits/kobold_fighter_f_v2.png",
+   "source": "portrait_kobold_fighter_v2"
+  },
+  {
+   "id": "kobold_fighter_m",
+   "texture": "res://assets/portraits/kobold_fighter_m.png",
+   "source": "portrait_kobold_fighter"
+  },
+  {
+   "id": "kobold_fighter_m@v2",
+   "texture": "res://assets/portraits/kobold_fighter_m_v2.png",
+   "source": "portrait_kobold_fighter_v2"
+  },
+  {
+   "id": "kobold_ranger_f",
+   "texture": "res://assets/portraits/kobold_ranger_f.png",
+   "source": "portrait_kobold_ranger"
+  },
+  {
+   "id": "kobold_ranger_f@v2",
+   "texture": "res://assets/portraits/kobold_ranger_f_v2.png",
+   "source": "portrait_kobold_ranger_v2"
+  },
+  {
+   "id": "kobold_ranger_m",
+   "texture": "res://assets/portraits/kobold_ranger_m.png",
+   "source": "portrait_kobold_ranger"
+  },
+  {
+   "id": "kobold_ranger_m@v2",
+   "texture": "res://assets/portraits/kobold_ranger_m_v2.png",
+   "source": "portrait_kobold_ranger_v2"
+  },
+  {
+   "id": "kobold_scholar_f",
+   "texture": "res://assets/portraits/kobold_scholar_f.png",
+   "source": "portrait_kobold_scholar"
+  },
+  {
+   "id": "kobold_scholar_f@v2",
+   "texture": "res://assets/portraits/kobold_scholar_f_v2.png",
+   "source": "portrait_kobold_scholar_v2"
+  },
+  {
+   "id": "kobold_scholar_m",
+   "texture": "res://assets/portraits/kobold_scholar_m.png",
+   "source": "portrait_kobold_scholar"
+  },
+  {
+   "id": "kobold_scholar_m@v2",
+   "texture": "res://assets/portraits/kobold_scholar_m_v2.png",
+   "source": "portrait_kobold_scholar_v2"
+  },
+  {
+   "id": "kobold_worker_f",
+   "texture": "res://assets/portraits/kobold_worker_f.png",
+   "source": "portrait_kobold_worker"
+  },
+  {
+   "id": "kobold_worker_f@v2",
+   "texture": "res://assets/portraits/kobold_worker_f_v2.png",
+   "source": "portrait_kobold_worker_v2"
+  },
+  {
+   "id": "kobold_worker_m",
+   "texture": "res://assets/portraits/kobold_worker_m.png",
+   "source": "portrait_kobold_worker"
+  },
+  {
+   "id": "kobold_worker_m@v2",
+   "texture": "res://assets/portraits/kobold_worker_m_v2.png",
+   "source": "portrait_kobold_worker_v2"
+  },
+  {
    "id": "lamia_engineer_f",
    "texture": "res://assets/portraits/lamia_engineer_f.png",
    "source": "portrait_lamia_engineer"
@@ -530,6 +730,96 @@
    "id": "lamia_worker_m@v2",
    "texture": "res://assets/portraits/lamia_worker_m_v2.png",
    "source": "portrait_lamia_worker_v2"
+  },
+  {
+   "id": "lizardfolk_engineer_f",
+   "texture": "res://assets/portraits/lizardfolk_engineer_f.png",
+   "source": "portrait_lizardfolk_engineer"
+  },
+  {
+   "id": "lizardfolk_engineer_f@v2",
+   "texture": "res://assets/portraits/lizardfolk_engineer_f_v2.png",
+   "source": "portrait_lizardfolk_engineer_v2"
+  },
+  {
+   "id": "lizardfolk_engineer_m",
+   "texture": "res://assets/portraits/lizardfolk_engineer_m.png",
+   "source": "portrait_lizardfolk_engineer"
+  },
+  {
+   "id": "lizardfolk_engineer_m@v2",
+   "texture": "res://assets/portraits/lizardfolk_engineer_m_v2.png",
+   "source": "portrait_lizardfolk_engineer_v2"
+  },
+  {
+   "id": "lizardfolk_fighter_f",
+   "texture": "res://assets/portraits/lizardfolk_fighter_f.png",
+   "source": "portrait_lizardfolk_fighter"
+  },
+  {
+   "id": "lizardfolk_fighter_f@v2",
+   "texture": "res://assets/portraits/lizardfolk_fighter_f_v2.png",
+   "source": "portrait_lizardfolk_fighter_v2"
+  },
+  {
+   "id": "lizardfolk_fighter_m",
+   "texture": "res://assets/portraits/lizardfolk_fighter_m.png",
+   "source": "portrait_lizardfolk_fighter"
+  },
+  {
+   "id": "lizardfolk_fighter_m@v2",
+   "texture": "res://assets/portraits/lizardfolk_fighter_m_v2.png",
+   "source": "portrait_lizardfolk_fighter_v2"
+  },
+  {
+   "id": "lizardfolk_ranger_f",
+   "texture": "res://assets/portraits/lizardfolk_ranger_f.png",
+   "source": "portrait_lizardfolk_ranger"
+  },
+  {
+   "id": "lizardfolk_ranger_f@v2",
+   "texture": "res://assets/portraits/lizardfolk_ranger_f_v2.png",
+   "source": "portrait_lizardfolk_ranger_v2"
+  },
+  {
+   "id": "lizardfolk_ranger_m",
+   "texture": "res://assets/portraits/lizardfolk_ranger_m.png",
+   "source": "portrait_lizardfolk_ranger"
+  },
+  {
+   "id": "lizardfolk_ranger_m@v2",
+   "texture": "res://assets/portraits/lizardfolk_ranger_m_v2.png",
+   "source": "portrait_lizardfolk_ranger_v2"
+  },
+  {
+   "id": "lizardfolk_scholar_f",
+   "texture": "res://assets/portraits/lizardfolk_scholar_f.png",
+   "source": "portrait_lizardfolk_scholar"
+  },
+  {
+   "id": "lizardfolk_scholar_m",
+   "texture": "res://assets/portraits/lizardfolk_scholar_m.png",
+   "source": "portrait_lizardfolk_scholar"
+  },
+  {
+   "id": "lizardfolk_worker_f",
+   "texture": "res://assets/portraits/lizardfolk_worker_f.png",
+   "source": "portrait_lizardfolk_worker"
+  },
+  {
+   "id": "lizardfolk_worker_f@v2",
+   "texture": "res://assets/portraits/lizardfolk_worker_f_v2.png",
+   "source": "portrait_lizardfolk_worker_v2"
+  },
+  {
+   "id": "lizardfolk_worker_m",
+   "texture": "res://assets/portraits/lizardfolk_worker_m.png",
+   "source": "portrait_lizardfolk_worker"
+  },
+  {
+   "id": "lizardfolk_worker_m@v2",
+   "texture": "res://assets/portraits/lizardfolk_worker_m_v2.png",
+   "source": "portrait_lizardfolk_worker_v2"
   },
   {
    "id": "minotaur_engineer_f",
@@ -730,6 +1020,106 @@
    "id": "oni_worker_m@v2",
    "texture": "res://assets/portraits/oni_worker_m_v2.png",
    "source": "portrait_oni_worker_v2"
+  },
+  {
+   "id": "orc_engineer_f",
+   "texture": "res://assets/portraits/orc_engineer_f.png",
+   "source": "portrait_orc_engineer"
+  },
+  {
+   "id": "orc_engineer_f@v2",
+   "texture": "res://assets/portraits/orc_engineer_f_v2.png",
+   "source": "portrait_orc_engineer_v2"
+  },
+  {
+   "id": "orc_engineer_m",
+   "texture": "res://assets/portraits/orc_engineer_m.png",
+   "source": "portrait_orc_engineer"
+  },
+  {
+   "id": "orc_engineer_m@v2",
+   "texture": "res://assets/portraits/orc_engineer_m_v2.png",
+   "source": "portrait_orc_engineer_v2"
+  },
+  {
+   "id": "orc_fighter_f",
+   "texture": "res://assets/portraits/orc_fighter_f.png",
+   "source": "portrait_orc_fighter"
+  },
+  {
+   "id": "orc_fighter_f@v2",
+   "texture": "res://assets/portraits/orc_fighter_f_v2.png",
+   "source": "portrait_orc_fighter_v2"
+  },
+  {
+   "id": "orc_fighter_m",
+   "texture": "res://assets/portraits/orc_fighter_m.png",
+   "source": "portrait_orc_fighter"
+  },
+  {
+   "id": "orc_fighter_m@v2",
+   "texture": "res://assets/portraits/orc_fighter_m_v2.png",
+   "source": "portrait_orc_fighter_v2"
+  },
+  {
+   "id": "orc_ranger_f",
+   "texture": "res://assets/portraits/orc_ranger_f.png",
+   "source": "portrait_orc_ranger"
+  },
+  {
+   "id": "orc_ranger_f@v2",
+   "texture": "res://assets/portraits/orc_ranger_f_v2.png",
+   "source": "portrait_orc_ranger_v2"
+  },
+  {
+   "id": "orc_ranger_m",
+   "texture": "res://assets/portraits/orc_ranger_m.png",
+   "source": "portrait_orc_ranger"
+  },
+  {
+   "id": "orc_ranger_m@v2",
+   "texture": "res://assets/portraits/orc_ranger_m_v2.png",
+   "source": "portrait_orc_ranger_v2"
+  },
+  {
+   "id": "orc_scholar_f",
+   "texture": "res://assets/portraits/orc_scholar_f.png",
+   "source": "portrait_orc_scholar"
+  },
+  {
+   "id": "orc_scholar_f@v2",
+   "texture": "res://assets/portraits/orc_scholar_f_v2.png",
+   "source": "portrait_orc_scholar_v2"
+  },
+  {
+   "id": "orc_scholar_m",
+   "texture": "res://assets/portraits/orc_scholar_m.png",
+   "source": "portrait_orc_scholar"
+  },
+  {
+   "id": "orc_scholar_m@v2",
+   "texture": "res://assets/portraits/orc_scholar_m_v2.png",
+   "source": "portrait_orc_scholar_v2"
+  },
+  {
+   "id": "orc_worker_f",
+   "texture": "res://assets/portraits/orc_worker_f.png",
+   "source": "portrait_orc_worker"
+  },
+  {
+   "id": "orc_worker_f@v2",
+   "texture": "res://assets/portraits/orc_worker_f_v2.png",
+   "source": "portrait_orc_worker_v2"
+  },
+  {
+   "id": "orc_worker_m",
+   "texture": "res://assets/portraits/orc_worker_m.png",
+   "source": "portrait_orc_worker"
+  },
+  {
+   "id": "orc_worker_m@v2",
+   "texture": "res://assets/portraits/orc_worker_m_v2.png",
+   "source": "portrait_orc_worker_v2"
   },
   {
    "id": "stoutkin_engineer_f",

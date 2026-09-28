@@ -29,7 +29,7 @@ DATA = GAME / "data" / "art"
 
 ROW_ORDER = ["down", "left", "right", "up"]
 OLD_RACES = ["human", "sylvan", "stoutkin", "vulpin"]
-NEW_RACES = ["minotaur", "centaur", "harpy", "lamia", "oni", "tengu"]
+NEW_RACES = ["minotaur", "centaur", "harpy", "lamia", "oni", "tengu", "goblin", "orc", "kobold", "lizardfolk", "gnome", "halfling"]
 RACES = OLD_RACES + NEW_RACES
 LOOKS = ["worker", "fighter", "ranger", "engineer", "scholar"]
 
@@ -610,6 +610,9 @@ BUILDING_IDS.update({
 })
 BUILDING_FOOTPRINTS = {f"v_{race}_home": [3, 3] for race in RACES}
 BUILDING_FOOTPRINTS.update({f"v_{race}_hall": [5, 5] for race in RACES})
+TOWN_BUILDINGS = {"guild_hall": 5, "tavern": 4, "general_store": 4, "smithy": 4, "inn": 4, "fountain": 3}
+BUILDING_IDS.update({f"b_t_{key}": [f"t_{key}@0"] for key in TOWN_BUILDINGS})
+BUILDING_FOOTPRINTS.update({f"t_{key}": [n, n] for key, n in TOWN_BUILDINGS.items()})
 BUILDING_MAX_W = 640
 
 
@@ -669,11 +672,13 @@ BACK_VIEW_SOURCES = {
 BACK_VIEW_SOURCES.update({
 	f"b_v_{race}_hall_back": f"b_v_{race}_hall" for race in RACES
 })
+BACK_VIEW_SOURCES.update({f"b_t_{key}_back": f"b_t_{key}" for key in TOWN_BUILDINGS if key != "fountain"})
 SYMMETRIC_BUILDINGS = {
 	"campfire", "construction", "palisade", "wall", "ruin_arch", "ruin_pillar", "ruin_wall",
 	"ruin_statue", "trade_mast", "windmill_sails", "wreck_airship",
 }
 SYMMETRIC_BUILDINGS.update({f"v_{race}_home" for race in RACES})
+SYMMETRIC_BUILDINGS.add("t_fountain")
 
 
 def process_building_backs(entries: list[dict], only: set[str]) -> None:

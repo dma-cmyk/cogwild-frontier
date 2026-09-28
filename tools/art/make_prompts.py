@@ -171,6 +171,49 @@ NEW_RACE_REFERENCE = ("Use Image 1 only as style, pixel density, chibi proportio
 	"new characters described here, a different race. Keep only the royal-blue company cloth accent blue for shader hue "
 	"rotation; avoid other blue, teal or cyan areas.")
 
+# --- classic roguelike races (round 6): playable, village folk and town residents ------------------
+# Added to the NEW_RACES tables so they share the chip/portrait prompts (v1 references the human chip,
+# v2 the race's own v1). Avoid blue/teal/cyan on bodies: only the company cloth is blue.
+CLASSIC_RACES = {
+	"goblin": ("a Goblin man (small wiry goblin folk: bright green skin, very large pointed ears sticking out sideways, a long crooked nose, yellow eyes and a sharp toothy grin) with a messy black topknot",
+		"a Goblin woman (small wiry goblin folk: olive-green skin, very large pointed ears with brass rings, yellow eyes and a cheeky toothy grin) with orange hair in two short tails"),
+	"orc": ("an Orc man (big muscular orc folk: grey-green skin, two lower tusks jutting from the jaw, a heavy brow and small dark eyes) with a black mohawk and a braided goatee",
+		"an Orc woman (tall strong orc folk: sage-green skin, small lower tusks, a heavy jaw and red war-paint stripes on the cheeks) with long black hair in thick braids"),
+	"kobold": ("a Kobold man (small reptilian kobold folk: rust-red scales, a short dragon-like snout, two small curved horns, yellow slit eyes, clawed hands and feet and a long scaly tail)",
+		"a Kobold woman (small reptilian kobold folk: ochre-orange scales with a cream belly, a short snout, small backswept horns, amber eyes, a long scaly tail and a bead necklace)"),
+	"lizardfolk": ("a Lizardfolk man (tall reptilian lizard folk: a lizard head with a long snout, green scales, a spiny crest along the head, yellow eyes, clawed hands and feet and a long thick tail)",
+		"a Lizardfolk woman (tall reptilian lizard folk: a lizard head, olive-and-ochre banded scales, a small red head frill, amber eyes, clawed feet and a long tail)"),
+	"gnome": ("a Gnome man (tiny gnome folk: a big round red nose, a long white beard, rosy cheeks and a tall pointed red hat)",
+		"a Gnome woman (tiny gnome folk: a button nose, rosy cheeks, long honey-blond braids and a tall pointed green hat)"),
+	"halfling": ("a Halfling man (small halfling folk: a round friendly face, curly chestnut hair, slightly pointed ears and big bare hairy feet)",
+		"a Halfling woman (small halfling folk: round rosy cheeks, curly golden hair with a small flower, slightly pointed ears and big bare hairy feet)"),
+}
+CLASSIC_RACES_V2 = {
+	"goblin": ("a Goblin man (small goblin folk: moss-green skin, huge droopy pointed ears, a warty nose and a missing tooth) with a bald head and a notched ear",
+		"a Goblin woman (small goblin folk: pale lime-green skin, huge pointed ears, freckles and sharp little fangs) with a spiky white bob"),
+	"orc": ("an Orc man (big orc folk: dark olive-brown skin, large lower tusks with a brass ring, a broken nose and scars) with a shaved head and a grey topknot",
+		"an Orc woman (strong orc folk: ash-grey-green skin, lower tusks and a gold nose ring) with one shaved side and a long red ponytail"),
+	"kobold": ("a Kobold man (small reptilian kobold folk: charcoal-grey scales with rust spots, a blunt snout, short stubby horns, a torn ear frill and a long tail)",
+		"a Kobold woman (small reptilian kobold folk: pale sand-yellow scales, a slender snout, small horns with copper rings and a long striped tail)"),
+	"lizardfolk": ("a Lizardfolk man (tall reptilian lizard folk: a crocodile-like head, dark brown-green scales, bony ridges and a long heavy tail)",
+		"a Lizardfolk woman (tall reptilian lizard folk: a slender lizard head, emerald-green scales with gold speckles, a feathered crest and a long tail)"),
+	"gnome": ("a Gnome man (tiny gnome folk: a big round nose, bushy brown eyebrows, a forked grey beard, round spectacles and a tall pointed ochre hat)",
+		"a Gnome woman (tiny gnome folk: a pointed nose, freckles, short pink curls and a tall pointed purple hat)"),
+	"halfling": ("a Halfling man (small halfling folk: curly sandy hair, long sideburns, a round belly, slightly pointed ears and big bare hairy feet)",
+		"a Halfling woman (small halfling folk: dark curly hair in a bun, freckles, slightly pointed ears and big bare hairy feet)"),
+}
+CLASSIC_RACE_BODY = {
+	"goblin": "Goblins are small and wiry with a big head: outfits look patched and slightly too big, and the large ears stick out sideways past hats and helmets.",
+	"orc": "Orcs are broad and heavily muscled: every outfit fits a big frame, helmets leave the tusks visible.",
+	"kobold": "Adapt every outfit to the kobold body: the scaly tail comes out behind, clawed bare feet instead of shoes, hats and helmets sit between the small horns.",
+	"lizardfolk": "Adapt every outfit to the lizard body: the long scaly tail comes out behind, clawed bare feet instead of shoes, helmets fit the long lizard head.",
+	"gnome": "Gnomes keep the tall pointed hat instead of any cap (the fighter wears a steel helmet with a tall pointed top); boots with curled toes.",
+	"halfling": "Halflings never wear shoes: big bare hairy feet in every outfit.",
+}
+NEW_RACES.update(CLASSIC_RACES)
+NEW_RACES_V2.update(CLASSIC_RACES_V2)
+NEW_RACE_BODY.update(CLASSIC_RACE_BODY)
+
 # Fourth look for the non-worker outfits of the original races (the worker look already has v4/v5).
 NONWORKER_V4_APPEARANCE = {
 	"human": {
@@ -228,7 +271,42 @@ VILLAGE_BUILDINGS = {
 		"an Oni war hall: a large Japanese timber hall with a curved dark tile roof, a big red gate in front, stone lanterns, a glowing forge, red-and-black banners"),
 	"tengu": ("a Tengu mountain hermitage: a small Japanese wooden shrine hut on stilts with a steep cedar-bark roof, paper charms, a stone lantern, black-and-red streamers",
 		"a Tengu pagoda: a tall narrow three-tier Japanese pagoda on a rocky base with red railings, black-feather ornaments, wind chimes, black-and-red banners"),
+	"goblin": ("a Goblin scrap shanty: a crooked little hut patched together from salvaged planks, rusty tin sheets and old barrels, a lopsided chimney, bottle charms, green-and-ochre rags",
+		"a Goblin junk hall: a big ramshackle hall on short stilts built from wrecked cart wheels, rusty metal sheets and planks, a crooked lookout tower, a giant cooking pot, green-and-ochre rag banners"),
+	"orc": ("an Orc hide longhouse: a long low hut of stretched hides over bent timber ribs, tusks and horns over the door, a war shield on the wall, red-and-black painted cloth",
+		"an Orc war lodge: a big timber-and-hide great hall behind a short palisade of sharpened logs, huge tusk arches over the entrance, a war drum, red-and-black banners"),
+	"kobold": ("a Kobold burrow mound: a low earth-and-stone mound with a small round tunnel entrance braced by timber, hanging lanterns, a short mine-cart rail, glowing crystals, rust-and-yellow cloth",
+		"a Kobold mine hall: a large rocky mound hall with a timber-braced tunnel gate, a small dragon statue, mine carts full of ore, glowing amber crystals, rust-and-yellow banners"),
+	"lizardfolk": ("a Lizardfolk stilt hut: a round reed-and-mud hut on wooden stilts over a small marsh pool, a woven reed roof, bone charms, a dugout canoe",
+		"a Lizardfolk swamp temple: a large stepped mud-brick and reed temple on stilts over marsh water, carved crocodile skulls, totems, green-and-ochre banners"),
+	"gnome": ("a Gnome mushroom house: a giant red-capped mushroom with white spots made into a cozy home, a round wooden door, tiny windows, brass pipes and a little gear weathervane",
+		"a Gnome tinkerers' hall: a cluster of giant red and ochre mushrooms joined into a workshop hall with brass gears, clockwork, a copper chimney, a small telescope on top, red-and-cream pennants"),
+	"halfling": ("a Halfling hill burrow: a round green door set into a small grassy hill with round windows, a flower garden, a little picket fence and a chimney poking out of the grass",
+		"a Halfling feast hall: a large grassy hill home with several round doors and windows, a big round green main door, an apple tree, a festive awning over long food tables, yellow-and-green bunting"),
 }
+
+
+# The mixed-race trade town (round 6): service buildings around a plaza. Footprint in tiles.
+TOWN_BUILDINGS = {
+	"guild_hall": (5, "an adventurers' guild hall of a busy frontier trade town: a large two-storey timber-and-stone hall with a wide front porch, a big notice board covered with paper notices beside the door, a crossed-swords emblem over the entrance, flags of many different peoples in red, green, gold and purple, warm lit windows"),
+	"tavern": (4, "a lively frontier town tavern: a two-storey half-timbered building with a hanging sign shaped like a foaming mug, barrels stacked by the door, an outdoor table with benches, lanterns and a smoking chimney"),
+	"general_store": (4, "a frontier town general store: a timber shop with a wide striped red-and-cream front awning, crates, sacks, barrels, rope and tools displayed outside, a hanging sign shaped like a sack"),
+	"smithy": (4, "a frontier town blacksmith: a stone-and-timber forge with a glowing open hearth under a lean-to roof, an anvil, racks of swords, axes and shields outside, a water trough and a tall smoking stone chimney"),
+	"inn": (4, "a cozy frontier town inn: a three-storey timber inn with small balconies, flower boxes, a hanging sign shaped like a crescent moon over a bed, a small stable at the side and warm lit windows"),
+	"fountain": (3, "a town plaza fountain: a round carved stone fountain basin with a statue of a traveller holding up a lantern in the middle, water spouting into the basin, a ring of paving stones around it"),
+}
+TOWN_BACK_FEATURES = {
+	"guild_hall": "porch entrance, notice board and emblem",
+	"tavern": "front door, mug sign and outdoor table",
+	"general_store": "front awning, sign and displayed goods",
+	"smithy": "open hearth, anvil and weapon racks",
+	"inn": "front door, moon sign and balconies",
+}
+
+
+def town_building_args(key: str) -> dict:
+	size, text = TOWN_BUILDINGS[key]
+	return building_args(f"{text}; a building on a {size} x {size} tile square footprint, no letters or text on signs, no blue anywhere")
 
 
 def new_race_chip(race: str, look: str, version: int) -> dict:
@@ -539,6 +617,11 @@ def build() -> list:
 		out.append({"id": f"b_v_{race}_hall", "kind": "building", "args": village_building_args(race, True)})
 		out.append({"id": f"b_v_{race}_hall_back", "kind": "building_back",
 			"args": building_back_args(f"b_v_{race}_hall", "entrance, statues and front banners")})
+	for key in TOWN_BUILDINGS:
+		out.append({"id": f"b_t_{key}", "kind": "building", "args": town_building_args(key)})
+		if key in TOWN_BACK_FEATURES:
+			out.append({"id": f"b_t_{key}_back", "kind": "building_back",
+				"args": building_back_args(f"b_t_{key}", TOWN_BACK_FEATURES[key])})
 	return sorted(out, key=_priority)
 
 

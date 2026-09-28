@@ -578,6 +578,1386 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "gnome_engineer_f",
+   "texture": "res://assets/sprites/chars/gnome_engineer_f.png",
+   "source": "chip_gnome_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_engineer_f@v2",
+   "texture": "res://assets/sprites/chars/gnome_engineer_f_v2.png",
+   "source": "chip_gnome_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_engineer_m",
+   "texture": "res://assets/sprites/chars/gnome_engineer_m.png",
+   "source": "chip_gnome_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_engineer_m@v2",
+   "texture": "res://assets/sprites/chars/gnome_engineer_m_v2.png",
+   "source": "chip_gnome_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_fighter_f",
+   "texture": "res://assets/sprites/chars/gnome_fighter_f.png",
+   "source": "chip_gnome_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_fighter_f@v2",
+   "texture": "res://assets/sprites/chars/gnome_fighter_f_v2.png",
+   "source": "chip_gnome_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_fighter_m",
+   "texture": "res://assets/sprites/chars/gnome_fighter_m.png",
+   "source": "chip_gnome_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_fighter_m@v2",
+   "texture": "res://assets/sprites/chars/gnome_fighter_m_v2.png",
+   "source": "chip_gnome_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_ranger_f",
+   "texture": "res://assets/sprites/chars/gnome_ranger_f.png",
+   "source": "chip_gnome_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_ranger_f@v2",
+   "texture": "res://assets/sprites/chars/gnome_ranger_f_v2.png",
+   "source": "chip_gnome_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_ranger_m",
+   "texture": "res://assets/sprites/chars/gnome_ranger_m.png",
+   "source": "chip_gnome_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_ranger_m@v2",
+   "texture": "res://assets/sprites/chars/gnome_ranger_m_v2.png",
+   "source": "chip_gnome_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_scholar_f",
+   "texture": "res://assets/sprites/chars/gnome_scholar_f.png",
+   "source": "chip_gnome_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_scholar_f@v2",
+   "texture": "res://assets/sprites/chars/gnome_scholar_f_v2.png",
+   "source": "chip_gnome_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_scholar_m",
+   "texture": "res://assets/sprites/chars/gnome_scholar_m.png",
+   "source": "chip_gnome_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_scholar_m@v2",
+   "texture": "res://assets/sprites/chars/gnome_scholar_m_v2.png",
+   "source": "chip_gnome_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_worker_f",
+   "texture": "res://assets/sprites/chars/gnome_worker_f.png",
+   "source": "chip_gnome_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_worker_f@v2",
+   "texture": "res://assets/sprites/chars/gnome_worker_f_v2.png",
+   "source": "chip_gnome_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_worker_m",
+   "texture": "res://assets/sprites/chars/gnome_worker_m.png",
+   "source": "chip_gnome_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_worker_m@v2",
+   "texture": "res://assets/sprites/chars/gnome_worker_m_v2.png",
+   "source": "chip_gnome_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_engineer_f",
+   "texture": "res://assets/sprites/chars/goblin_engineer_f.png",
+   "source": "chip_goblin_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_engineer_f@v2",
+   "texture": "res://assets/sprites/chars/goblin_engineer_f_v2.png",
+   "source": "chip_goblin_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_engineer_m",
+   "texture": "res://assets/sprites/chars/goblin_engineer_m.png",
+   "source": "chip_goblin_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_engineer_m@v2",
+   "texture": "res://assets/sprites/chars/goblin_engineer_m_v2.png",
+   "source": "chip_goblin_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_fighter_f",
+   "texture": "res://assets/sprites/chars/goblin_fighter_f.png",
+   "source": "chip_goblin_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_fighter_f@v2",
+   "texture": "res://assets/sprites/chars/goblin_fighter_f_v2.png",
+   "source": "chip_goblin_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_fighter_m",
+   "texture": "res://assets/sprites/chars/goblin_fighter_m.png",
+   "source": "chip_goblin_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_fighter_m@v2",
+   "texture": "res://assets/sprites/chars/goblin_fighter_m_v2.png",
+   "source": "chip_goblin_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_ranger_f",
+   "texture": "res://assets/sprites/chars/goblin_ranger_f.png",
+   "source": "chip_goblin_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_ranger_f@v2",
+   "texture": "res://assets/sprites/chars/goblin_ranger_f_v2.png",
+   "source": "chip_goblin_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_ranger_m",
+   "texture": "res://assets/sprites/chars/goblin_ranger_m.png",
+   "source": "chip_goblin_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_ranger_m@v2",
+   "texture": "res://assets/sprites/chars/goblin_ranger_m_v2.png",
+   "source": "chip_goblin_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_scholar_f",
+   "texture": "res://assets/sprites/chars/goblin_scholar_f.png",
+   "source": "chip_goblin_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_scholar_f@v2",
+   "texture": "res://assets/sprites/chars/goblin_scholar_f_v2.png",
+   "source": "chip_goblin_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_scholar_m",
+   "texture": "res://assets/sprites/chars/goblin_scholar_m.png",
+   "source": "chip_goblin_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_scholar_m@v2",
+   "texture": "res://assets/sprites/chars/goblin_scholar_m_v2.png",
+   "source": "chip_goblin_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_worker_f",
+   "texture": "res://assets/sprites/chars/goblin_worker_f.png",
+   "source": "chip_goblin_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_worker_f@v2",
+   "texture": "res://assets/sprites/chars/goblin_worker_f_v2.png",
+   "source": "chip_goblin_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_worker_m",
+   "texture": "res://assets/sprites/chars/goblin_worker_m.png",
+   "source": "chip_goblin_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_worker_m@v2",
+   "texture": "res://assets/sprites/chars/goblin_worker_m_v2.png",
+   "source": "chip_goblin_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_engineer_f",
+   "texture": "res://assets/sprites/chars/halfling_engineer_f.png",
+   "source": "chip_halfling_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_engineer_f@v2",
+   "texture": "res://assets/sprites/chars/halfling_engineer_f_v2.png",
+   "source": "chip_halfling_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_engineer_m",
+   "texture": "res://assets/sprites/chars/halfling_engineer_m.png",
+   "source": "chip_halfling_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_engineer_m@v2",
+   "texture": "res://assets/sprites/chars/halfling_engineer_m_v2.png",
+   "source": "chip_halfling_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_fighter_f",
+   "texture": "res://assets/sprites/chars/halfling_fighter_f.png",
+   "source": "chip_halfling_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_fighter_f@v2",
+   "texture": "res://assets/sprites/chars/halfling_fighter_f_v2.png",
+   "source": "chip_halfling_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_fighter_m",
+   "texture": "res://assets/sprites/chars/halfling_fighter_m.png",
+   "source": "chip_halfling_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_fighter_m@v2",
+   "texture": "res://assets/sprites/chars/halfling_fighter_m_v2.png",
+   "source": "chip_halfling_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_ranger_f",
+   "texture": "res://assets/sprites/chars/halfling_ranger_f.png",
+   "source": "chip_halfling_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_ranger_f@v2",
+   "texture": "res://assets/sprites/chars/halfling_ranger_f_v2.png",
+   "source": "chip_halfling_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_ranger_m",
+   "texture": "res://assets/sprites/chars/halfling_ranger_m.png",
+   "source": "chip_halfling_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_ranger_m@v2",
+   "texture": "res://assets/sprites/chars/halfling_ranger_m_v2.png",
+   "source": "chip_halfling_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_scholar_f",
+   "texture": "res://assets/sprites/chars/halfling_scholar_f.png",
+   "source": "chip_halfling_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_scholar_f@v2",
+   "texture": "res://assets/sprites/chars/halfling_scholar_f_v2.png",
+   "source": "chip_halfling_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_scholar_m",
+   "texture": "res://assets/sprites/chars/halfling_scholar_m.png",
+   "source": "chip_halfling_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_scholar_m@v2",
+   "texture": "res://assets/sprites/chars/halfling_scholar_m_v2.png",
+   "source": "chip_halfling_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_worker_f",
+   "texture": "res://assets/sprites/chars/halfling_worker_f.png",
+   "source": "chip_halfling_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_worker_f@v2",
+   "texture": "res://assets/sprites/chars/halfling_worker_f_v2.png",
+   "source": "chip_halfling_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_worker_m",
+   "texture": "res://assets/sprites/chars/halfling_worker_m.png",
+   "source": "chip_halfling_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_worker_m@v2",
+   "texture": "res://assets/sprites/chars/halfling_worker_m_v2.png",
+   "source": "chip_halfling_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "harpy_engineer_f",
    "texture": "res://assets/sprites/chars/harpy_engineer_f.png",
    "source": "chip_harpy_engineer",
@@ -2004,6 +3384,466 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "kobold_engineer_f",
+   "texture": "res://assets/sprites/chars/kobold_engineer_f.png",
+   "source": "chip_kobold_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_engineer_f@v2",
+   "texture": "res://assets/sprites/chars/kobold_engineer_f_v2.png",
+   "source": "chip_kobold_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_engineer_m",
+   "texture": "res://assets/sprites/chars/kobold_engineer_m.png",
+   "source": "chip_kobold_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_engineer_m@v2",
+   "texture": "res://assets/sprites/chars/kobold_engineer_m_v2.png",
+   "source": "chip_kobold_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_fighter_f",
+   "texture": "res://assets/sprites/chars/kobold_fighter_f.png",
+   "source": "chip_kobold_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_fighter_f@v2",
+   "texture": "res://assets/sprites/chars/kobold_fighter_f_v2.png",
+   "source": "chip_kobold_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_fighter_m",
+   "texture": "res://assets/sprites/chars/kobold_fighter_m.png",
+   "source": "chip_kobold_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_fighter_m@v2",
+   "texture": "res://assets/sprites/chars/kobold_fighter_m_v2.png",
+   "source": "chip_kobold_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_ranger_f",
+   "texture": "res://assets/sprites/chars/kobold_ranger_f.png",
+   "source": "chip_kobold_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_ranger_f@v2",
+   "texture": "res://assets/sprites/chars/kobold_ranger_f_v2.png",
+   "source": "chip_kobold_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_ranger_m",
+   "texture": "res://assets/sprites/chars/kobold_ranger_m.png",
+   "source": "chip_kobold_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_ranger_m@v2",
+   "texture": "res://assets/sprites/chars/kobold_ranger_m_v2.png",
+   "source": "chip_kobold_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_scholar_f",
+   "texture": "res://assets/sprites/chars/kobold_scholar_f.png",
+   "source": "chip_kobold_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_scholar_f@v2",
+   "texture": "res://assets/sprites/chars/kobold_scholar_f_v2.png",
+   "source": "chip_kobold_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_scholar_m",
+   "texture": "res://assets/sprites/chars/kobold_scholar_m.png",
+   "source": "chip_kobold_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_scholar_m@v2",
+   "texture": "res://assets/sprites/chars/kobold_scholar_m_v2.png",
+   "source": "chip_kobold_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_worker_f",
+   "texture": "res://assets/sprites/chars/kobold_worker_f.png",
+   "source": "chip_kobold_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_worker_f@v2",
+   "texture": "res://assets/sprites/chars/kobold_worker_f_v2.png",
+   "source": "chip_kobold_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_worker_m",
+   "texture": "res://assets/sprites/chars/kobold_worker_m.png",
+   "source": "chip_kobold_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_worker_m@v2",
+   "texture": "res://assets/sprites/chars/kobold_worker_m_v2.png",
+   "source": "chip_kobold_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "lamia_engineer_f",
    "texture": "res://assets/sprites/chars/lamia_engineer_f.png",
    "source": "chip_lamia_engineer",
@@ -2463,6 +4303,472 @@
    ],
    "height_px": 112,
    "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_engineer_f",
+   "texture": "res://assets/sprites/chars/lizardfolk_engineer_f.png",
+   "source": "chip_lizardfolk_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_engineer_f@v2",
+   "texture": "res://assets/sprites/chars/lizardfolk_engineer_f_v2.png",
+   "source": "chip_lizardfolk_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_engineer_m",
+   "texture": "res://assets/sprites/chars/lizardfolk_engineer_m.png",
+   "source": "chip_lizardfolk_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_engineer_m@v2",
+   "texture": "res://assets/sprites/chars/lizardfolk_engineer_m_v2.png",
+   "source": "chip_lizardfolk_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_fighter_f",
+   "texture": "res://assets/sprites/chars/lizardfolk_fighter_f.png",
+   "source": "chip_lizardfolk_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_fighter_f@v2",
+   "texture": "res://assets/sprites/chars/lizardfolk_fighter_f_v2.png",
+   "source": "chip_lizardfolk_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet",
+   "clipped_frames": 1
+  },
+  {
+   "id": "lizardfolk_fighter_m",
+   "texture": "res://assets/sprites/chars/lizardfolk_fighter_m.png",
+   "source": "chip_lizardfolk_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_fighter_m@v2",
+   "texture": "res://assets/sprites/chars/lizardfolk_fighter_m_v2.png",
+   "source": "chip_lizardfolk_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet",
+   "clipped_frames": 1
+  },
+  {
+   "id": "lizardfolk_ranger_f",
+   "texture": "res://assets/sprites/chars/lizardfolk_ranger_f.png",
+   "source": "chip_lizardfolk_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_ranger_f@v2",
+   "texture": "res://assets/sprites/chars/lizardfolk_ranger_f_v2.png",
+   "source": "chip_lizardfolk_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_ranger_m",
+   "texture": "res://assets/sprites/chars/lizardfolk_ranger_m.png",
+   "source": "chip_lizardfolk_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_ranger_m@v2",
+   "texture": "res://assets/sprites/chars/lizardfolk_ranger_m_v2.png",
+   "source": "chip_lizardfolk_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_scholar_f",
+   "texture": "res://assets/sprites/chars/lizardfolk_scholar_f.png",
+   "source": "chip_lizardfolk_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet",
+   "clipped_frames": 2
+  },
+  {
+   "id": "lizardfolk_scholar_f@v2",
+   "texture": "res://assets/sprites/chars/lizardfolk_scholar_f_v2.png",
+   "source": "chip_lizardfolk_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_scholar_m",
+   "texture": "res://assets/sprites/chars/lizardfolk_scholar_m.png",
+   "source": "chip_lizardfolk_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet",
+   "clipped_frames": 3
+  },
+  {
+   "id": "lizardfolk_scholar_m@v2",
+   "texture": "res://assets/sprites/chars/lizardfolk_scholar_m_v2.png",
+   "source": "chip_lizardfolk_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet",
+   "clipped_frames": 2
+  },
+  {
+   "id": "lizardfolk_worker_f",
+   "texture": "res://assets/sprites/chars/lizardfolk_worker_f.png",
+   "source": "chip_lizardfolk_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_worker_f@v2",
+   "texture": "res://assets/sprites/chars/lizardfolk_worker_f_v2.png",
+   "source": "chip_lizardfolk_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 103,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_worker_m",
+   "texture": "res://assets/sprites/chars/lizardfolk_worker_m.png",
+   "source": "chip_lizardfolk_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_worker_m@v2",
+   "texture": "res://assets/sprites/chars/lizardfolk_worker_m_v2.png",
+   "source": "chip_lizardfolk_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet",
+   "clipped_frames": 1
   },
   {
    "id": "machine_warden",
@@ -3405,6 +5711,466 @@
     124
    ],
    "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_engineer_f",
+   "texture": "res://assets/sprites/chars/orc_engineer_f.png",
+   "source": "chip_orc_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_engineer_f@v2",
+   "texture": "res://assets/sprites/chars/orc_engineer_f_v2.png",
+   "source": "chip_orc_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_engineer_m",
+   "texture": "res://assets/sprites/chars/orc_engineer_m.png",
+   "source": "chip_orc_engineer",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_engineer_m@v2",
+   "texture": "res://assets/sprites/chars/orc_engineer_m_v2.png",
+   "source": "chip_orc_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_fighter_f",
+   "texture": "res://assets/sprites/chars/orc_fighter_f.png",
+   "source": "chip_orc_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_fighter_f@v2",
+   "texture": "res://assets/sprites/chars/orc_fighter_f_v2.png",
+   "source": "chip_orc_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_fighter_m",
+   "texture": "res://assets/sprites/chars/orc_fighter_m.png",
+   "source": "chip_orc_fighter",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_fighter_m@v2",
+   "texture": "res://assets/sprites/chars/orc_fighter_m_v2.png",
+   "source": "chip_orc_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_ranger_f",
+   "texture": "res://assets/sprites/chars/orc_ranger_f.png",
+   "source": "chip_orc_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_ranger_f@v2",
+   "texture": "res://assets/sprites/chars/orc_ranger_f_v2.png",
+   "source": "chip_orc_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_ranger_m",
+   "texture": "res://assets/sprites/chars/orc_ranger_m.png",
+   "source": "chip_orc_ranger",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_ranger_m@v2",
+   "texture": "res://assets/sprites/chars/orc_ranger_m_v2.png",
+   "source": "chip_orc_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_scholar_f",
+   "texture": "res://assets/sprites/chars/orc_scholar_f.png",
+   "source": "chip_orc_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_scholar_f@v2",
+   "texture": "res://assets/sprites/chars/orc_scholar_f_v2.png",
+   "source": "chip_orc_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_scholar_m",
+   "texture": "res://assets/sprites/chars/orc_scholar_m.png",
+   "source": "chip_orc_scholar",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_scholar_m@v2",
+   "texture": "res://assets/sprites/chars/orc_scholar_m_v2.png",
+   "source": "chip_orc_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_worker_f",
+   "texture": "res://assets/sprites/chars/orc_worker_f.png",
+   "source": "chip_orc_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_worker_f@v2",
+   "texture": "res://assets/sprites/chars/orc_worker_f_v2.png",
+   "source": "chip_orc_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_worker_m",
+   "texture": "res://assets/sprites/chars/orc_worker_m.png",
+   "source": "chip_orc_worker",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_worker_m@v2",
+   "texture": "res://assets/sprites/chars/orc_worker_m_v2.png",
+   "source": "chip_orc_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
    "anchor_mode": "feet"
   },
   {

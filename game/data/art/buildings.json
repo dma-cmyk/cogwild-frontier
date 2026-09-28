@@ -471,6 +471,155 @@
    "back_glow": "res://assets/sprites/buildings/storehouse_back_glow.png"
   },
   {
+   "id": "t_fountain",
+   "texture": "res://assets/sprites/buildings/t_fountain.png",
+   "size_px": [
+    640,
+    610
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 609.0,
+   "source": "b_t_fountain",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/t_fountain_glow.png",
+   "back_symmetric": true,
+   "back_pending": true
+  },
+  {
+   "id": "t_general_store",
+   "texture": "res://assets/sprites/buildings/t_general_store.png",
+   "size_px": [
+    640,
+    616
+   ],
+   "base_w_px": 620.0,
+   "base_cx_px": 309.5,
+   "base_bottom_px": 615.0,
+   "source": "b_t_general_store",
+   "footprint": [
+    4,
+    4
+   ],
+   "glow": "res://assets/sprites/buildings/t_general_store_glow.png",
+   "back_texture": "res://assets/sprites/buildings/t_general_store_back.png",
+   "back_size_px": [
+    640,
+    577
+   ],
+   "back_base_w_px": 568.0,
+   "back_base_cx_px": 343.5,
+   "back_base_bottom_px": 576.0,
+   "back_glow": "res://assets/sprites/buildings/t_general_store_back_glow.png"
+  },
+  {
+   "id": "t_guild_hall",
+   "texture": "res://assets/sprites/buildings/t_guild_hall.png",
+   "size_px": [
+    640,
+    662
+   ],
+   "base_w_px": 630.0,
+   "base_cx_px": 324.5,
+   "base_bottom_px": 661.0,
+   "source": "b_t_guild_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/t_guild_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/t_guild_hall_back.png",
+   "back_size_px": [
+    640,
+    658
+   ],
+   "back_base_w_px": 632.0,
+   "back_base_cx_px": 316.5,
+   "back_base_bottom_px": 657.0,
+   "back_glow": "res://assets/sprites/buildings/t_guild_hall_back_glow.png"
+  },
+  {
+   "id": "t_inn",
+   "texture": "res://assets/sprites/buildings/t_inn.png",
+   "size_px": [
+    640,
+    604
+   ],
+   "base_w_px": 637.0,
+   "base_cx_px": 321.0,
+   "base_bottom_px": 603.0,
+   "source": "b_t_inn",
+   "footprint": [
+    4,
+    4
+   ],
+   "glow": "res://assets/sprites/buildings/t_inn_glow.png",
+   "back_texture": "res://assets/sprites/buildings/t_inn_back.png",
+   "back_size_px": [
+    640,
+    669
+   ],
+   "back_base_w_px": 623.0,
+   "back_base_cx_px": 312.0,
+   "back_base_bottom_px": 668.0,
+   "back_glow": "res://assets/sprites/buildings/t_inn_back_glow.png"
+  },
+  {
+   "id": "t_smithy",
+   "texture": "res://assets/sprites/buildings/t_smithy.png",
+   "size_px": [
+    640,
+    683
+   ],
+   "base_w_px": 620.0,
+   "base_cx_px": 309.5,
+   "base_bottom_px": 682.0,
+   "source": "b_t_smithy",
+   "footprint": [
+    4,
+    4
+   ],
+   "glow": "res://assets/sprites/buildings/t_smithy_glow.png",
+   "back_texture": "res://assets/sprites/buildings/t_smithy_back.png",
+   "back_size_px": [
+    640,
+    660
+   ],
+   "back_base_w_px": 633.0,
+   "back_base_cx_px": 316.0,
+   "back_base_bottom_px": 659.0,
+   "back_glow": "res://assets/sprites/buildings/t_smithy_back_glow.png"
+  },
+  {
+   "id": "t_tavern",
+   "texture": "res://assets/sprites/buildings/t_tavern.png",
+   "size_px": [
+    640,
+    691
+   ],
+   "base_w_px": 603.0,
+   "base_cx_px": 330.0,
+   "base_bottom_px": 690.0,
+   "source": "b_t_tavern",
+   "footprint": [
+    4,
+    4
+   ],
+   "glow": "res://assets/sprites/buildings/t_tavern_glow.png",
+   "back_texture": "res://assets/sprites/buildings/t_tavern_back.png",
+   "back_size_px": [
+    640,
+    766
+   ],
+   "back_base_w_px": 583.0,
+   "back_base_cx_px": 319.0,
+   "back_base_bottom_px": 765.0,
+   "back_glow": "res://assets/sprites/buildings/t_tavern_back_glow.png"
+  },
+  {
    "id": "trade_hall",
    "texture": "res://assets/sprites/buildings/trade_hall.png",
    "size_px": [
@@ -573,6 +722,141 @@
    "back_symmetric": true
   },
   {
+   "id": "v_gnome_hall",
+   "texture": "res://assets/sprites/buildings/v_gnome_hall.png",
+   "size_px": [
+    640,
+    584
+   ],
+   "base_w_px": 630.0,
+   "base_cx_px": 314.5,
+   "base_bottom_px": 583.0,
+   "source": "b_v_gnome_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_gnome_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_gnome_hall_back.png",
+   "back_size_px": [
+    640,
+    581
+   ],
+   "back_base_w_px": 632.0,
+   "back_base_cx_px": 318.5,
+   "back_base_bottom_px": 580.0,
+   "back_glow": "res://assets/sprites/buildings/v_gnome_hall_back_glow.png"
+  },
+  {
+   "id": "v_gnome_home",
+   "texture": "res://assets/sprites/buildings/v_gnome_home.png",
+   "size_px": [
+    640,
+    857
+   ],
+   "base_w_px": 562.0,
+   "base_cx_px": 314.5,
+   "base_bottom_px": 856.0,
+   "source": "b_v_gnome_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_gnome_home_glow.png",
+   "back_symmetric": true,
+   "back_pending": true
+  },
+  {
+   "id": "v_goblin_hall",
+   "texture": "res://assets/sprites/buildings/v_goblin_hall.png",
+   "size_px": [
+    640,
+    598
+   ],
+   "base_w_px": 625.0,
+   "base_cx_px": 318.0,
+   "base_bottom_px": 597.0,
+   "source": "b_v_goblin_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_goblin_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_goblin_hall_back.png",
+   "back_size_px": [
+    640,
+    588
+   ],
+   "back_base_w_px": 633.0,
+   "back_base_cx_px": 320.0,
+   "back_base_bottom_px": 587.0,
+   "back_glow": "res://assets/sprites/buildings/v_goblin_hall_back_glow.png"
+  },
+  {
+   "id": "v_goblin_home",
+   "texture": "res://assets/sprites/buildings/v_goblin_home.png",
+   "size_px": [
+    640,
+    642
+   ],
+   "base_w_px": 635.0,
+   "base_cx_px": 318.0,
+   "base_bottom_px": 641.0,
+   "source": "b_v_goblin_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_goblin_home_glow.png",
+   "back_symmetric": true,
+   "back_pending": true
+  },
+  {
+   "id": "v_halfling_hall",
+   "texture": "res://assets/sprites/buildings/v_halfling_hall.png",
+   "size_px": [
+    640,
+    523
+   ],
+   "base_w_px": 637.0,
+   "base_cx_px": 320.0,
+   "base_bottom_px": 522.0,
+   "source": "b_v_halfling_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_halfling_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_halfling_hall_back.png",
+   "back_size_px": [
+    640,
+    506
+   ],
+   "back_base_w_px": 638.0,
+   "back_base_cx_px": 320.5,
+   "back_base_bottom_px": 505.0,
+   "back_glow": "res://assets/sprites/buildings/v_halfling_hall_back_glow.png"
+  },
+  {
+   "id": "v_halfling_home",
+   "texture": "res://assets/sprites/buildings/v_halfling_home.png",
+   "size_px": [
+    640,
+    480
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 479.0,
+   "source": "b_v_halfling_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_halfling_home_glow.png",
+   "back_symmetric": true,
+   "back_pending": true
+  },
+  {
    "id": "v_harpy_hall",
    "texture": "res://assets/sprites/buildings/v_harpy_hall.png",
    "size_px": [
@@ -661,6 +945,51 @@
    "back_symmetric": true
   },
   {
+   "id": "v_kobold_hall",
+   "texture": "res://assets/sprites/buildings/v_kobold_hall.png",
+   "size_px": [
+    640,
+    580
+   ],
+   "base_w_px": 622.0,
+   "base_cx_px": 310.5,
+   "base_bottom_px": 579.0,
+   "source": "b_v_kobold_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_kobold_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_kobold_hall_back.png",
+   "back_size_px": [
+    640,
+    582
+   ],
+   "back_base_w_px": 630.0,
+   "back_base_cx_px": 314.5,
+   "back_base_bottom_px": 581.0,
+   "back_glow": "res://assets/sprites/buildings/v_kobold_hall_back_glow.png"
+  },
+  {
+   "id": "v_kobold_home",
+   "texture": "res://assets/sprites/buildings/v_kobold_home.png",
+   "size_px": [
+    640,
+    577
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 576.0,
+   "source": "b_v_kobold_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_kobold_home_glow.png",
+   "back_symmetric": true,
+   "back_pending": true
+  },
+  {
    "id": "v_lamia_hall",
    "texture": "res://assets/sprites/buildings/v_lamia_hall.png",
    "size_px": [
@@ -703,6 +1032,51 @@
    ],
    "glow": "res://assets/sprites/buildings/v_lamia_home_glow.png",
    "back_symmetric": true
+  },
+  {
+   "id": "v_lizardfolk_hall",
+   "texture": "res://assets/sprites/buildings/v_lizardfolk_hall.png",
+   "size_px": [
+    640,
+    607
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 606.0,
+   "source": "b_v_lizardfolk_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_lizardfolk_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_lizardfolk_hall_back.png",
+   "back_size_px": [
+    640,
+    607
+   ],
+   "back_base_w_px": 640.0,
+   "back_base_cx_px": 319.5,
+   "back_base_bottom_px": 606.0,
+   "back_glow": "res://assets/sprites/buildings/v_lizardfolk_hall_back_glow.png"
+  },
+  {
+   "id": "v_lizardfolk_home",
+   "texture": "res://assets/sprites/buildings/v_lizardfolk_home.png",
+   "size_px": [
+    640,
+    872
+   ],
+   "base_w_px": 630.0,
+   "base_cx_px": 318.5,
+   "base_bottom_px": 871.0,
+   "source": "b_v_lizardfolk_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_lizardfolk_home_glow.png",
+   "back_symmetric": true,
+   "back_pending": true
   },
   {
    "id": "v_minotaur_hall",
@@ -790,6 +1164,51 @@
    ],
    "glow": "res://assets/sprites/buildings/v_oni_home_glow.png",
    "back_symmetric": true
+  },
+  {
+   "id": "v_orc_hall",
+   "texture": "res://assets/sprites/buildings/v_orc_hall.png",
+   "size_px": [
+    640,
+    547
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 546.0,
+   "source": "b_v_orc_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_orc_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_orc_hall_back.png",
+   "back_size_px": [
+    640,
+    541
+   ],
+   "back_base_w_px": 640.0,
+   "back_base_cx_px": 319.5,
+   "back_base_bottom_px": 540.0,
+   "back_glow": "res://assets/sprites/buildings/v_orc_hall_back_glow.png"
+  },
+  {
+   "id": "v_orc_home",
+   "texture": "res://assets/sprites/buildings/v_orc_home.png",
+   "size_px": [
+    640,
+    513
+   ],
+   "base_w_px": 639.0,
+   "base_cx_px": 319.0,
+   "base_bottom_px": 512.0,
+   "source": "b_v_orc_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_orc_home_glow.png",
+   "back_symmetric": true,
+   "back_pending": true
   },
   {
    "id": "v_stoutkin_hall",

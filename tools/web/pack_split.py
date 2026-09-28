@@ -3,7 +3,7 @@
 
 The browser downloads the core pack before the engine starts, so it only holds what the first
 minutes need: UI, fonts, audio, terrain, props, the four original races' looks v1-v3 and the
-buildings the player can construct. Everything else - the six mythic races, the fourth and fifth
+buildings the player can construct. Everything else - the mythic and classic races added later, the fourth and fifth
 looks, painted back views, race villages and the buildings that only stand at world sites - goes
 into an optional pack that ``WebArt`` fetches in the background (see src/core/web_extra_pack.gd).
 
@@ -21,10 +21,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 PRESETS = ROOT / "game" / "export_presets.cfg"
 
-## Races whose painted art was added in round 5; rare enough that the colony can start without it.
-LATE_RACES = ("minotaur", "centaur", "harpy", "lamia", "oni", "tengu")
-## Buildings that only ever stand at a world site, never in the player's colony.
-SITE_BUILDINGS = ("bandit", "machine", "ruin", "trade", "wanderer", "wreck")
+## Races whose painted art was added in rounds 5 and 6; rare enough that the colony can start without it.
+LATE_RACES = ("minotaur", "centaur", "harpy", "lamia", "oni", "tengu",
+    "goblin", "orc", "kobold", "lizardfolk", "gnome", "halfling")
+## Buildings that only ever stand at a world site (including the town, `t_*`), never in the player's colony.
+SITE_BUILDINGS = ("bandit", "machine", "ruin", "trade", "wanderer", "wreck", "t")
 
 EXTRA_PATTERNS: list[str] = (
     [f"assets/sprites/chars/{race}_*.png" for race in LATE_RACES]
