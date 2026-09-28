@@ -37,5 +37,17 @@
 	"v_oni_home": {"name": "鬼の長屋", "description": "黒い梁と深い庇を持つ重厚な鬼の家。"},
 	"v_oni_hall": {"name": "鬼の大広間", "description": "鉄を巻いた柱と朱の庇を持つ段重ねの鬼の堂。"},
 	"v_tengu_home": {"name": "山の宿", "description": "高い段丘に張り出した天狗の家。"},
-	"v_tengu_hall": {"name": "巻物の堂", "description": "巻物と護符を納める段重ねの天狗の堂。"}
+	"v_tengu_hall": {"name": "巻物の堂", "description": "巻物と護符を納める段重ねの天狗の堂。"},
+	"v_goblin_home": {"name": "スクラップ小屋", "description": "拾い集めた板や錆びた金属で作られた、今にも崩れそうな小屋。"},
+	"v_goblin_hall": {"name": "ガラクタ堂", "description": "回収した資材が山のように積まれた、ゴブリンたちの生活の中心。"},
+	"v_orc_home": {"name": "獣皮のテント", "description": "引き伸ばした獣の皮と太い丸太で作られた丈夫なテント。"},
+	"v_orc_hall": {"name": "戦長の大天幕", "description": "オークの長たちが集まり、作戦を練るための大きな幕舎。"},
+	"v_kobold_home": {"name": "泥のあばら家", "description": "固めた泥と枝で編まれた、天井の低い手狭な家。"},
+	"v_kobold_hall": {"name": "竜牙の社", "description": "磨かれた石や拾い集めた装飾品が散らばる集会所。"},
+	"v_lizardfolk_home": {"name": "葦の小屋", "description": "沼地の葦と泥を編み込んで作られた、湿り気のあるドーム状の小屋。"},
+	"v_lizardfolk_hall": {"name": "日向ぼっこの高台", "description": "泥と木で作られた大きな高台。リザードフォークの長老たちが集まる。"},
+	"v_gnome_home": {"name": "キノコハウス", "description": "キノコに似た丸みを帯びたカラフルな屋根の風変わりな家。"},
+	"v_gnome_hall": {"name": "時計仕掛けの館", "description": "歯車が回り、機械の音が響き渡る複雑な構造の集会所。"},
+	"v_halfling_home": {"name": "丸扉の横穴", "description": "芝屋根と完璧な丸い扉を持つ、居心地の良い横穴の家。"},
+	"v_halfling_hall": {"name": "宴の館", "description": "巨大なダイニングテーブルと温かい暖炉を中心に据えた、広くて歓迎的な館。"}
 }

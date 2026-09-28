@@ -4,7 +4,10 @@ extends RefCounted
 ## meshes per visual key and attaches the moving / particle / light nodes.
 ## Geometry lives in src/visual/world/ (BuildParts + BldFrontier + BldOutland).
 
-const FOOTPRINTS := {
+## Building tables whose entries carry a `size` footprint.
+const FOOTPRINT_TABLES: Array[String] = ["buildings", "buildings/villages", "buildings/town"]
+## Fallback footprints for ids that are not in a buildings table.
+const SITE_FOOTPRINTS := {
 	"hearth": Vector2i(4, 4), "house": Vector2i(3, 3), "storehouse": Vector2i(3, 4),
 	"workshop": Vector2i(4, 4), "smelter": Vector2i(3, 3), "windmill": Vector2i(3, 3),
 	"sky_dock": Vector2i(4, 4), "watchtower": Vector2i(2, 2), "wall": Vector2i(1, 1),
@@ -16,17 +19,16 @@ const FOOTPRINTS := {
 	"wanderer_tent": Vector2i(2, 2), "ruin_arch": Vector2i(3, 1), "ruin_pillar": Vector2i(1, 1),
 	"ruin_wall": Vector2i(3, 1), "ruin_statue": Vector2i(2, 2), "ruin_vault": Vector2i(3, 3),
 	"wreck_airship": Vector2i(6, 3),
-	"v_human_home": Vector2i(3, 3), "v_human_hall": Vector2i(5, 5),
-	"v_sylvan_home": Vector2i(3, 3), "v_sylvan_hall": Vector2i(5, 5),
-	"v_stoutkin_home": Vector2i(3, 3), "v_stoutkin_hall": Vector2i(5, 5),
-	"v_vulpin_home": Vector2i(3, 3), "v_vulpin_hall": Vector2i(5, 5),
-	"v_minotaur_home": Vector2i(3, 3), "v_minotaur_hall": Vector2i(5, 5),
-	"v_centaur_home": Vector2i(3, 3), "v_centaur_hall": Vector2i(5, 5),
-	"v_harpy_home": Vector2i(3, 3), "v_harpy_hall": Vector2i(5, 5),
-	"v_lamia_home": Vector2i(3, 3), "v_lamia_hall": Vector2i(5, 5),
-	"v_oni_home": Vector2i(3, 3), "v_oni_hall": Vector2i(5, 5),
-	"v_tengu_home": Vector2i(3, 3), "v_tengu_hall": Vector2i(5, 5)
 }
+
+## Footprint in tiles: the `size` of the building definition (player or village/town tables), else SITE_FOOTPRINTS.
+static func footprint(type_id: String) -> Vector2i:
+	for table: String in FOOTPRINT_TABLES:
+		var def := DB.get_def(table, type_id)
+		if def.has("size"):
+			var s: Array = def["size"]
+			return Vector2i(int(s[0]), int(s[1]))
+	return SITE_FOOTPRINTS.get(type_id, Vector2i(3, 3))
 ## Style is fixed for the non-player factions; only the frontier ids honour the `style` argument.
 const FIXED_STYLE := {
 	"bandit_tent": "bandit", "bandit_hut": "bandit", "bandit_tower": "bandit",
@@ -44,10 +46,10 @@ static var _cache: Dictionary = {}
 static func create(type_id: String, style: String, variant_seed: int, level: int = 1) -> BuildingVisual:
 	var profile := World.profile_chunks()
 	var create_start_usec: int = Time.get_ticks_usec() if profile else 0
-	var id := type_id if FOOTPRINTS.has(type_id) else "house"
+	var id := type_id
 	var faction: String = FIXED_STYLE.get(id, style if STYLES.has(style) else "frontier")
 	var lv := clampi(level, 1, 3)
-	var fp: Vector2i = FOOTPRINTS[id]
+	var fp: Vector2i = footprint(id)
 	var stages: Array[ArrayMesh] = [null, null, null, stage_mesh(id, faction, variant_seed, lv, 3)]
 	var mesh_cache_usec: int = Time.get_ticks_usec() - create_start_usec if profile else 0
 	var fx := _effects(id, variant_seed, lv)
@@ -97,7 +99,7 @@ static func stage_mesh(id: String, faction: String, seed: int, lv: int, stage: i
 
 static func _make_mesh(id: String, style: String, seed: int, lv: int, stage: int) -> ArrayMesh:
 	var p := _palette(id, style)
-	var fp: Vector2i = FOOTPRINTS[id]
+	var fp: Vector2i = footprint(id)
 	var k := MeshKit.new()
 	k.shade_jitter = 0.03
 	if stage <= 1:

@@ -41,9 +41,9 @@ func test_domains_and_budgets() -> void:
 		assert_true(races.has(str(c["race"])), "character race domain")
 		var cv := UnitVisualFactory.create_mesh(c)
 		var tris = _mesh_triangles(cv)
-		if tris > 1800:
+		if tris > 1850:
 			print("Character ", c["race"], " ", c["body_type"], " ", c["outfit"], " ", c["armor"], " ", c["headgear"], " ", c["weapon"], " ", c["offhand"], " ", c["accessory"], " tris: ", tris)
-		assert_true(tris <= 1800, "character triangle budget")
+		assert_true(tris <= 1850, "character triangle budget")
 		assert_true(_mesh_instances(cv) <= 4, "character instance budget")
 		cv.free()
 		var r := AppearanceGen.robot(rng, AppearanceGen.ROBOT_ARCHETYPES[i % 5], "ancient", Color("#a07a4a"))

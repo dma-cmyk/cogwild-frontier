@@ -1,10 +1,10 @@
 {
   "palettes": {
-    "frontier": {"primary":"#3a5da8","secondary":"#e9dcc0","accent":"#d9b04c","wood":"#8a5a34","glow":"#5bc8ff"},
-    "bandit": {"primary":"#b33a2e","secondary":"#4a3426","accent":"#8c4a2a","wood":"#7a6a55","glow":"#ff754a"},
-    "ancient": {"primary":"#a07a4a","secondary":"#5b6470","accent":"#ff6a2a","wood":"#333943","glow":"#ff6a2a"},
-    "merchant": {"primary":"#4f8a4b","secondary":"#efe3c2","accent":"#d9b04c","wood":"#8a6a4a","glow":"#ffd66b"},
-    "neutral": {"primary":"#8a6a4a","secondary":"#8d8f86","accent":"#3f8f8a","wood":"#6b5138","glow":"#8ce0d5"}
+    "frontier":{"primary":"#3a5da8","secondary":"#e9dcc0","accent":"#d9b04c","wood":"#8a5a34","glow":"#5bc8ff"},
+    "bandit":{"primary":"#b33a2e","secondary":"#4a3426","accent":"#8c4a2a","wood":"#7a6a55","glow":"#ff754a"},
+    "ancient":{"primary":"#a07a4a","secondary":"#5b6470","accent":"#ff6a2a","wood":"#333943","glow":"#ff6a2a"},
+    "merchant":{"primary":"#4f8a4b","secondary":"#efe3c2","accent":"#d9b04c","wood":"#8a6a4a","glow":"#ffd66b"},
+    "neutral":{"primary":"#8a6a4a","secondary":"#8d8f86","accent":"#3f8f8a","wood":"#6b5138","glow":"#8ce0d5"}
   },
   "roles": {
     "settler":{"outfit":"tunic","headgear":"cap","accessory":"backpack","weapon":"none","offhand":"none"},
@@ -40,6 +40,12 @@
     "harpy":{"skins":["#e3bc98","#c18e6c","#9b694c"],"hair":["#37251f","#5b3a2b","#ad7547"]},
     "lamia":{"skins":["#b58b65","#8f704e","#d2ac7f"],"hair":["#29252b","#57412f","#98704a"]},
     "oni":{"skins":["#a84136","#c7573e","#8b302b"],"hair":["#1f202a","#3c2930","#6a4137"]},
-    "tengu":{"skins":["#d5a77e","#b57b58","#80533d"],"hair":["#25262a","#414044","#7b5540"]}
+    "tengu":{"skins":["#d5a77e","#b57b58","#80533d"],"hair":["#25262a","#414044","#7b5540"]},
+    "goblin":{"skins":["#7b9e4a","#678c3b","#8caf5a","#527529"],"hair":["#2e3a1f","#1b2410","#40522a","#151c0a"]},
+    "orc":{"skins":["#4f6c38","#3f592a","#5c7d42","#344a20"],"hair":["#141a0d","#29361a","#0f1409","#3b4a25"]},
+    "kobold":{"skins":["#96482a","#a85d3b","#7d361b","#662810"],"hair":["#3a1607","#2b0f04","#521f0b","#1a0802"]},
+    "lizardfolk":{"skins":["#4c7847","#5a8c54","#3e663a","#2e4f2b"],"hair":["#1b2e1a","#122110","#284027","#0c170a"]},
+    "gnome":{"skins":["#e8ae7f","#dba06e","#f2c199","#c78d59"],"hair":["#a3557e","#703554","#c96d9e","#8c4067"]},
+    "halfling":{"skins":["#f0cba1","#deaf7c","#fcdba9","#c2915b"],"hair":["#85542a","#663e1d","#a36e3d","#523015"]}
   }
 }

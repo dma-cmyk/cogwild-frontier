@@ -28,6 +28,12 @@ static func metrics(d: Dictionary) -> Dictionary:
 		"lamia": h *= 1.04
 		"oni": h *= 1.08
 		"tengu": h *= 1.04
+		"goblin": h *= 0.86
+		"orc": h *= 1.10
+		"kobold": h *= 0.84
+		"lizardfolk": h *= 1.07
+		"gnome": h *= 0.78
+		"halfling": h *= 0.84
 	var bw := 0.300
 	match body_type:
 		"slim": bw = 0.262
@@ -38,8 +44,8 @@ static func metrics(d: Dictionary) -> Dictionary:
 		bw += 0.036
 	elif race == "minotaur":
 		bw += 0.055
-	elif race == "oni":
-		bw += 0.035
+	elif race == "oni" or race == "orc":
+		bw += 0.035 if race == "oni" else 0.05
 	elif race == "sylvan":
 		bw -= 0.020
 	bw *= h / 1.18
@@ -431,6 +437,45 @@ static func _race_features(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictio
 	elif race == "tengu":
 		_beak(kit, m)
 		_feather_wings(kit, m, Color("#443a32"), 0.52)
+	elif race == "goblin":
+		for side in [-1.0, 1.0]:
+			kit.push_trs(Vector3(side * rx * 0.85, hy - ry * 0.05, -rz * 0.15), Vector3(-20.0, side * 45.0, side * 15.0))
+			kit.cone(Vector3(side * rx * 0.2, 0, 0), rx * 0.5, rx * 0.15, c.skin, 5)
+			kit.pop()
+	elif race == "orc":
+		for side in [-1.0, 1.0]:
+			kit.push_trs(_face_pt(m, side * rx * 0.25, -ry * 0.38, 0.01), Vector3(15.0, 0, side * 20.0))
+			kit.cone(Vector3(0, ry * 0.15, 0), ry * 0.22, rx * 0.06, Color("#e6e1d3"), 4)
+			kit.pop()
+	elif race == "kobold":
+		kit.push_trs(Vector3(0, hy - ry * 0.15, rz * 0.85), Vector3(80.0, 0, 0))
+		kit.cone(Vector3.ZERO, ry * 0.5, rx * 0.25, c.skin, 5)
+		kit.pop()
+		kit.push_trs(Vector3(0, float(m.hip_y) + m.bw * 0.3, -m.bd * 0.4), Vector3(-45.0, 0, 0))
+		kit.cone(Vector3(0, -m.bw * 0.4, 0), m.bw * 0.8, m.bw * 0.15, c.skin, 5)
+		kit.pop()
+	elif race == "lizardfolk":
+		kit.push_trs(Vector3(0, hy - ry * 0.1, rz * 0.8), Vector3(85.0, 0, 0))
+		kit.cone(Vector3.ZERO, ry * 0.6, rx * 0.35, c.skin, 6)
+		kit.pop()
+		kit.push_trs(Vector3(0, float(m.hip_y) + m.bw * 0.4, -m.bd * 0.4), Vector3(-30.0, 0, 0))
+		kit.cone(Vector3(0, -m.bw * 0.6, 0), m.bw * 1.2, m.bw * 0.25, c.skin, 6)
+		kit.pop()
+	elif race == "gnome":
+		kit.push_trs(_face_pt(m, 0.0, -ry * 0.1, 0.0), Vector3(10.0, 0, 0))
+		kit.ellipsoid(Vector3(0, 0, rz * 0.15), Vector3(rx * 0.15, ry * 0.15, rz * 0.2), c.skin.darkened(0.1), 5, 4)
+		kit.pop()
+		var gear := str(d.get("headgear", "none"))
+		if gear == "none":
+			kit.push_trs(Vector3(0, hy + ry * 0.6, 0), Vector3(15.0, 0, 0))
+			kit.cone(Vector3(0, ry * 0.8, 0), ry * 1.6, rx * 1.1, c.accent, 6)
+			kit.pop()
+	elif race == "halfling":
+		if str(d.get("hair", "short")) != "bald":
+			for i in 6:
+				var a := TAU * float(i) / 6.0
+				kit.ellipsoid(Vector3(cos(a) * rx * 0.9, hy + ry * 0.2 + sin(a * 2.0) * ry * 0.1, sin(a) * rz * 0.9),
+					Vector3(rx * 0.3, rx * 0.3, rx * 0.3), c.hair, 4, 2)
 
 
 static func _horn_pair(kit: MeshKit, m: Dictionary, race: String) -> void:
@@ -904,10 +949,18 @@ static func leg(d: Dictionary, side: int) -> ArrayMesh:
 	kit.push_trs(Vector3(0, 0, 0))
 	if visible_top > leg_bottom:
 		kit.frustum(Vector3(0, leg_bottom - hip, 0), visible_top - leg_bottom, thigh * 0.82, thigh, trouser, 7)
-	# boot
-	kit.frustum(Vector3(0, boot_h * 0.10 - hip, 0), boot_h * 0.62, thigh * 0.88, thigh * 0.92, boot, 7)
-	kit.box(Vector3(0, boot_h * 0.30 - hip, thigh * 0.28), Vector3(thigh * 1.7, boot_h * 0.60, thigh * 1.5), boot)
-	kit.box(Vector3(0, boot_h * 0.09 - hip, thigh * 0.44), Vector3(thigh * 1.78, boot_h * 0.22, thigh * 1.95), boot.darkened(0.22))
+	if str(d.get("race", "human")) == "halfling":
+		kit.frustum(Vector3(0, boot_h * 0.10 - hip, 0), boot_h * 0.62, thigh * 0.82, thigh * 0.85, c.skin, 7)
+		kit.box(Vector3(0, boot_h * 0.30 - hip, thigh * 0.28), Vector3(thigh * 1.5, boot_h * 0.60, thigh * 1.3), c.skin)
+		kit.box(Vector3(0, boot_h * 0.09 - hip, thigh * 0.44), Vector3(thigh * 1.6, boot_h * 0.22, thigh * 1.8), c.skin.lightened(0.1))
+		# some curly hair on top of foot
+		var hr := thigh * 0.3
+		kit.ellipsoid(Vector3(0, boot_h * 0.4 - hip, thigh * 0.6), Vector3(hr, hr, hr), c.hair, 3, 2)
+	else:
+		# boot
+		kit.frustum(Vector3(0, boot_h * 0.10 - hip, 0), boot_h * 0.62, thigh * 0.88, thigh * 0.92, boot, 7)
+		kit.box(Vector3(0, boot_h * 0.30 - hip, thigh * 0.28), Vector3(thigh * 1.7, boot_h * 0.60, thigh * 1.5), boot)
+		kit.box(Vector3(0, boot_h * 0.09 - hip, thigh * 0.44), Vector3(thigh * 1.78, boot_h * 0.22, thigh * 1.95), boot.darkened(0.22))
 	if str(d.get("armor", "none")) == "plate":
 		kit.push_trs(Vector3(0, -hip, 0))
 		kit.frustum(Vector3(0, boot_h * 0.55, 0), (visible_top - boot_h) * 0.55, thigh * 0.98, thigh * 0.92, c.metal, 7)

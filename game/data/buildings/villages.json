@@ -18,5 +18,17 @@
 	{"id": "v_oni_home", "name": "Oni Longhouse", "size": [3, 3], "category": "village", "buildable": false, "hp": 320, "description": "A heavy oni house of dark beams and deep eaves."},
 	{"id": "v_oni_hall", "name": "Oni Great Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 640, "description": "A tiered oni hall with iron-bound posts and red eaves."},
 	{"id": "v_tengu_home", "name": "Mountain Perch", "size": [3, 3], "category": "village", "buildable": false, "hp": 250, "description": "A tengu house perched on a high terrace."},
-	{"id": "v_tengu_hall", "name": "Scroll Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 520, "description": "The tiered tengu hall where scrolls and charms are kept."}
+	{"id": "v_tengu_hall", "name": "Scroll Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 520, "description": "The tiered tengu hall where scrolls and charms are kept."},
+	{"id": "v_goblin_home", "name": "Scrap Shanty", "size": [3, 3], "category": "village", "buildable": false, "hp": 210, "description": "A precarious lean-to made of scavenged planks and rusted metal."},
+	{"id": "v_goblin_hall", "name": "Junk Heap Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 450, "description": "A sprawling pile of salvaged materials serving as the center of goblin life."},
+	{"id": "v_orc_home", "name": "Hide Tent", "size": [3, 3], "category": "village", "buildable": false, "hp": 310, "description": "A sturdy tent made from stretched animal hides and thick timber."},
+	{"id": "v_orc_hall", "name": "War Chief's Lodge", "size": [5, 5], "category": "village", "buildable": false, "hp": 580, "description": "The dominant lodge where orc chiefs hold court and plan raids."},
+	{"id": "v_kobold_home", "name": "Mud Hovel", "size": [3, 3], "category": "village", "buildable": false, "hp": 220, "description": "A cramped, low-roofed hovel constructed from hardened mud and wattle."},
+	{"id": "v_kobold_hall", "name": "Dragon-Tooth Shrine", "size": [5, 5], "category": "village", "buildable": false, "hp": 460, "description": "A community space littered with polished rocks and scavenged trinkets."},
+	{"id": "v_lizardfolk_home", "name": "Reed Hut", "size": [3, 3], "category": "village", "buildable": false, "hp": 280, "description": "A damp dome woven from strong swamp reeds and mud."},
+	{"id": "v_lizardfolk_hall", "name": "Sun-Basking Platform", "size": [5, 5], "category": "village", "buildable": false, "hp": 530, "description": "A large raised structure of mud and wood where the elder lizardfolk gather."},
+	{"id": "v_gnome_home", "name": "Mushroom House", "size": [3, 3], "category": "village", "buildable": false, "hp": 250, "description": "An eccentric house with a bulbous, colorful roof resembling a mushroom."},
+	{"id": "v_gnome_hall", "name": "Clockwork Pavilion", "size": [5, 5], "category": "village", "buildable": false, "hp": 500, "description": "A complex, whirring meeting hall filled with turning gears and ticking gadgets."},
+	{"id": "v_halfling_home", "name": "Round-Door Burrow", "size": [3, 3], "category": "village", "buildable": false, "hp": 270, "description": "A cozy, turf-roofed burrow with a perfectly round door."},
+	{"id": "v_halfling_hall", "name": "Feast Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 510, "description": "A long, welcoming hall focused around a massive dining table and a warm hearth."}
 ]

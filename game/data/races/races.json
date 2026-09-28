@@ -25,7 +25,8 @@
     "age_range": [
       18,
       68
-    ]
+    ],
+    "height": 1.55
   },
   {
     "id": "sylvan",
@@ -55,7 +56,8 @@
     "age_range": [
       20,
       140
-    ]
+    ],
+    "height": 1.65
   },
   {
     "id": "stoutkin",
@@ -85,7 +87,8 @@
     "age_range": [
       24,
       96
-    ]
+    ],
+    "height": 1.3
   },
   {
     "id": "vulpin",
@@ -115,7 +118,8 @@
     "age_range": [
       18,
       72
-    ]
+    ],
+    "height": 1.5
   },
   {
     "id": "minotaur",
@@ -145,7 +149,8 @@
     "age_range": [
       22,
       96
-    ]
+    ],
+    "height": 1.78
   },
   {
     "id": "centaur",
@@ -175,7 +180,8 @@
     "age_range": [
       18,
       82
-    ]
+    ],
+    "height": 1.85
   },
   {
     "id": "harpy",
@@ -205,7 +211,8 @@
     "age_range": [
       17,
       66
-    ]
+    ],
+    "height": 1.62
   },
   {
     "id": "lamia",
@@ -235,7 +242,8 @@
     "age_range": [
       25,
       128
-    ]
+    ],
+    "height": 1.68
   },
   {
     "id": "oni",
@@ -265,7 +273,8 @@
     "age_range": [
       20,
       92
-    ]
+    ],
+    "height": 1.7
   },
   {
     "id": "tengu",
@@ -296,6 +305,189 @@
     "age_range": [
       22,
       114
-    ]
+    ],
+    "height": 1.68
+  },
+  {
+    "id": "goblin",
+    "name": "Goblin",
+    "plural": "Goblins",
+    "description": "Resourceful scavengers with a knack for tinkering and a penchant for mischief.",
+    "name_set": "goblin",
+    "playable": true,
+    "spawn_weight": 0.5,
+    "base": {
+      "max_hp": 80,
+      "move_speed": 2.4,
+      "vision": 9,
+      "carry": 15,
+      "energy": 110
+    },
+    "skill_bias": {
+      "mining": 2,
+      "engineering": 2
+    },
+    "trait_weights": {
+      "reckless": 1.5,
+      "curious": 1.2,
+      "tinker_talent": 1.4
+    },
+    "age_range": [
+      14,
+      55
+    ],
+    "height": 1.1
+  },
+  {
+    "id": "orc",
+    "name": "Orc",
+    "plural": "Orcs",
+    "description": "Proud and formidable warriors, resilient to the harshest of frontiers.",
+    "name_set": "orc",
+    "playable": true,
+    "spawn_weight": 0.4,
+    "base": {
+      "max_hp": 135,
+      "move_speed": 2.1,
+      "vision": 8,
+      "carry": 28,
+      "energy": 105
+    },
+    "skill_bias": {
+      "melee": 4,
+      "construction": 2,
+      "mining": 2
+    },
+    "trait_weights": {
+      "brave": 1.5,
+      "hot_headed": 1.3,
+      "iron_stomach": 1.5
+    },
+    "age_range": [
+      16,
+      75
+    ],
+    "height": 1.8
+  },
+  {
+    "id": "kobold",
+    "name": "Kobold",
+    "plural": "Kobolds",
+    "description": "Skittish but industrious reptilian folk who hoard oddities and dig deep.",
+    "name_set": "kobold",
+    "playable": true,
+    "spawn_weight": 0.5,
+    "base": {
+      "max_hp": 75,
+      "move_speed": 2.5,
+      "vision": 11,
+      "carry": 14,
+      "energy": 95
+    },
+    "skill_bias": {
+      "mining": 3,
+      "scouting": 2
+    },
+    "trait_weights": {
+      "timid": 1.2,
+      "collector": 1.5,
+      "quick_footed": 1.3
+    },
+    "age_range": [
+      12,
+      60
+    ],
+    "height": 1.2
+  },
+  {
+    "id": "lizardfolk",
+    "name": "Lizardfolk",
+    "plural": "Lizardfolk",
+    "description": "Patient, stoic survivors of the swamps, perfectly adapted to the wild.",
+    "name_set": "lizardfolk",
+    "playable": true,
+    "spawn_weight": 0.35,
+    "base": {
+      "max_hp": 120,
+      "move_speed": 2.1,
+      "vision": 10,
+      "carry": 22,
+      "energy": 100
+    },
+    "skill_bias": {
+      "melee": 3,
+      "farming": 2,
+      "woodcutting": 2
+    },
+    "trait_weights": {
+      "calm": 1.5,
+      "nature_lover": 1.2,
+      "iron_stomach": 1.3
+    },
+    "age_range": [
+      15,
+      80
+    ],
+    "height": 1.75
+  },
+  {
+    "id": "gnome",
+    "name": "Gnome",
+    "plural": "Gnomes",
+    "description": "Inventive and eccentric scholars who constantly push the boundaries of knowledge.",
+    "name_set": "gnome",
+    "playable": true,
+    "spawn_weight": 0.4,
+    "base": {
+      "max_hp": 85,
+      "move_speed": 2.0,
+      "vision": 8,
+      "carry": 16,
+      "energy": 115
+    },
+    "skill_bias": {
+      "engineering": 5,
+      "medicine": 2
+    },
+    "trait_weights": {
+      "curious": 1.8,
+      "tinker_talent": 1.5,
+      "bookish": 1.2
+    },
+    "age_range": [
+      25,
+      130
+    ],
+    "height": 1.0
+  },
+  {
+    "id": "halfling",
+    "name": "Halfling",
+    "plural": "Halflings",
+    "description": "Cheerful, food-loving folks who always seem to find luck when they need it most.",
+    "name_set": "halfling",
+    "playable": true,
+    "spawn_weight": 0.6,
+    "base": {
+      "max_hp": 90,
+      "move_speed": 2.2,
+      "vision": 9,
+      "carry": 18,
+      "energy": 105
+    },
+    "skill_bias": {
+      "farming": 4,
+      "cooking": 4
+    },
+    "trait_weights": {
+      "glutton": 1.5,
+      "lucky": 1.5,
+      "soft_spoken": 1.2
+    },
+    "age_range": [
+      20,
+      100
+    ],
+    "height": 1.15
   }
 ]

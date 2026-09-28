@@ -5,7 +5,7 @@ extends RefCounted
 ## `colors` block, so a new race only needs a JSON row to get a distinct-looking village.
 ## Painted cards replace these meshes wherever `data/art/buildings` has a `v_<race>_*` entry.
 
-const STYLES := ["gable", "round", "stone", "tent", "pagoda", "stilt", "reed"]
+const STYLES := ["gable", "round", "stone", "tent", "pagoda", "stilt", "reed", "scrap", "mushroom", "burrow", "mud"]
 
 static var _palettes: Dictionary = {}
 
@@ -81,6 +81,14 @@ static func _home(k: MeshKit, p: BuildPalette, style: String, seed: int) -> void
 			_stilt_hut(k, p, 2.0, 1.9, 1.35, 1.25, seed)
 		"reed":
 			_reed_house(k, p, 2.4, 2.1, 1.6, seed)
+		"scrap":
+			_scrap_shanty(k, p, 2.3, 2.2, 1.6, seed)
+		"mushroom":
+			_mushroom_house(k, p, 1.4, 2.2, seed)
+		"burrow":
+			_burrow(k, p, 2.6, 2.5, 1.4, seed)
+		"mud":
+			_mud_hovel(k, p, 2.1, 2.0, 1.35, seed)
 		_:
 			_framed_house(k, p, 2.4, 2.2, 1.9, seed)
 
@@ -104,6 +112,15 @@ static func _hall(k: MeshKit, p: BuildPalette, style: String, seed: int) -> void
 		"reed":
 			_reed_house(k, p, 4.0, 3.6, 2.2, seed)
 			BuildParts.banner(k, Vector3(1.8, 0, 1.9), 3.0, 0.46, 1.0, 0.0, p)
+		"scrap":
+			_scrap_shanty(k, p, 3.8, 3.6, 2.2, seed)
+			BuildParts.banner(k, Vector3(1.7, 0, 1.8), 3.0, 0.45, 1.0, 0.0, p)
+		"mushroom":
+			_mushroom_house(k, p, 2.3, 3.5, seed)
+		"burrow":
+			_burrow(k, p, 4.4, 4.2, 2.2, seed)
+		"mud":
+			_mud_hovel(k, p, 3.6, 3.5, 2.0, seed)
 		_:
 			_framed_house(k, p, 4.0, 3.6, 2.5, seed)
 			BuildParts.banner(k, Vector3(-1.72, 0, 2.0), 3.4, 0.52, 1.1, 0.0, p)
@@ -291,3 +308,72 @@ static func _reed_house(k: MeshKit, p: BuildPalette, sx: float, sz: float, wall_
 	BuildParts.round_window(k, Vector3(-sx * 0.3, 0.18 + wall_h * 0.62, sz * 0.5 + 0.04), 0.18, 0.0, p)
 	if absi(seed) % 2 == 0:
 		BuildParts.lantern(k, Vector3(0, eave + 0.05, sz * 0.5 + 0.2), p)
+
+static func _scrap_shanty(k: MeshKit, p: BuildPalette, sx: float, sz: float, h: float, seed: int) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed
+	k.push_trs(Vector3.ZERO, Vector3(0, rng.randf_range(-10, 10), 0))
+	k.box(Vector3(0, h * 0.45, 0), Vector3(sx, h * 0.9, sz), p.plaster_dark)
+	# slanted roof
+	k.push_trs(Vector3(0, h * 0.95, 0), Vector3(rng.randf_range(5, 15), 0, rng.randf_range(-5, 5)))
+	k.box(Vector3.ZERO, Vector3(sx * 1.2, 0.1, sz * 1.2), p.roof)
+	k.pop()
+	# scrap panels on walls
+	for i in 6:
+		var face := rng.randi_range(0, 3)
+		var t := rng.randf_range(-0.4, 0.4)
+		var py := h * rng.randf_range(0.2, 0.8)
+		if face == 0:
+			k.box(Vector3(sx * t, py, sz * 0.5 + 0.05), Vector3(sx * 0.3, h * 0.4, 0.1), p.timber if rng.randf() < 0.5 else p.stone)
+		elif face == 1:
+			k.box(Vector3(sx * t, py, -sz * 0.5 - 0.05), Vector3(sx * 0.3, h * 0.4, 0.1), p.timber)
+		elif face == 2:
+			k.box(Vector3(sx * 0.5 + 0.05, py, sz * t), Vector3(0.1, h * 0.4, sz * 0.3), p.stone)
+		else:
+			k.box(Vector3(-sx * 0.5 - 0.05, py, sz * t), Vector3(0.1, h * 0.4, sz * 0.3), p.timber)
+	BuildParts.opening(k, Vector3(0, 0, sz * 0.5), 0.7, h * 0.6, 0.2, 0, p)
+	k.pop()
+
+static func _mushroom_house(k: MeshKit, p: BuildPalette, radius: float, h: float, seed: int) -> void:
+	var stem_h := h * 0.4
+	k.cylinder(Vector3(0, stem_h * 0.5, 0), stem_h, radius, p.plaster, 12, p.plaster_dark)
+	# cap
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed
+	k.ellipsoid(Vector3(0, stem_h + h * 0.3, 0), Vector3(radius * 1.6, h * 0.6, radius * 1.6), p.roof, 12, 6)
+	# spots
+	for i in 8:
+		var a := rng.randf() * TAU
+		var ty := rng.randf_range(0.3, 0.9)
+		var p_spot := Vector3(cos(a) * radius * 1.5 * sqrt(1.0 - ty * ty), stem_h + h * 0.3 + h * 0.6 * ty, sin(a) * radius * 1.5 * sqrt(1.0 - ty * ty))
+		k.ellipsoid(p_spot, Vector3(0.2, 0.2, 0.2), p.plaster_dark, 4, 3)
+	BuildParts.opening(k, Vector3(0, 0, radius - 0.05), 0.8, stem_h * 0.8, 0.3, 0, p)
+	BuildParts.round_window(k, Vector3(radius * 0.6, stem_h * 0.6, radius * 0.6), 0.25, 45, p)
+
+static func _burrow(k: MeshKit, p: BuildPalette, sx: float, sz: float, h: float, seed: int) -> void:
+	# grassy mound
+	k.ellipsoid(Vector3(0, 0, 0), Vector3(sx * 0.5, h, sz * 0.5), p.roof_dark, 16, 8)
+	# front flat section
+	k.box(Vector3(0, h * 0.4, sz * 0.45), Vector3(sx * 0.4, h * 0.8, 0.2), p.timber)
+	# perfectly round door
+	var door_r := h * 0.35
+	k.cylinder(Vector3(0, door_r + 0.1, sz * 0.45 + 0.1), 0.1, door_r, p.timber_dark, 16)
+	k.cylinder(Vector3(0, door_r + 0.1, sz * 0.45 + 0.15), 0.05, door_r * 0.9, p.plaster, 16) # wait, plaster color for the door? maybe timber. I'll use roof.
+	# knob
+	k.sphere(Vector3(0, door_r + 0.1, sz * 0.45 + 0.18), 0.08, p.stone, 4, 3)
+	BuildParts.round_window(k, Vector3(sx * 0.25, h * 0.4, sz * 0.35), 0.3, 30, p)
+	BuildParts.round_window(k, Vector3(-sx * 0.25, h * 0.4, sz * 0.35), 0.3, -30, p)
+
+static func _mud_hovel(k: MeshKit, p: BuildPalette, sx: float, sz: float, h: float, seed: int) -> void:
+	# dome-like
+	k.ellipsoid(Vector3(0, 0, 0), Vector3(sx * 0.5, h, sz * 0.5), p.plaster, 12, 6)
+	# rough texture bumps
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed
+	for i in 12:
+		var a := rng.randf() * TAU
+		var ty := rng.randf_range(0.1, 0.8)
+		var rad := rng.randf_range(0.2, 0.4)
+		var p_bump := Vector3(cos(a) * sx * 0.45 * sqrt(1.0 - ty * ty), h * ty, sin(a) * sz * 0.45 * sqrt(1.0 - ty * ty))
+		k.ellipsoid(p_bump, Vector3(rad, rad, rad), p.plaster_dark, 5, 4)
+	BuildParts.opening(k, Vector3(0, 0, sz * 0.45), 0.8, h * 0.7, 0.3, 0, p)

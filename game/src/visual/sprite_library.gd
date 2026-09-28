@@ -12,11 +12,9 @@ const PAINTED_BLUE_HUE := 0.615
 const UNIT_SHADER := "res://src/visual/shaders/sprite_unit.gdshader"
 const PROP_SHADER := "res://src/visual/shaders/sprite_prop.gdshader"
 const BUILDING_SHADER := "res://src/visual/shaders/sprite_building.gdshader"
-## Standing height (metres) of a character chip figure per race.
-const RACE_HEIGHT := {
-	"human": 1.55, "sylvan": 1.65, "stoutkin": 1.3, "vulpin": 1.5,
-	"minotaur": 1.78, "centaur": 1.85, "harpy": 1.62, "lamia": 1.68, "oni": 1.7, "tengu": 1.68
-}
+## Standing height (metres) of a character chip figure: `height` in data/races/races.json.
+static func race_height(race_id: String) -> float:
+	return float(DB.get_def("races", race_id).get("height", 1.55))
 ## Figure height (metres) for machines; airships use their side-view length instead.
 const MACHINE_HEIGHT := {"work_bot": 1.15, "walker": 2.5, "sentry": 1.7, "turret": 1.8, "machine_warden": 3.1,
 	"scout_drone": 0.75, "repair_drone": 0.75, "war_drone": 0.95}
@@ -255,7 +253,7 @@ static func chip_cell_size(entry: Dictionary, dna: Dictionary, hints: Dictionary
 	else:
 		var h: float
 		if kind == "character":
-			h = float(RACE_HEIGHT.get(str(dna.get("race", "human")), 1.5)) * float(dna.get("height", 1.0))
+			h = race_height(str(dna.get("race", "human"))) * float(dna.get("height", 1.0))
 			if str(entry.get("id", "")) == "bandit_captain":
 				h *= 1.12
 		else:

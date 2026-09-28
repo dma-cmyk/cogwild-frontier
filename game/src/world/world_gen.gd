@@ -521,23 +521,25 @@ func _layout_site(site: Dictionary) -> void:
 				_add_resource(site, Vector2(c) + Vector2(cos(a), sin(a)) * r, Tiles.Res.ROCK_LARGE if k % 2 == 0 else Tiles.Res.ROCK_SMALL)
 
 
+## Building tables whose entries carry a `size` footprint.
+const FOOTPRINT_TABLES: Array[String] = ["buildings", "buildings/villages", "buildings/town"]
+## Fallback footprints for ids that are not in a buildings table.
 const STRUCT_SIZE := {
 	"campfire": Vector2i(1, 1), "bandit_tent": Vector2i(2, 2), "bandit_hut": Vector2i(3, 3), "bandit_tower": Vector2i(2, 2),
 	"palisade": Vector2i(1, 1), "machine_foundry": Vector2i(4, 4), "machine_spire": Vector2i(2, 2), "machine_block": Vector2i(2, 2),
 	"ruin_vault": Vector2i(3, 3), "ruin_statue": Vector2i(2, 2), "ruin_pillar": Vector2i(1, 1), "ruin_wall": Vector2i(3, 1),
 	"ruin_arch": Vector2i(3, 1), "trade_hall": Vector2i(4, 4), "trade_stall": Vector2i(2, 2), "trade_mast": Vector2i(2, 2),
 	"wanderer_tent": Vector2i(2, 2), "wreck_airship": Vector2i(6, 3),
-	"v_human_home": Vector2i(3, 3), "v_human_hall": Vector2i(5, 5),
-	"v_sylvan_home": Vector2i(3, 3), "v_sylvan_hall": Vector2i(5, 5),
-	"v_stoutkin_home": Vector2i(3, 3), "v_stoutkin_hall": Vector2i(5, 5),
-	"v_vulpin_home": Vector2i(3, 3), "v_vulpin_hall": Vector2i(5, 5),
-	"v_minotaur_home": Vector2i(3, 3), "v_minotaur_hall": Vector2i(5, 5),
-	"v_centaur_home": Vector2i(3, 3), "v_centaur_hall": Vector2i(5, 5),
-	"v_harpy_home": Vector2i(3, 3), "v_harpy_hall": Vector2i(5, 5),
-	"v_lamia_home": Vector2i(3, 3), "v_lamia_hall": Vector2i(5, 5),
-	"v_oni_home": Vector2i(3, 3), "v_oni_hall": Vector2i(5, 5),
-	"v_tengu_home": Vector2i(3, 3), "v_tengu_hall": Vector2i(5, 5),
 }
+
+## Footprint in tiles: the `size` of the building definition (player or village/town tables), else STRUCT_SIZE.
+static func struct_size(type: String) -> Vector2i:
+	for table: String in FOOTPRINT_TABLES:
+		var def := DB.get_def(table, type)
+		if def.has("size"):
+			var s: Array = def["size"]
+			return Vector2i(int(s[0]), int(s[1]))
+	return STRUCT_SIZE.get(type, Vector2i(2, 2))
 
 
 func _ring_structure(site: Dictionary, occupied: Dictionary, type: String, c: Vector2i, angle: float, radius: float, rng: RandomNumberGenerator) -> void:
@@ -548,7 +550,7 @@ func _ring_structure(site: Dictionary, occupied: Dictionary, type: String, c: Ve
 
 ## Adds a structure centred near `center` unless it overlaps an existing one.
 func _add_structure(site: Dictionary, occupied: Dictionary, type: String, center: Vector2i, rot: int) -> void:
-	var size: Vector2i = STRUCT_SIZE.get(type, Vector2i(2, 2))
+	var size: Vector2i = struct_size(type)
 	if rot % 2 == 1:
 		size = Vector2i(size.y, size.x)
 	var origin := center - Vector2i(size.x / 2, size.y / 2)
