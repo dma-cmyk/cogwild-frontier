@@ -280,8 +280,8 @@ func _think(s: Squad) -> void:
 			_think_auto(s)
 
 
-## Walk to a village and stand in it. Arriving is what unlocks trading, gifts and deliveries
-## (Diplomacy.is_near_village), and it tells the HUD to open the trade window.
+## Walk to a community and stand in it. Arriving is what unlocks trading, gifts, quests and
+## recruiting (Diplomacy.is_near_community), and it tells the HUD to open the trade window.
 func _think_visit(s: Squad) -> void:
 	var sid := int(s.order.get("site", -1))
 	var st: Dictionary = w.sites.get(sid, {})
@@ -517,8 +517,8 @@ func _nearest_cache(from: Vector2, region: Vector2, radius: float) -> Dictionary
 	for st: Dictionary in w.sites.values():
 		if not bool(st.get("discovered", false)) or bool(st.get("looted", false)) or (st.get("cache", []) as Array).is_empty():
 			continue
-		# a village's stash is not free loot: it is taken by subduing the place
-		if str(st.get("kind", "")) == "village":
+		# a community's stash is not free loot: it is taken by subduing the place
+		if w.diplomacy.is_community(st):
 			continue
 		if w.factions.site_guarded(int(st["id"])):
 			continue

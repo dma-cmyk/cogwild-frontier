@@ -1,0 +1,31 @@
+{
+  "scene": "res://scenes/game.tscn",
+  "frames": 820,
+  "seed": 11,
+  "events": [
+    {"frame": 1, "do": "scene.set_speed(0)"},
+    {"frame": 2, "do": "scene.set_meta('v', scene.dbg_station_squad_at('village'))"},
+    {"frame": 3, "expect": "int(scene.get_meta('v')) >= 0", "label": "a village near the start"},
+    {"frame": 4, "do": "scene.world.set('tick_count', 700)"},
+    {"frame": 5, "do": "scene.set_speed(3)"},
+    {"frame": 330, "do": "scene.set_speed(0)"},
+    {"frame": 331, "do": "scene.clear_selection()"},
+    {"frame": 332, "do": "scene.rig.set('zoom_goal', 30.0)"},
+    {"frame": 333, "do": "scene.rig.focus(Vector3(scene.world.sites[int(scene.get_meta('v'))]['center'].x, 0, scene.world.sites[int(scene.get_meta('v'))]['center'].y), true)"},
+    {"frame": 380, "watch": "scene.world.hour()", "label": "day hour"},
+    {"frame": 380, "expect": "not scene.world.is_night()", "label": "it is day"},
+    {"frame": 380, "watch": "scene.dbg_village_jobs(int(scene.get_meta('v')))", "label": "day activity"},
+    {"frame": 381, "screenshot": "village_day"},
+    {"frame": 382, "do": "scene.rig.set('zoom_goal', 16.0)"},
+    {"frame": 420, "screenshot": "village_day_close"},
+    {"frame": 421, "do": "scene.rig.set('zoom_goal', 30.0)"},
+    {"frame": 422, "do": "scene.world.set('tick_count', 1900)"},
+    {"frame": 423, "do": "scene.set_speed(3)"},
+    {"frame": 740, "do": "scene.set_speed(0)"},
+    {"frame": 741, "do": "scene.rig.focus(Vector3(scene.world.sites[int(scene.get_meta('v'))]['center'].x, 0, scene.world.sites[int(scene.get_meta('v'))]['center'].y), true)"},
+    {"frame": 790, "watch": "scene.world.hour()", "label": "night hour"},
+    {"frame": 790, "expect": "scene.world.is_night()", "label": "it is night"},
+    {"frame": 790, "watch": "scene.dbg_village_jobs(int(scene.get_meta('v')))", "label": "night activity"},
+    {"frame": 791, "screenshot": "village_night"}
+  ]
+}

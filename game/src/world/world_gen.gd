@@ -282,6 +282,8 @@ func _make_site(id: int, kind: String, pos: Vector2, race: String = "") -> Dicti
 		site["race"] = race
 		site["faction"] = "folk_" + race
 		site["preference_score"] = village_preference_score(race, pos)
+		# the outer ring of homes and the fields sit past the flattened plateau: clear further out
+		site["clear_radius"] = int(kcfg.get("flat_radius", 6)) + 5
 	_layout_site(site)
 	sites[id] = site
 	return site
@@ -427,37 +429,7 @@ func _layout_site(site: Dictionary) -> void:
 	var a0 := rng.randf() * TAU
 	match site["kind"]:
 		"village":
-			var race := str(site["race"])
-			var cfg := DB.get_def("villages", race)
-			var homes: Array = cfg.get("homes", [3, 6])
-			var stalls: Array = cfg.get("stalls", [1, 2])
-			var fields: Array = cfg.get("fields", [1, 3])
-			var home_count := rng.randi_range(int(homes[0]), int(homes[1]))
-			var stall_count := rng.randi_range(int(stalls[0]), int(stalls[1]))
-			var field_count := rng.randi_range(int(fields[0]), int(fields[1]))
-			_add_structure(site, occupied, "v_%s_hall" % race, c, 0)
-			for i in home_count:
-				_ring_structure(site, occupied, "v_%s_home" % race, c, a0 + i * TAU / float(home_count), 8.7, rng)
-			for i in stall_count:
-				_ring_structure(site, occupied, "trade_stall", c, a0 + 0.55 + i * TAU / float(stall_count), 13.0, rng)
-			for i in field_count:
-				var angle := a0 + PI * 0.5 + float(i) * 0.95
-				var origin := Vector2(c) + Vector2(cos(angle), sin(angle)) * 12.5 + Vector2(0.5, 0.5)
-				for row in 2:
-					for col in 3:
-						var tile := origin + Vector2(float(col) - 1.0, float(row) - 0.5)
-						_add_decor(site, "tilled_soil", tile, rng)
-						_add_decor(site, "crop_wheat_3" if (col + row + i) % 2 == 0 else "crop_veg_3", tile, rng)
-				for col in 4:
-					_add_decor(site, "fence", origin + Vector2(float(col) - 1.5, -1.1), rng)
-			for i in 3:
-				var lamp := a0 + 0.9 + float(i) * TAU / 3.0
-				_add_decor(site, "lantern_post", Vector2(c) + Vector2(cos(lamp), sin(lamp)) * 5.6 + Vector2(0.5, 0.5), rng)
-			_add_decor(site, "banner_pole", Vector2(c) + Vector2(cos(a0 + PI), sin(a0 + PI)) * 4.0 + Vector2(0.5, 0.5), rng)
-			_add_decor(site, "crate", Vector2(c) + Vector2(4.0, -1.5), rng)
-			_add_decor(site, "barrel", Vector2(c) + Vector2(-4.0, 2.4), rng)
-			_add_decor(site, "log_pile", Vector2(c) + Vector2(-2.4, -4.2), rng)
-			_add_decor(site, "stone_pile", Vector2(c) + Vector2(3.2, 3.6), rng)
+			_village_layout(site, occupied, rng, a0)
 		"bandit_camp":
 			_add_structure(site, occupied, "campfire", c, 0)
 			for k in 3:
@@ -519,6 +491,57 @@ func _layout_site(site: Dictionary) -> void:
 				var a := rng.randf() * TAU
 				var r := rng.randf_range(2.0, 7.0)
 				_add_resource(site, Vector2(c) + Vector2(cos(a), sin(a)) * r, Tiles.Res.ROCK_LARGE if k % 2 == 0 else Tiles.Res.ROCK_SMALL)
+
+
+## A lived-in village: a hall on the square, homes on two rings, a market row of stalls, fenced
+## fields, work piles, lantern posts and small dressing. The counts follow the race's head count
+## (`Diplomacy.population_range`), so a bigger village really is a bigger place.
+func _village_layout(site: Dictionary, occupied: Dictionary, rng: RandomNumberGenerator, a0: float) -> void:
+	var c: Vector2i = site["center"]
+	var race := str(site["race"])
+	var cfg := DB.get_def("villages", race)
+	var people: Array = cfg.get("population", Diplomacy.POPULATION_RANGE)
+	var top := int(people[people.size() - 1])
+	var home_count := clampi(int(ceil(float(top) * 0.6)), 4, 10)
+	var stall_count := rng.randi_range(2, 3)
+	var field_count := rng.randi_range(3, 5)
+	_add_structure(site, occupied, "v_%s_hall" % race, c, 0)
+	# homes alternate between an inner and an outer ring so the village has streets, not a circle
+	for i in home_count:
+		var radius := 8.4 if i % 2 == 0 else 12.4
+		_ring_structure(site, occupied, "v_%s_home" % race, c,
+			a0 + float(i) * TAU / float(home_count) + (0.0 if i % 2 == 0 else 0.22), radius, rng)
+	for i in stall_count:
+		_ring_structure(site, occupied, "trade_stall", c, a0 + 0.55 + float(i) * 0.5, 5.6, rng)
+	for i in field_count:
+		var angle := a0 + PI * 0.5 + float(i) * 0.8
+		var origin := Vector2(c) + Vector2(cos(angle), sin(angle)) * 15.5 + Vector2(0.5, 0.5)
+		for row in 3:
+			for col in 3:
+				var tile := origin + Vector2(float(col) - 1.0, float(row) - 1.0)
+				_add_decor(site, "tilled_soil", tile, rng)
+				_add_decor(site, "crop_wheat_3" if (col + row + i) % 2 == 0 else "crop_veg_3", tile, rng)
+		for col in 4:
+			_add_decor(site, "fence", origin + Vector2(float(col) - 1.5, -1.6), rng)
+	for i in 5:
+		var lamp := a0 + 0.9 + float(i) * TAU / 5.0
+		_add_decor(site, "lantern_post", Vector2(c) + Vector2(cos(lamp), sin(lamp)) * 6.2 + Vector2(0.5, 0.5), rng)
+	_add_decor(site, "banner_pole", Vector2(c) + Vector2(cos(a0 + PI), sin(a0 + PI)) * 4.0 + Vector2(0.5, 0.5), rng)
+	_add_decor(site, "sign_post", Vector2(c) + Vector2(cos(a0), sin(a0)) * 13.5 + Vector2(0.5, 0.5), rng)
+	# work corners: the crafters' wood and stone, the traders' crates
+	_add_decor(site, "crate", Vector2(c) + Vector2(4.0, -1.5), rng)
+	_add_decor(site, "crate", Vector2(c) + Vector2(4.8, -2.4), rng)
+	_add_decor(site, "barrel", Vector2(c) + Vector2(-4.0, 2.4), rng)
+	_add_decor(site, "barrel", Vector2(c) + Vector2(-4.7, 3.1), rng)
+	_add_decor(site, "log_pile", Vector2(c) + Vector2(-2.4, -4.2), rng)
+	_add_decor(site, "log_pile", Vector2(c) + Vector2(-3.3, -4.9), rng)
+	_add_decor(site, "stone_pile", Vector2(c) + Vector2(3.2, 3.6), rng)
+	_add_decor(site, "ore_pile", Vector2(c) + Vector2(2.3, 4.4), rng)
+	for i in 6:
+		var a := a0 + 0.3 + float(i) * TAU / 6.0
+		var r := rng.randf_range(7.0, 10.5)
+		_add_decor(site, "flowers" if i % 2 == 0 else "grass_tuft",
+			Vector2(c) + Vector2(cos(a), sin(a)) * r + Vector2(0.5, 0.5), rng)
 
 
 ## Building tables whose entries carry a `size` footprint.

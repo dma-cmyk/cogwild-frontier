@@ -111,8 +111,11 @@ func confirm_village_attack(sid: int, squad_id: int) -> void:
 		attack.call()
 		return
 	_confirm_action = attack
-	_confirm_text.text = Loc.t("Attack %s? The %s will turn hostile and their other villages will hear of it.") \
-		% [str(st["name"]), Loc.def_text("races", str(st.get("race", "")), "plural")]
+	if g.world.diplomacy.is_village(st):
+		_confirm_text.text = Loc.t("Attack %s? The %s will turn hostile and their other villages will hear of it.") \
+			% [str(st["name"]), Loc.def_text("races", str(st.get("race", "")), "plural")]
+	else:
+		_confirm_text.text = Loc.t("Attack %s? The whole community will turn hostile.") % str(st["name"])
 	relayout()
 	_confirm.visible = true
 	trade_window.close_window()

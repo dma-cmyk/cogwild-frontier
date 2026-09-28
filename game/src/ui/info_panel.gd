@@ -57,14 +57,15 @@ func refresh(force: bool) -> void:
 	var key := ""
 	var u := g.focus_unit()
 	if u:
-		key = "u%d:%s:%s:%s" % [u.id, _tab, _armory_slot, str(u.equipment().hash())]
+		key = "u%d:%s:%s:%s:%s" % [u.id, _tab, _armory_slot, str(u.equipment().hash()),
+			_resident_key(u)]
 	elif g.sel_building >= 0 and g.world.buildings.has(g.sel_building):
 		var b: Building = g.world.buildings[g.sel_building]
 		key = "b%d:%d:%d:%s:%d" % [b.id, b.level, int(b.is_built()), str(b.queue), b.needs.hash()]
 	elif g.sel_site >= 0:
 		var st: Dictionary = g.world.sites.get(g.sel_site, {})
 		key = "s%d:%s:%s:%s" % [g.sel_site, str(st.get("cleared", false)), str(st.get("looted", false)),
-			VillagePanel.signature(st) if str(st.get("kind", "")) == "village" else ""]
+			_community_key(st) if g.world.diplomacy.is_community(st) else ""]
 	elif g.sel_loot >= 0 and g.world.loot_bags.has(g.sel_loot):
 		var bag: Dictionary = g.world.loot_bags[g.sel_loot]
 		key = "l%d:%d:%d:%d" % [g.sel_loot, (bag.get("items", []) as Array).size(), int(bag.get("gold", 0)), int(bag.get("metal", 0))]
@@ -193,7 +194,11 @@ func _build_unit(u: Unit) -> void:
 		lv_line += "  ·  %s, %d" % [Loc.def_name("races", str(u.character.get("race", ""))), int(u.character.get("age", 0))]
 	hv.add_child(UiTheme.label(lv_line, 15, UiTheme.TEXT_DIM))
 	if not u.is_player():
-		hv.add_child(UiTheme.label(Loc.t(str({"bandits": "Hostile — bandits", "machines": "Hostile — rogue machines", "merchants": "Merchant League", "wanderers": "Wanderer"}.get(u.faction, u.faction))), 15, UiTheme.BAD if g.world.hostile("player", u.faction) else UiTheme.GOLD))
+		var allegiance := Loc.t(str({"bandits": "Hostile — bandits", "machines": "Hostile — rogue machines", "merchants": "Merchant League", "wanderers": "Wanderer"}.get(u.faction, u.faction)))
+		var home_sid := VillagePanel.resident_site(g.world, u)
+		if home_sid >= 0:
+			allegiance = str((g.world.sites[home_sid] as Dictionary).get("name", ""))
+		hv.add_child(UiTheme.label(allegiance, 15, UiTheme.BAD if g.world.hostile("player", u.faction) else UiTheme.GOLD))
 	var hp_row := UiTheme.hbox(6)
 	hp_row.add_child(UiTheme.icon("ui_heart", 18))
 	_hp = UiTheme.bar(Color("#e0493b"), 12)
@@ -220,6 +225,10 @@ func _build_unit(u: Unit) -> void:
 	_body.add_child(_dyn)
 	if u.is_player():
 		_unit_actions(u)
+	else:
+		var resident_sid := VillagePanel.resident_site(g.world, u)
+		if resident_sid >= 0:
+			_body.add_child(VillagePanel.resident_row(g, hud, resident_sid, u))
 	if u.is_person():
 		var tabs := UiTheme.hbox(4)
 		_body.add_child(tabs)
@@ -247,6 +256,24 @@ func _build_unit(u: Unit) -> void:
 				_bio(u)
 	else:
 		_machine_info(u)
+
+
+## Part of the panel key for a community: its own state, the quest board, and what gates the
+## buttons (someone standing there, the purse, a free bed at home).
+func _community_key(st: Dictionary) -> String:
+	var w := g.world
+	return "%s%s:%d:%d:%d" % [VillagePanel.signature(st), QuestBoard.signature(w, int(st["id"])),
+		int(w.diplomacy.is_near_community(int(st["id"]))), int(w.res.get("gold", 0)),
+		int(w.population() < w.housing())]
+
+
+## Part of the panel key: a villager's Talk/Invite buttons follow the relation and the purse.
+func _resident_key(u: Unit) -> String:
+	var sid := VillagePanel.resident_site(g.world, u)
+	if sid < 0:
+		return ""
+	return "r%d:%d:%s" % [sid, int((g.world.sites[sid] as Dictionary).get("relation", 0)),
+		g.world.diplomacy.recruit_blocker(sid, u.id)]
 
 
 func _unit_actions(u: Unit) -> void:

@@ -46,8 +46,9 @@ func instantiate_site(sid: int) -> void:
 	if kind == "village":
 		st["race"] = str(g.get("race", ""))
 	w.sites[sid] = st
-	if kind == "village":
+	if w.diplomacy.is_community(st):
 		w.diplomacy.initialize(st, rng)
+	if kind == "village":
 		w.diplomacy.populate(st, rng)
 	var lv := int(g["level"])
 	var c := Vector2(g["center"]) + Vector2(0.5, 0.5)
@@ -197,7 +198,7 @@ func _discover(st: Dictionary, by: Variant) -> void:
 		(by as Unit).counter_add("sites_found")
 		if (by as Unit).squad_id >= 0:
 			w.squad_ai.add_report(w.get_squad((by as Unit).squad_id), {"key": "sim.report.site_found", "params": {"site_name": st["name"]}})
-	if str(st["kind"]) == "village":
+	if w.diplomacy.is_community(st):
 		w.diplomacy.mark_discovered(st, who)
 		w.site_changed.emit(int(st["id"]))
 		return
@@ -222,7 +223,7 @@ func on_unit_killed(t: Unit, attacker: Unit) -> void:
 	if t.home_site < 0 or not w.sites.has(t.home_site):
 		return
 	var st: Dictionary = w.sites[t.home_site]
-	if str(st["kind"]) == "village":
+	if w.diplomacy.is_community(st):
 		w.diplomacy.villager_killed(t.home_site, t, attacker)
 		if not bool(st.get("hostile", false)) or bool(st.get("subdued", false)):
 			w.site_changed.emit(t.home_site)
@@ -302,15 +303,16 @@ func tick() -> void:
 				continue
 			u.lod = 0
 			var st: Dictionary = w.sites.get(u.home_site, {})
-			if str(st.get("kind", "")) == "village":
+			if w.diplomacy.is_community(st):
 				if bool(st.get("ruined", false)):
 					continue
 				if w.hostile("player", u.faction):
+					u.hidden = false
 					if u.is_armed():
 						_guard(u)
 					else:
 						_flee_villager(u)
-				else:
+				elif str(st["kind"]) == "village":
 					_village_routine(u, st)
 			elif w.hostile("player", u.faction):
 				_guard(u)
@@ -319,23 +321,93 @@ func tick() -> void:
 	_patrols(active)
 
 
+## One villager's day: farmers work the fields, crafters the wood and stone piles, traders mind a
+## stall, guards walk the ring and the elder holds the hall; at night everyone but the guards goes
+## home and stays indoors. Only runs for sites near the player (`tick` gates on `active`), the spots
+## are cached per village, and the timing comes from the tick and the unit id instead of the shared
+## simulation RNG, so village life does not reshuffle combat elsewhere.
 func _village_routine(u: Unit, st: Dictionary) -> void:
 	if u.target_id >= 0:
 		u.target_id = -1
-	if w.is_night():
-		if not u.moving and u.pos.distance_to(u.guard_pos) > 1.0:
-			w.move_unit(u, u.guard_pos)
+	var spots := w.diplomacy.village_spots(int(st["id"]))
+	var job := Diplomacy.resident_job(u)
+	var night := w.is_night() and job != "guard"
+	var anchor := _villager_anchor(u, spots, job, night)
+	if u.moving:
 		return
-	if u.moving or u.pos.distance_to(u.guard_pos) > 2.5:
+	if u.pos.distance_to(anchor) > 1.5:
+		u.hidden = false
+		# re-path lazily: a villager that cannot reach its spot should not hammer the pathfinder
+		if w.tick_count < int(u.order.get("next_path", 0)):
+			return
+		u.order["next_path"] = w.tick_count + 40
+		u.held = ""
+		if w.move_unit(u, anchor):
+			u.state = Unit.State.MOVE
+			return
+	_villager_work(u, spots, job, night)
+
+
+## Where this villager belongs right now. Deterministic per unit so nobody swaps spots every tick.
+func _villager_anchor(u: Unit, spots: Dictionary, job: String, night: bool) -> Vector2:
+	var homes: Array = spots["homes"]
+	if night:
+		return homes[absi(u.id) % homes.size()]
+	match job:
+		"farmer":
+			var fields: Array = spots["fields"]
+			return fields[absi(u.id) % fields.size()]
+		"crafter":
+			var craft: Array = spots["craft"]
+			return craft[absi(u.id) % craft.size()]
+		"trader":
+			var stalls: Array = spots["stalls"]
+			return stalls[absi(u.id) % stalls.size()]
+		"guard":
+			var ring: Array = spots["ring"]
+			return ring[(absi(u.id) + int(u.order.get("ring_i", 0))) % ring.size()]
+		"elder":
+			return spots["hall"]
+	return homes[absi(u.id) % homes.size()]
+
+
+## Standing on the spot: play the matching work animation, or move the patrol on to the next post.
+func _villager_work(u: Unit, spots: Dictionary, job: String, night: bool) -> void:
+	if night:
+		u.state = Unit.State.REST
+		u.held = ""
+		u.hidden = true
 		return
-	if w.rng.randf() < 0.35:
-		return
-	var c := Vector2(st["center"]) + Vector2(0.5, 0.5)
-	var angle := w.rng.randf() * TAU
-	var target := c + Vector2(cos(angle), sin(angle)) * w.rng.randf_range(1.0, 4.0)
-	var tile := w.nearest_walkable(Vector2i(int(floor(target.x)), int(floor(target.y))), 4)
-	if tile.x != -99999:
-		w.move_unit(u, Vector2(tile) + Vector2(0.5, 0.5))
+	u.hidden = false
+	# one beat per routine step (`tick` runs every fifth world tick), offset per unit
+	var beat := w.tick_count / 5 + u.id * 7
+	match job:
+		"farmer":
+			u.state = Unit.State.WORK
+			u.held = "hoe"
+			if beat % 4 == 0:
+				u.push_fx(&"work_farm")
+		"crafter":
+			u.state = Unit.State.WORK
+			u.held = "hammer"
+			if beat % 4 == 0:
+				u.push_fx(&"work_build")
+		"guard":
+			u.state = Unit.State.IDLE
+			u.held = ""
+			if beat % 18 == 0:
+				u.order["ring_i"] = int(u.order.get("ring_i", 0)) + 1
+				w.move_unit(u, _villager_anchor(u, spots, job, false))
+		_:
+			u.state = Unit.State.IDLE
+			u.held = ""
+			# traders and the elder shuffle around their spot now and then
+			if beat % 24 == 0:
+				var a := float((beat / 24) % 8) * TAU / 8.0
+				var near := _villager_anchor(u, spots, job, false) + Vector2(cos(a), sin(a)) * 1.1
+				var tile := w.nearest_walkable(Vector2i(int(floor(near.x)), int(floor(near.y))), 2)
+				if tile.x != -99999:
+					w.move_unit(u, Vector2(tile) + Vector2(0.5, 0.5))
 
 
 func _flee_villager(u: Unit) -> void:
@@ -502,7 +574,7 @@ func on_new_day() -> void:
 	for st: Dictionary in w.sites.values():
 		var c := Vector2(st["center"]) + Vector2(0.5, 0.5)
 		var kind := str(st["kind"])
-		if kind == "village":
+		if w.diplomacy.is_community(st):
 			if bool(st.get("hostile", false)) and not bool(st.get("subdued", false)) \
 					and c.distance_to(home) < 170.0 and w.day >= int(st.get("next_raid_day", w.day + 1)):
 				_launch_raid(st)
