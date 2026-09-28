@@ -194,7 +194,11 @@ func _build_unit(u: Unit) -> void:
 		lv_line += "  ·  %s, %d" % [Loc.def_name("races", str(u.character.get("race", ""))), int(u.character.get("age", 0))]
 	hv.add_child(UiTheme.label(lv_line, 15, UiTheme.TEXT_DIM))
 	if not u.is_player():
-		hv.add_child(UiTheme.label(Loc.t(str({"bandits": "Hostile — bandits", "machines": "Hostile — rogue machines", "merchants": "Merchant League", "wanderers": "Wanderer"}.get(u.faction, u.faction))), 15, UiTheme.BAD if g.world.hostile("player", u.faction) else UiTheme.GOLD))
+		var allegiance := Loc.t(str({"bandits": "Hostile — bandits", "machines": "Hostile — rogue machines", "merchants": "Merchant League", "wanderers": "Wanderer"}.get(u.faction, u.faction)))
+		var home_sid := VillagePanel.resident_site(g.world, u)
+		if home_sid >= 0:
+			allegiance = str((g.world.sites[home_sid] as Dictionary).get("name", ""))
+		hv.add_child(UiTheme.label(allegiance, 15, UiTheme.BAD if g.world.hostile("player", u.faction) else UiTheme.GOLD))
 	var hp_row := UiTheme.hbox(6)
 	hp_row.add_child(UiTheme.icon("ui_heart", 18))
 	_hp = UiTheme.bar(Color("#e0493b"), 12)

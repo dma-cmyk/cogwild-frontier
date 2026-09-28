@@ -386,6 +386,11 @@ func _update_responsive() -> void:
 		var portrait_width := minf(440.0, maxf(280.0, size.x - 24.0))
 		_portrait_panel.offset_left = -portrait_width * 0.5
 		_portrait_panel.offset_right = portrait_width * 0.5
+	if is_instance_valid(_quest_tracker):
+		# compact layouts keep the Map / Details buttons in the top-right corner: sit left of them
+		var tracker_right := -116.0 if _compact else -8.0
+		_quest_tracker.offset_right = tracker_right
+		_quest_tracker.offset_left = tracker_right - 264.0
 	if _compact:
 		_squad_toggle.visible = false
 		squad_panel.visible = true

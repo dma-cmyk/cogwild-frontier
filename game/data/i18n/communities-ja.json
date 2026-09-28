@@ -80,7 +80,6 @@
   "Nothing on the board today.": "今日は掲示板に何もない。",
   "Reward %d gold · by day %d": "報酬 金貨%d · %d日目まで",
   "Active jobs": "受注中の依頼",
-  "%s (%d/%d)": "%s（%d/%d）",
   "Ready to hand in": "報告できる",
   "Heading %s, about %d tiles": "方角: %s、およそ%dタイル",
   "  ·  %d jobs on the board": "  ·  掲示板に依頼%d件",
@@ -97,5 +96,7 @@
   "village.talk.race.gnome": "歯車にはみんな役目があるの。きしむ歯車にこそね。",
   "village.talk.race.halfling": "二度目の朝ごはんは十時から。よかったら一緒にどうぞ。",
   "Attack %s? The whole community will turn hostile.": "%sを攻撃する？ 住民全員が敵対する。",
-  "sim.village.said": "{unit_name}「{line}」"
+  "sim.village.said": "{unit_name}「{line}」",
+  "Progress %d/%d · by day %d": "進捗 %d/%d · %d日目まで",
+  "Mixed-race town": "多種族の町"
 }

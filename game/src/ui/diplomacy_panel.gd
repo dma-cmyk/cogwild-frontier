@@ -100,8 +100,9 @@ func _row(st: Dictionary) -> Control:
 	var nm := UiTheme.label(str(st["name"]), 15, UiTheme.TEXT, UiTheme.bold_font)
 	nm.clip_text = true
 	v.add_child(nm)
-	var detail := Loc.t("%s · %d people") % [Loc.def_name("races", str(st.get("race", ""))),
-		int(st.get("population", 0))]
+	var folk := Loc.def_name("races", str(st.get("race", ""))) if g.world.diplomacy.is_village(st) \
+		else Loc.t("Mixed-race town")
+	var detail := Loc.t("%s · %d people") % [folk, int(st.get("population", 0))]
 	var offers: Array = g.world.quests.board(sid)
 	if bool(st.get("ruined", false)):
 		detail += Loc.t("  ·  in ruins")

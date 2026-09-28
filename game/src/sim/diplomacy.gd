@@ -196,7 +196,9 @@ func populate(st: Dictionary, rng: RandomNumberGenerator) -> void:
 func village_roles(st: Dictionary, population: int) -> Array:
 	var cfg := community_config(st)
 	var roles: Array = []
-	var guards := clampi(int(cfg.get("guards", 2)) + (1 if population >= 12 else 0), 1, maxi(1, population - 4))
+	# the watch stays the race's configured size: a bigger village has more workers, not a
+	# stronger garrison (plundering one stays a fight a starting squad can win)
+	var guards := clampi(int(cfg.get("guards", 2)), 1, maxi(1, population - 4))
 	for i in guards:
 		roles.append("archer" if i == guards - 1 and guards >= 2 else "guard")
 	roles.append("elder")

@@ -492,26 +492,42 @@ func dbg_ui_button(prefix: String) -> Vector2:
 	return Vector2(-1, -1)
 
 
-## Canvas position of a resident of a site (probes click villagers in the 3D world).
+## Canvas position of the `index`-th resident of a site that is drawn on screen right now, aimed
+## where a player would click it (probes click villagers in the 3D world). (-1, -1) when none is.
 func dbg_resident_screen_pos(sid: int, index: int) -> Vector2:
-	var people: Array = world.diplomacy.residents(sid)
-	if people.is_empty():
-		return Vector2(-1, -1)
-	var u: Unit = people[index % people.size()]
-	return rig.world_to_screen(world.world_pos(u) + Vector3(0, 0.9, 0))
+	var screen := get_viewport().get_visible_rect()
+	var seen := 0
+	for u: Unit in world.diplomacy.residents(sid):
+		var v: UnitView = view.unit_views.get(u.id)
+		if v == null or not v.visible:
+			continue
+		var p := rig.world_to_screen(v.global_position + Vector3(0, v._bar_h * 0.45, 0))
+		if not screen.grow(-80.0).has_point(p):
+			continue
+		if seen == index:
+			set_meta("dbg_resident", u.id)
+			return p
+		seen += 1
+	return Vector2(-1, -1)
+
+
+## What the residents of a site are doing: {"<job>:<state>[:indoors]": count} (probe evidence).
+func dbg_village_jobs(sid: int) -> Dictionary:
+	var out := {}
+	for u: Unit in world.diplomacy.residents(sid):
+		var key := "%s:%s%s" % [Diplomacy.resident_job(u), Unit.State.keys()[u.state],
+			":indoors" if u.hidden else ""]
+		out[key] = int(out.get(key, 0)) + 1
+	return out
 
 
 ## A real left click at a canvas position, injected into the input pipeline like an OS click
-## (motion, press, release — the probe runner's own click does the same with fixed pixels).
-## Returns false when `pos` is the (-1, -1) "not found" marker.
+## (press and release; no motion event, which would switch on edge scrolling towards wherever the
+## OS cursor happens to be). Returns false when `pos` is the (-1, -1) "not found" marker.
 func dbg_click(pos: Vector2) -> bool:
 	if pos.x < 0.0:
 		return false
 	var at := get_viewport().get_final_transform() * pos
-	var motion := InputEventMouseMotion.new()
-	motion.position = at
-	motion.global_position = at
-	Input.parse_input_event(motion)
 	for pressed: bool in [true, false]:
 		var click := InputEventMouseButton.new()
 		click.button_index = MOUSE_BUTTON_LEFT

@@ -78,8 +78,8 @@ static func _taken_row(g: Game, hud: Hud, q: Dictionary) -> Control:
 	if state == "done":
 		v.add_child(UiTheme.label(Loc.t("Ready to hand in"), 13, UiTheme.GOOD))
 	else:
-		v.add_child(UiTheme.label(Loc.t("%s (%d/%d)") % [Loc.t("Active jobs"), int(p["have"]), int(p["need"])],
-			13, UiTheme.TEXT_DIM))
+		v.add_child(UiTheme.label(Loc.t("Progress %d/%d · by day %d")
+			% [int(p["have"]), int(p["need"]), int(q["deadline_day"])], 13, UiTheme.TEXT_DIM))
 	if q.has("hint"):
 		v.add_child(UiTheme.label(Loc.t("Heading %s, about %d tiles")
 			% [Loc.t(str(q["hint"])), int(q.get("hint_distance", 0))], 13, UiTheme.TEXT_DIM))
