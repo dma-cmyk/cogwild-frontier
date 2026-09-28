@@ -48,7 +48,7 @@ func test_exactly_one_town_in_its_band_with_every_service() -> void:
 			continue
 		var st: Dictionary = towns[0]
 		var d := Vector2(st["center"]).distance_to(Vector2(gen.start_tile))
-		assert_between(d, 70.0, 120.0, "seed %d town distance" % seed)
+		assert_between(d, 70.0, 150.0, "seed %d town distance" % seed)
 		var types := {}
 		var home_races := {}
 		for s: Dictionary in st["structures"]:

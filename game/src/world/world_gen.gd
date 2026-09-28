@@ -346,7 +346,13 @@ func _place_guaranteed_sites() -> void:
 		var best_score := -INF
 		var best_pos := Vector2.ZERO
 		var best_angle := 0.0
-		for attempt in (720 if is_town else (240 if is_village else 60)):
+		var attempts := 720 if is_town else (240 if is_village else 60)
+		for attempt in attempts * (2 if is_town else 1):
+			# the town comes last: when the band is crowded, its second pass accepts a tighter
+			# clearance and a wider band so every world still has one
+			var relaxed := is_town and attempt >= attempts
+			if relaxed and best_score > -INF:
+				break
 			var ang := rng.randf() * TAU
 			var spread := rng.randf()
 			var too_close := false
@@ -356,12 +362,12 @@ func _place_guaranteed_sites() -> void:
 						too_close = true
 			if too_close:
 				continue
-			var d := lerpf(dmin, dmax, spread) + (0.0 if searches_exact_band else attempt * 0.8)
+			var d := lerpf(dmin, dmax + (30.0 if relaxed else 0.0), spread) + (0.0 if searches_exact_band else attempt * 0.8)
 			var pos := Vector2(start_tile) + Vector2(cos(ang), sin(ang)) * d
 			if is_town:
 				var tile := Vector2i(int(floor(pos.x)), int(floor(pos.y)))
 				var tile_dist := Vector2(tile).distance_to(Vector2(start_tile))
-				if tile_dist < dmin or tile_dist > dmax:
+				if tile_dist < dmin or tile_dist > dmax + (30.0 if relaxed else 0.0):
 					continue
 			if not _site_ok(pos, radius):
 				continue
@@ -369,7 +375,7 @@ func _place_guaranteed_sites() -> void:
 				continue
 			var clash := false
 			for other: Dictionary in _guaranteed:
-				if Vector2(other["center"]).distance_to(pos) < radius + _kind_radius(str(other["kind"])) + 14.0:
+				if Vector2(other["center"]).distance_to(pos) < radius + _kind_radius(str(other["kind"])) + (4.0 if relaxed else 14.0):
 					clash = true
 			if clash:
 				continue
