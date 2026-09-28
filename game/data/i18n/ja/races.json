@@ -8,5 +8,11 @@
 	"harpy": {"name": "ハーピー", "plural": "ハーピー", "description": "危険を早く見つける鋭い目を持つ翼の民。力より速さを生かして戦う。"},
 	"lamia": {"name": "ラミア", "plural": "ラミア", "description": "薬草と知識を守り伝える蛇身の民。物静かで、ものづくりと学問を好む。"},
 	"oni": {"name": "鬼", "plural": "鬼", "description": "頑丈な体と力を持つ鍛冶師であり、頼もしい近接戦士。恐ろしい姿ほど凶暴ではない。"},
-	"tengu": {"name": "天狗", "plural": "天狗", "description": "偵察、弓術、工夫を凝らした細工に秀でる山の守り手。"}
+	"tengu": {"name": "天狗", "plural": "天狗", "description": "偵察、弓術、工夫を凝らした細工に秀でる山の守り手。"},
+	"goblin": {"name": "ゴブリン", "plural": "ゴブリン", "description": "がらくたを工夫して使うのが得意な、小柄で好奇心旺盛な者たち。"},
+	"orc": {"name": "オーク", "plural": "オーク", "description": "過酷な環境にも耐える、誇り高く力強い戦士の民。"},
+	"kobold": {"name": "コボルド", "plural": "コボルド", "description": "臆病だが働き者で、珍しいものを集めるのが好きな爬虫類の民。"},
+	"lizardfolk": {"name": "リザードフォーク", "plural": "リザードフォーク", "description": "自然の理に沿って生きる、忍耐強く物静かな沼地の民。"},
+	"gnome": {"name": "ノーム", "plural": "ノーム", "description": "奇抜な発想と尽きない知識欲を持つ、発明好きな学者肌の民。"},
+	"halfling": {"name": "ハーフリング", "plural": "ハーフリング", "description": "美味しい食事と幸運に恵まれた、陽気で小柄な民。"}
 }

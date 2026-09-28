@@ -28,7 +28,7 @@ func _rng(seed: int) -> RandomNumberGenerator:
 
 func test_every_person_the_game_makes_is_painted() -> void:
 	var rng := _rng(4242)
-	for race: String in AppearanceGen.RACES:
+	for race: String in AppearanceGen.race_ids():
 		for role: String in ROLES:
 			for style: String in ["frontier", "bandit", "merchant", "neutral"]:
 				for gender: String in ["female", "male", "nonbinary"]:
@@ -37,7 +37,7 @@ func test_every_person_the_game_makes_is_painted() -> void:
 					var entry := SpriteLibrary.chip(dna, hints)
 					assert_true(not entry.is_empty(), "sheet for %s %s %s %s -> %s" % [race, role, style, gender, SpriteLibrary.chip_id(dna, hints)])
 					assert_true(SpriteLibrary.portrait(dna, hints) != null, "portrait for " + SpriteLibrary.chip_id(dna, hints))
-	for race: String in AppearanceGen.RACES:
+	for race: String in AppearanceGen.race_ids():
 		for look: String in LOOKS:
 			for g: String in ["m", "f"]:
 				var id := "%s_%s_%s" % [race, look, g]
@@ -45,7 +45,7 @@ func test_every_person_the_game_makes_is_painted() -> void:
 
 
 func test_every_person_has_all_its_painted_variants() -> void:
-	for race: String in AppearanceGen.RACES:
+	for race: String in AppearanceGen.race_ids():
 		for look: String in LOOKS:
 			for gender: String in ["m", "f"]:
 				var id := "%s_%s_%s" % [race, look, gender]
@@ -192,7 +192,9 @@ func test_company_colour_only_turns_painted_blue() -> void:
 
 
 func test_buildings_props_and_ground_are_painted() -> void:
-	for id: String in BuildingVisuals.FOOTPRINTS.keys():
+	var ids := Array(DB.ids("buildings"))
+	ids.append_array(DB.ids("buildings/villages"))
+	for id: String in ids:
 		# Crossings and race village buildings are allowed to stay procedural: they are tinted from
 		# data and a painted card is used only when data/art/buildings has one.
 		if id in ["bridge_segment", "cliff_stairs"] or BldVillage.race_of(id) != "":

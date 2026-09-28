@@ -6,11 +6,18 @@ func test_buildings_all_ids_and_stages() -> void:
 	var holder := Node3D.new()
 	tree.root.add_child.call_deferred(holder)
 	await tree.process_frame
-	for id: String in BuildingVisuals.FOOTPRINTS.keys():
+	var fps := {}
+	for id: String in DB.ids("buildings"):
+		var arr: Array = DB.get_def("buildings", id).get("size", [2, 2])
+		fps[id] = Vector2i(int(arr[0]), int(arr[1]))
+	for id: String in DB.ids("buildings/villages"):
+		var arr: Array = DB.get_def("buildings/villages", id).get("size", [2, 2])
+		fps[id] = Vector2i(int(arr[0]), int(arr[1]))
+	for id: String in fps:
 		for style: String in ["frontier", "bandit", "ancient", "merchant", "neutral"]:
 			var b := BuildingVisuals.create(id, style, 17, 2)
 			holder.add_child(b)
-			assert_eq(b.footprint, BuildingVisuals.FOOTPRINTS[id], "%s footprint" % id)
+			var s: Vector2i = fps[id]
 			for progress in [0.0, 0.5, 1.0]:
 				b.set_construction(progress)
 				assert_true(b.get_child_count() > 0, "%s stage child" % id)

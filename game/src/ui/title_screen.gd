@@ -230,9 +230,13 @@ func _build_create() -> void:
 	nrow.add_child(dice)
 	form.add_child(nrow)
 	form.add_child(_field_label(Loc.t("Race")))
-	form.add_child(UiTheme.label(Loc.t("Your people can be any of ten playable races."), 14, UiTheme.TEXT_DIM))
+	var playable_count := 0
+	for rc: Dictionary in DB.entries("races"):
+		if bool(rc.get("playable", true)):
+			playable_count += 1
+	form.add_child(UiTheme.label(Loc.t("Your people can be any of %d playable races.") % playable_count, 14, UiTheme.TEXT_DIM))
 	var rrow := GridContainer.new()
-	rrow.columns = 4 if viewport_size.x >= 700.0 else 2
+	rrow.columns = 4 if viewport_size.x >= 700.0 else 3
 	rrow.add_theme_constant_override("h_separation", 6)
 	rrow.add_theme_constant_override("v_separation", 6)
 	for r: Dictionary in DB.entries("races"):
@@ -460,7 +464,7 @@ func _show_preview(dna: Dictionary) -> void:
 	_preview_node = UnitVisualFactory.create(dna)
 	_preview_vp.add_child(_preview_node)
 	MeshKit.apply_preview_material(_preview_node)
-	_fit_preview_camera(float(SpriteLibrary.RACE_HEIGHT.get(str(dna.get("race", "human")), 1.55)))
+	_fit_preview_camera(float(SpriteLibrary.race_height(str(dna.get("race", "human")))))
 
 
 ## Frames the whole figure: taller or wider bodies (centaur, minotaur) get a larger ortho window.

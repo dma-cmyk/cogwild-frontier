@@ -39,7 +39,13 @@ func _add_units() -> void:
 		{"race":"harpy", "role":"archer"},
 		{"race":"lamia", "role":"scholar"},
 		{"race":"oni", "role":"guard"},
-		{"race":"tengu", "role":"explorer"}]
+		{"race":"tengu", "role":"explorer"},
+		{"race":"goblin", "role":"bandit"},
+		{"race":"orc", "role":"commander"},
+		{"race":"kobold", "role":"miner"},
+		{"race":"lizardfolk", "role":"hunter"},
+		{"race":"gnome", "role":"scholar"},
+		{"race":"halfling", "role":"farmer"}]
 	for i: int in gallery_people.size():
 		var spec: Dictionary = gallery_people[i]
 		var role := str(spec["role"])

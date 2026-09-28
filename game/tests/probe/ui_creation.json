@@ -1,0 +1,11 @@
+{
+  "name": "ui_creation",
+  "scene": "res://scenes/main.tscn",
+  "size": [1920, 1080],
+  "steps": [
+    {"action": "wait", "frames": 30},
+    {"action": "click", "text": "New frontier"},
+    {"action": "wait", "frames": 30},
+    {"action": "screenshot", "name": "desktop_creation"}
+  ]
+}

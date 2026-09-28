@@ -1,0 +1,13 @@
+{
+  "name": "ui_creation_phone",
+  "scene": "res://scenes/main.tscn",
+  "size": [854, 480],
+  "steps": [
+    {"action": "wait", "frames": 30},
+    {"action": "click", "text": "New frontier"},
+    {"action": "wait", "frames": 30},
+    {"action": "scroll", "node": "ScrollContainer", "vector": [0, -300]},
+    {"action": "wait", "frames": 10},
+    {"action": "screenshot", "name": "phone_creation"}
+  ]
+}
