@@ -98,7 +98,7 @@ func _rebuild() -> void:
 			grid.add_child(b)
 		_box.add_child(UiTheme.label(Loc.t("Colonists build automatically. Drag lines: walls in range, bridges on explored rivers, stairs on explored cliffs."), 13, UiTheme.TEXT_DIM))
 	else:
-		_box.add_child(UiTheme.title(Loc.t("Gather & work"), 22))
+		_box.add_child(UiTheme.title(Loc.t("Gather & work zones"), 22))
 		var zones := UiTheme.hbox(6)
 		_box.add_child(zones)
 		for z: Array in ZONES:

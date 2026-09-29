@@ -491,6 +491,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if index < 0:
 		return
 	if index >= g.world.squads.size():
+		hud.add_note({"text": Loc.t("No squad assigned to that key."), "kind": "info"}, 2.0)
+		Sfx.play(&"ui_error")
+		get_viewport().set_input_as_handled()
 		return
 	_activate_squad(g.world.squads[index].id)
 	get_viewport().set_input_as_handled()

@@ -1210,12 +1210,13 @@ func _activate_ability(ability_id: String) -> void:
 					used += 1
 		if failure != "":
 			var reason_keys := {
-				"cooldown": "reason.cooldown",
-				"no_target": "reason.no_target",
-				"downed": "reason.downed",
-				"unknown": "reason.unknown",
+				"cooldown": "ability.reason.cooldown",
+				"no_target": "ability.reason.no_target",
+				"downed": "ability.reason.downed",
+				"unknown": "ability.reason.unknown",
 			}
-			add_note({"text": Loc.t(str(reason_keys.get(failure, "reason.unknown"))), "kind": "info"}, 2.0)
+			var reason_text := Loc.t(str(reason_keys.get(failure, "ability.reason.unknown")))
+			add_note({"text": Loc.t("Ability unavailable: %s.") % reason_text, "kind": "info"}, 2.0)
 		elif used > 0:
 			add_note({"text": Loc.t("%d used ability: %s") % [used, Loc.t(ability_id.replace("_", " ").capitalize())], "kind": "good"}, 2.0)
 	else:
