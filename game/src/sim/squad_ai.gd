@@ -90,12 +90,10 @@ func _slot(i: int, s: Squad, u: Unit, threat: Vector2) -> Vector2:
 
 func order_squad(s: Squad, order: Dictionary) -> void:
 	s.order = order
-	s.mem.erase("corridor")
-	s.mem.erase("target")
-	s.mem.erase("patrol_i")
-	s.mem.erase("loot_site")
-	s.mem.erase("returning")
-	s.mem.erase("sub")
+	# scratch data of the order that just ended: a fresh order must not inherit its route, its
+	# progress counters or the "we are stuck" tally of the march it replaces
+	for key: String in ["corridor", "target", "patrol_i", "loot_site", "returning", "sub", "stuck", "last_c", "moving_to"]:
+		s.mem.erase(key)
 	if order.get("type", "") in ["explore", "auto"]:
 		s.report.clear()
 		s.mem["mapped0"] = _mapped(s)
@@ -103,6 +101,11 @@ func order_squad(s: Squad, order: Dictionary) -> void:
 		w.combat.cancel_manual_ability(u)
 		if order.get("type", "") != "attack":
 			u.target_id = -1
+		# Drop the route of the previous order. Delegated orders (defend, patrol, escort, ...)
+		# only re-path once everybody stands still, so a stale walk made the command bar look
+		# dead for as long as the old march lasted; the orders below re-path immediately.
+		if u.moving:
+			w.stop_unit(u)
 	match str(order.get("type", "")):
 		"move":
 			_set_state(s, "moving")
@@ -126,11 +129,22 @@ func order_unit(u: Unit, order: Dictionary) -> void:
 	w.combat.cancel_manual_ability(u)
 	u.order = order
 	u.target_id = -1
+	if u.moving:
+		w.stop_unit(u)
 	match str(order.get("type", "")):
 		"move":
 			w.move_unit(u, order["pos"])
 		"attack":
 			u.target_id = int(order.get("target", -1))
+
+
+## Cancels the standing order: the squad holds the ground it stands on and forgets what it was
+## told to resume after a retreat.
+func cancel_order(s: Squad) -> void:
+	if s == null:
+		return
+	s.mem.erase("resume")
+	order_squad(s, {"type": "idle"})
 
 
 func _move_all(s: Squad, p: Vector2) -> void:
@@ -168,30 +182,36 @@ func _all_arrived(s: Squad) -> bool:
 
 
 ## Members without a target pick visible enemies within radius of `anchor`. Returns true if fighting.
+## A stance shapes what the squad picks up by itself; while an explicit attack order stands the
+## leash is set aside, because the player already chose the fight.
 func _engage(s: Squad, anchor: Vector2, radius: float) -> bool:
+	var commanded := str(s.order.get("type", "")) == "attack"
+	var leashed := s.stance == "hold" and not commanded
 	var fighting := false
 	for u: Unit in members(s):
 		if not u.is_armed():
 			continue
 		if u.target_id >= 0:
 			var current := w.get_unit(u.target_id)
-			if current and current.alive and current.pos.distance_to(anchor) < radius + 12.0:
-				if s.stance != "hold" or current.pos.distance_to(Vector2(s.mem.get("hold", anchor))) <= 6.0:
-					fighting = true
-					continue
+			var keep := current != null and current.alive and current.pos.distance_to(anchor) < radius + 12.0
+			if keep and leashed and current.pos.distance_to(Vector2(s.mem.get("hold", anchor))) > 6.0:
+				keep = false
+			if keep:
+				fighting = true
+				continue
 			u.target_id = -1
 			if u.moving:
 				w.stop_unit(u)
 		var enemy := w.combat.acquire(u, float(u.stats.get("vision", 9.0)) + 2.0)
 		var engage_radius := radius + 4.0 if s.stance == "aggressive" else radius
-		if s.stance == "hold":
+		if leashed:
 			engage_radius = minf(radius, 6.0)
 		# self-defence: a member always answers an enemy that is attacking it or already in its
 		# weapon reach, even when a straggler drags the squad anchor far behind the front
 		var reach := float((u.stats.get("weapon", Unit.FISTS) as Dictionary).get("range", 1.3)) + 1.0
 		var self_defence := enemy != null and (enemy.target_id == u.id or enemy.pos.distance_to(u.pos) <= reach)
 		if enemy and (enemy.pos.distance_to(anchor) <= engage_radius or self_defence) \
-				and not (s.stance == "cautious" and str(enemy.order.get("type", "")) == "retreat"):
+				and not (s.stance == "cautious" and not commanded and str(enemy.order.get("type", "")) == "retreat"):
 			u.target_id = enemy.id
 			fighting = true
 	return fighting
@@ -313,9 +333,13 @@ func _think_attack(s: Squad) -> void:
 		if t and t.alive and t.state != Unit.State.DOWNED:
 			anchor = t.pos
 			for u: Unit in members(s):
-				if u.is_armed() and u.target_id < 0:
-					u.target_id = t.id
+				if u.is_armed():
+					if u.target_id < 0:
+						u.target_id = t.id
+				elif not u.moving and u.pos.distance_to(anchor) > 6.0:
+					w.move_unit(u, anchor)  # drones and the airship follow instead of being left
 			_set_state(s, "attacking")
+			_chase_progress(s, anchor)
 			return
 		o.erase("target")
 		o["pos"] = anchor
@@ -373,6 +397,38 @@ func _think_attack(s: Squad) -> void:
 		s.mem["hold"] = anchor
 		order_squad(s, {"type": "idle"})
 		s.mem["hold"] = anchor
+
+
+## Hunting a named unit is driven by Combat: every armed member walks to its own target. When the
+## terrain has no route there — the far bank of a river, the top of a cliff, land nobody generated
+## yet — the whole squad stalls short of it and the order would hang forever with nothing to see.
+## So the squad watches whether it is still closing in, and recovers exactly like an attack on a
+## place does: generate the land in between once, then give up with a word to the player.
+func _chase_progress(s: Squad, anchor: Vector2) -> void:
+	var c := center(s)
+	var last: Variant = s.mem.get("last_c")
+	var moved: bool = not (last is Vector2) or (last as Vector2).distance_to(c) >= 0.5
+	s.mem["last_c"] = c
+	if c.distance_to(anchor) <= 6.0 or moved or w.pending_chunks() > 0 or _in_contact(s):
+		s.mem["stuck"] = 0
+		return
+	s.mem["stuck"] = int(s.mem.get("stuck", 0)) + 1
+	if int(s.mem["stuck"]) >= 8 and not s.mem.has("corridor"):
+		s.mem["corridor"] = true
+		s.mem["stuck"] = 0
+		_queue_corridor(c, anchor)
+	elif int(s.mem["stuck"]) >= 8:
+		w.notify_key("sim.squad.path_blocked", {"squad_name": s.name}, "info", c, {"squad": s.id})
+		s.mem.erase("stuck")
+		order_squad(s, {"type": "idle"})
+		s.mem["hold"] = c
+
+
+func _in_contact(s: Squad) -> bool:
+	for u: Unit in members(s):
+		if u.state == Unit.State.FIGHT:
+			return true
+	return false
 
 
 func _think_patrol(s: Squad) -> void:
@@ -653,6 +709,18 @@ func _think_unit(u: Unit) -> void:
 					u.target_id = e.id
 			if u.target_id < 0 and not u.moving and u.pos.distance_to(p) > 2.0:
 				w.move_unit(u, p)
+		"escort":
+			var friend := w.get_unit(int(o.get("target", -1)))
+			if friend == null or not friend.alive:
+				u.order = {}
+			elif not u.moving and u.pos.distance_to(friend.pos) > 5.0:
+				w.move_unit(u, friend.pos + Vector2(1.5, 1.5))
+		"retreat":
+			# a lone unit has nothing to rally to but the hearth; once there it goes back to work
+			if u.pos.distance_to(w.home_pos()) < 6.0:
+				u.order = {}
+			elif not u.moving:
+				w.move_unit(u, w.home_pos())
 		"gather":
 			w.colony.force_gather(u, o["tile"])
 			u.order = {}

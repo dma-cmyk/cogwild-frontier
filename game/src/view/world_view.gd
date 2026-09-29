@@ -433,33 +433,31 @@ func _group(groups: Dictionary, key: String, xf: Transform3D) -> void:
 const ZONE_COLORS := {"logging": Color("#7fd36b"), "mining": Color("#c9b7a0"), "forage": Color("#ff7a9a"), "farm": Color("#e8c45a")}
 
 
+## Outlines of the gather zones the player painted. They stay on the ground once designated —
+## an area you cannot see is an area you cannot tell you already marked — and brighten while the
+## zone tool is open.
 func _rebuild_zones() -> void:
 	_zones_dirty = false
-	if not show_zones or w.zones.is_empty():
+	if w.zones.is_empty():
 		_zone_mesh.mesh = null
 		return
 	var im := ImmediateMesh.new()
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.vertex_color_use_as_albedo = true
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	mat.no_depth_test = true
 	mat.render_priority = 5
-	im.surface_begin(Mesh.PRIMITIVE_LINES, mat)
+	var alpha := 1.0 if show_zones else 0.65
+	im.surface_begin(Mesh.PRIMITIVE_TRIANGLES, mat)
 	for z: Dictionary in w.zones:
 		var r: Rect2i = z["rect"]
 		var col: Color = ZONE_COLORS.get(str(z["type"]), Color.WHITE)
+		col.a = alpha
 		var pts := [Vector2(r.position), Vector2(r.end.x, r.position.y), Vector2(r.end), Vector2(r.position.x, r.end.y)]
 		for i in 4:
-			var a: Vector2 = pts[i]
-			var b: Vector2 = pts[(i + 1) % 4]
-			var n := int(ceil(a.distance_to(b)))
-			for k in n:
-				var p0 := a.lerp(b, float(k) / n)
-				var p1 := a.lerp(b, float(k + 1) / n)
-				im.surface_set_color(col)
-				im.surface_add_vertex(Vector3(p0.x, maxf(w.height_at(p0), 0.0) + 0.08, p0.y))
-				im.surface_set_color(col)
-				im.surface_add_vertex(Vector3(p1.x, maxf(w.height_at(p1), 0.0) + 0.08, p1.y))
+			OrderMarkers.ribbon(im, w, pts[i], pts[(i + 1) % 4], col)
 	im.surface_end()
 	_zone_mesh.mesh = im
 

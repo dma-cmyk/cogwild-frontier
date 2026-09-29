@@ -36,6 +36,8 @@ var _touch_moved := false
 var _touch_long_pressed := false
 var _touch_elapsed := 0.0
 var _touch_build_point: Variant = null
+var _orders: OrderMarkers
+var _orders_t := 0.0
 
 
 ## True while a finger rests on the world long enough to show what is under it.
@@ -68,6 +70,9 @@ func setup(game: Game) -> void:
 	_foot.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_foot.visible = false
 	g.add_child(_foot)
+	_orders = OrderMarkers.new()
+	g.add_child(_orders)
+	_orders.setup(g.world)
 
 
 func _mat(c: Color) -> StandardMaterial3D:
@@ -95,6 +100,7 @@ func set_mode(m: String) -> void:
 		_ghost_type = ""
 	_foot.visible = false
 	g.view.set_show_zones(m.begins_with("zone:"))
+	_update_order_markers()
 	g.notify_mode(m)
 
 
@@ -254,8 +260,8 @@ func _touch_tap(p: Vector2) -> void:
 	_mouse_pos = p
 	hover_ground = g.rig.screen_to_ground(p)
 	if mode.begins_with("cmd:"):
-		_target_command(mode.substr(4), p)
-		set_mode("")
+		if _target_command(mode.substr(4), p):
+			set_mode("")
 	elif mode.begins_with("ability:"):
 		_target_ability(mode.substr(8), p)
 		set_mode("")
@@ -361,10 +367,54 @@ func _process(_delta: float) -> void:
 		_update_ghost()
 	elif mode.begins_with("zone:"):
 		_update_zone_preview()
+	_orders_t -= _delta
+	if _orders_t <= 0.0:
+		_orders_t = 0.1
+		_update_order_markers()
 	if _left_down and not dragging and mode == "" and sp.distance_to(drag_start) > DRAG_PX:
 		dragging = true
 	if dragging:
 		drag_rect = Rect2(drag_start, sp - drag_start).abs()
+
+
+## Ground overlay: the area every squad the command bar addresses was sent to, plus a preview of
+## the area under the cursor while an order from the bar is still waiting for its target.
+func _update_order_markers() -> void:
+	if _orders == null or g.hud == null:
+		return
+	var squad_ids: Array = g.hud.command_squad_ids()
+	var lone: Array = g.hud.command_lone_units()
+	var preview: Dictionary = {}
+	if mode.begins_with("cmd:") and hover_ground is Vector3:
+		var type := mode.substr(4)
+		var at := Vector2(hover_ground.x, hover_ground.z)
+		preview = {"type": type, "pos": at, "from": _command_center(g.hud.command_units(), at), "valid": true}
+		if type == "escort":
+			var friend := _escort_candidate(_mouse())
+			preview["pos"] = friend.pos if friend != null else at
+			preview["valid"] = friend != null
+	_orders.refresh(squad_ids, lone, preview, _focus_shape())
+
+
+## What the player has selected that draws no ring of its own: a building or a place on the map.
+## Without it, clicking a house or a camp only changes a panel and nothing on the ground says so.
+func _focus_shape() -> Dictionary:
+	if g.sel_building >= 0 and g.world.buildings.has(g.sel_building):
+		return {"rect": (g.world.buildings[g.sel_building] as Building).rect()}
+	if g.sel_site >= 0 and g.world.sites.has(g.sel_site):
+		var site: Dictionary = g.world.sites[g.sel_site]
+		var flat: Dictionary = g.world.gen.sites.get(g.sel_site, {})
+		return {"at": Vector2(site["center"]) + Vector2(0.5, 0.5), "r": maxf(4.0, float(flat.get("flat_radius", 4)))}
+	if g.sel_loot >= 0 and g.world.loot_bags.has(g.sel_loot):
+		return {"at": Vector2(g.world.loot_bags[g.sel_loot]["pos"]), "r": 1.2}
+	return {}
+
+
+func _command_center(units: Array, fallback: Vector2) -> Vector2:
+	var sum := Vector2.ZERO
+	for u: Unit in units:
+		sum += u.pos
+	return sum / float(units.size()) if not units.is_empty() else fallback
 
 
 func _describe_hover() -> String:
@@ -447,8 +497,7 @@ func _left_release(p: Vector2, shift: bool) -> void:
 	_left_down = false
 	dragging = false
 	if mode.begins_with("cmd:"):
-		_target_command(mode.substr(4), p)
-		if not shift:
+		if _target_command(mode.substr(4), p) and not shift:
 			set_mode("")
 		return
 	if mode.begins_with("ability:"):
@@ -544,13 +593,13 @@ func _context_order(p: Vector2) -> void:
 		return
 	if sid >= 0 and g.world.diplomacy.is_community(g.world.sites[sid]) and not bool(g.world.sites[sid].get("ruined", false)):
 		# friendly community: walk over and open the market (hostile ones fell through to attack above)
+		var market := Vector2(g.world.sites[sid]["center"]) + Vector2(0.5, 0.5)
 		var squad_ids: Dictionary = {}
 		for u: Unit in units:
 			if u.squad_id >= 0:
 				squad_ids[u.squad_id] = true
-		if squad_ids.is_empty():
-			issue("move", {"pos": Vector2(g.world.sites[sid]["center"]) + Vector2(0.5, 0.5)})
-			return
+			else:
+				g.world.squad_ai.order_unit(u, {"type": "move", "pos": market})
 		for squad_id: int in squad_ids:
 			g.world.squad_ai.order_squad(g.world.get_squad(squad_id),
 				{"type": "visit", "site": sid, "pos": Vector2(g.world.sites[sid]["center"])})
@@ -558,11 +607,17 @@ func _context_order(p: Vector2) -> void:
 		Sfx.play(&"ui_confirm")
 		return
 	if sid >= 0 and str(g.world.sites[sid]["kind"]) == "trade_post":
+		var sent := 0
+		var last := ""
 		for u: Unit in units:
 			if u.kind == "airship":
 				g.world.squad_ai.order_unit(u, {"type": "trade", "site": sid, "phase": "out"})
-				g.toast.emit("%s sets course for %s." % [u.name, g.world.sites[sid]["name"]], "info")
-				return
+				sent += 1
+				last = u.name
+		if sent > 0:
+			g.toast.emit(Loc.t("%s sets course for %s.") % [last if sent == 1 else Loc.t("%d airships") % sent,
+				g.world.sites[sid]["name"]], "info")
+			return
 	var r := g.world.res_at(t)
 	if r != Tiles.Res.NONE and str(Tiles.res_info(r).get("job", "")) != "":
 		var workers := units.filter(func(u: Unit) -> bool: return u.squad_id < 0 and u.labor == "worker")
@@ -620,7 +675,21 @@ func _target_ability(ability_id: String, screen_pos: Vector2) -> void:
 		g.toast.emit(Loc.t("%d used ability: %s") % [used, Loc.t(ability_id.replace("_", " ").capitalize())], "good")
 
 
-func _target_command(type: String, p: Vector2) -> void:
+## Escort needs somebody the recipients are not already marching with: escorting one of them would
+## make the order guard itself and stand still, so it is refused.
+func _escort_candidate(p: Vector2) -> Unit:
+	var target := pick_unit(p)
+	if target == null or not target.is_player():
+		return null
+	for u: Unit in (g.hud.command_units() if g.hud != null else g.selected_units()):
+		if u.id == target.id:
+			return null
+	return target
+
+
+## Turns the click that follows a command-bar button into an order. Returns false when the click
+## found no valid target, so the order stays armed and the player can simply click again.
+func _target_command(type: String, p: Vector2) -> bool:
 	var target := pick_unit(p, type == "attack")
 	var params := {}
 	match type:
@@ -633,17 +702,20 @@ func _target_command(type: String, p: Vector2) -> void:
 					params = {"site": sid, "pos": Vector2(g.world.sites[sid]["center"])}
 				else:
 					params = {"pos": Vector2(hover_ground.x, hover_ground.z)}
-		"escort":
-			if target and target.is_player():
-				params = {"target": target.id}
 			else:
-				g.toast.emit(Loc.t("Pick one of your units to escort."), "bad")
-				return
+				return false
+		"escort":
+			var friend := _escort_candidate(p)
+			if friend == null:
+				g.toast.emit(Loc.t("Pick one of your units outside the squad to escort."), "bad")
+				return false
+			params = {"target": friend.id}
 		_:
 			if not (hover_ground is Vector3):
-				return
+				return false
 			params = {"pos": Vector2(hover_ground.x, hover_ground.z)}
 	issue(type, params)
+	return true
 
 
 ## Sends an order to the selected squad and/or individually selected units.
@@ -679,17 +751,45 @@ func issue(type: String, params: Dictionary = {}) -> void:
 	g.toast.emit(Loc.t("%s ordered.") % Loc.t(str(ORDER_LABEL.get(type, type.capitalize()))), "info")
 
 
+## Cancels what the addressed squads are doing: they drop the order, stop where they stand and
+## hold that spot. Lone units go back to colony work.
+func cancel_orders() -> void:
+	var units: Array = g.hud.command_units() if g.hud != null else g.selected_units()
+	if units.is_empty():
+		return
+	var squads := {}
+	for u: Unit in units:
+		if u.squad_id >= 0:
+			squads[u.squad_id] = true
+		else:
+			g.world.squad_ai.order_unit(u, {})
+	for sid: int in squads:
+		g.world.squad_ai.cancel_order(g.world.get_squad(sid))
+	Sfx.play(&"ui_confirm")
+	g.toast.emit(Loc.t("Orders cancelled."), "info")
+	_update_order_markers()
+
+
+## The single pulse that confirms where a click landed: the same soft ground mark as the rest of
+## the overlay, spreading out and fading instead of a shrinking 3D donut.
 func _order_marker(p: Vector2, type: String) -> Node3D:
 	var mi := MeshInstance3D.new()
-	var tm := TorusMesh.new()
-	tm.inner_radius = 0.5
-	tm.outer_radius = 0.65
-	mi.mesh = tm
-	mi.material_override = _mat(Color("#ff6a4a") if type == "attack" else Color("#7fe0ff"))
-	mi.position = Vector3(p.x, maxf(g.world.height_at(p), 0.0) + 0.1, p.y)
+	mi.mesh = OrderMarkers.unit_mark(1.0, 0.22, 0.12)
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.vertex_color_use_as_albedo = true
+	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	mat.albedo_color = Color("#ff6a4a") if type == "attack" else Color("#7fe0ff")
+	mat.render_priority = 6
+	mi.material_override = mat
+	mi.position = Vector3(p.x, maxf(g.world.height_at(p), 0.0) + 0.16, p.y)
 	var tw := mi.create_tween()
-	tw.tween_property(mi, "scale", Vector3(0.2, 1, 0.2), 0.6).from(Vector3(1.6, 1, 1.6))
-	tw.tween_callback(mi.queue_free)
+	tw.set_parallel(true)
+	tw.tween_property(mi, "scale", Vector3(2.4, 1, 2.4), 0.55).from(Vector3(0.7, 1, 0.7)).set_ease(Tween.EASE_OUT)
+	tw.tween_property(mat, "albedo_color:a", 0.0, 0.55).from(1.0)
+	tw.chain().tween_callback(mi.queue_free)
 	return mi
 
 

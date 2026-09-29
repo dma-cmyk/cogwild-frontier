@@ -1,0 +1,30 @@
+{
+  "scene": "res://scenes/game.tscn",
+  "frames": 800,
+  "seed": 11,
+  "events": [
+    {"frame": 4, "do": "scene.set_speed(0)"},
+    {"frame": 6, "do": "scene.select_squad(scene.world.squads[0].id)"},
+    {"frame": 8, "do": "scene.hud.minimap._find_idle()"},
+    {"frame": 10, "do": "scene.set_meta('lone', scene.sel_units[0])"},
+    {"frame": 11, "expect": "scene.world.get_unit(int(scene.get_meta('lone'))).squad_id < 0", "label": "a villager outside any squad is selected"},
+    {"frame": 12, "expect": "scene.hud.command_units().size() == 1 and scene.hud.command_units()[0].id == int(scene.get_meta('lone'))", "label": "the command bar addresses the selected villager, not the squad in the panel"},
+    {"frame": 14, "do": "scene.input_ctl.issue('move', {'pos': scene.world.home_pos() + Vector2(9, 7)})"},
+    {"frame": 16, "expect": "str(scene.world.get_unit(int(scene.get_meta('lone'))).order.get('type', '')) == 'move'", "label": "the villager walks where it was sent"},
+    {"frame": 17, "expect": "str(scene.world.squads[0].order.get('type', '')) == 'idle'", "label": "the squad in the panel is left alone while a villager is commanded"},
+    {"frame": 18, "do": "scene.input_ctl.cancel_orders()"},
+    {"frame": 20, "expect": "scene.world.get_unit(int(scene.get_meta('lone'))).order.is_empty()", "label": "stop hands the villager back to colony work"},
+
+    {"frame": 24, "do": "scene.set_speed(4)"},
+    {"frame": 26, "do": "scene.world.squads[0].set('stance', 'hold')"},
+    {"frame": 28, "do": "scene.set_meta('sid', scene.dbg_reveal_site('bandit_camp'))"},
+    {"frame": 32, "do": "scene.set_meta('foe', scene.world.factions.site_units(int(scene.get_meta('sid')))[0].id)"},
+    {"frame": 34, "do": "scene.select_squad(scene.world.squads[0].id)"},
+    {"frame": 36, "do": "scene.input_ctl.issue('attack', {'target': int(scene.get_meta('foe'))})"},
+    {"frame": 50, "expect": "scene.world.get_unit(scene.world.squads[0].members[0]).target_id == int(scene.get_meta('foe'))", "label": "a squad set to hold still takes the target the player named"},
+    {"frame": 400, "expect": "scene.world.squad_ai.center(scene.world.squads[0]).distance_to(scene.world.home_pos()) > 20.0", "label": "the squad marches out to the enemy instead of standing on its holding ground"},
+    {"frame": 780, "expect": "scene.world.counters.get('kills', 0) >= 1", "label": "the attack order is carried out under every stance"},
+    {"frame": 785, "do": "scene.focus_selection()"},
+    {"frame": 790, "screenshot": "attack_under_hold"}
+  ]
+}

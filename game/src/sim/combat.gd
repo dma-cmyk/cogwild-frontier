@@ -66,11 +66,15 @@ func _engage(u: Unit) -> void:
 		return
 	if u.squad_id >= 0:
 		var squad_order := w.get_squad(u.squad_id)
+		# A stance only shapes what the squad picks up by itself. An explicit attack order is the
+		# player naming the target, so it overrules the leash — otherwise "hold" silently cancelled
+		# the target every tick while the squad AI kept re-assigning it, and the order did nothing.
+		var commanded := squad_order != null and str(squad_order.order.get("type", "")) == "attack"
 		var hold_point: Vector2 = squad_order.mem.get("hold", squad_order.order.get("pos", u.pos)) if squad_order else u.pos
-		if squad_order and squad_order.stance == "hold" and t.pos.distance_to(hold_point) > 6.0:
+		if squad_order and not commanded and squad_order.stance == "hold" and t.pos.distance_to(hold_point) > 6.0:
 			u.target_id = -1
 			return
-		if squad_order and squad_order.stance == "cautious" and str(t.order.get("type", "")) == "retreat":
+		if squad_order and not commanded and squad_order.stance == "cautious" and str(t.order.get("type", "")) == "retreat":
 			u.target_id = -1
 			return
 	var wpn: Dictionary = u.stats.get("weapon", Unit.FISTS)

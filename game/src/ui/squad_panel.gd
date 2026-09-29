@@ -348,18 +348,21 @@ func refresh(force: bool) -> void:
 		_name.text = Loc.t("%d squads") % target_ids.size() if target_ids.size() > 1 else Loc.t("No squad")
 		_count.text = Loc.t("%d selected") % members.size() if not members.is_empty() else ""
 	_state.text = _state_text(s) if s else _state_text_for_members(members)
-	_rename_btn.visible = s != null
-	_foot.visible = s != null
+	# The tab still shows a squad when the orders address a selected villager or drone — and that
+	# is exactly when the player reaches for "Add selected", so these follow the tab, not the
+	# recipient of the orders.
+	var tab_squad: Squad = s if s != null else (_squad() if target_ids.is_empty() and not all_squads_active else null)
+	_rename_btn.visible = tab_squad != null
 	var add_count := 0
-	if s:
+	if tab_squad:
 		for unit: Unit in g.selected_units():
-			if unit.is_player() and unit.squad_id != s.id and unit.kind != "airship":
+			if unit.is_player() and unit.squad_id != tab_squad.id and unit.kind != "airship":
 				add_count += 1
-	_add_btn.visible = s != null and add_count > 0
+	_add_btn.visible = tab_squad != null and add_count > 0
 	_add_btn.text = Loc.t("Add %d selected") % add_count
-	_add_btn.disabled = s == null or s.members.size() >= 6
-	_picker_btn.visible = s != null
-	_picker_btn.disabled = s == null or s.members.size() >= 6
+	_add_btn.disabled = tab_squad == null or tab_squad.members.size() >= 6
+	_picker_btn.visible = tab_squad != null
+	_picker_btn.disabled = tab_squad == null or tab_squad.members.size() >= 6
 	_tab_new_btn.disabled = g.world.squads.size() >= World.MAX_SQUADS
 	_tab_new_btn.text = Loc.t("＋ New squad (%d/9)") % g.world.squads.size() if _tab_new_btn.disabled else Loc.t("＋ New squad")
 	_tab_new_btn.tooltip_text = Loc.t("Maximum 9 squads (hotkeys 1–9).") if _tab_new_btn.disabled else Loc.t("Create a squad from selected units, or start an empty squad.")
@@ -367,9 +370,9 @@ func refresh(force: bool) -> void:
 	var split_unit: Unit = selected[0] if selected.size() == 1 else null
 	_split_selected_btn.visible = split_unit != null and split_unit.is_player() and split_unit.kind != "airship" and split_unit.squad_id < 0
 	var focus := g.focus_unit()
-	_disband_btn.visible = s != null
-	_actions.visible = s != null or _split_selected_btn.visible
-	_foot.visible = s != null or _actions.visible
+	_disband_btn.visible = tab_squad != null
+	_actions.visible = tab_squad != null or _split_selected_btn.visible
+	_foot.visible = tab_squad != null or _actions.visible
 	for i in range(3, 6):
 		_foot.get_child(i).visible = s != null
 	if _compact:

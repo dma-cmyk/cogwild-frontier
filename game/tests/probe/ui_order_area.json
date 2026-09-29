@@ -1,0 +1,39 @@
+{
+  "scene": "res://scenes/game.tscn",
+  "frames": 150,
+  "seed": 11,
+  "events": [
+    {"frame": 1, "do": "scene.set_speed(0)"},
+    {"frame": 3, "do": "scene.select_squad(scene.world.squads[0].id)"},
+    {"frame": 4, "do": "scene.set_meta('sq', scene.world.squads[0].id)"},
+
+    {"frame": 8, "do": "scene.hud.command('defend')"},
+    {"frame": 10, "expect": "scene.input_ctl.mode == 'cmd:defend'", "label": "defend arms the click"},
+    {"frame": 12, "mouse": "move", "pos": [640, 430]},
+    {"frame": 16, "expect": "scene.input_ctl._orders._signature.length() > 0", "label": "the area to be defended is previewed under the cursor"},
+    {"frame": 18, "screenshot": "order_preview"},
+    {"frame": 20, "mouse": "click", "pos": [640, 430]},
+    {"frame": 24, "expect": "str(scene.world.get_squad(int(scene.get_meta('sq'))).order.get('type','')) == 'defend'", "label": "defend order issued"},
+    {"frame": 26, "expect": "scene.input_ctl._orders._signature.find('c') >= 0", "label": "the defended area stays drawn after the order"},
+    {"frame": 28, "screenshot": "order_area"},
+
+    {"frame": 34, "do": "scene.hud.command('escort')"},
+    {"frame": 36, "do": "scene.input_ctl._target_command('escort', scene.rig.world_to_screen(scene.view.unit_views[scene.world.squads[0].members[1]].global_position))"},
+    {"frame": 40, "expect": "str(scene.world.get_squad(int(scene.get_meta('sq'))).order.get('type','')) == 'defend'", "label": "escorting your own member is refused"},
+    {"frame": 41, "expect": "scene.input_ctl.mode == 'cmd:escort'", "label": "a refused target leaves the order armed for another click"},
+
+    {"frame": 46, "do": "scene.hud.command('stop')"},
+    {"frame": 48, "expect": "scene.input_ctl.mode == ''", "label": "stop cancels the order waiting for a target"},
+    {"frame": 49, "expect": "str(scene.world.get_squad(int(scene.get_meta('sq'))).order.get('type','')) == 'defend'", "label": "cancelling the aim keeps the standing order"},
+    {"frame": 52, "do": "scene.hud.command('stop')"},
+    {"frame": 56, "expect": "str(scene.world.get_squad(int(scene.get_meta('sq'))).order.get('type','')) == 'idle'", "label": "stop cancels the standing order"},
+
+    {"frame": 62, "do": "scene.input_ctl.issue('move', {'pos': scene.world.home_pos() + Vector2(36, 28)})"},
+    {"frame": 64, "do": "scene.set_speed(2)"},
+    {"frame": 100, "expect": "scene.world.get_unit(scene.world.squads[0].members[0]).moving", "label": "the squad is marching"},
+    {"frame": 102, "do": "scene.input_ctl.issue('patrol', {'pos': scene.world.home_pos()})"},
+    {"frame": 104, "expect": "scene.world.get_unit(scene.world.squads[0].members[0]).path.size() == 0", "label": "a new order drops the route of the old one instead of finishing it"},
+    {"frame": 130, "expect": "str(scene.world.get_squad(int(scene.get_meta('sq'))).state) == 'patrolling'", "label": "the squad patrols at once"},
+    {"frame": 140, "screenshot": "patrol_route"}
+  ]
+}

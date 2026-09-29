@@ -9,7 +9,7 @@ const KIND_ICON := {"good": "ui_star", "bad": "ui_skull", "discover": "ui_target
 const KIND_COLOR := {"good": UiTheme.GOOD, "bad": UiTheme.BAD, "discover": UiTheme.ACCENT, "loot": UiTheme.GOLD, "levelup": UiTheme.GOLD, "info": UiTheme.TEXT}
 const COMMANDS := [["move", "Move", "cmd_move", "M"], ["attack", "Attack", "cmd_attack", "F"], ["defend", "Defend", "cmd_defend", "H"],
 	["explore", "Explore", "cmd_explore", "X"], ["patrol", "Patrol", "cmd_patrol", "P"], ["escort", "Escort", "cmd_escort", "Y"],
-	["auto", "Auto", "cmd_auto", "U"], ["retreat", "Retreat", "cmd_retreat", "R"]]
+	["auto", "Auto", "cmd_auto", "U"], ["retreat", "Retreat", "cmd_retreat", "R"], ["stop", "Stop", "cmd_stop", "L"]]
 ## Ability shortcut slots bound in App ("ability_1".."ability_9").
 const ABILITY_HOTKEYS := 9
 
@@ -165,7 +165,7 @@ func _refresh_language() -> void:
 		var button: Button = _cmd_buttons[id]
 		var box := button.get_child(0) as VBoxContainer
 		(box.get_child(1) as Label).text = Loc.t(str(command[1]))
-		button.tooltip_text = "%s (%s)\\n%s" % [Loc.t(str(command[1])), command[3], Loc.t(_cmd_help(id))]
+		button.tooltip_text = "%s (%s)\n%s" % [Loc.t(str(command[1])), command[3], Loc.t(_cmd_help(id))]
 	_update_commands()
 	roster._sig = ""
 	roster.refresh()
@@ -833,7 +833,7 @@ func _build_command_bar() -> void:
 		var button := Button.new()
 		button.focus_mode = Control.FOCUS_NONE
 		button.custom_minimum_size = Vector2(52, 50)
-		button.tooltip_text = "%s (%s)\\n%s" % [Loc.t(str(command[1])), command[3], Loc.t(_cmd_help(id))]
+		button.tooltip_text = "%s (%s)\n%s" % [Loc.t(str(command[1])), command[3], Loc.t(_cmd_help(id))]
 		var box := UiTheme.vbox(2)
 		box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		box.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -868,9 +868,13 @@ func _cmd_help(id: String) -> String:
 		"build": "Place buildings for your settlers to construct.", "gather": "Designate logging, mining, forage and farm zones; set work priorities.",
 		"patrol": "Walk between here and the clicked point, fighting on the way.", "escort": "Follow and protect one of your units.",
 		"auto": "Full delegation: defend home, explore, clear weak camps, patrol.",
-		"retreat": "Fall back to the hearth to heal, then resume."}.get(id, "")
+		"retreat": "Fall back to the hearth to heal, then resume.",
+		"stop": "Cancel: drop the order being aimed, or halt the squad where it stands."}.get(id, "")
 
 
+## Which squads the command bar addresses: every squad with a selected member, or — when nothing
+## of the sort is selected — the squad the panel is showing. A selection made of units that serve
+## in no squad addresses those units themselves, so the fallback must not steal the order.
 func command_squad_ids() -> Array[int]:
 	var ids: Array[int] = []
 	if squad_panel.all_squads_active:
@@ -887,10 +891,24 @@ func command_squad_ids() -> Array[int]:
 			ids.append(int(squad_id_variant))
 		ids.sort()
 		return ids
+	if not command_lone_units().is_empty():
+		return ids
 	var viewed := g.world.get_squad(g.viewed_squad_id)
 	if viewed:
 		ids.append(viewed.id)
 	return ids
+
+
+## Selected units of ours that serve in no squad: villagers, drones, the airship. They carry out
+## orders on their own (SquadAI.order_unit), so the command bar and the right click address them.
+func command_lone_units() -> Array:
+	var units: Array = []
+	if squad_panel.all_squads_active:
+		return units
+	for unit: Unit in g.selected_units():
+		if unit.is_player() and unit.alive and unit.squad_id < 0:
+			units.append(unit)
+	return units
 
 
 func command_units() -> Array:
@@ -903,6 +921,7 @@ func command_units() -> Array:
 			var unit := g.world.get_unit(unit_id)
 			if unit:
 				units.append(unit)
+	units.append_array(command_lone_units())
 	return units
 
 
@@ -927,8 +946,19 @@ func command(id: String) -> void:
 	if id == "build" or id == "gather":
 		build_menu.toggle(id)
 		return
+	if id == "stop":
+		# One button for "never mind": first the order that is waiting for its target (or the
+		# building/zone being placed), then the standing order of whoever the bar addresses.
+		if g.input_ctl.mode != "":
+			g.input_ctl.set_mode("")
+			return
+		if command_units().is_empty():
+			add_note({"text": Loc.t("Select a squad first."), "kind": "info"}, 3.0)
+			return
+		g.input_ctl.cancel_orders()
+		return
 	var squad_ids := command_squad_ids()
-	if squad_ids.is_empty():
+	if command_units().is_empty():
 		add_note({"text": Loc.t("Select a squad first."), "kind": "info"}, 3.0)
 		return
 	_select_command_recipients(squad_ids)
@@ -940,6 +970,7 @@ func command(id: String) -> void:
 
 func _update_commands() -> void:
 	var squad_ids := command_squad_ids()
+	var lone := command_lone_units()
 	var active := ""
 	if not squad_ids.is_empty():
 		var first := g.world.get_squad(squad_ids[0])
@@ -947,6 +978,12 @@ func _update_commands() -> void:
 		for squad_id: int in squad_ids.slice(1):
 			var squad := g.world.get_squad(squad_id)
 			if squad == null or str(squad.order.get("type", "")) != active:
+				active = ""
+				break
+	elif not lone.is_empty():
+		active = str((lone[0] as Unit).order.get("type", ""))
+		for unit: Unit in lone.slice(1):
+			if str(unit.order.get("type", "")) != active:
 				active = ""
 				break
 	var recipient_color: Color = UiTheme.BORDER_DIM
@@ -960,15 +997,26 @@ func _update_commands() -> void:
 	elif squad_ids.size() > 1:
 		_recipient_label.text = Loc.t("%d squads") % squad_ids.size()
 		recipient_color = UiTheme.ACCENT
+	elif lone.size() == 1:
+		_recipient_label.text = (lone[0] as Unit).name
+		recipient_color = UiTheme.ACCENT
+	elif lone.size() > 1:
+		_recipient_label.text = Loc.t("%d units") % lone.size()
+		recipient_color = UiTheme.ACCENT
 	else:
 		_recipient_label.text = Loc.t("No squad")
 	_recipient_label.tooltip_text = _recipient_label.text
 	_recipient_swatch.color = recipient_color
 	_recipient_icon.texture = Icons.get_icon("ui_squad" if not squad_ids.is_empty() else "ui_target")
+	var idle := squad_ids.is_empty() and lone.is_empty()
 	for id: String in _cmd_buttons:
 		var button: Button = _cmd_buttons[id]
-		button.disabled = squad_ids.is_empty()
 		var on := (g.input_ctl.mode == "cmd:" + id) or (active != "" and active == id)
+		if id == "stop":
+			button.disabled = idle and g.input_ctl.mode == ""
+			on = g.input_ctl.mode != ""
+		else:
+			button.disabled = idle
 		button.add_theme_stylebox_override("normal", UiTheme.button_box("pressed" if on else "normal"))
 	squad_panel.refresh(false)
 	_refresh_abilities(command_units())
@@ -1206,6 +1254,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		return
 	if event.is_action_pressed("toggle_help"):
 		_help.visible = not _help.visible
+		if _help.visible:
+			_fit_help()
 	elif event.is_action_pressed("cancel") and g.input_ctl.mode == "":
 		if villages.close_top():
 			pass
@@ -1310,21 +1360,18 @@ func _build_overlays() -> void:
 	_help = UiTheme.panel()
 	_help.visible = false
 	root.add_child(_help)
-	_help.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	_help.offset_left = -360
-	_help.offset_right = 360
-	_help.offset_top = -300
-	_help.offset_bottom = 300
+	_help.set_anchors_preset(Control.PRESET_CENTER)
 	var v := UiTheme.vbox(4)
 	_help.add_child(v)
 	v.add_child(UiTheme.title(Loc.t("Controls"), 26))
 	for line: String in [
 		"Left click: select unit / squad / building / site     Drag: box-select",
+		"Orders go to what you picked: a squad member commands its squad, a settler or drone itself.",
 		"Right click: move · attack enemy or camp · gather resource · trade (airship on a trade post)",
 		"W A S D / arrows / screen edge / middle drag: pan     Wheel: zoom     Q / E: rotate 90°",
 		"1–9 or Tab: select squads (press twice to centre)     Home: back to the hearth",
 		"Z C V T N J K O I: squad abilities (shown on the command bar)",
-		"M Move  F Attack  H Defend  X Explore  P Patrol  Y Escort  U Auto  R Retreat",
+		"M Move  F Attack  H Defend  X Explore  P Patrol  Y Escort  U Auto  R Retreat  L Stop / cancel",
 		"B Build menu  G Gather zones & work priorities",
 		"Space: pause     [ ] or , . : game speed",
 		"Quick save: F5 (Ctrl+S on web)  Quick load: F9 (Ctrl+L on web)  Esc: cancel / menu  F1: help",
@@ -1333,7 +1380,17 @@ func _build_overlays() -> void:
 		"defend, explore and clear weak camps, the drone scouts, the airship trades.",
 	]:
 		v.add_child(UiTheme.label(Loc.t(line), 17))
-		v.add_child(UiTheme.label(Loc.t("Touch: tap to select or order; drag to pan; pinch to zoom; twist with two fingers to rotate. Use Box for rectangle selection."), 16))
+	_fit_help()
+
+
+## Centred and only as big as the lines it holds: fixed offsets clipped the longest line in
+## Japanese and left half the panel empty.
+func _fit_help() -> void:
+	var size := _help.get_combined_minimum_size()
+	_help.offset_left = -size.x * 0.5
+	_help.offset_right = size.x * 0.5
+	_help.offset_top = -size.y * 0.5
+	_help.offset_bottom = size.y * 0.5
 
 
 func _on_mode(m: String) -> void:
@@ -1355,6 +1412,10 @@ func _on_mode(m: String) -> void:
 			text = Loc.t("Drag a rectangle to mark a %s zone  (Cancel to leave)") % Loc.t(m.substr(5))
 	_mode_hint.text = text
 	_update_responsive()
+	# without this the pressed button only lights up on the next quarter-second HUD tick, which
+	# reads as "the button did nothing"
+	if _cmd_buttons.has("stop"):
+		_update_commands()
 
 
 func _on_selection() -> void:

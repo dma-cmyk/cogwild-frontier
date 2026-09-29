@@ -54,15 +54,27 @@ static func _unshaded(c: Color) -> StandardMaterial3D:
 	return _mats[key]
 
 
+## Tint for the ground mark: the mesh carries the soft shape in its vertex colours, the material
+## only colours it, so every unit shares one mesh.
+static func _mark_material(c: Color) -> StandardMaterial3D:
+	var key := "mark" + c.to_html()
+	if not _mats.has(key):
+		var m := StandardMaterial3D.new()
+		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		m.vertex_color_use_as_albedo = true
+		m.albedo_color = c
+		m.cull_mode = BaseMaterial3D.CULL_DISABLED
+		m.no_depth_test = false
+		m.render_priority = 4
+		_mats[key] = m
+	return _mats[key]
+
+
 static func _meshes() -> void:
 	if _ring_mesh != null:
 		return
-	var tm := TorusMesh.new()
-	tm.inner_radius = 0.46
-	tm.outer_radius = 0.56
-	tm.rings = 24
-	tm.ring_segments = 4
-	_ring_mesh = tm
+	_ring_mesh = OrderMarkers.unit_mark()
 	var cm := CylinderMesh.new()
 	cm.top_radius = 0.5
 	cm.bottom_radius = 0.5
@@ -195,8 +207,9 @@ func sync(alpha: float, delta: float) -> void:
 	var show_ring := selected or hovered
 	ring.visible = show_ring and u.alive
 	if ring.visible:
-		ring.material_override = _unshaded(_ring_color() if selected else _ring_color().lerp(Color.WHITE, 0.3) * Color(1, 1, 1, 0.6))
-		ring.position = Vector3(0, (maxf(gy, 0.0) - y if u.flying else 0.0) + 0.06, 0)
+		ring.material_override = _mark_material(_ring_color() if selected
+			else _ring_color().lerp(Color.WHITE, 0.3) * Color(1, 1, 1, 0.55))
+		ring.position = Vector3(0, (maxf(gy, 0.0) - y if u.flying else 0.0) + 0.05, 0)
 	var ratio := u.hp_ratio()
 	bar.visible = u.alive and u.state != Unit.State.DOWNED and (selected or ratio < 0.999 or hovered)
 	if bar.visible:

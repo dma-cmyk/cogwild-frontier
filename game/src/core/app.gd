@@ -40,6 +40,7 @@ const ACTIONS := {
 	"cmd_auto": [KEY_U],
 	"cmd_retreat": [KEY_R],
 	"cmd_escort": [KEY_Y],
+	"cmd_stop": [KEY_L],
 	"ability_1": [KEY_Z],
 	"ability_2": [KEY_C],
 	"ability_3": [KEY_V],

@@ -14,9 +14,13 @@ func setup(game: Game, h: Hud) -> void:
 	hud = h
 	name = "Roster"
 	add_theme_stylebox_override("panel", UiTheme.panel_box())
+	# Rows are Buttons whose contents hang off anchors, so they add no width of their own: without
+	# an explicit right edge the panel collapsed to the width of the group headings and every name
+	# and activity was clipped away.
 	anchor_top = 1.0
 	anchor_bottom = 1.0
 	offset_left = 10
+	offset_right = 430
 	offset_top = -840
 	offset_bottom = -120
 	var v := UiTheme.vbox(6)
@@ -50,9 +54,11 @@ func refresh() -> void:
 	if not visible:
 		return
 	var units: Array = g.world.unit_list.filter(func(u: Unit) -> bool: return u.is_player() and u.alive)
+	# the signature has to cover everything a row draws, or a promotion, a rename or a new order
+	# leaves the open roster showing yesterday's news
 	var sig := ""
 	for u: Unit in units:
-		sig += "%d:%s:%s;" % [u.id, str(u.job.get("type", "")), str(u.squad_id)]
+		sig += "%d:%s:%d:%s:%s;" % [u.id, u.name, u.char_level(), str(u.squad_id), hud.info_panel._activity(u)]
 	if sig == _sig:
 		return
 	_sig = sig
@@ -85,7 +91,10 @@ func refresh() -> void:
 			nm.custom_minimum_size = Vector2(160, 0)
 			nm.clip_text = true
 			h.add_child(nm)
-			h.add_child(UiTheme.label(hud.info_panel._activity(u), 13, UiTheme.TEXT_DIM))
+			var act := UiTheme.label(hud.info_panel._activity(u), 13, UiTheme.TEXT_DIM)
+			act.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			act.clip_text = true
+			h.add_child(act)
 			var uid := u.id
 			b.pressed.connect(func() -> void:
 				var uu := g.world.get_unit(uid)

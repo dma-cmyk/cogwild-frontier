@@ -59,6 +59,9 @@ func toggle(t: String) -> void:
 
 func _rebuild() -> void:
 	for c in _box.get_children():
+		# detach before freeing: queue_free() only lands at the end of the frame, and the deferred
+		# _fit_to_viewport would still measure the previous tab and leave a half-empty panel
+		_box.remove_child(c)
 		c.queue_free()
 	_cost_labels.clear()
 	if tab == "build":

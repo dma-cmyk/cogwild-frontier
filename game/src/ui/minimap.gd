@@ -199,6 +199,8 @@ func _draw_markers(c: Control) -> void:
 			c.draw_circle(p, rad, col)
 		elif u.visible:
 			c.draw_circle(p, 2.4, Color("#ff5a4a") if w.hostile("player", u.faction) else Color("#ffd25a"))
+	_draw_zones(c)
+	_draw_orders(c)
 	# camera view outline
 	var vp := g.get_viewport().get_visible_rect().size
 	var pts: PackedVector2Array = []
@@ -210,7 +212,55 @@ func _draw_markers(c: Control) -> void:
 			gp = o + d * ((o.y - 0.0) / -d.y)
 		pts.append(_w2m(Vector2(gp.x, gp.z)))
 	pts.append(pts[0])
-	c.draw_polyline(pts, Color(1, 1, 1, 0.8), 1.5)
+	c.draw_polyline(pts, Color(1, 1, 1, 0.45), 1.0)
+
+
+## Gather zones: the minimap is the only view wide enough to hold them all at once.
+func _draw_zones(c: Control) -> void:
+	for z: Dictionary in g.world.zones:
+		var r: Rect2i = z["rect"]
+		var col: Color = WorldView.ZONE_COLORS.get(str(z["type"]), Color.WHITE)
+		c.draw_rect(Rect2(_w2m(Vector2(r.position)), _w2m(Vector2(r.end)) - _w2m(Vector2(r.position))), Color(col, 0.75), false, 1.5)
+
+
+## Where the squads the command bar addresses were sent. An explore region is wider than the
+## camera ever shows, so the minimap is where its extent is actually readable.
+func _draw_orders(c: Control) -> void:
+	if g.hud == null:
+		return
+	for id: int in g.hud.command_squad_ids():
+		var squad := g.world.get_squad(id)
+		if squad == null or squad.members.is_empty():
+			continue
+		var col := Color(squad.color(), 0.85)
+		var from := _w2m(g.world.squad_ai.center(squad))
+		var order := squad.order
+		match str(order.get("type", "")):
+			"defend", "explore":
+				var at := _w2m(order.get("pos", g.world.squad_ai.center(squad)))
+				var radius := float(order.get("radius", 10.0)) / SPAN * SIZE
+				c.draw_arc(at, radius, 0.0, TAU, 40, col, 1.5)
+				c.draw_line(from, at, col, 1.0)
+			"patrol":
+				var points: Array = order.get("points", [])
+				for i in points.size():
+					c.draw_line(_w2m(points[i]), _w2m(points[(i + 1) % points.size()]), col, 1.5)
+			"move", "visit", "attack", "retreat", "escort":
+				c.draw_line(from, _w2m(_goal_of(squad)), col, 1.5)
+				c.draw_circle(_w2m(_goal_of(squad)), 3.0, col, false, 1.5)
+
+
+func _goal_of(squad: Squad) -> Vector2:
+	var order := squad.order
+	var target := g.world.get_unit(int(order.get("target", -1)))
+	if target != null and target.alive:
+		return target.pos
+	if str(order.get("type", "")) == "retreat":
+		return g.world.home_pos()
+	var site: Dictionary = g.world.sites.get(int(order.get("site", -1)), {})
+	if not site.is_empty():
+		return Vector2(site["center"])
+	return order.get("pos", g.world.squad_ai.center(squad))
 
 
 func _on_map_input(ev: InputEvent) -> void:
