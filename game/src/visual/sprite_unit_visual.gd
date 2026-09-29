@@ -5,6 +5,8 @@ extends UnitVisual
 ## (columns: step, stand, step). Actions are small card motions: lunge, recoil, knock-back flash,
 ## hop, squash on work strokes, lying down when downed. Carried goods show as a resource icon.
 
+## Metres of card motion outside the painted cell: lunges, hops, hover bob.
+const MOTION_MARGIN := 0.5
 const WALK_SEQ := [0, 1, 2, 1]
 const WALK_RATE := 2.4  # frames per metre travelled
 const ROW_DOWN := 0
@@ -22,6 +24,8 @@ var card: MeshInstance3D
 ## has room for only a few thousand instance-uniform slots in total).
 var _mat: ShaderMaterial
 var _size := Vector2.ONE
+## Frame columns in the sheet; single-column sheets (airships) have no walk or action frames.
+var _cols := 3
 var _row := ROW_DOWN
 var _screen_dir := Vector2(0.0, -1.0)
 var _walk := 0.0
@@ -52,11 +56,24 @@ func setup_sprite(p_dna: Dictionary, p_entry: Dictionary, hints: Dictionary) -> 
 	_mat = SpriteLibrary.unit_material(entry).duplicate() as ShaderMaterial
 	card.material_override = _mat
 	card.scale = Vector3(_size.x, _size.y, 1.0)
-	card.custom_aabb = AABB(Vector3(-1.2, -1.0, -1.5), Vector3(2.4, 2.4, 3.0))
+	_cols = maxi(1, int(entry.get("cols", 3)))
+	var cell: Array = entry.get("cell", [128, 128])
+	if kind == "airship":
+		# The shader faces the card toward the camera regardless of the unit's heading. The
+		# airship is wider than the old fixed AABB, so enclose its full camera-facing footprint.
+		# The bounds are expressed in card space, before the x/y scale above is applied.
+		var anchor_px: Array = entry.get("anchor", [64, 124])
+		var ax := float(anchor_px[0]) / float(cell[0])
+		var ay := float(anchor_px[1]) / float(cell[1])
+		var reach := Vector2(maxf(ax, 1.0 - ax) * _size.x, maxf(ay, 1.0 - ay) * _size.y).length() \
+			+ absf(float(_mat.get_shader_parameter("depth_bias"))) + MOTION_MARGIN
+		var half := Vector3(reach / _size.x, reach / _size.y, reach)
+		card.custom_aabb = AABB(-half, half * 2.0)
+	else:
+		card.custom_aabb = AABB(Vector3(-1.2, -1.0, -1.5), Vector3(2.4, 2.4, 3.0))
 	card.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	_mat.set_shader_parameter("hue_shift", SpriteLibrary.hue_shift_for(dna))
 	add_child(card)
-	var cell: Array = entry.get("cell", [128, 128])
 	_height = _size.y * float(entry.get("height_px", cell[1])) / float(cell[1])
 	if _hover:
 		_height *= 0.6
@@ -124,7 +141,7 @@ func _process(delta: float) -> void:
 	if card_scale != _sent_scale:
 		_sent_scale = card_scale
 		card.scale = Vector3(card_scale.x, card_scale.y, 1.0)
-	var fr := Vector2(float(frame), float(_row))
+	var fr := Vector2(float(mini(frame, _cols - 1)), float(_row))
 	if fr != _sent_frame:
 		_sent_frame = fr
 		_mat.set_shader_parameter("frame", fr)
@@ -180,7 +197,8 @@ func set_anim(next_anim: int) -> void:
 	if next_anim == Anim.DEAD and anim != Anim.DEAD:
 		_dead_t = 0.0
 	anim = next_anim
-	anim_time = 0.0 if next_anim != Anim.WALK else anim_time
+	# hover bob and drone rotors run on anim_time: restarting it would jolt them on every stop
+	anim_time = 0.0 if next_anim != Anim.WALK and not _hover else anim_time
 
 
 func trigger(trigger_action: StringName) -> void:

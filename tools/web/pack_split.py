@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """Single source of truth for how the Web build is split into two packs.
 
-The browser downloads the core pack before the engine starts, so it only holds what the first
-minutes need: UI, fonts, audio, terrain, props, the four original races' looks v1-v3 and the
-buildings the player can construct. Everything else - the mythic and classic races added later, the fourth and fifth
-looks, painted back views, race villages and the buildings that only stand at world sites - goes
-into an optional pack that ``WebArt`` fetches in the background (see src/core/web_extra_pack.gd).
+The browser downloads the core pack before the engine starts, so it holds every playable race's base
+art (including races added later), UI, fonts, audio, terrain, props and the buildings the player can
+construct. Optional art is limited to additional looks, painted back views, race villages and buildings
+that only stand at world sites; ``WebArt`` fetches it in the background (see src/core/web_extra_pack.gd).
 
 Classification is by path pattern, not by a file list, so art merged later lands in the right pack
 on its own. Running this script rewrites the two filter fields in game/export_presets.cfg, which is
 what ``tools/web/build_web.sh`` does before exporting; the result is committed so the two stay in
 sync.
+
 """
 from __future__ import annotations
 
@@ -21,26 +21,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 PRESETS = ROOT / "game" / "export_presets.cfg"
 
-## Races whose painted art was added in rounds 5 and 6; rare enough that the colony can start without it.
-LATE_RACES = ("minotaur", "centaur", "harpy", "lamia", "oni", "tengu",
-    "goblin", "orc", "kobold", "lizardfolk", "gnome", "halfling")
 ## Buildings that only ever stand at a world site (including the town, `t_*`), never in the player's colony.
 SITE_BUILDINGS = ("bandit", "machine", "ruin", "trade", "wanderer", "wreck", "t")
 
-EXTRA_PATTERNS: list[str] = (
-    [f"assets/sprites/chars/{race}_*.png" for race in LATE_RACES]
-    + [f"assets/portraits/{race}_*.png" for race in LATE_RACES]
-    + [
-        "assets/sprites/chars/*_v4.png",
-        "assets/sprites/chars/*_v5.png",
-        "assets/portraits/*_v4.png",
-        "assets/portraits/*_v5.png",
-        "assets/sprites/buildings/*_back.png",
-        "assets/sprites/buildings/*_back_glow.png",
-        "assets/sprites/buildings/v_*.png",
-    ]
-    + [f"assets/sprites/buildings/{site}_*.png" for site in SITE_BUILDINGS]
-)
+EXTRA_PATTERNS: list[str] = [
+    "assets/sprites/chars/*_v4.png",
+    "assets/sprites/chars/*_v5.png",
+    "assets/portraits/*_v4.png",
+    "assets/portraits/*_v5.png",
+    "assets/sprites/buildings/*_back.png",
+    "assets/sprites/buildings/*_back_glow.png",
+    "assets/sprites/buildings/v_*.png",
+] + [f"assets/sprites/buildings/{site}_*.png" for site in SITE_BUILDINGS]
 
 ## Kept out of both packs.
 BASE_EXCLUDE = ["tests/*", "tools/*", "docs/*", "*.md"]

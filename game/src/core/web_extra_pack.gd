@@ -1,13 +1,13 @@
 class_name WebExtraPack
 extends Node
 ## Autoload "WebArt". The browser build ships two packs: the core one the page downloads before the
-## engine starts, and this optional art pack (extra races, building back views, extra looks) that is
-## fetched in the background while the title menu is already usable. Everything it contains has a
-## working fallback (procedural low-poly figures, front views, look v1), so the game is playable the
-## whole time; when the pack mounts, live views rebuild themselves.
+## engine starts, including the complete base art for every playable race, and this optional pack
+## (additional looks, building back views and site-only art) fetched in the background. Character
+## creation and Continue therefore use real base race art on first display; mounting the optional pack
+## only adds variants and refreshes live views.
 ##
-## The file is kept in user:// (IndexedDB on the web) so a revisit mounts it without any request, and
-## the service worker also caches the response so a first visit on a fresh profile is served locally.
+## The file is kept in user:// (IndexedDB on the web) so a revisit mounts it without downloading,
+## and the service worker caches the response after its first successful download.
 ## Native builds ship one pack and never enter any of this.
 
 ## Nodes in this group get `refresh_after_web_extra_art()` after a pack is mounted.
