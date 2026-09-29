@@ -27,6 +27,15 @@
 	"mod.ranged_damage_pct": "ranged damage pct",
 	"mod.retreat_bias": "retreat bias",
 	"mod.trade_pct": "trade pct",
-	"mod.vision": "vision",
-	"mod.xp_rate_pct": "xp rate pct"
+  "mod.vision": "vision",
+  "Forage": "Forage food",
+  "Gather & work zones": "Gather & work zones",
+  "No other squad to select.": "No other squad to select.",
+  "No squad assigned to that key.": "No squad assigned to that key.",
+  "Ability unavailable: %s.": "Ability unavailable: %s.",
+  "ability.reason.cooldown": "cooldown",
+  "ability.reason.no_target": "invalid target",
+  "ability.reason.downed": "unit is down",
+  "ability.reason.unknown": "unavailable",
+  "Cannot attack neutral units.": "Cannot attack neutral units."
 }

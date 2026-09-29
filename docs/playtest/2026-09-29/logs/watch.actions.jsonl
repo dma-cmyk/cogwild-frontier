@@ -1,0 +1,44 @@
+{"t": 0, "start": ["/usr/bin/godot", "--path", "/home/dma/プロジェクト/cogwild-frontier/game", "--fixed-fps", "60", "--disable-vsync", "--resolution", "1600x900", "--script", "/home/dma/.omp/agent/managed-skills/godot-ai-playtest/scripts/playtest_session.gd", "--", "--pt-config=/tmp/godot-playtest/watch/config.json"], "scene": "res://scenes/main.tscn"}
+{"frames": 30, "events": [], "shot": "01_title", "end_frame": 30}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [448.0, 275.0], "button": "left", "mods": [], "hold": 2}], "shot": "02_founder_screen", "end_frame": 90}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [468.0, 168.0], "button": "left", "mods": [], "hold": 2}], "shot": "03_select_vulpin", "end_frame": 120}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [210.0, 405.0], "button": "left", "mods": [], "hold": 2}], "shot": "04_select_explorer", "end_frame": 150}
+{"frames": 600, "events": [{"at": 0, "mouse": "click", "pos": [290.0, 661.0], "button": "left", "mods": [], "hold": 2}], "shot": "05_world_gen", "end_frame": 750}
+{"frames": 15, "events": [{"at": 0, "key": "X", "mods": []}], "shot": "06_cmd_explore", "end_frame": 765}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [250.0, 450.0], "button": "left", "mods": [], "hold": 2}], "shot": "07_ordered_explore", "end_frame": 825}
+{"frames": 60, "events": [{"at": 0, "action": "cam_left", "hold": 45}], "shot": "08_follow_squad", "end_frame": 885}
+{"frames": 120, "events": [], "shot": "09_squad_arriving", "end_frame": 1005}
+{"frames": 180, "events": [], "shot": "10_fog_clearing", "end_frame": 1185}
+{"frames": 10, "events": [{"at": 0, "key": "X", "mods": []}], "shot": null, "end_frame": 1195}
+{"frames": 120, "events": [{"at": 0, "mouse": "click", "pos": [300.0, 600.0], "button": "left", "mods": [], "hold": 2}], "shot": "11_explore_further", "end_frame": 1315}
+{"frames": 180, "events": [], "shot": "12_fog_penetration", "end_frame": 1495}
+{"frames": 10, "events": [{"at": 0, "key": "1", "mods": []}], "shot": null, "end_frame": 1505}
+{"frames": 10, "events": [{"at": 0, "key": "M", "mods": []}], "shot": null, "end_frame": 1515}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [600.0, 400.0], "button": "left", "mods": [], "hold": 2}], "shot": "13_squad_move", "end_frame": 1575}
+{"frames": 180, "events": [], "shot": "14_squad_moving_line", "end_frame": 1755}
+{"frames": 30, "events": [{"at": 0, "key": "Home", "mods": []}], "shot": "15_home_view", "end_frame": 1785}
+{"frames": 30, "events": [{"at": 0, "key": "G", "mods": []}], "shot": "16_gather_menu", "end_frame": 1815}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [479.0, 595.0], "button": "left", "mods": [], "hold": 2}], "shot": "17_logging_mode", "end_frame": 1845}
+{"frames": 60, "events": [{"at": 0, "mouse": "drag", "from": [300.0, 100.0], "to": [550.0, 250.0], "button": "left", "mods": [], "hold": 12}], "shot": "18_logging_zone_placed", "end_frame": 1905}
+{"frames": 120, "events": [{"at": 0, "key": "Escape", "mods": []}], "shot": "19_workers_harvesting", "end_frame": 2025}
+{"frames": 30, "events": [{"at": 0, "key": "B", "mods": []}], "shot": "20_build_menu", "end_frame": 2055}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [573.0, 565.0], "button": "left", "mods": [], "hold": 2}], "shot": "21_house_selected", "end_frame": 2085}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [680.0, 580.0], "button": "left", "mods": [], "hold": 2}], "shot": "22_house_placed", "end_frame": 2145}
+{"frames": 600, "events": [], "shot": "23_building_progress", "end_frame": 2745}
+{"frames": 30, "events": [{"at": 0, "key": "BracketRight", "mods": []}], "shot": "24_speed_up", "end_frame": 2775}
+{"frames": 300, "events": [], "shot": "25_house_built", "end_frame": 3075}
+{"frames": 75, "events": [{"at": 0, "action": "cam_left", "hold": 60}], "shot": "26_camera_west", "end_frame": 3150}
+{"frames": 30, "events": [{"at": 0, "action": "cam_left", "hold": 45}], "shot": null, "end_frame": 3196}
+{"frames": 60, "events": [{"at": 0, "action": "cam_down", "hold": 45}], "shot": "27_camera_southwest", "end_frame": 3256}
+{"frames": 10, "events": [{"at": 0, "key": "1", "mods": []}], "shot": null, "end_frame": 3266}
+{"frames": 10, "events": [{"at": 0, "key": "F", "mods": []}], "shot": null, "end_frame": 3276}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [580.0, 640.0], "button": "left", "mods": [], "hold": 2}], "shot": "28_attack_order", "end_frame": 3336}
+{"frames": 240, "events": [], "shot": "29_combat_engagement", "end_frame": 3576}
+{"frames": 10, "events": [{"at": 0, "key": "Z", "mods": []}], "shot": null, "end_frame": 3586}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [400.0, 680.0], "button": "left", "mods": [], "hold": 2}], "shot": "30_ability_shot", "end_frame": 3646}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [475.0, 615.0], "button": "left", "mods": [], "hold": 2}], "shot": "31_shoot_orc", "end_frame": 3706}
+{"frames": 10, "events": [{"at": 0, "key": "F", "mods": []}], "shot": null, "end_frame": 3716}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [318.0, 672.0], "button": "left", "mods": [], "hold": 2}], "shot": "32_attack_orc_engaged", "end_frame": 3776}
+{"frames": 120, "events": [{"at": 0, "mouse": "click", "pos": [570.0, 670.0], "button": "left", "mods": [], "hold": 2}], "shot": "33_attack_orc_archer", "end_frame": 3896}
+{"frames": 10, "events": [{"at": 0, "key": "Escape", "mods": []}], "shot": null, "end_frame": 3906}
+{"frames": 30, "events": [{"at": 0, "key": "Home", "mods": []}], "shot": "34_home_day2", "end_frame": 3936}

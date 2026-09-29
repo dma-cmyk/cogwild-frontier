@@ -665,12 +665,13 @@ func _target_ability(ability_id: String, screen_pos: Vector2) -> void:
 			reason = result
 	if used == 0 and reason != "":
 		var reason_keys := {
-			"cooldown": "reason.cooldown",
-			"no_target": "reason.no_target",
-			"downed": "reason.downed",
-			"unknown": "reason.unknown",
+			"cooldown": "ability.reason.cooldown",
+			"no_target": "ability.reason.no_target",
+			"downed": "ability.reason.downed",
+			"unknown": "ability.reason.unknown",
 		}
-		g.toast.emit(Loc.t(str(reason_keys.get(reason, "reason.unknown"))), "info")
+		var reason_text := Loc.t(str(reason_keys.get(reason, "ability.reason.unknown")))
+		g.toast.emit(Loc.t("Ability unavailable: %s.") % reason_text, "info")
 	elif used > 0:
 		g.toast.emit(Loc.t("%d used ability: %s") % [used, Loc.t(ability_id.replace("_", " ").capitalize())], "good")
 
@@ -694,8 +695,13 @@ func _target_command(type: String, p: Vector2) -> bool:
 	var params := {}
 	match type:
 		"attack":
-			if target and g.world.hostile("player", target.faction):
-				params = {"target": target.id}
+			if target:
+				if g.world.hostile("player", target.faction):
+					params = {"target": target.id}
+				else:
+					g.toast.emit(Loc.t("Cannot attack neutral units."), "info")
+					Sfx.play(&"ui_error")
+					return true
 			elif hover_ground is Vector3:
 				var sid := site_at(_tile_at(hover_ground))
 				if sid >= 0 and bool(g.world.sites[sid].get("hostile", false)):

@@ -449,7 +449,7 @@ func _rebuild_zones() -> void:
 	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	mat.no_depth_test = true
 	mat.render_priority = 5
-	var alpha := 1.0 if show_zones else 0.65
+	var alpha := 1.0 if show_zones else 0.85
 	im.surface_begin(Mesh.PRIMITIVE_TRIANGLES, mat)
 	for z: Dictionary in w.zones:
 		var r: Rect2i = z["rect"]

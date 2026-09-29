@@ -177,7 +177,8 @@ func language_selector() -> HBoxContainer:
 	option.custom_minimum_size = Vector2(140, 36)
 	option.item_selected.connect(_on_language_option_selected)
 	var sync_language: Callable = _sync_language_option.bind(option)
-	language_changed.connect(sync_language)
+	if not language_changed.is_connected(sync_language):
+		language_changed.connect(sync_language)
 	row.tree_exiting.connect(_disconnect_language_selector.bind(sync_language))
 	row.add_child(option)
 	return row

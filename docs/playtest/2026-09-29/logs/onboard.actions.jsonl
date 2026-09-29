@@ -1,0 +1,21 @@
+{"t": 0, "start": ["/usr/bin/godot", "--path", "/home/dma/プロジェクト/cogwild-frontier/game", "--audio-driver", "Dummy", "--fixed-fps", "60", "--disable-vsync", "--resolution", "1600x900", "--script", "/home/dma/.omp/agent/managed-skills/godot-ai-playtest/scripts/playtest_session.gd", "--", "--pt-config=/tmp/godot-playtest/onboard/config.json"], "scene": "res://scenes/main.tscn"}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [448, 275], "button": "left", "mods": [], "hold": 2, "_target": "/root/Title/@VBoxContainer@21/@VBoxContainer@24/@Button@25"}], "shot": "title_again", "end_frame": 30}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [468, 168], "button": "left", "mods": [], "hold": 2, "_target": "/root/Title/@PanelContainer@45/@HBoxContainer@46/@ScrollContainer@49/@VBoxContainer@50/@GridContainer@74/@Button@61"}], "shot": "select_race_again", "end_frame": 60}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [78, 405], "button": "left", "mods": [], "hold": 2, "_target": "/root/Title/@PanelContainer@45/@HBoxContainer@46/@ScrollContainer@49/@VBoxContainer@50/@GridContainer@84/@Button@80"}], "shot": "select_role_again", "end_frame": 90}
+{"frames": 600, "events": [{"at": 0, "mouse": "click", "pos": [290, 661], "button": "left", "mods": [], "hold": 2, "_target": "/root/Title/@PanelContainer@45/@HBoxContainer@46/@ScrollContainer@49/@VBoxContainer@50/@HBoxContainer@105/@Button@104"}], "shot": "start_settlement", "end_frame": 690}
+{"frames": 30, "events": [{"at": 0, "key": "F1", "mods": []}], "shot": "help_screen", "end_frame": 720}
+{"frames": 30, "events": [{"at": 0, "key": "F1", "mods": []}], "shot": "closed_help", "end_frame": 750}
+{"frames": 70, "events": [{"at": 0, "action": "cam_left", "hold": 60}], "shot": "cam_left", "end_frame": 820}
+{"frames": 40, "events": [{"at": 0, "action": "cam_zoom_out", "hold": 30}], "shot": "cam_zoom_out", "end_frame": 860}
+{"frames": 30, "events": [{"at": 0, "action": "focus_home", "hold": 10}], "shot": "focus_home", "end_frame": 890}
+{"frames": 30, "events": [{"at": 0, "action": "toggle_pause"}], "shot": "paused", "end_frame": 920}
+{"frames": 30, "events": [{"at": 0, "action": "toggle_pause"}], "shot": "unpaused", "end_frame": 950}
+{"frames": 30, "events": [{"at": 0, "action": "speed_up"}], "shot": "speed_up", "end_frame": 980}
+{"frames": 30, "events": [{"at": 0, "action": "squad_1"}], "shot": "selected_squad", "end_frame": 1010}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [1000.0, 450.0], "button": "right", "mods": [], "hold": 2}], "shot": "move_command", "end_frame": 1070}
+{"frames": 120, "events": [], "shot": "unit_moved", "end_frame": 1190}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [1330, 808], "button": "left", "mods": [], "hold": 2, "_target": "/root/Game/HUD/Root/CommandBar/@ScrollContainer@357/@VBoxContainer@358/@HBoxContainer@359/@HBoxContainer@367/@Button@366"}], "shot": "click_gather", "end_frame": 1220}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [1330, 808], "button": "left", "mods": [], "hold": 2, "_target": "/root/Game/HUD/Root/CommandBar/@ScrollContainer@357/@VBoxContainer@358/@HBoxContainer@359/@HBoxContainer@367/@Button@366"}], "shot": "select_logging", "end_frame": 1250}
+{"frames": 120, "events": [{"at": 0, "mouse": "drag", "from": [200.0, 300.0], "to": [400.0, 500.0], "button": "left", "mods": [], "hold": 12}], "shot": "dragged_logging", "end_frame": 1370}
+{"frames": 300, "events": [], "shot": "logging_progress", "end_frame": 1670}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [238, 735], "button": "left", "mods": [], "hold": 2, "_target": "/root/Game/HUD/Root/Minimap/@HBoxContainer@277/@VBoxContainer@281/@Button@283"}], "shot": "click_build", "end_frame": 1700}

@@ -169,13 +169,17 @@ func _unhandled_input(event: InputEvent) -> void:
 		App.load_game(0)
 	elif event.is_action_pressed("focus_home"):
 		focus_home()
-	if event.is_action_pressed("squad_cycle") and not world.squads.is_empty():
-		var idx := 0
-		for i in world.squads.size():
-			if world.squads[i].id == sel_squad:
-				idx = (i + 1) % world.squads.size()
-		select_squad(world.squads[idx].id)
-		focus_selection()
+	if event.is_action_pressed("squad_cycle"):
+		if world.squads.size() > 1:
+			var idx := 0
+			for i in world.squads.size():
+				if world.squads[i].id == sel_squad:
+					idx = (i + 1) % world.squads.size()
+			select_squad(world.squads[idx].id)
+			focus_selection()
+		else:
+			toast.emit(Loc.t("No other squad to select."), "info")
+			Sfx.play(&"ui_error")
 
 
 # --- verification helpers (used by automated probe scenarios, e.g. tests/probe/*.json) ---------

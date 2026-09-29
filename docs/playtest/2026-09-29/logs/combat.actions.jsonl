@@ -1,0 +1,111 @@
+{"t": 0, "start": ["/usr/bin/godot", "--path", "/home/dma/プロジェクト/cogwild-frontier/game", "--audio-driver", "Dummy", "--fixed-fps", "60", "--disable-vsync", "--resolution", "1600x900", "--script", "/home/dma/.omp/agent/managed-skills/godot-ai-playtest/scripts/playtest_session.gd", "--", "--pt-config=/tmp/godot-playtest/combat/config.json"], "scene": "res://scenes/main.tscn"}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [448.0, 275.0], "button": "left", "mods": [], "hold": 2}], "shot": "new", "end_frame": 30}
+{"frames": 600, "events": [{"at": 0, "mouse": "click", "pos": [290.0, 661.0], "button": "left", "mods": [], "hold": 2}], "shot": "settlement", "end_frame": 630}
+{"frames": 20, "events": [{"at": 0, "key": "1", "mods": []}], "shot": "squad1", "end_frame": 650}
+{"frames": 10, "events": [{"at": 0, "mouse": "click", "pos": [1074.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "move_armed", "end_frame": 660}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [1100.0, 500.0], "button": "left", "mods": [], "hold": 2}], "shot": "move_done", "end_frame": 720}
+{"frames": 5, "events": [{"at": 0, "mouse": "click", "pos": [1194.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "defend_armed", "end_frame": 725}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [900.0, 450.0], "button": "left", "mods": [], "hold": 2}], "shot": "defend_done", "end_frame": 755}
+{"frames": 5, "events": [{"at": 0, "mouse": "click", "pos": [1254.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "explore_armed", "end_frame": 760}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [1200.0, 300.0], "button": "left", "mods": [], "hold": 2}], "shot": "explore_done", "end_frame": 790}
+{"frames": 5, "events": [{"at": 0, "mouse": "click", "pos": [1314.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "patrol_armed", "end_frame": 795}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [500.0, 360.0], "button": "left", "mods": [], "hold": 2}], "shot": "patrol_done", "end_frame": 825}
+{"frames": 5, "events": [{"at": 0, "mouse": "click", "pos": [1330.0, 808.0], "button": "left", "mods": [], "hold": 2}], "shot": "gather_menu", "end_frame": 830}
+{"frames": 5, "events": [{"at": 0, "mouse": "click", "pos": [479.0, 595.0], "button": "left", "mods": [], "hold": 2}], "shot": "logging_armed", "end_frame": 835}
+{"frames": 20, "events": [{"at": 0, "mouse": "drag", "from": [290.0, 250.0], "to": [410.0, 370.0], "button": "left", "mods": [], "hold": 12}], "shot": "logging_done", "end_frame": 855}
+{"frames": 5, "events": [{"at": 0, "key": "Escape", "mods": []}], "shot": "cancel_zone", "end_frame": 860}
+{"frames": 5, "events": [{"at": 0, "mouse": "click", "pos": [1374.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "escort_armed", "end_frame": 865}
+{"frames": 25, "events": [{"at": 0, "mouse": "click", "pos": [627.0, 526.0], "button": "left", "mods": [], "hold": 2}], "shot": "escort_done", "end_frame": 890}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [1434.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "auto_done", "end_frame": 920}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [1494.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "retreat_done", "end_frame": 950}
+{"frames": 5, "events": [{"at": 0, "mouse": "click", "pos": [1134.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "attack_armed", "end_frame": 955}
+{"frames": 10, "events": [{"at": 0, "mouse": "click", "pos": [1150.0, 530.0], "button": "left", "mods": [], "hold": 2}], "shot": "attack_empty", "end_frame": 965}
+{"frames": 10, "events": [{"at": 0, "mouse": "click", "pos": [1554.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "stop_done", "end_frame": 975}
+{"frames": 5, "events": [{"at": 0, "mouse": "click", "pos": [1074.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "cancel_armed", "end_frame": 980}
+{"frames": 5, "events": [{"at": 0, "key": "Escape", "mods": []}], "shot": "cancel_move", "end_frame": 985}
+{"frames": 10, "events": [{"at": 0, "mouse": "drag", "from": [800.0, 385.0], "to": [925.0, 500.0], "button": "left", "mods": [], "hold": 12}], "shot": "drag_select", "end_frame": 999}
+{"frames": 10, "events": [{"at": 0, "key": "Tab", "mods": []}], "shot": "tab_squad", "end_frame": 1009}
+{"frames": 60, "events": [], "shot": "resume", "end_frame": 1069}
+{"frames": 20, "events": [{"at": 0, "key": "2", "mods": []}], "shot": "key2", "end_frame": 1089}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [301.0, 720.0], "button": "left", "mods": [], "hold": 2}], "shot": "split_squad", "end_frame": 1119}
+{"frames": 20, "events": [{"at": 0, "key": "1", "mods": []}], "shot": "select_squad1", "end_frame": 1139}
+{"frames": 20, "events": [{"at": 0, "key": "2", "mods": []}], "shot": "select_squad2", "end_frame": 1159}
+{"frames": 20, "events": [{"at": 0, "key": "1", "mods": []}], "shot": "back_to_squad1", "end_frame": 1179}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [238.0, 802.0], "button": "left", "mods": [], "hold": 2}], "shot": "click_village_btn", "end_frame": 1209}
+{"frames": 10, "events": [], "shot": "village_view", "end_frame": 1219}
+{"frames": 10, "events": [], "shot": "village_view", "end_frame": 1229}
+{"frames": 10, "events": [{"at": 0, "key": "Escape", "mods": []}], "shot": "esc_village", "end_frame": 1239}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [238.0, 835.0], "button": "left", "mods": [], "hold": 2}], "shot": "click_poi", "end_frame": 1269}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [1463.0, 448.0], "button": "left", "mods": [], "hold": 2}], "shot": "send_explore", "end_frame": 1329}
+{"frames": 300, "events": [{"at": 0, "mouse": "click", "pos": [1520.0, 30.0], "button": "left", "mods": [], "hold": 2}], "shot": "fast_forward", "end_frame": 1629}
+{"frames": 20, "events": [{"at": 0, "key": "Escape", "mods": []}], "shot": "esc_poi", "end_frame": 1649}
+{"frames": 10, "events": [{"at": 0, "key": "Escape", "mods": []}], "shot": "resume_menu", "end_frame": 1659}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [238.0, 835.0], "button": "left", "mods": [], "hold": 2}], "shot": "click_poi2", "end_frame": 1689}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [238.0, 835.0], "button": "left", "mods": [], "hold": 2}], "shot": "click_poi3", "end_frame": 1719}
+{"frames": 30, "events": [{"at": 0, "key": "S", "mods": []}], "shot": "cam_south", "end_frame": 1749}
+{"frames": 30, "events": [{"at": 0, "key": "S", "mods": [], "hold": 30}], "shot": "cam_south2", "end_frame": 1780}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [100.0, 920.0], "button": "left", "mods": [], "hold": 2}], "shot": "click_minimap", "end_frame": 1810}
+{"frames": 60, "events": [{"at": 0, "key": "S", "mods": [], "hold": 60}], "shot": "cam_s60", "end_frame": 1871}
+{"frames": 60, "events": [{"at": 0, "key": "S", "mods": [], "hold": 60}], "shot": "cam_s120", "end_frame": 1932}
+{"frames": 60, "events": [{"at": 0, "key": "D", "mods": [], "hold": 60}], "shot": "cam_east", "end_frame": 1993}
+{"frames": 60, "events": [{"at": 0, "key": "S", "mods": [], "hold": 60}], "shot": "cam_south3", "end_frame": 2054}
+{"frames": 60, "events": [{"at": 0, "key": "S", "mods": [], "hold": 60}], "shot": "cam_south4", "end_frame": 2115}
+{"frames": 20, "events": [{"at": 0, "mouse": "click", "pos": [1254.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "arm_explore", "end_frame": 2135}
+{"frames": 120, "events": [{"at": 0, "mouse": "click", "pos": [800.0, 350.0], "button": "left", "mods": [], "hold": 2}], "shot": "explore_target", "end_frame": 2255}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [238.0, 802.0], "button": "left", "mods": [], "hold": 2}], "shot": "village_list", "end_frame": 2285}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [490.0, 360.0], "button": "left", "mods": [], "hold": 2}], "shot": "click_village_entry", "end_frame": 2315}
+{"frames": 10, "events": [{"at": 0, "key": "Escape", "mods": []}], "shot": "close_village_dialog", "end_frame": 2325}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [100.0, 230.0], "button": "left", "mods": [], "hold": 2}], "shot": "click_notif", "end_frame": 2355}
+{"frames": 60, "events": [{"at": 0, "key": "A", "mods": [], "hold": 60}], "shot": "cam_west", "end_frame": 2416}
+{"frames": 60, "events": [{"at": 0, "key": "A", "mods": [], "hold": 60}], "shot": "cam_west2", "end_frame": 2477}
+{"frames": 30, "events": [{"at": 0, "key": "Home", "mods": []}], "shot": "cam_home", "end_frame": 2507}
+{"frames": 10, "events": [{"at": 0, "key": "X", "mods": []}], "shot": "arm_explore_north", "end_frame": 2517}
+{"frames": 300, "events": [{"at": 0, "mouse": "click", "pos": [800.0, 100.0], "button": "left", "mods": [], "hold": 2}], "shot": "explore_north", "end_frame": 2817}
+{"frames": 60, "events": [{"at": 0, "key": "W", "mods": [], "hold": 60}], "shot": "cam_north", "end_frame": 2878}
+{"frames": 60, "events": [{"at": 0, "key": "W", "mods": [], "hold": 60}], "shot": "cam_north2", "end_frame": 2939}
+{"frames": 20, "events": [{"at": 0, "mouse": "click", "pos": [1074.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "arm_move_north", "end_frame": 2959}
+{"frames": 300, "events": [{"at": 0, "mouse": "click", "pos": [700.0, 300.0], "button": "left", "mods": [], "hold": 2}], "shot": "move_to_north", "end_frame": 3259}
+{"frames": 300, "events": [], "shot": "squad_arrive_north", "end_frame": 3559}
+{"frames": 60, "events": [{"at": 0, "key": "A", "mods": [], "hold": 60}], "shot": "cam_west_mountain", "end_frame": 3620}
+{"frames": 10, "events": [{"at": 0, "key": "X", "mods": []}], "shot": "arm_valley", "end_frame": 3630}
+{"frames": 300, "events": [{"at": 0, "mouse": "click", "pos": [435.0, 310.0], "button": "left", "mods": [], "hold": 2}], "shot": "explore_valley", "end_frame": 3930}
+{"frames": 300, "events": [], "shot": "wait_explore_valley", "end_frame": 4230}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [1322.0, 530.0], "button": "left", "mods": [], "hold": 2}], "shot": "cam_center_unit", "end_frame": 4260}
+{"frames": 20, "events": [{"at": 0, "mouse": "click", "pos": [1134.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "arm_attack_target", "end_frame": 4280}
+{"frames": 10, "events": [{"at": 0, "key": "Escape", "mods": []}], "shot": "cancel_attack", "end_frame": 4290}
+{"frames": 300, "events": [{"at": 0, "key": "U", "mods": []}], "shot": "squad_auto", "end_frame": 4590}
+{"frames": 300, "events": [], "shot": "squad_auto_move", "end_frame": 4890}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [1322.0, 530.0], "button": "left", "mods": [], "hold": 2}], "shot": "cam_center_auto", "end_frame": 4920}
+{"frames": 300, "events": [], "shot": "squad_crossing_bridge", "end_frame": 5220}
+{"frames": 300, "events": [], "shot": "squad_across_bridge", "end_frame": 5520}
+{"frames": 60, "events": [{"at": 0, "key": "D", "mods": [], "hold": 60}], "shot": "cam_northeast", "end_frame": 5581}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [238.0, 835.0], "button": "left", "mods": [], "hold": 2}], "shot": "click_cedar_camp", "end_frame": 5611}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [238.0, 835.0], "button": "left", "mods": [], "hold": 2}], "shot": "click_cedar_camp2", "end_frame": 5641}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [238.0, 835.0], "button": "left", "mods": [], "hold": 2}], "shot": "click_cedar_camp3", "end_frame": 5671}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [238.0, 835.0], "button": "left", "mods": [], "hold": 2}], "shot": "click_cedar_camp4", "end_frame": 5701}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [238.0, 835.0], "button": "left", "mods": [], "hold": 2}], "shot": "click_cedar_camp5", "end_frame": 5731}
+{"frames": 60, "events": [{"at": 0, "key": "S", "mods": [], "hold": 60}], "shot": "cam_se_desert", "end_frame": 5792}
+{"frames": 60, "events": [{"at": 0, "key": "D", "mods": [], "hold": 60}], "shot": "cam_east_desert", "end_frame": 5853}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [1463.0, 510.0], "button": "left", "mods": [], "hold": 2}], "shot": "send_explore_cedar", "end_frame": 5913}
+{"frames": 300, "events": [{"at": 0, "mouse": "click", "pos": [1463.0, 448.0], "button": "left", "mods": [], "hold": 2}], "shot": "send_alpha_cedar", "end_frame": 6213}
+{"frames": 20, "events": [{"at": 0, "mouse": "click", "pos": [1554.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "stop_auto", "end_frame": 6233}
+{"frames": 60, "events": [{"at": 0, "key": "S", "mods": [], "hold": 60}], "shot": "cam_se", "end_frame": 6294}
+{"frames": 60, "events": [{"at": 0, "key": "D", "mods": [], "hold": 60}], "shot": "cam_east2", "end_frame": 6355}
+{"frames": 60, "events": [{"at": 0, "key": "S", "mods": [], "hold": 60}], "shot": "cam_se3", "end_frame": 6416}
+{"frames": 60, "events": [{"at": 0, "key": "D", "mods": [], "hold": 60}], "shot": "cam_east3", "end_frame": 6477}
+{"frames": 20, "events": [{"at": 0, "mouse": "click", "pos": [1074.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "arm_move_camp", "end_frame": 6497}
+{"frames": 300, "events": [{"at": 0, "mouse": "click", "pos": [750.0, 550.0], "button": "left", "mods": [], "hold": 2}], "shot": "move_to_camp", "end_frame": 6797}
+{"frames": 300, "events": [], "shot": "squad_running_to_camp", "end_frame": 7097}
+{"frames": 300, "events": [], "shot": "squad_at_bridge_end", "end_frame": 7397}
+{"frames": 600, "events": [], "shot": "squad_marching_600", "end_frame": 7997}
+{"frames": 20, "events": [{"at": 0, "mouse": "click", "pos": [1074.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "arm_move_across_bridge", "end_frame": 8017}
+{"frames": 300, "events": [{"at": 0, "mouse": "click", "pos": [1150.0, 500.0], "button": "left", "mods": [], "hold": 2}], "shot": "squad_across_bridge_east", "end_frame": 8317}
+{"frames": 60, "events": [{"at": 0, "key": "D", "mods": [], "hold": 60}], "shot": "cam_camp", "end_frame": 8378}
+{"frames": 20, "events": [{"at": 0, "mouse": "click", "pos": [1074.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "arm_charge_camp", "end_frame": 8398}
+{"frames": 300, "events": [{"at": 0, "mouse": "click", "pos": [900.0, 500.0], "button": "left", "mods": [], "hold": 2}], "shot": "charge_into_camp", "end_frame": 8698}
+{"frames": 20, "events": [{"at": 0, "mouse": "click", "pos": [1134.0, 859.0], "button": "left", "mods": [], "hold": 2}], "shot": "arm_attack_tengu", "end_frame": 8718}
+{"frames": 60, "events": [{"at": 0, "mouse": "click", "pos": [650.0, 690.0], "button": "left", "mods": [], "hold": 2}], "shot": "attack_tengu", "end_frame": 8778}
+{"frames": 10, "events": [{"at": 0, "key": "Escape", "mods": []}], "shot": "cancel_attack_tengu", "end_frame": 8788}
+{"frames": 30, "events": [{"at": 0, "mouse": "click", "pos": [238.0, 802.0], "button": "left", "mods": [], "hold": 2}], "shot": "check_villages", "end_frame": 8818}
+{"frames": 10, "events": [{"at": 0, "key": "Escape", "mods": []}], "shot": "esc_villages2", "end_frame": 8828}
+{"frames": 600, "events": [{"at": 0, "key": "U", "mods": []}], "shot": "all_squad_auto_600", "end_frame": 9428}

@@ -20,7 +20,8 @@ static func open(parent: Node) -> Control:
 	var modal := SettingsPanel.new()
 	modal.name = "SettingsPanel"
 	parent.add_child(modal)
-	Loc.language_changed.connect(modal._on_language_changed)
+	if not Loc.language_changed.is_connected(modal._on_language_changed):
+		Loc.language_changed.connect(modal._on_language_changed)
 	modal._build()
 	return modal
 
