@@ -5,6 +5,12 @@ extends RefCounted
 ## map and all entities are saved. Versioned; corrupt or unknown files are rejected with a reason.
 
 const DIR := "user://saves"
+## Version-1 saves without generation_races were written with this ordered species pool.
+## This historical input is frozen; new worlds use the current data registry.
+const LEGACY_GENERATION_RACES := [
+	"human", "sylvan", "stoutkin", "vulpin", "minotaur", "centaur", "harpy", "lamia",
+	"oni", "tengu", "goblin", "orc", "kobold", "lizardfolk", "gnome", "halfling",
+]
 
 
 static func path(slot: int) -> String:
@@ -50,6 +56,7 @@ static func to_dict(w: World) -> Dictionary:
 	return {
 		"version": World.SAVE_VERSION, "saved_at": Time.get_datetime_string_from_system(),
 		"seed": w.seed, "tick": w.tick_count, "day": w.day, "rng_state": str(w.rng.state), "next_id": w.next_id,
+		"generation_races": w.gen.race_pool,
 		"company": w.company_name, "faction_color": w.faction_color.to_html(false),
 		"player_unit": w.player_unit_id, "hearth": w.hearth_id,
 		"res": w.res, "armory": w.armory, "priorities": w.priorities, "counters": w.counters, "hungry": w.hungry,
@@ -68,7 +75,7 @@ static func to_dict(w: World) -> Dictionary:
 
 static func from_dict(d: Dictionary) -> World:
 	var w := World.new()
-	w.setup(int(d["seed"]))
+	w.setup(int(d["seed"]), d.get("generation_races", LEGACY_GENERATION_RACES))
 	w.tick_count = int(d["tick"])
 	w.day = int(d["day"])
 	w.rng.state = int(str(d["rng_state"]))

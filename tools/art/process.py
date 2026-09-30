@@ -29,7 +29,7 @@ DATA = GAME / "data" / "art"
 
 ROW_ORDER = ["down", "left", "right", "up"]
 OLD_RACES = ["human", "sylvan", "stoutkin", "vulpin"]
-NEW_RACES = ["minotaur", "centaur", "harpy", "lamia", "oni", "tengu", "goblin", "orc", "kobold", "lizardfolk", "gnome", "halfling"]
+NEW_RACES = ["minotaur", "centaur", "harpy", "lamia", "oni", "tengu", "goblin", "orc", "kobold", "lizardfolk", "gnome", "halfling", "android"]
 RACES = OLD_RACES + NEW_RACES
 LOOKS = ["worker", "fighter", "ranger", "engineer", "scholar"]
 
@@ -196,12 +196,20 @@ IMPORT_PRESETS = {
 	# Character chips retain HEAD VRAM-compressed imports; 128px portraits limit UI residency.
 	"sprite": ('importer="texture"\ntype="CompressedTexture2D"', {
 		"compress/mode": 1, "compress/high_quality": "false", "compress/lossy_quality": 0.85,
-		"compress/rdo_quality_loss": 1.0, "mipmaps/generate": "true", "mipmaps/limit": -1,
+		"compress/rdo_quality_loss": 1.0, "mipmaps/generate": "false", "mipmaps/limit": -1,
 		"process/fix_alpha_border": "true", "process/premult_alpha": "false", "process/size_limit": 0, "detect_3d/compress_to": 0}),
 	"portrait": ('importer="texture"\ntype="CompressedTexture2D"', {
 		"compress/mode": 1, "compress/high_quality": "false", "compress/lossy_quality": 0.9,
-		"compress/rdo_quality_loss": 1.0, "mipmaps/generate": "true", "mipmaps/limit": -1,
+		"compress/rdo_quality_loss": 1.0, "mipmaps/generate": "false", "mipmaps/limit": -1,
 		"process/fix_alpha_border": "true", "process/premult_alpha": "false", "process/size_limit": 0, "detect_3d/compress_to": 0}),
+	"building": ('importer="texture"\ntype="CompressedTexture2D"', {
+		"compress/mode": 4, "compress/high_quality": "false", "compress/lossy_quality": 0.85,
+		"compress/rdo_quality_loss": 1.0, "mipmaps/generate": "true", "mipmaps/limit": -1,
+		"process/fix_alpha_border": "true", "process/premult_alpha": "false", "process/size_limit": 512, "detect_3d/compress_to": 0}),
+	"building_glow": ('importer="texture"\ntype="CompressedTexture2D"', {
+		"compress/mode": 4, "compress/high_quality": "false", "compress/lossy_quality": 0.85,
+		"compress/rdo_quality_loss": 1.0, "mipmaps/generate": "false", "mipmaps/limit": -1,
+		"process/fix_alpha_border": "true", "process/premult_alpha": "false", "process/size_limit": 256, "detect_3d/compress_to": 0}),
 	"ui": ('importer="texture"\ntype="CompressedTexture2D"', {
 		"compress/mode": 0, "mipmaps/generate": "false", "process/fix_alpha_border": "true", "detect_3d/compress_to": 0}),
 	"array": ('importer="2d_array_texture"\ntype="CompressedTexture2DArray"', {

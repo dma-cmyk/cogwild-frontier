@@ -46,6 +46,7 @@
     "kobold":{"skins":["#96482a","#a85d3b","#7d361b","#662810"],"hair":["#3a1607","#2b0f04","#521f0b","#1a0802"]},
     "lizardfolk":{"skins":["#4c7847","#5a8c54","#3e663a","#2e4f2b"],"hair":["#1b2e1a","#122110","#284027","#0c170a"]},
     "gnome":{"skins":["#e8ae7f","#dba06e","#f2c199","#c78d59"],"hair":["#a3557e","#703554","#c96d9e","#8c4067"]},
-    "halfling":{"skins":["#f0cba1","#deaf7c","#fcdba9","#c2915b"],"hair":["#85542a","#663e1d","#a36e3d","#523015"]}
+    "halfling":{"skins":["#f0cba1","#deaf7c","#fcdba9","#c2915b"],"hair":["#85542a","#663e1d","#a36e3d","#523015"]},
+    "android":{"skins":["#f2eee4","#dfdbd1","#faf7ef","#c9c6bf"],"hair":["#25272c","#34363d","#17191d"],"shell":["#f2eee4","#dfdbd1","#faf7ef","#c9c6bf"],"joints":["#25272c","#34363d","#17191d"],"faceplates":["#e7e2d7","#d8d4cb","#f5f1e8"],"eyes":["#d99a2e","#f0b83f","#b97920"],"brass":["#b78338","#cf9c49","#98672a"]}
   }
 }

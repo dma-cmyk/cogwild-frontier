@@ -700,10 +700,13 @@ func talk(sid: int, unit_id: int) -> Dictionary:
 		if not wants.is_empty() and rng.randf() < 0.2:
 			params["resource"] = Loc.t(str(wants[rng.randi_range(0, wants.size() - 1)]))
 			text_key = _line(rng, "rumor_want")
-	for bucket: String in buckets:
-		if text_key != "":
-			break
-		text_key = _line(rng, bucket)
+	if text_key == "":
+		# Starting with the job every time made race, tier and generic lines unreachable.
+		var start := rng.randi_range(0, buckets.size() - 1)
+		for offset in buckets.size():
+			text_key = _line(rng, buckets[(start + offset) % buckets.size()])
+			if text_key != "":
+				break
 	if text_key == "":
 		text_key = "village.talk.generic.1"
 	_talk_goodwill(st)

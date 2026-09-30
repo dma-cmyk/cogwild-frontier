@@ -66,7 +66,7 @@ sensible defaults (never crash).
 ### 3.1 character
 ```
 kind: "character", seed: int,
-race: "human" | "sylvan" | "stoutkin" | "vulpin",
+race: <playable race id from data/races, including "android">,
 gender: "female" | "male" | "nonbinary",
 body_type: "slim" | "average" | "stocky" | "tall",  height: float 0.9..1.1 (scale),
 skin: hex, face: "round" | "long" | "square", eye_color: hex,
@@ -82,9 +82,14 @@ offhand: "none" | "shield" | "lantern" | "book" | "buckler",
 accessory: "none" | "scarf" | "backpack" | "cape" | "satchel" | "pauldron",
 scar: "none" | "cheek" | "eye",
 faction_style: "frontier" | "bandit" | "ancient" | "merchant" | "neutral", faction_color: hex
+art_variant: int (optional, zero-based painted look; retained through equipment changes),
+shell_color, joint_color, faceplate_color, brass_color: hex (android only)
 ```
 Race features: sylvan = pointed ears, slimmer/taller; stoutkin = short and stocky, beards common;
 vulpin = fox ears + bushy tail, fur-toned skin; human = baseline.
+Androids are self-aware mechanical citizens with ivory shell armour, dark articulated joints,
+amber eyes and brass accents. They remain `kind: "character"` and use the ordinary resident,
+squad and diplomacy paths; they are not the hostile ancient machines in §3.2.
 
 ### 3.2 robot (ground machines)
 ```

@@ -20,6 +20,8 @@ var max_tile: int
 
 var start_tile: Vector2i
 var start_height: float
+## Ordered generation input: adding a species must not reroll a saved world's sites.
+var race_pool: Array[String] = []
 ## All sites known so far (guaranteed + generated cells): id -> site Dictionary.
 var sites: Dictionary = {}
 var _guaranteed: Array = []
@@ -38,12 +40,19 @@ var _n_ore := FastNoiseLite.new()
 var _n_crystal := FastNoiseLite.new()
 
 
-func _init(p_seed: int, params: Dictionary = {}) -> void:
+func _init(p_seed: int, params: Dictionary = {}, generation_races: Array = []) -> void:
 	seed = p_seed
 	p = params if not params.is_empty() else (DB.raw("generation/world") as Dictionary)
 	t = p["terrain"]
 	veg = p["vegetation"]
 	site_cfg = p["sites"]
+	if generation_races.is_empty():
+		for race: String in DB.ids("races"):
+			if DB.has_def("villages", race):
+				race_pool.append(race)
+	else:
+		for race: Variant in generation_races:
+			race_pool.append(str(race))
 	radius_chunks = int(p.get("world_radius_chunks", 10))
 	min_tile = -radius_chunks * S
 	max_tile = radius_chunks * S
@@ -244,18 +253,10 @@ func _town_flat_score(pos: Vector2) -> float:
 
 func _weighted_town_race(rng: RandomNumberGenerator, excluded: Array[String]) -> String:
 	var weights: Dictionary = {}
-	for race: String in _village_races():
+	for race: String in race_pool:
 		if not excluded.has(race):
 			weights[race] = float(DB.get_def("races", race).get("spawn_weight", 1.0))
 	return RngUtil.weighted_key(rng, weights)
-
-
-func _village_races() -> Array[String]:
-	var result: Array[String] = []
-	for race: String in DB.ids("races"):
-		if DB.has_def("villages", race):
-			result.append(race)
-	return result
 
 
 ## 0..1 suitability used to choose a race's preferred site terrain.
@@ -317,7 +318,7 @@ func _make_site(id: int, kind: String, pos: Vector2, race: String = "") -> Dicti
 ## search harder than landmarks so communities land inside their own distance bands.
 func _place_guaranteed_sites() -> void:
 	var rng := RngUtil.make([seed, "guaranteed"])
-	var village_races := _village_races()
+	var village_races: Array[String] = race_pool.duplicate()
 	var race_rng := RngUtil.make([seed, "village_races"])
 	for i in range(village_races.size() - 1, 0, -1):
 		var j := race_rng.randi_range(0, i)
@@ -424,10 +425,9 @@ func cell_site(cell: Vector2i) -> int:
 			var kind: String = RngUtil.weighted_key(rng, weights)
 			var race := ""
 			if kind == "village":
-				var races := _village_races()
-				if races.is_empty():
+				if race_pool.is_empty():
 					continue
-				race = races[rng.randi_range(0, races.size() - 1)]
+				race = race_pool[rng.randi_range(0, race_pool.size() - 1)]
 			var radius := _kind_radius(kind)
 			var clash := false
 			for g: Dictionary in _guaranteed:

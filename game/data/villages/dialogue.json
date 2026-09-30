@@ -187,6 +187,14 @@
 			"lines": [
 				"village.talk.race.halfling"
 			]
+		},
+		{
+			"id": "race_android",
+			"lines": [
+				"village.talk.race.android",
+				"village.talk.race.android.workshop",
+				"village.talk.race.android.repair"
+			]
 		}
 	]
 }

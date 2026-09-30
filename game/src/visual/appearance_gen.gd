@@ -52,6 +52,7 @@ static func _color_pick(rng: RandomNumberGenerator, values: Array, fallback: Str
 static func character(rng: RandomNumberGenerator, race: String, role: String, faction_style: String, faction_color: Color, gender: String = "") -> Dictionary:
 	var r := race if DB.has_def("races", race) else "human"
 	var style := faction_style if STYLES.has(faction_style) else "neutral"
+	var android := r == "android"
 	var doc := _doc()
 	var roles: Dictionary = doc.get("roles", {})
 	var role_data: Dictionary = roles.get(role, {})
@@ -62,6 +63,8 @@ static func character(rng: RandomNumberGenerator, race: String, role: String, fa
 	var bt := _pick(rng, BODY_TYPES, "average")
 	if r in ["stoutkin", "minotaur", "oni", "goblin", "gnome", "halfling"]:
 		bt = "stocky" if rng.randf() < 0.72 else "average"
+	elif r == "android":
+		bt = "slim" if rng.randf() < 0.78 else "average"
 	elif r in ["sylvan", "lizardfolk"]:
 		bt = "tall" if rng.randf() < 0.58 else "slim"
 	elif r in ["centaur", "orc"]:
@@ -83,15 +86,37 @@ static func character(rng: RandomNumberGenerator, race: String, role: String, fa
 	var hair := _pick(rng, HAIR, "short")
 	if r == "stoutkin" and rng.randf() < 0.7: hair = "short"
 	var facial := "beard" if r in ["stoutkin"] and g != "female" and rng.randf() < 0.65 else "none"
-	if g == "male" and rng.randf() < 0.18: facial = "mustache"
-	return {"kind":"character", "seed":rng.randi(), "race":r, "gender":g, "body_type":bt,
-		"height":rng.randf_range(0.9, 1.1), "skin":skin, "face":_pick(rng, FACES, "round"),
-		"eye_color":_color_pick(rng, ["#2c4b62", "#4d7d52", "#7a4c36", "#40305f"], "#2c4b62"),
-		"hair":hair, "hair_color":hair_color, "facial_hair":facial, "outfit":outfit,
+	if not android and g == "male" and rng.randf() < 0.18: facial = "mustache"
+	var eye_values: Array = race_data.get("eyes", ["#2c4b62", "#4d7d52", "#7a4c36", "#40305f"])
+	var eye_color := _color_pick(rng, eye_values, "#d99a2e" if android else "#2c4b62")
+	var shell_color := skin
+	var joint_color := hair_color
+	var faceplate_color := skin
+	var brass_color := "#b78338"
+	var face := _pick(rng, FACES, "round")
+	if android:
+		shell_color = _color_pick(rng, race_data.get("shell", race_data.get("skins", [])), skin)
+		joint_color = _color_pick(rng, race_data.get("joints", race_data.get("hair", [])), hair_color)
+		faceplate_color = _color_pick(rng, race_data.get("faceplates", race_data.get("skins", [])), shell_color)
+		brass_color = _color_pick(rng, race_data.get("brass", []), brass_color)
+		skin = shell_color
+		hair_color = joint_color
+		hair = "bald"
+		facial = "none"
+		face = "square"
+	var dna := {"kind":"character", "seed":rng.randi(), "race":r, "gender":g, "body_type":bt,
+		"height":rng.randf_range(0.9, 1.1), "skin":skin, "face":face,
+		"eye_color":eye_color, "hair":hair, "hair_color":hair_color, "facial_hair":facial, "outfit":outfit,
 		"outfit_color":palette.primary, "outfit_accent":palette.secondary, "armor":_armor_for_role(role),
 		"headgear":headgear, "weapon":weapon, "offhand":offhand, "accessory":accessory,
 		"scar":_pick(rng, SCARS if rng.randf() < 0.18 else ["none"], "none"),
 		"faction_style":style, "faction_color":palette.primary}
+	if android:
+		dna["shell_color"] = shell_color
+		dna["joint_color"] = joint_color
+		dna["faceplate_color"] = faceplate_color
+		dna["brass_color"] = brass_color
+	return dna
 
 static func _armor_for_role(role: String) -> String:
 	if role in ["guard", "mercenary", "commander", "bandit_captain"]: return "plate" if role == "commander" else "leather"

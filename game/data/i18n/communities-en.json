@@ -80,6 +80,9 @@
   "village.talk.race.lizardfolk": "The marsh feeds the patient. Hurry and it swallows you.",
   "village.talk.race.gnome": "Every gear has a purpose. Even the squeaky ones — especially those.",
   "village.talk.race.halfling": "Second breakfast is at ten. You are welcome to stay for it.",
+  "village.talk.race.android": "The hinge is sound, thank you for asking.",
+  "village.talk.race.android.workshop": "Please accept our hospitality; the workshop is open to neighbours.",
+  "village.talk.race.android.repair": "A careful repair is a kindness that lasts.",
   "Attack %s? The whole community will turn hostile.": "Attack %s? The whole community will turn hostile.",
   "sim.village.said": "{unit_name}: “{line}”"
 }

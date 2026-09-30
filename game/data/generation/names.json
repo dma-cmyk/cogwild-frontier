@@ -1303,6 +1303,68 @@
         "Tealeaf",
         "Thorngage"
       ]
+    },
+    "android": {
+      "female": [
+        "Aveline",
+        "Cerya",
+        "Elset",
+        "Ivara",
+        "Meren",
+        "Neris",
+        "Ovela",
+        "Rheya",
+        "Sorelle",
+        "Tavira",
+        "Virel",
+        "Ysol"
+      ],
+      "male": [
+        "Arven",
+        "Brel",
+        "Caelor",
+        "Darian",
+        "Edrin",
+        "Javren",
+        "Kalen",
+        "Mirov",
+        "Orren",
+        "Ravel",
+        "Soren",
+        "Tovin"
+      ],
+      "neutral": [
+        "Asterin",
+        "Cair",
+        "Eiren",
+        "Kest",
+        "Lumen",
+        "Morrow",
+        "Niv",
+        "Oris",
+        "Quen",
+        "Riven",
+        "Tessel",
+        "Vey"
+      ],
+      "family": [
+        "Amberline",
+        "Brightforge",
+        "Calibrate",
+        "Crownwell",
+        "Dovetail",
+        "Evensteel",
+        "Facet",
+        "Kindleward",
+        "Lattice",
+        "Morrowglass",
+        "Quietwell",
+        "Silvering",
+        "Threadmark",
+        "Vellum",
+        "Warmjoint",
+        "Whitespar"
+      ]
     }
   },
   "nicknames": [

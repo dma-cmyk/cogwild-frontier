@@ -99,10 +99,10 @@ func _init() -> void:
 
 
 ## Sets up generation, navigation and fog for a seed (new game or load).
-func setup(p_seed: int) -> void:
+func setup(p_seed: int, generation_races: Array = []) -> void:
 	seed = p_seed
 	rng.seed = RngUtil.hash_parts([seed, "sim"])
-	gen = WorldGen.new(seed)
+	gen = WorldGen.new(seed, {}, generation_races)
 	W = gen.max_tile - gen.min_tile
 	nav.region = Rect2i(gen.min_tile, gen.min_tile, W, W)
 	nav.cell_size = Vector2.ONE

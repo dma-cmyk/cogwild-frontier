@@ -20,6 +20,7 @@ static func metrics(d: Dictionary) -> Dictionary:
 	var outfit := str(d.get("outfit", "tunic"))
 	var h := 1.18 * clampf(float(d.get("height", 1.0)), 0.85, 1.15)
 	match race:
+		"android": h *= 1.02
 		"stoutkin": h *= 0.93
 		"sylvan": h *= 1.06
 		"minotaur": h *= 1.10
@@ -46,12 +47,16 @@ static func metrics(d: Dictionary) -> Dictionary:
 		bw += 0.055
 	elif race == "oni" or race == "orc":
 		bw += 0.035 if race == "oni" else 0.05
+	elif race == "android":
+		bw -= 0.022
 	elif race == "sylvan":
 		bw -= 0.020
 	bw *= h / 1.18
 	var leg_f := 0.300
 	if race == "stoutkin":
 		leg_f = 0.256
+	elif race == "android":
+		leg_f = 0.315
 	elif race == "sylvan":
 		leg_f = 0.322
 	if body_type == "tall":
@@ -70,6 +75,9 @@ static func metrics(d: Dictionary) -> Dictionary:
 			head_rz *= 1.02
 	if race == "stoutkin":
 		head_rx *= 1.05
+	elif race == "android":
+		head_rx *= 0.96
+		head_rz *= 0.90
 	var skirt := outfit == "robe" or outfit == "dress"
 	var hem := 0.0
 	if outfit == "robe":
@@ -101,6 +109,10 @@ static func colors(d: Dictionary) -> Dictionary:
 	var hair := UnitStyle.col(d.get("hair_color"), "#3c2922")
 	var cloth := UnitStyle.col(d.get("outfit_color"), "#8a6a4a")
 	var trim := UnitStyle.col(d.get("outfit_accent"), "#e9dcc0")
+	var shell := UnitStyle.col(d.get("shell_color", d.get("skin", "#d09a78")), "#d09a78")
+	var joint := UnitStyle.col(d.get("joint_color", d.get("hair_color", "#3c2922")), "#3c2922")
+	var faceplate := UnitStyle.col(d.get("faceplate_color", d.get("skin", "#d09a78")), "#d09a78")
+	var brass := UnitStyle.col(d.get("brass_color", "#b78338"), "#b78338")
 	return {
 		"style": style,
 		"skin": skin,
@@ -117,6 +129,12 @@ static func colors(d: Dictionary) -> Dictionary:
 		"wood": UnitStyle.wood(style),
 		"eye": UnitStyle.col(d.get("eye_color"), "#2c4b62"),
 		"glow": UnitStyle.glow_color(style),
+		"shell": shell,
+		"shell_dark": shell.darkened(0.16),
+		"joint": joint,
+		"joint_dark": joint.darkened(0.22),
+		"faceplate": faceplate,
+		"brass": brass,
 	}
 
 
@@ -172,6 +190,9 @@ static func body(d: Dictionary) -> ArrayMesh:
 
 static func _torso(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary) -> void:
 	var outfit := str(d.get("outfit", "tunic"))
+	if str(d.get("race", "")) == "android":
+		_android_torso(kit, m, c, d)
+		return
 	var bw: float = m.bw
 	var squash := Vector3(1.0, 1.0, float(m.bd) / bw)
 	var hip: float = m.hip_y
@@ -252,6 +273,38 @@ static func _torso(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary) ->
 			_v_collar(kit, m, trim)
 
 
+static func _android_torso(kit: MeshKit, m: Dictionary, c: Dictionary, _d: Dictionary) -> void:
+	var bw: float = m.bw
+	var hip: float = m.hip_y
+	var top: float = m.torso_top
+	var waist := lerpf(hip, top, 0.38)
+	var shell: Color = c.shell
+	var shell_dark: Color = c.shell_dark
+	var joint: Color = c.joint
+	var brass: Color = c.brass
+	var squash := Vector3(1.0, 1.0, float(m.bd) / bw)
+	kit.push_trs(Vector3.ZERO, Vector3.ZERO, squash)
+	kit.frustum(Vector3(0, hip - 0.035, 0), waist - hip + 0.035, bw * 0.40, bw * 0.43, joint, 8)
+	kit.frustum(Vector3(0, waist, 0), top - waist, bw * 0.43, bw * 0.51, shell, 8)
+	kit.pop()
+	kit.box(Vector3(0, lerpf(waist, top, 0.56), float(m.bd) * 0.47),
+		Vector3(bw * 0.60, (top - waist) * 0.62, 0.048), c.faceplate)
+	kit.box(Vector3(0, lerpf(waist, top, 0.56), float(m.bd) * 0.505),
+		Vector3(bw * 0.035, (top - waist) * 0.46, 0.012), brass)
+	for side in [-1.0, 1.0]:
+		kit.ellipsoid(Vector3(side * float(m.arm_x) * 0.86, float(m.shoulder_y), 0.0),
+			Vector3(bw * 0.20, bw * 0.19, bw * 0.17), shell, 7, 4)
+		kit.torus(Vector3(side * float(m.arm_x) * 0.86, float(m.shoulder_y) - bw * 0.10, 0.0),
+			bw * 0.15, bw * 0.022, brass, 7, 4)
+	kit.cylinder(Vector3(0, top - 0.01, 0.005), float(m.head_ry) * 0.55, bw * 0.19, joint, 7)
+	kit.torus(Vector3(0, top + float(m.head_ry) * 0.42, 0.0), bw * 0.19, bw * 0.025, brass, 8, 4)
+	kit.torus(Vector3(0, waist, 0.0), bw * 0.43, bw * 0.028, brass, 8, 4)
+	kit.box(Vector3(0, lerpf(hip, waist, 0.42), float(m.bd) * 0.46),
+		Vector3(bw * 0.34, bw * 0.065, 0.032), c.cloth)
+	if shell_dark != shell:
+		kit.box(Vector3(0, hip + (waist - hip) * 0.42, -float(m.bd) * 0.44),
+			Vector3(bw * 0.34, bw * 0.055, 0.025), shell_dark)
+
 static func _belt(kit: MeshKit, m: Dictionary, c: Dictionary, y: float) -> void:
 	var bw: float = m.bw
 	kit.push_trs(Vector3.ZERO, Vector3.ZERO, Vector3(1, 1, float(m.bd) / bw))
@@ -301,6 +354,9 @@ static func _head(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary, see
 	var ry: float = m.head_ry
 	var rz: float = m.head_rz
 	var skin: Color = c.skin
+	if str(d.get("race", "")) == "android":
+		_android_head(kit, m, c, d, seed_value)
+		return
 	kit.push_trs(Vector3(0, hy, 0))
 	kit.ellipsoid(Vector3.ZERO, Vector3(rx, ry, rz), skin, 8, 5)
 	if str(d.get("face", "round")) == "square":
@@ -356,6 +412,31 @@ static func _head(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary, see
 	kit.pop()
 
 
+static func _android_head(kit: MeshKit, m: Dictionary, c: Dictionary, _d: Dictionary, _seed_value: int) -> void:
+	var rx: float = m.head_rx
+	var ry: float = m.head_ry
+	var rz: float = m.head_rz
+	var hy: float = m.head_y
+	var shell: Color = c.shell
+	var joint: Color = c.joint
+	var faceplate: Color = c.faceplate
+	var brass: Color = c.brass
+	var eye := MeshKit.glow(c.eye, 0.90)
+	kit.push_trs(Vector3(0, hy, 0))
+	kit.ellipsoid(Vector3.ZERO, Vector3(rx * 0.94, ry * 1.02, rz * 0.90), shell, 8, 5)
+	kit.box(Vector3(0, -ry * 0.10, rz * 0.84),
+		Vector3(rx * 1.08, ry * 1.02, rz * 0.075), joint)
+	kit.box(Vector3(0, -ry * 0.10, rz * 0.895),
+		Vector3(rx * 0.94, ry * 0.89, rz * 0.038), faceplate)
+	for side in [-1.0, 1.0]:
+		kit.box(Vector3(side * rx * 0.34, ry * 0.11, rz * 0.94),
+			Vector3(rx * 0.20, ry * 0.065, rz * 0.035), eye)
+		kit.box(Vector3(side * rx * 0.49, -ry * 0.08, rz * 0.94),
+			Vector3(rx * 0.055, ry * 0.34, rz * 0.030), brass)
+	kit.box(Vector3(0, -ry * 0.30, rz * 0.94),
+		Vector3(rx * 0.42, ry * 0.025, rz * 0.018), joint)
+	kit.pop()
+
 static func _mouth(kit: MeshKit, m: Dictionary, seed_value: int) -> void:
 	var rx: float = m.head_rx
 	var ry: float = m.head_ry
@@ -403,7 +484,9 @@ static func _race_features(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictio
 	var ry: float = m.head_ry
 	var rz: float = m.head_rz
 	var hy: float = m.head_y
-	if race == "sylvan":
+	if race == "android":
+		pass
+	elif race == "sylvan":
 		for side in [-1.0, 1.0]:
 			kit.push_trs(Vector3(side * rx * 0.88, hy + ry * 0.05, -rz * 0.10), Vector3(0, 0, side * -52.0))
 			kit.push_trs(Vector3.ZERO, Vector3(0, 0, 0), Vector3(1.0, 1.0, 0.45))
@@ -558,6 +641,8 @@ static func _beak(kit: MeshKit, m: Dictionary) -> void:
 
 static func _hair(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary) -> void:
 	var style := str(d.get("hair", "short"))
+	if str(d.get("race", "")) == "android":
+		return
 	if style == "bald":
 		return
 	var rx: float = m.head_rx
@@ -702,6 +787,9 @@ static func _headgear(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary)
 			kit.pop()
 		"goggles":
 			var frame: Color = c.metal.darkened(0.08)
+			var lens: Color = UnitStyle.col("#8fd9ff", "#8fd9ff")
+			if str(d.get("race", "")) == "android":
+				lens = c.eye
 			kit.torus(Vector3(0, ry * 0.46, 0), rx * 1.06, ry * 0.075, c.leather.darkened(0.12), 12, 4)
 			for side in [-1.0, 1.0]:
 				var gp := _face_pt(m, side * rx * 0.40, ry * 0.46, 0.006)
@@ -709,14 +797,17 @@ static func _headgear(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary)
 				kit.torus(Vector3.ZERO, rx * 0.30, rx * 0.085, frame, 9, 4)
 				kit.push_trs(Vector3.ZERO, Vector3(90.0, 0, 0))
 				kit.cylinder(Vector3(0, -rx * 0.03, 0), rx * 0.06, rx * 0.26,
-					MeshKit.glow(UnitStyle.col("#8fd9ff", "#8fd9ff"), 0.35), 9)
+					MeshKit.glow(lens, 0.35), 9)
 				kit.pop()
 				kit.pop()
 		"circlet":
+			var jewel: Color = c.glow
+			if str(d.get("race", "")) == "android":
+				jewel = c.eye
 			kit.torus(Vector3(0, ry * 0.44, 0), rx * 1.06, ry * 0.055, UnitStyle.GOLD, 12, 4)
 			kit.push_trs(_face_pt(m, 0.0, ry * 0.50, 0.006))
 			kit.ellipsoid(Vector3.ZERO, Vector3(rx * 0.14, ry * 0.16, rz * 0.10),
-				MeshKit.glow(c.glow, 0.5), 6, 3)
+				MeshKit.glow(jewel, 0.5), 6, 3)
 			kit.pop()
 	kit.pop()
 
@@ -725,6 +816,9 @@ static func _headgear(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary)
 
 static func _armor(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary) -> void:
 	var armor := str(d.get("armor", "none"))
+	if str(d.get("race", "")) == "android":
+		_android_armor(kit, m, c, d)
+		return
 	if armor == "none":
 		return
 	var bw: float = m.bw
@@ -771,6 +865,28 @@ static func _armor(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary) ->
 			_lapels(kit, m, c.cloth.lightened(0.08))
 			_belt(kit, m, c, waist + 0.01)
 
+
+static func _android_armor(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary) -> void:
+	var armor := str(d.get("armor", "none"))
+	if armor == "none":
+		return
+	var bw: float = m.bw
+	var top: float = m.torso_top
+	var hip: float = m.hip_y
+	var waist := lerpf(hip, top, 0.38)
+	var squash := Vector3(1.0, 1.0, float(m.bd) / bw)
+	var plate: Color = c.shell.lightened(0.04) if armor == "plate" else c.shell.darkened(0.04)
+	kit.push_trs(Vector3.ZERO, Vector3.ZERO, squash)
+	kit.frustum(Vector3(0, waist - 0.01, 0), top - waist + 0.01, bw * 0.47, bw * 0.57, plate, 8)
+	kit.pop()
+	kit.box(Vector3(0, lerpf(waist, top, 0.60), float(m.bd) * 0.50),
+		Vector3(bw * 0.34, (top - waist) * 0.28, 0.032), c.brass)
+	if armor == "plate":
+		for side in [-1.0, 1.0]:
+			shell(kit, Vector3(side * float(m.arm_x) * 0.90, float(m.shoulder_y) + bw * 0.02, 0),
+				Vector3(bw * 0.27, bw * 0.25, bw * 0.23), c.shell, 8, 3, 0.36, 1.0)
+			kit.torus(Vector3(side * float(m.arm_x) * 0.90, float(m.shoulder_y) - bw * 0.05, 0),
+				bw * 0.24, bw * 0.028, c.brass, 8, 4)
 
 static func _accessory(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary, seed_value: int) -> void:
 	var acc := str(d.get("accessory", "none"))
@@ -839,6 +955,9 @@ static func _left_arm_pose(d: Dictionary) -> Vector3:
 ## when true (gear mesh).
 static func _arm(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary, side: float,
 		pose: Vector3, at_origin: bool = false) -> void:
+	if str(d.get("race", "")) == "android":
+		_android_arm(kit, m, c, d, side, pose, at_origin)
+		return
 	var bw: float = m.bw
 	var upper := float(m.h) * 0.115
 	var fore := float(m.h) * 0.105
@@ -869,6 +988,27 @@ static func _arm(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary, side
 	kit.pop()
 	kit.pop()
 
+
+static func _android_arm(kit: MeshKit, m: Dictionary, c: Dictionary, _d: Dictionary, side: float,
+		pose: Vector3, at_origin: bool) -> void:
+	var bw: float = m.bw
+	var upper := float(m.h) * 0.115
+	var fore := float(m.h) * 0.105
+	var rad := bw * 0.135
+	var origin := Vector3.ZERO if at_origin else Vector3(side * float(m.arm_x), float(m.shoulder_y), 0.0)
+	kit.push_trs(origin, Vector3(pose.x, pose.y, pose.z + side * 8.0))
+	kit.ellipsoid(Vector3.ZERO, Vector3(rad * 1.25, rad * 1.2, rad * 1.2), c.shell, 6, 4)
+	kit.cylinder(Vector3(0, -upper, 0), upper, rad * 0.92, c.shell, 6)
+	kit.ellipsoid(Vector3(0, -upper, 0), Vector3(rad * 1.08, rad * 1.04, rad * 1.04), c.joint, 6, 3)
+	kit.torus(Vector3(0, -upper, 0), rad * 0.84, rad * 0.13, c.brass, 7, 4)
+	kit.push_trs(Vector3(0, -upper, 0), Vector3(-16.0, 0, 0))
+	kit.cylinder(Vector3(0, -fore, 0), fore, rad * 0.76, c.shell, 6)
+	kit.ellipsoid(Vector3(0, -fore, 0), Vector3(rad * 0.90, rad * 0.88, rad * 0.88), c.joint, 6, 3)
+	kit.torus(Vector3(0, -fore, 0), rad * 0.72, rad * 0.10, c.brass, 7, 4)
+	kit.ellipsoid(Vector3(0, -fore - rad * 0.55, 0),
+		Vector3(rad * 1.02, rad * 1.08, rad * 0.96), c.shell, 6, 4)
+	kit.pop()
+	kit.pop()
 
 ## World-space position of the hand for a given arm pose (used to hang the offhand item).
 static func hand_point(m: Dictionary, side: float, pose: Vector3) -> Transform3D:
@@ -926,7 +1066,10 @@ static func _offhand(kit: MeshKit, m: Dictionary, c: Dictionary, d: Dictionary) 
 ## One leg, authored around its hip joint (side -1 = left, +1 = right).
 static func leg(d: Dictionary, side: int) -> ArrayMesh:
 	var kit := MeshKit.new()
-	if str(d.get("race", "human")) in ["centaur", "lamia"]:
+	var race := str(d.get("race", "human"))
+	if race == "android":
+		return _android_leg(d, side)
+	if race in ["centaur", "lamia"]:
 		return kit.build()
 	var m := metrics(d)
 	var c := colors(d)
@@ -971,6 +1114,25 @@ static func leg(d: Dictionary, side: int) -> ArrayMesh:
 	return kit.build()
 
 
+static func _android_leg(d: Dictionary, _side: int) -> ArrayMesh:
+	var kit := MeshKit.new()
+	var m := metrics(d)
+	var c := colors(d)
+	var hip: float = m.hip_y
+	var bw: float = m.bw
+	var boot_h: float = m.boot_h
+	var knee_y := -hip * 0.46
+	var ankle_y := -hip * 0.88
+	kit.tube(Vector3(0, 0, 0), Vector3(0, knee_y, 0), bw * 0.16, c.shell, 6)
+	kit.ellipsoid(Vector3(0, knee_y, 0), Vector3(bw * 0.19, bw * 0.16, bw * 0.17), c.joint, 6, 3)
+	kit.torus(Vector3(0, knee_y, 0), bw * 0.15, bw * 0.024, c.brass, 7, 4)
+	kit.tube(Vector3(0, knee_y, 0), Vector3(0, ankle_y, 0), bw * 0.11, c.shell, 6)
+	kit.ellipsoid(Vector3(0, ankle_y, 0), Vector3(bw * 0.14, bw * 0.12, bw * 0.13), c.joint, 6, 3)
+	kit.frustum(Vector3(0, ankle_y - boot_h * 0.05, 0), boot_h * 0.36,
+		bw * 0.14, bw * 0.12, c.shell, 6)
+	kit.box(Vector3(0, ankle_y - boot_h * 0.28, bw * 0.18),
+		Vector3(bw * 0.36, boot_h * 0.16, bw * 0.50), c.shell_dark)
+	return kit.build()
 # --- gear (right arm + held item + carried load) -------------------------------------------------------
 
 static func gear(d: Dictionary, weapon: String, carry: String) -> ArrayMesh:

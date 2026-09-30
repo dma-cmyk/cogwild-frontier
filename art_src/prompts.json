@@ -3292,6 +3292,181 @@
   }
  },
  {
+  "id": "chip_android_worker",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an Android man, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a narrow visor shell, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing a narrow leather tool belt, a short royal-blue sash at one hip and a small brass hand tool; no hat, no full shirt, no full trousers. RIGHT HALF (columns 4-6): an Android woman, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a graceful swept shell silhouette, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing a narrow leather tool belt, a short royal-blue sash at one hip and a small brass hand tool; no hat, no full shirt, no full trousers. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Androids remain visibly armoured through every profession: add only small sashes, belts, capes or half-skirts over the ivory shell; never depict flesh, exposed human faces or ordinary cloth bodies. Use normal bipedal walking frames and about 1.6m visual height.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-2"
+  }
+ },
+ {
+  "id": "chip_android_worker_v2",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an Android man, a self-aware mechanical citizen with a faceted ivory porcelain mask, paired amber-gold luminous eye slits, a broad hexagonal head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing a narrow dark tool belt, a short royal-blue sash and brass calipers; no hat, no full shirt, no full trousers. RIGHT HALF (columns 4-6): an Android woman, a self-aware mechanical citizen with a smooth ivory porcelain mask, tiny amber-gold luminous eyes, a tall elegant teardrop head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing a narrow dark tool belt, a short royal-blue sash and brass calipers; no hat, no full shirt, no full trousers. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, pixel density, chibi proportion and sprite-sheet layout reference; draw the new characters described here, a different race. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas. Androids remain visibly armoured through every profession: add only small sashes, belts, capes or half-skirts over the ivory shell; never depict flesh, exposed human faces or ordinary cloth bodies. Use normal bipedal walking frames and about 1.6m visual height.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-2",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_worker.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_android_fighter",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an Android man, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a narrow visor shell, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour plates over dark joints with a small royal-blue shoulder sash, carrying a short sword and compact shield; head shell fully visible. RIGHT HALF (columns 4-6): an Android woman, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a graceful swept shell silhouette, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour plates over dark joints with a small royal-blue shoulder sash, carrying a short sword and compact shield; head shell fully visible. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, pixel density, chibi proportion and sprite-sheet layout reference; draw the new characters described here, a different race. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas. Androids remain visibly armoured through every profession: add only small sashes, belts, capes or half-skirts over the ivory shell; never depict flesh, exposed human faces or ordinary cloth bodies. Use normal bipedal walking frames and about 1.6m visual height.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-2",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_fighter.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_android_fighter_v2",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an Android man, a self-aware mechanical citizen with a faceted ivory porcelain mask, paired amber-gold luminous eye slits, a broad hexagonal head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing layered ivory shell armour over dark joints with restrained brass edges and a short royal-blue half-cape, carrying a sword and shield; distinctive faceted head shell visible. RIGHT HALF (columns 4-6): an Android woman, a self-aware mechanical citizen with a smooth ivory porcelain mask, tiny amber-gold luminous eyes, a tall elegant teardrop head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing layered ivory shell armour over dark joints with restrained brass edges and a short royal-blue half-cape, carrying a sword and shield; distinctive faceted head shell visible. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, pixel density, chibi proportion and sprite-sheet layout reference; draw the new characters described here, a different race. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas. Androids remain visibly armoured through every profession: add only small sashes, belts, capes or half-skirts over the ivory shell; never depict flesh, exposed human faces or ordinary cloth bodies. Use normal bipedal walking frames and about 1.6m visual height.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-2",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_fighter.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_android_ranger",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an Android man, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a narrow visor shell, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour with a light charcoal half-cloak and short royal-blue scarf, carrying a compact bow and quiver; head shell and hip plates visible. RIGHT HALF (columns 4-6): an Android woman, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a graceful swept shell silhouette, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour with a light charcoal half-cloak and short royal-blue scarf, carrying a compact bow and quiver; head shell and hip plates visible. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, pixel density, chibi proportion and sprite-sheet layout reference; draw the new characters described here, a different race. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas. Androids remain visibly armoured through every profession: add only small sashes, belts, capes or half-skirts over the ivory shell; never depict flesh, exposed human faces or ordinary cloth bodies. Use normal bipedal walking frames and about 1.6m visual height.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-2",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_ranger.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_android_ranger_v2",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an Android man, a self-aware mechanical citizen with a faceted ivory porcelain mask, paired amber-gold luminous eye slits, a broad hexagonal head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing ivory shell armour with a light charcoal shoulder cape and royal-blue neck ribbon, carrying a bow and quiver; distinctive head and hip shell silhouette visible. RIGHT HALF (columns 4-6): an Android woman, a self-aware mechanical citizen with a smooth ivory porcelain mask, tiny amber-gold luminous eyes, a tall elegant teardrop head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing ivory shell armour with a light charcoal shoulder cape and royal-blue neck ribbon, carrying a bow and quiver; distinctive head and hip shell silhouette visible. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, pixel density, chibi proportion and sprite-sheet layout reference; draw the new characters described here, a different race. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas. Androids remain visibly armoured through every profession: add only small sashes, belts, capes or half-skirts over the ivory shell; never depict flesh, exposed human faces or ordinary cloth bodies. Use normal bipedal walking frames and about 1.6m visual height.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-2",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_ranger.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_android_engineer",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an Android man, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a narrow visor shell, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour with a short dark apron panel, brass goggles mounted above the faceplate and a royal-blue waist sash, carrying a brass wrench. RIGHT HALF (columns 4-6): an Android woman, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a graceful swept shell silhouette, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour with a short dark apron panel, brass goggles mounted above the faceplate and a royal-blue waist sash, carrying a brass wrench. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, pixel density, chibi proportion and sprite-sheet layout reference; draw the new characters described here, a different race. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas. Androids remain visibly armoured through every profession: add only small sashes, belts, capes or half-skirts over the ivory shell; never depict flesh, exposed human faces or ordinary cloth bodies. Use normal bipedal walking frames and about 1.6m visual height.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-2",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_engineer.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_android_engineer_v2",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an Android man, a self-aware mechanical citizen with a faceted ivory porcelain mask, paired amber-gold luminous eye slits, a broad hexagonal head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing ivory shell armour with a short charcoal work apron, brass goggles above the faceplate and royal-blue belt sash, carrying a large wrench. RIGHT HALF (columns 4-6): an Android woman, a self-aware mechanical citizen with a smooth ivory porcelain mask, tiny amber-gold luminous eyes, a tall elegant teardrop head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing ivory shell armour with a short charcoal work apron, brass goggles above the faceplate and royal-blue belt sash, carrying a large wrench. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, pixel density, chibi proportion and sprite-sheet layout reference; draw the new characters described here, a different race. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas. Androids remain visibly armoured through every profession: add only small sashes, belts, capes or half-skirts over the ivory shell; never depict flesh, exposed human faces or ordinary cloth bodies. Use normal bipedal walking frames and about 1.6m visual height.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-2",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_engineer.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_android_scholar",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an Android man, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a narrow visor shell, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour with a short plum mantle and royal-blue trim, carrying a slim book and brass-tipped staff; smooth faceplate unobscured. RIGHT HALF (columns 4-6): an Android woman, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a graceful swept shell silhouette, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour with a short plum mantle and royal-blue trim, carrying a slim book and brass-tipped staff; smooth faceplate unobscured. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, pixel density, chibi proportion and sprite-sheet layout reference; draw the new characters described here, a different race. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas. Androids remain visibly armoured through every profession: add only small sashes, belts, capes or half-skirts over the ivory shell; never depict flesh, exposed human faces or ordinary cloth bodies. Use normal bipedal walking frames and about 1.6m visual height.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-2",
+   "input": [
+    {
+     "path": "art_src/raw/chip_human_scholar.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "chip_android_scholar_v2",
+  "kind": "chip",
+  "args": {
+   "subject": "Two RPG character sprite sheets side by side (character chips) for a cozy frontier fantasy game. LEFT HALF (columns 1-3): an Android man, a self-aware mechanical citizen with a faceted ivory porcelain mask, paired amber-gold luminous eye slits, a broad hexagonal head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing ivory shell armour with a short plum mantle and muted-gold clasp, royal-blue trim, book and brass staff; distinctive teardrop head shell unobscured. RIGHT HALF (columns 4-6): an Android woman, a self-aware mechanical citizen with a smooth ivory porcelain mask, tiny amber-gold luminous eyes, a tall elegant teardrop head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing ivory shell armour with a short plum mantle and muted-gold clasp, royal-blue trim, book and brass staff; distinctive teardrop head shell unobscured. Each character is drawn 12 times in a strict grid of 4 rows x 3 columns inside its half. Row 1: moving toward the viewer (front view). Row 2: moving to the left (facing left). Row 3: moving to the right (facing right). Row 4: moving away from the viewer (back view). Each row has 3 walking frames: left foot forward, standing, right foot forward. All 24 figures have identical size and chibi proportions, each centred in an equal cell with empty space around it. Use Image 1 only as style, pixel density, chibi proportion and sprite-sheet layout reference; draw the new characters described here, a different race. Keep only the royal-blue company cloth accent blue for shader hue rotation; avoid other blue, teal or cyan areas. Androids remain visibly armoured through every profession: add only small sashes, belts, capes or half-skirts over the ivory shell; never depict flesh, exposed human faces or ordinary cloth bodies. Use normal bipedal walking frames and about 1.6m visual height.",
+   "style": "high quality 16-bit JRPG pixel art, crisp dark outlines, warm limited palette, clean readable silhouettes, top-down three-quarter view like classic RPG Maker character chips",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines",
+   "composition": "6 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "model": "openai-codex/gpt-image-2",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_scholar.webp"
+    }
+   ]
+  }
+ },
+ {
   "id": "chip_human_fighter_v4",
   "kind": "chip",
   "args": {
@@ -4815,6 +4990,50 @@
    "input": [
     {
      "path": "art_src/raw/b_v_halfling_hall.webp"
+    }
+   ]
+  }
+ },
+ {
+  "id": "b_v_android_home",
+  "kind": "building",
+  "args": {
+   "subject": "an original android Precision Workshop dwelling: elegant compact porcelain-and-ivory masonry, charcoal roof plates, dark structural seams, restrained brass ribs and trim, small amber glowing windows, a brass tool crane and subtle gear vents; 3 x 3 tile footprint, no blue, no people, no text; a single small dwelling on a 3 x 3 tile square footprint, no blue anywhere",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-2"
+  }
+ },
+ {
+  "id": "b_v_android_hall",
+  "kind": "building",
+  "args": {
+   "subject": "an original android Concordance Hall: dignified large ivory porcelain-and-stone civic hall, charcoal shell-like roof, dark structural seams, restrained brass columns and circular motifs, many warm amber glowing windows, central oculus and workshop chimneys; 5 x 5 tile footprint, no blue, no people, no text; a large central village hall filling a 5 x 5 tile square footprint, no blue anywhere",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, isolated structure only, no ground tile, no grass, no people",
+   "composition": "classic isometric view: camera looking down about 35 degrees from the south-east, the square footprint forms a diamond at the bottom, the whole subject centred with empty space around it, nothing touching the image edges",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-2"
+  }
+ },
+ {
+  "id": "b_v_android_hall_back",
+  "kind": "building_back",
+  "args": {
+   "subject": "Create a genuine opposite-diagonal rear view of Image 1, the same building. Preserve building identity, complete silhouette, scale, placement, materials and painterly pixel-isometric style. Hide the front entrance, door, signs and front-only details (entrance, statues and front banners); show plausible plain rear planes without a door or sign. This must be a true opposite-side view, not a mirrored front.",
+   "style": "detailed painterly pixel art like a modern high-resolution isometric strategy game, crisp dark outlines, warm saturated colours",
+   "scene": "flat solid pure magenta #FF00FF background filling the whole image, no ground, no shadows, no text, no labels, no grid lines, same building only, no ground, shadows, people or text",
+   "composition": "same framing and scale as input, opposite diagonal isometric view, footprint diamond at bottom, whole subject centered",
+   "aspect_ratio": "1:1",
+   "image_size": "1024x1024",
+   "model": "openai-codex/gpt-image-2",
+   "input": [
+    {
+     "path": "art_src/raw/b_v_android_hall.webp"
     }
    ]
   }
@@ -8465,6 +8684,186 @@
     }
    ],
    "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "portrait_android_worker",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an Android man, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a narrow visor shell, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing a narrow leather tool belt, a short royal-blue sash at one hip and a small brass hand tool; no hat, no full shirt, no full trousers. RIGHT portrait: the character from the right half of Image 1 - an Android woman, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a graceful swept shell silhouette, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing a narrow leather tool belt, a short royal-blue sash at one hip and a small brass hand tool; no hat, no full shirt, no full trousers. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_worker.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-2"
+  }
+ },
+ {
+  "id": "portrait_android_worker_v2",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an Android man, a self-aware mechanical citizen with a faceted ivory porcelain mask, paired amber-gold luminous eye slits, a broad hexagonal head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing a narrow dark tool belt, a short royal-blue sash and brass calipers; no hat, no full shirt, no full trousers. RIGHT portrait: the character from the right half of Image 1 - an Android woman, a self-aware mechanical citizen with a smooth ivory porcelain mask, tiny amber-gold luminous eyes, a tall elegant teardrop head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing a narrow dark tool belt, a short royal-blue sash and brass calipers; no hat, no full shirt, no full trousers. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_worker_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-2"
+  }
+ },
+ {
+  "id": "portrait_android_fighter",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an Android man, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a narrow visor shell, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour plates over dark joints with a small royal-blue shoulder sash, carrying a short sword and compact shield; head shell fully visible. RIGHT portrait: the character from the right half of Image 1 - an Android woman, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a graceful swept shell silhouette, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour plates over dark joints with a small royal-blue shoulder sash, carrying a short sword and compact shield; head shell fully visible. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_fighter.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-2"
+  }
+ },
+ {
+  "id": "portrait_android_fighter_v2",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an Android man, a self-aware mechanical citizen with a faceted ivory porcelain mask, paired amber-gold luminous eye slits, a broad hexagonal head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing layered ivory shell armour over dark joints with restrained brass edges and a short royal-blue half-cape, carrying a sword and shield; distinctive faceted head shell visible. RIGHT portrait: the character from the right half of Image 1 - an Android woman, a self-aware mechanical citizen with a smooth ivory porcelain mask, tiny amber-gold luminous eyes, a tall elegant teardrop head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing layered ivory shell armour over dark joints with restrained brass edges and a short royal-blue half-cape, carrying a sword and shield; distinctive faceted head shell visible. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_fighter_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-2"
+  }
+ },
+ {
+  "id": "portrait_android_ranger",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an Android man, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a narrow visor shell, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour with a light charcoal half-cloak and short royal-blue scarf, carrying a compact bow and quiver; head shell and hip plates visible. RIGHT portrait: the character from the right half of Image 1 - an Android woman, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a graceful swept shell silhouette, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour with a light charcoal half-cloak and short royal-blue scarf, carrying a compact bow and quiver; head shell and hip plates visible. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_ranger.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-2"
+  }
+ },
+ {
+  "id": "portrait_android_ranger_v2",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an Android man, a self-aware mechanical citizen with a faceted ivory porcelain mask, paired amber-gold luminous eye slits, a broad hexagonal head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing ivory shell armour with a light charcoal shoulder cape and royal-blue neck ribbon, carrying a bow and quiver; distinctive head and hip shell silhouette visible. RIGHT portrait: the character from the right half of Image 1 - an Android woman, a self-aware mechanical citizen with a smooth ivory porcelain mask, tiny amber-gold luminous eyes, a tall elegant teardrop head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing ivory shell armour with a light charcoal shoulder cape and royal-blue neck ribbon, carrying a bow and quiver; distinctive head and hip shell silhouette visible. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_ranger_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-2"
+  }
+ },
+ {
+  "id": "portrait_android_engineer",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an Android man, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a narrow visor shell, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour with a short dark apron panel, brass goggles mounted above the faceplate and a royal-blue waist sash, carrying a brass wrench. RIGHT portrait: the character from the right half of Image 1 - an Android woman, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a graceful swept shell silhouette, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour with a short dark apron panel, brass goggles mounted above the faceplate and a royal-blue waist sash, carrying a brass wrench. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_engineer.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-2"
+  }
+ },
+ {
+  "id": "portrait_android_engineer_v2",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an Android man, a self-aware mechanical citizen with a faceted ivory porcelain mask, paired amber-gold luminous eye slits, a broad hexagonal head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing ivory shell armour with a short charcoal work apron, brass goggles above the faceplate and royal-blue belt sash, carrying a large wrench. RIGHT portrait: the character from the right half of Image 1 - an Android woman, a self-aware mechanical citizen with a smooth ivory porcelain mask, tiny amber-gold luminous eyes, a tall elegant teardrop head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing ivory shell armour with a short charcoal work apron, brass goggles above the faceplate and royal-blue belt sash, carrying a large wrench. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_engineer_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-2"
+  }
+ },
+ {
+  "id": "portrait_android_scholar",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an Android man, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a narrow visor shell, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour with a short plum mantle and royal-blue trim, carrying a slim book and brass-tipped staff; smooth faceplate unobscured. RIGHT portrait: the character from the right half of Image 1 - an Android woman, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a graceful swept shell silhouette, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs, wearing articulated ivory armour with a short plum mantle and royal-blue trim, carrying a slim book and brass-tipped staff; smooth faceplate unobscured. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_scholar.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-2"
+  }
+ },
+ {
+  "id": "portrait_android_scholar_v2",
+  "kind": "portrait",
+  "args": {
+   "subject": "Two character portraits side by side for a fantasy strategy game UI, based on Image 1 (a pixel-art sprite sheet with two characters). LEFT portrait: the character from the left half of Image 1 - an Android man, a self-aware mechanical citizen with a faceted ivory porcelain mask, paired amber-gold luminous eye slits, a broad hexagonal head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing ivory shell armour with a short plum mantle and muted-gold clasp, royal-blue trim, book and brass staff; distinctive teardrop head shell unobscured. RIGHT portrait: the character from the right half of Image 1 - an Android woman, a self-aware mechanical citizen with a smooth ivory porcelain mask, tiny amber-gold luminous eyes, a tall elegant teardrop head shell, dark articulated joints, brass hinge accents and layered armour plates, wearing ivory shell armour with a short plum mantle and muted-gold clasp, royal-blue trim, book and brass staff; distinctive teardrop head shell unobscured. Keep each character's hair, ears, face and outfit colours exactly as in the sprites.",
+   "style": "polished anime-style fantasy strategy game character portrait, soft cel shading, clean line art, warm rim light, expressive eyes, painterly details",
+   "scene": "each portrait on its own simple dark slate-blue vignette background",
+   "composition": "two equal square head-and-shoulders bust portraits side by side, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+   "aspect_ratio": "3:2",
+   "image_size": "1536x1024",
+   "input": [
+    {
+     "path": "art_src/raw/chip_android_scholar_v2.webp"
+    }
+   ],
+   "model": "openai-codex/gpt-image-2"
   }
  },
  {

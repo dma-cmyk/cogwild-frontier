@@ -1,6 +1,8 @@
 # 種族の足し方
 
-種族はほぼデータで決まります。ゲーム側のコードに種族の一覧はありません（`AppearanceGen.race_ids()` は `data/races/races.json` の `playable` な行、絵の高さは同じ行の `height`、村の建物の大きさは `data/buildings/villages.json` の `size` から読みます）。
+種族はほぼデータで決まります。現在はアンドロイドを含む17種族です。選択・出現に使う一覧はデータから読みます（`AppearanceGen.race_ids()` は `data/races/races.json` の `playable` な行、絵の高さは同じ行の `height`、村の建物の大きさは `data/buildings/villages.json` の `size` から読みます）。
+
+ワールド生成に使った種族の順序付き一覧は `SaveGame` の `generation_races` に保存します。追加種族で既存の村の位置・種族・敷地を再抽選しないためです。このフィールドがない旧セーブに限り、固定した従来16種族の一覧で復元します。歴史的な復元用の一覧は新種族を追加しても変更しません。
 
 ## 1. データ
 
@@ -23,11 +25,11 @@
 
 ## 3. 描いた絵
 
-`tools/art/make_prompts.py` に種族の姿（`CLASSIC_RACES` / `CLASSIC_RACES_V2` と `CLASSIC_RACE_BODY` のような表）と村の建物（`VILLAGE_BUILDINGS`）を足し、`tools/art/process.py` の `NEW_RACES` に種族を足します。生成・加工の手順は `docs/art_pipeline.md`。ブラウザ版では `tools/web/pack_split.py` の `LATE_RACES` に足すと、その種族の絵が後から読み込む追加パックに入ります。
+`tools/art/make_prompts.py` に種族の姿（`CLASSIC_RACES` / `CLASSIC_RACES_V2` と `CLASSIC_RACE_BODY` のような表）と村の建物（`VILLAGE_BUILDINGS`）を足し、`tools/art/process.py` の `NEW_RACES` に種族を足します。生成・加工の手順は `docs/art_pipeline.md`。ブラウザ版の分類は `tools/web/pack_split.py` のパス規則が正です。新種族の基本チップと肖像は本体に入り、村の建物と建物の裏側は追加パックに入るため、種族名の別一覧への追加は不要です。
 
 ## 4. 確認
 
 - `tests/test_painted_art.gd`: すべての種族 × 見た目 × 性別にチップと肖像が 2 種類以上あるか。
 - `tests/test_i18n.gd`: 日本語の名前があるか。
 - `tests/test_villages.gd`: 村がその種族の好む地形に置かれるか。
-- 作成画面のプローブ `tests/probe/ui_creation.json` / `ui_creation_phone.json` で、選択肢が画面に収まるかを見る。
+- 作成画面のプローブ `tests/probe/ui_creation.json` をPC画面で実行し、選択肢・見た目切替・開始ボタンに到達できるかを見る。

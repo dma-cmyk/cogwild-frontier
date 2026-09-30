@@ -2,6 +2,106 @@
  "table": "portraits",
  "entries": [
   {
+   "id": "android_engineer_f",
+   "texture": "res://assets/portraits/android_engineer_f.png",
+   "source": "portrait_android_engineer"
+  },
+  {
+   "id": "android_engineer_f@v2",
+   "texture": "res://assets/portraits/android_engineer_f_v2.png",
+   "source": "portrait_android_engineer_v2"
+  },
+  {
+   "id": "android_engineer_m",
+   "texture": "res://assets/portraits/android_engineer_m.png",
+   "source": "portrait_android_engineer"
+  },
+  {
+   "id": "android_engineer_m@v2",
+   "texture": "res://assets/portraits/android_engineer_m_v2.png",
+   "source": "portrait_android_engineer_v2"
+  },
+  {
+   "id": "android_fighter_f",
+   "texture": "res://assets/portraits/android_fighter_f.png",
+   "source": "portrait_android_fighter"
+  },
+  {
+   "id": "android_fighter_f@v2",
+   "texture": "res://assets/portraits/android_fighter_f_v2.png",
+   "source": "portrait_android_fighter_v2"
+  },
+  {
+   "id": "android_fighter_m",
+   "texture": "res://assets/portraits/android_fighter_m.png",
+   "source": "portrait_android_fighter"
+  },
+  {
+   "id": "android_fighter_m@v2",
+   "texture": "res://assets/portraits/android_fighter_m_v2.png",
+   "source": "portrait_android_fighter_v2"
+  },
+  {
+   "id": "android_ranger_f",
+   "texture": "res://assets/portraits/android_ranger_f.png",
+   "source": "portrait_android_ranger"
+  },
+  {
+   "id": "android_ranger_f@v2",
+   "texture": "res://assets/portraits/android_ranger_f_v2.png",
+   "source": "portrait_android_ranger_v2"
+  },
+  {
+   "id": "android_ranger_m",
+   "texture": "res://assets/portraits/android_ranger_m.png",
+   "source": "portrait_android_ranger"
+  },
+  {
+   "id": "android_ranger_m@v2",
+   "texture": "res://assets/portraits/android_ranger_m_v2.png",
+   "source": "portrait_android_ranger_v2"
+  },
+  {
+   "id": "android_scholar_f",
+   "texture": "res://assets/portraits/android_scholar_f.png",
+   "source": "portrait_android_scholar"
+  },
+  {
+   "id": "android_scholar_f@v2",
+   "texture": "res://assets/portraits/android_scholar_f_v2.png",
+   "source": "portrait_android_scholar_v2"
+  },
+  {
+   "id": "android_scholar_m",
+   "texture": "res://assets/portraits/android_scholar_m.png",
+   "source": "portrait_android_scholar"
+  },
+  {
+   "id": "android_scholar_m@v2",
+   "texture": "res://assets/portraits/android_scholar_m_v2.png",
+   "source": "portrait_android_scholar_v2"
+  },
+  {
+   "id": "android_worker_f",
+   "texture": "res://assets/portraits/android_worker_f.png",
+   "source": "portrait_android_worker"
+  },
+  {
+   "id": "android_worker_f@v2",
+   "texture": "res://assets/portraits/android_worker_f_v2.png",
+   "source": "portrait_android_worker_v2"
+  },
+  {
+   "id": "android_worker_m",
+   "texture": "res://assets/portraits/android_worker_m.png",
+   "source": "portrait_android_worker"
+  },
+  {
+   "id": "android_worker_m@v2",
+   "texture": "res://assets/portraits/android_worker_m_v2.png",
+   "source": "portrait_android_worker_v2"
+  },
+  {
    "id": "bandit_archer",
    "texture": "res://assets/portraits/bandit_archer.png",
    "source": "portrait_bandit_b"

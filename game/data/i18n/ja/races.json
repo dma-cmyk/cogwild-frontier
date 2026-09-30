@@ -14,5 +14,6 @@
 	"kobold": {"name": "コボルド", "plural": "コボルド", "description": "臆病だが働き者で、珍しいものを集めるのが好きな爬虫類の民。"},
 	"lizardfolk": {"name": "リザードフォーク", "plural": "リザードフォーク", "description": "自然の理に沿って生きる、忍耐強く物静かな沼地の民。"},
 	"gnome": {"name": "ノーム", "plural": "ノーム", "description": "奇抜な発想と尽きない知識欲を持つ、発明好きな学者肌の民。"},
-	"halfling": {"name": "ハーフリング", "plural": "ハーフリング", "description": "美味しい食事と幸運に恵まれた、陽気で小柄な民。"}
+	"halfling": {"name": "ハーフリング", "plural": "ハーフリング", "description": "美味しい食事と幸運に恵まれた、陽気で小柄な民。"},
+	"android": {"name": "アンドロイド", "plural": "アンドロイド", "description": "磁器のような装甲と静かな思いやりを備え、建設と修理に励む自覚ある機械の市民。"}
 }

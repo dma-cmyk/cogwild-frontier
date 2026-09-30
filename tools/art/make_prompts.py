@@ -57,6 +57,22 @@ V2_LOOKS = {
 	"scholar": "wearing a plum and muted-gold robe with a royal-blue company sash and a dark leather satchel, holding a wooden staff with a small hanging lantern",
 }
 
+# Android-specific clothing keeps the porcelain shell, dark joints and head silhouette visible.
+ANDROID_LOOKS = {
+	"worker": "wearing a narrow leather tool belt, a short royal-blue sash at one hip and a small brass hand tool; no hat, no full shirt, no full trousers",
+	"fighter": "wearing articulated ivory armour plates over dark joints with a small royal-blue shoulder sash, carrying a short sword and compact shield; head shell fully visible",
+	"ranger": "wearing articulated ivory armour with a light charcoal half-cloak and short royal-blue scarf, carrying a compact bow and quiver; head shell and hip plates visible",
+	"engineer": "wearing articulated ivory armour with a short dark apron panel, brass goggles mounted above the faceplate and a royal-blue waist sash, carrying a brass wrench",
+	"scholar": "wearing articulated ivory armour with a short plum mantle and royal-blue trim, carrying a slim book and brass-tipped staff; smooth faceplate unobscured",
+}
+ANDROID_LOOKS_V2 = {
+	"worker": "wearing a narrow dark tool belt, a short royal-blue sash and brass calipers; no hat, no full shirt, no full trousers",
+	"fighter": "wearing layered ivory shell armour over dark joints with restrained brass edges and a short royal-blue half-cape, carrying a sword and shield; distinctive faceted head shell visible",
+	"ranger": "wearing ivory shell armour with a light charcoal shoulder cape and royal-blue neck ribbon, carrying a bow and quiver; distinctive head and hip shell silhouette visible",
+	"engineer": "wearing ivory shell armour with a short charcoal work apron, brass goggles above the faceplate and royal-blue belt sash, carrying a large wrench",
+	"scholar": "wearing ivory shell armour with a short plum mantle and muted-gold clasp, royal-blue trim, book and brass staff; distinctive teardrop head shell unobscured",
+}
+
 V3_APPEARANCE = {
 	"human": [
 		("a young human man with sandy-blond hair in a low ponytail and freckles", "an older human woman with a silver bob, round spectacles and a sturdy build"),
@@ -214,7 +230,26 @@ NEW_RACES.update(CLASSIC_RACES)
 NEW_RACES_V2.update(CLASSIC_RACES_V2)
 NEW_RACE_BODY.update(CLASSIC_RACE_BODY)
 
+# Androids are self-aware mechanical citizens, not drones: porcelain/ivory armour over
+# slender dark articulated joints, amber eyes and restrained brass details. v2 changes
+# the head and shell silhouette, not merely the palette.
+ANDROID_RACES = {
+	"android": ("an Android man, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a narrow visor shell, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs",
+		"an Android woman, an elegant self-aware mechanical citizen with a smooth nonhuman ivory porcelain faceplate, small luminous amber-gold eyes, a graceful swept shell silhouette, slender dark articulated neck and joints, restrained brass collar details and sturdy plated limbs"),
+}
+ANDROID_RACES_V2 = {
+	"android": ("an Android man, a self-aware mechanical citizen with a faceted ivory porcelain mask, paired amber-gold luminous eye slits, a broad hexagonal head shell, dark articulated joints, brass hinge accents and layered armour plates",
+		"an Android woman, a self-aware mechanical citizen with a smooth ivory porcelain mask, tiny amber-gold luminous eyes, a tall elegant teardrop head shell, dark articulated joints, brass hinge accents and layered armour plates"),
+}
+ANDROID_BODY = {
+	"android": "Androids remain visibly armoured through every profession: add only small sashes, belts, capes or half-skirts over the ivory shell; never depict flesh, exposed human faces or ordinary cloth bodies. Use normal bipedal walking frames and about 1.6m visual height.",
+}
+NEW_RACES.update(ANDROID_RACES)
+NEW_RACES_V2.update(ANDROID_RACES_V2)
+NEW_RACE_BODY.update(ANDROID_BODY)
+
 # Fourth look for the non-worker outfits of the original races (the worker look already has v4/v5).
+
 NONWORKER_V4_APPEARANCE = {
 	"human": {
 		"fighter": ("a broad human man with a shaved head, a thick black beard and a scarred eyebrow", "a tall human woman with a long black ponytail and a determined look"),
@@ -283,6 +318,8 @@ VILLAGE_BUILDINGS = {
 		"a Gnome tinkerers' hall: a cluster of giant red and ochre mushrooms joined into a workshop hall with brass gears, clockwork, a copper chimney, a small telescope on top, red-and-cream pennants"),
 	"halfling": ("a Halfling hill burrow: a round green door set into a small grassy hill with round windows, a flower garden, a little picket fence and a chimney poking out of the grass",
 		"a Halfling feast hall: a large grassy hill home with several round doors and windows, a big round green main door, an apple tree, a festive awning over long food tables, yellow-and-green bunting"),
+	"android": ("an original android Precision Workshop dwelling: elegant compact porcelain-and-ivory masonry, charcoal roof plates, dark structural seams, restrained brass ribs and trim, small amber glowing windows, a brass tool crane and subtle gear vents; 3 x 3 tile footprint, no blue, no people, no text",
+		"an original android Concordance Hall: dignified large ivory porcelain-and-stone civic hall, charcoal shell-like roof, dark structural seams, restrained brass columns and circular motifs, many warm amber glowing windows, central oculus and workshop chimneys; 5 x 5 tile footprint, no blue, no people, no text"),
 }
 
 
@@ -311,19 +348,29 @@ def town_building_args(key: str) -> dict:
 
 def new_race_chip(race: str, look: str, version: int) -> dict:
 	male, female = (NEW_RACES if version == 1 else NEW_RACES_V2)[race]
-	outfit = (LOOKS if version == 1 else V2_LOOKS)[look]
+	outfit = ((ANDROID_LOOKS if version == 1 else ANDROID_LOOKS_V2)[look] if race == "android"
+		else (LOOKS if version == 1 else V2_LOOKS)[look])
 	frames = NEW_RACE_FRAMES.get(race, "walking frames: left foot forward, standing, right foot forward")
 	reference = f"chip_human_{look}" if version == 1 else f"chip_{race}_{look}"
+	# Human worker references transfer hats and obscure the designed mechanical head shells.
+	if race == "android" and look == "worker" and version == 1:
+		reference = ""
 	args = chip_args(f"{male}, {outfit}", f"{female}, {outfit}", frames, reference, NEW_RACE_REFERENCE)
 	args["subject"] += " " + NEW_RACE_BODY[race]
+	if race == "android":
+		args["model"] = "openai-codex/gpt-image-2"
 	return args
 
 
 def new_race_portrait(race: str, look: str, version: int) -> dict:
 	male, female = (NEW_RACES if version == 1 else NEW_RACES_V2)[race]
-	outfit = (LOOKS if version == 1 else V2_LOOKS)[look]
+	outfit = ((ANDROID_LOOKS if version == 1 else ANDROID_LOOKS_V2)[look] if race == "android"
+		else (LOOKS if version == 1 else V2_LOOKS)[look])
 	cid = f"chip_{race}_{look}" + ("" if version == 1 else f"_v{version}")
-	return portrait_args(cid, f"{male}, {outfit}", f"{female}, {outfit}")
+	args = portrait_args(cid, f"{male}, {outfit}", f"{female}, {outfit}")
+	if race == "android":
+		args["model"] = "openai-codex/gpt-image-2"
+	return args
 
 
 def village_building_args(race: str, hall: bool) -> dict:
@@ -622,6 +669,9 @@ def build() -> list:
 		if key in TOWN_BACK_FEATURES:
 			out.append({"id": f"b_t_{key}_back", "kind": "building_back",
 				"args": building_back_args(f"b_t_{key}", TOWN_BACK_FEATURES[key])})
+	for entry in out:
+		if entry["id"].startswith(("chip_android_", "portrait_android_", "b_v_android_")):
+			entry["args"]["model"] = "openai-codex/gpt-image-2"
 	return sorted(out, key=_priority)
 
 

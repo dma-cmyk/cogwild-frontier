@@ -30,5 +30,7 @@
 	{"id": "v_gnome_home", "name": "Mushroom House", "size": [3, 3], "category": "village", "buildable": false, "hp": 250, "description": "An eccentric house with a bulbous, colorful roof resembling a mushroom."},
 	{"id": "v_gnome_hall", "name": "Clockwork Pavilion", "size": [5, 5], "category": "village", "buildable": false, "hp": 500, "description": "A complex, whirring meeting hall filled with turning gears and ticking gadgets."},
 	{"id": "v_halfling_home", "name": "Round-Door Burrow", "size": [3, 3], "category": "village", "buildable": false, "hp": 270, "description": "A cozy, turf-roofed burrow with a perfectly round door."},
-	{"id": "v_halfling_hall", "name": "Feast Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 510, "description": "A long, welcoming hall focused around a massive dining table and a warm hearth."}
+	{"id": "v_halfling_hall", "name": "Feast Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 510, "description": "A long, welcoming hall focused around a massive dining table and a warm hearth."},
+	{"id": "v_android_home", "name": "Precision Workshop", "size": [3, 3], "category": "village", "buildable": false, "hp": 300, "description": "An android dwelling of ivory panels, dark joints and orderly brass fittings."},
+	{"id": "v_android_hall", "name": "Concordance Hall", "size": [5, 5], "category": "village", "buildable": false, "hp": 580, "description": "A bright assembly hall where android citizens exchange designs and courteous counsel."}
 ]

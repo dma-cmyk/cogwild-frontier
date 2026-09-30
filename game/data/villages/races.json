@@ -14,5 +14,6 @@
 	{"home":"v_kobold_home","hall":"v_kobold_hall","trade_style":"mining","starting_relation":10,"specialties":["ore","gem"],"wants":["food","tools"],"stock":{"wood":10,"stone":30,"ore":25,"food":10},"id":"kobold"},
 	{"home":"v_lizardfolk_home","hall":"v_lizardfolk_hall","trade_style":"naturalist","starting_relation":15,"specialties":["fish","herb"],"wants":["tools","metal"],"stock":{"wood":25,"stone":15,"fish":30,"herb":20},"id":"lizardfolk"},
 	{"home":"v_gnome_home","hall":"v_gnome_hall","trade_style":"scholarly","starting_relation":20,"specialties":["mechanism","book"],"wants":["metal","gem","magic"],"stock":{"wood":15,"stone":10,"mechanism":25,"food":15},"id":"gnome"},
-	{"home":"v_halfling_home","hall":"v_halfling_hall","trade_style":"agricultural","starting_relation":25,"specialties":["food","drink"],"wants":["tools","clothes","furniture"],"stock":{"wood":10,"stone":5,"food":50,"drink":30},"id":"halfling"}
+	{"home":"v_halfling_home","hall":"v_halfling_hall","trade_style":"agricultural","starting_relation":25,"specialties":["food","drink"],"wants":["tools","clothes","furniture"],"stock":{"wood":10,"stone":5,"food":50,"drink":30},"id":"halfling"},
+	{"id":"android","biome_preference":"rocky_hills","temperament":"welcoming","starting_relation":12,"specialties":["wrench","pickaxe","ingot"],"wants":["stone","ore","food"],"stock":{"wood":18,"stone":28,"ore":18,"metal":22,"food":22},"homes":[3,5],"stalls":[1,2],"fields":[1,2],"guards":2,"build_style":"stone","colors":{"wall":"#e7e2d7","roof":"#3f424b","timber":"#a97b36","cloth":"#c49446"}}
 ]

@@ -50,6 +50,8 @@
 	"v_gnome_hall": {"name": "時計仕掛けの館", "description": "歯車が回り、機械の音が響き渡る複雑な構造の集会所。"},
 	"v_halfling_home": {"name": "丸扉の横穴", "description": "芝屋根と完璧な丸い扉を持つ、居心地の良い横穴の家。"},
 	"v_halfling_hall": {"name": "宴の館", "description": "巨大なダイニングテーブルと温かい暖炉を中心に据えた、広くて歓迎的な館。"},
+	"v_android_home": {"name": "精密工房", "description": "象牙色の外装、暗い関節、整然とした真鍮の装具を備えたアンドロイドの住まい。"},
+	"v_android_hall": {"name": "協調会館", "description": "アンドロイドの市民が設計と礼節ある助言を交わす明るい集会所。"},
 	"t_fountain": {"name": "町の噴水", "description": "町の広場の中心に立つ石造りの噴水。"},
 	"t_guild_hall": {"name": "ギルド会館", "description": "辺境じゅうの依頼が集まる掲示板のある会館。"},
 	"t_tavern": {"name": "銅釜亭", "description": "傭兵や旅人がうわさ話と温かい食事を求めて集まる酒場。"},

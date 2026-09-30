@@ -753,3 +753,56 @@ func test_village_state_survives_a_save_and_load() -> void:
 	back["relation"] = -80
 	loaded.diplomacy.rebuild_hostile_cache()
 	assert_true(loaded.hostile("player", str(back["faction"])), "hostile cache rebuilt")
+
+
+func test_generated_sites_survive_registry_changes_and_legacy_load() -> void:
+	var race_order: Array = DB._order["races"].duplicate()
+	for legacy: bool in [false, true]:
+		if legacy:
+			DB._order["races"].erase("android")
+		var w := _new(42)
+		var sites_before: Dictionary = w.gen.sites.duplicate(true)
+		var data := SaveGame.to_dict(w)
+		if legacy:
+			data.erase("generation_races")
+		DB._order["races"] = race_order.duplicate()
+		if not legacy:
+			DB._order["races"].reverse()
+		var loaded_result := SaveGame.parse(JSON.stringify(data))
+		DB._order["races"] = race_order.duplicate()
+		assert_true(loaded_result.has("world"), "layout save parsed: %s" % str(loaded_result.get("error", "")))
+		if not loaded_result.has("world"):
+			return
+		var loaded: World = loaded_result["world"]
+		_worlds.append(loaded)
+		for sid: int in sites_before:
+			var before: Dictionary = sites_before[sid]
+			var back: Dictionary = loaded.gen.sites.get(sid, {})
+			var label := "%s site %d" % ["legacy" if legacy else "stored pool", sid]
+			assert_false(back.is_empty(), label + " still generated")
+			if back.is_empty():
+				continue
+			assert_eq(back.get("race", ""), before.get("race", ""), label + " species")
+			assert_eq(back["center"], before["center"], label + " location")
+			assert_eq(back["structures"], before["structures"], label + " building layout")
+			assert_eq(back["height"], before["height"], label + " ground elevation")
+
+
+func test_resident_conversations_include_job_and_race_flavour() -> void:
+	var pair := _village_world()
+	var w: World = pair[0]
+	var st: Dictionary = pair[1]
+	var speaker := _recruitable(w, st)
+	if speaker == null:
+		fail("no resident to talk to")
+		return
+	var heard_job := false
+	var heard_race := false
+	var job_prefix := "village.talk.%s." % Diplomacy.resident_job(speaker)
+	for index in 40:
+		var line := w.diplomacy.talk(int(st["id"]), speaker.id)
+		var key := str(line["text_key"])
+		heard_job = heard_job or key.begins_with(job_prefix)
+		heard_race = heard_race or key.begins_with("village.talk.race.")
+	assert_true(heard_job, "residents still talk about their work")
+	assert_true(heard_race, "residents also talk about their culture")

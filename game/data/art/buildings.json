@@ -678,6 +678,51 @@
    "back_glow": "res://assets/sprites/buildings/trade_stall_back_glow.png"
   },
   {
+   "id": "v_android_hall",
+   "texture": "res://assets/sprites/buildings/v_android_hall.png",
+   "size_px": [
+    640,
+    619
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 618.0,
+   "source": "b_v_android_hall",
+   "footprint": [
+    5,
+    5
+   ],
+   "glow": "res://assets/sprites/buildings/v_android_hall_glow.png",
+   "back_texture": "res://assets/sprites/buildings/v_android_hall_back.png",
+   "back_size_px": [
+    640,
+    601
+   ],
+   "back_base_w_px": 640.0,
+   "back_base_cx_px": 319.5,
+   "back_base_bottom_px": 600.0,
+   "back_glow": "res://assets/sprites/buildings/v_android_hall_back_glow.png"
+  },
+  {
+   "id": "v_android_home",
+   "texture": "res://assets/sprites/buildings/v_android_home.png",
+   "size_px": [
+    640,
+    650
+   ],
+   "base_w_px": 637.0,
+   "base_cx_px": 318.0,
+   "base_bottom_px": 649.0,
+   "source": "b_v_android_home",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/v_android_home_glow.png",
+   "back_symmetric": true,
+   "back_pending": true
+  },
+  {
    "id": "v_centaur_hall",
    "texture": "res://assets/sprites/buildings/v_centaur_hall.png",
    "size_px": [
