@@ -248,6 +248,310 @@ NEW_RACES.update(ANDROID_RACES)
 NEW_RACES_V2.update(ANDROID_RACES_V2)
 NEW_RACE_BODY.update(ANDROID_BODY)
 
+# --- extra worker paintings (v3, v4) for the later races ---------------------------------------------
+# Workers are the look most people wear (over half of a village), so they get two more paintings first.
+# Requests are batched to save image-generation quota: one image holds the v3 and v4 sheets of one race
+# side by side (12 columns), and one portrait image holds six busts (three sheets). tools/art/split_batches.py
+# cuts the results back into the per-sheet raws that process.py reads.
+EXTRA_WORKER_VERSIONS = (3, 4)
+NEW_RACES_V3 = {
+	"minotaur": ("a Minotaur man (bull-headed folk: a tan and cream spotted bull head with short forward-curving horns, one horn wrapped in leather, a shaggy russet mane and a tufted tail)",
+		"a Minotaur woman (bull folk: a sleek chestnut head with one broken horn tipped in brass, a long braided black mane over one shoulder, a tufted tail and cloven hooves)"),
+	"centaur": ("a Centaur man (human upper body joined at the waist to the body of a bay horse with a black mane and tail) with a red topknot and a freckled sunburnt face",
+		"a Centaur woman (human upper body joined at the waist to the body of a piebald black-and-white horse) with long straight black hair and gold hoop earrings"),
+	"harpy": ("a Harpy man (bird folk: rust-orange and grey kestrel-patterned wings instead of arms with small clawed hands at the wrist joints, talons) with a spiky crest of orange feather hair",
+		"a Harpy woman (bird folk: soft snowy-white owl-like wings instead of arms with small clawed hands at the wrist joints, talons) with a round face and short fluffy white-and-grey feather hair"),
+	"lamia": ("a Lamia man (serpent folk: human upper body and a long thick olive snake tail with dark stripes instead of legs, fine scales along the jaw, slit green-gold eyes) with short spiky bronze hair",
+		"a Lamia woman (serpent folk: human upper body and a long thick coral-pink and cream snake tail instead of legs, a delicate scaled brow, slit amber eyes) with a high bun of white hair"),
+	"oni": ("an Oni man (Japanese ogre folk: moss-green skin, two long curved horns, big tusks, a black topknot and a broad scarred chest)",
+		"an Oni woman (Japanese ogre folk: peach-orange skin, two tiny horns half hidden in curly dark-red hair, small fangs and a friendly wide smile)"),
+	"tengu": ("a Tengu man (Japanese mountain goblin folk: a human face with a long pale nose, black hair in a tight topknot, a thin grey moustache, brown-black wings folded on the back, bird feet)",
+		"a Tengu woman (Japanese crow folk: a human face with red eye markings, short black hair with a white feather streak, glossy black wings folded on the back, bird-clawed feet)"),
+	"goblin": ("a Goblin man (small goblin folk: sage-green skin, one huge pointed ear pierced with three brass rings, a big chin and sharp yellow teeth) with a red bandana over shaggy brown hair",
+		"a Goblin woman (small goblin folk: warm lime-green skin with darker freckles, huge upswept ears, bright orange eyes and a wide grin) with long black hair in a messy side ponytail"),
+	"orc": ("an Orc man (big orc folk: moss-green skin, short stubby tusks, a thick neck and tribal scars) with a shaved head and a braided red beard",
+		"an Orc woman (strong orc folk: grey-green skin, small tusks, a broad smile and a bandage over one eyebrow) with a thick blond braid"),
+	"kobold": ("a Kobold man (small reptilian kobold folk: mustard-yellow scales with brown stripes, a long thin snout, two tall straight horns, orange eyes and a long tail)",
+		"a Kobold woman (small reptilian kobold folk: brick-red scales with a cream chin, a short snout, curled ram-like horns, round yellow eyes and a tail with a fluffy tuft)"),
+	"lizardfolk": ("a Lizardfolk man (tall reptilian lizard folk: a chameleon-like head with a small casque crest, mottled green and tan scales, wide round eyes and a long curling tail)",
+		"a Lizardfolk woman (tall reptilian lizard folk: a sleek snake-like head, glossy black scales with a yellow throat, a narrow frill and a long tail)"),
+	"gnome": ("a Gnome man (tiny gnome folk: a long braided orange beard, a small round nose, thick eyebrows and a floppy pointed brown hat)",
+		"a Gnome woman (tiny gnome folk: a big smile, a rosy round nose, white hair in a tall swirl bun and a small pointed yellow hat)"),
+	"halfling": ("a Halfling man (small halfling folk: a round face with a neat ginger beard, short messy ginger hair, slightly pointed ears and big bare hairy feet)",
+		"a Halfling woman (small halfling folk: a round face, long chestnut hair in a side braid with ribbons, slightly pointed ears and big bare hairy feet)"),
+	"android": ("an Android man, a self-aware mechanical citizen with a rounded ivory porcelain helmet-like head, a single wide amber-gold luminous visor band, dark articulated joints, brass rivet accents and broad plated shoulders",
+		"an Android woman, a self-aware mechanical citizen with a slim ivory porcelain head with a high swept crest, two narrow amber-gold luminous eyes, dark articulated joints, brass filigree accents and slender plated limbs"),
+}
+NEW_RACES_V4 = {
+	"minotaur": ("a Minotaur man (elderly bull-headed folk: a grey-muzzled white bull head with thick low horns, a bushy grey chin tuft, a broad hunched frame and a tufted tail)",
+		"a Minotaur woman (young bull folk: a dappled brown-and-white head with small upswept horns, a red flower tucked behind one ear, wavy auburn hair and a tufted tail)"),
+	"centaur": ("a Centaur man (human upper body joined at the waist to the body of a roan horse with a white blaze) with grey-streaked brown hair, a thick moustache and an old scar",
+		"a Centaur woman (human upper body joined at the waist to the body of a buckskin horse with dark stockings) with a short blond crop and a beaded braid"),
+	"harpy": ("a Harpy man (older bird folk: dark iron-grey eagle wings with white tips instead of arms with small clawed hands at the wrist joints, talons) with slicked-back grey feather hair and a hooked nose",
+		"a Harpy woman (bird folk: warm copper and cream falcon wings instead of arms with small clawed hands at the wrist joints, talons) with long braided feather hair in copper and cream"),
+	"lamia": ("a Lamia man (older serpent folk: human upper body and a long thick ash-grey and rust snake tail instead of legs, a scarred scaled cheek, slit yellow eyes) with a long grey braid",
+		"a Lamia woman (serpent folk: human upper body and a long thick ruby-red and black banded snake tail instead of legs, freckles and cheek scales, slit golden eyes) with wavy dark-red hair and a golden headband"),
+	"oni": ("an Oni man (older Japanese ogre folk: pale ash-grey skin, one broken horn, a long white moustache and a bald head with red tattoo-like marks)",
+		"an Oni woman (Japanese ogre folk: warm brown skin, two curved golden horns, long straight white hair with a red ribbon and sharp fangs)"),
+	"tengu": ("a Tengu man (Japanese crow folk: a grey-feathered crow head with a hooked black beak, wings of dark ash and white feathers folded on the back, bird feet)",
+		"a Tengu woman (Japanese mountain goblin folk: a human face with a long rosy nose, wild silver hair with red cord ties, black wings folded on the back, bird-clawed feet)"),
+	"goblin": ("a Goblin man (old goblin folk: dull grey-green skin, drooping ears, a long wispy white beard, a hunched back and a toothless grin)",
+		"a Goblin woman (small goblin folk: bright olive skin, pointy ears with tiny bells, a small chin and a mischievous grin) with two thick purple braids"),
+	"orc": ("an Orc man (older orc folk: dark grey-green skin, large chipped tusks, white mutton-chop whiskers and one milky eye)",
+		"an Orc woman (young orc folk: olive skin, tiny tusks and painted white stripes on the forehead) with a black bob and copper earrings"),
+	"kobold": ("a Kobold man (old reptilian kobold folk: pale grey-brown scales, one cracked horn, white whisker barbels, a wrinkled snout and a short thick tail)",
+		"a Kobold woman (small reptilian kobold folk: dark maroon scales with orange freckle spots, a frilled crest, tiny horns with bone beads and a thin tail)"),
+	"lizardfolk": ("a Lizardfolk man (old reptilian lizard folk: a heavy-jawed head, faded grey-green scales with white scars, a broken spine ridge and a thick tail)",
+		"a Lizardfolk woman (tall reptilian lizard folk: a gecko-like head with large amber eyes, pale sage scales with orange spots, a small crest and a long tail)"),
+	"gnome": ("a Gnome man (tiny old gnome folk: a bald head with a fringe of white hair, a huge white moustache, a red nose and a tall pointed grey hat)",
+		"a Gnome woman (tiny gnome folk: freckled cheeks, short curly copper hair, a button nose and a tall pointed maroon hat with a feather)"),
+	"halfling": ("a Halfling man (older halfling folk: a bald head, white bushy sideburns, round spectacles, slightly pointed ears and big bare hairy feet)",
+		"a Halfling woman (young halfling folk: short black curly hair, a gap-toothed smile, rosy cheeks, slightly pointed ears and big bare hairy feet)"),
+	"android": ("an Android man, a self-aware mechanical citizen with a squared ivory porcelain head, a small brass ear-dish on each side, round amber-gold luminous eyes, dark articulated joints and repair seams in the porcelain filled with brass",
+		"an Android woman, a self-aware mechanical citizen with an oval ivory porcelain head with a soft pointed chin, amber-gold luminous eyes, a fine brass halo ring behind the head, dark articulated joints and layered petal-like shoulder plates"),
+}
+EXTRA_WORKER_OUTFIT = {3: ADDITIONAL_WORKER_LOOK, 4: ADDITIONAL_WORKER_V5_LOOK}
+ANDROID_WORKER_OUTFIT = {
+	3: "wearing a dark leather work harness with a short royal-blue sash and a brass wrench at the hip; no hat, no full shirt, no full trousers",
+	4: "wearing a slim brass-buckled utility harness, a short royal-blue cloth half-apron and holding a small brass oil can; no hat, no full shirt, no full trousers",
+}
+PORTRAITS_PER_BATCH = 3
+
+
+def extra_worker_looks(race: str, version: int) -> tuple[str, str]:
+	male, female = (NEW_RACES_V3 if version == 3 else NEW_RACES_V4)[race]
+	outfit = ANDROID_WORKER_OUTFIT[version] if race == "android" else EXTRA_WORKER_OUTFIT[version]
+	return f"{male}, {outfit}", f"{female}, {outfit}"
+
+
+def extra_worker_batch_chip(race: str) -> dict:
+	frames = NEW_RACE_FRAMES.get(race, "walking frames: left foot forward, standing, right foot forward")
+	sheets = []
+	for slot, version in enumerate(EXTRA_WORKER_VERSIONS):
+		left, right = extra_worker_looks(race, version)
+		first = slot * 6
+		sheets.append(f"Columns {first + 1}-{first + 3}: {left}. Columns {first + 4}-{first + 6}: {right}.")
+	subject = ("FOUR RPG character sprite sheets in one wide image (character chips) for a cozy frontier fantasy game, "
+		"laid out as a single strict grid of 12 columns and 4 rows of equal cells. Rows from top to bottom: facing down toward "
+		"the viewer, facing left, facing right, facing up away from the viewer. Each character uses 3 adjacent columns for "
+		f"{frames}. " + " ".join(sheets) + " The four characters are four different people, none of them the character in Image 1. "
+		"All figures have identical size and chibi proportions, feet on the same baseline in each row, each centred in an equal cell "
+		"with empty space around it. " + NEW_RACE_REFERENCE + " " + NEW_RACE_BODY[race])
+	args = {"subject": subject, "style": CHIP_STYLE, "scene": BG,
+		"composition": "12 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+		"aspect_ratio": "3:2", "image_size": "1536x1024", "model": MODEL,
+		"input": [{"path": f"art_src/raw/chip_{race}_worker.webp"}]}
+	if race == "android":
+		args["model"] = "openai-codex/gpt-image-2"
+	return args
+
+
+def extra_worker_batch_portrait(sheets: list) -> dict:
+	"""`sheets` is up to three (race, version) pairs; row 1 holds their men, row 2 their women."""
+	described = []
+	for i, (race, version) in enumerate(sheets, 1):
+		left, right = extra_worker_looks(race, version)
+		described.append(f"Image {i}: the man is {left}; the woman is {right}.")
+	subject = ("Six character portraits in a grid of 3 columns and 2 rows for a fantasy strategy game UI. Images 1, 2 and 3 are "
+		"pixel-art sprite sheets, each with two characters (left half = a man, right half = a woman). TOP ROW, left to right: the "
+		"man from Image 1, the man from Image 2, the man from Image 3. BOTTOM ROW, left to right: the woman from Image 1, the woman "
+		"from Image 2, the woman from Image 3. " + " ".join(described) + " Keep each character's hair, ears, face, race features and "
+		"outfit colours exactly as in its sprites.")
+	args = {"subject": subject, "style": PORTRAIT_STYLE,
+		"scene": "each portrait on its own simple dark slate-blue vignette background",
+		"composition": "six equal square head-and-shoulders bust portraits in a 3x2 grid, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+		"aspect_ratio": "3:2", "image_size": "1536x1024", "model": MODEL,
+		"input": [{"path": f"art_src/raw/chip_{race}_worker_v{version}.webp"} for race, version in sheets]}
+	if any(race == "android" for race, _ in sheets):
+		args["model"] = "openai-codex/gpt-image-2"
+	return args
+
+
+def extra_worker_batches() -> list:
+	out = []
+	for race in NEW_RACES_V3:
+		out.append({"id": f"batch_chip_{race}_worker", "kind": "chip_batch", "args": extra_worker_batch_chip(race),
+			"splits": [f"chip_{race}_worker_v{v}" for v in EXTRA_WORKER_VERSIONS]})
+	pairs = [(race, v) for race in NEW_RACES_V3 for v in EXTRA_WORKER_VERSIONS]
+	for n in range(0, len(pairs), PORTRAITS_PER_BATCH):
+		group = pairs[n:n + PORTRAITS_PER_BATCH]
+		out.append({"id": f"batch_portrait_worker_{n // PORTRAITS_PER_BATCH + 1}", "kind": "portrait_batch",
+			"args": extra_worker_batch_portrait(group),
+			"splits": [f"portrait_{race}_worker_v{v}" for race, v in group]})
+	return out
+
+
+# --- third painting (v3) for the later races' other looks --------------------------------------------
+# Same batching as the workers: one chip image per race holds two looks (four characters), portraits three sheets.
+EXTRA_LOOK_STEMS = {
+	"minotaur": ("a Minotaur man (bull-headed folk: {}, a tufted tail and cloven hooves)", "a Minotaur woman (bull folk: {}, a tufted tail and cloven hooves)"),
+	"centaur": ("a Centaur man (human upper body joined at the waist to a horse body: {})", "a Centaur woman (human upper body joined at the waist to a horse body: {})"),
+	"harpy": ("a Harpy man (bird folk: feathered wings instead of arms with small clawed hands at the wrist joints, talons; {})", "a Harpy woman (bird folk: feathered wings instead of arms with small clawed hands at the wrist joints, talons; {})"),
+	"lamia": ("a Lamia man (serpent folk: human upper body and a long thick snake tail instead of legs; {})", "a Lamia woman (serpent folk: human upper body and a long thick snake tail instead of legs; {})"),
+	"oni": ("an Oni man (Japanese ogre folk: {})", "an Oni woman (Japanese ogre folk: {})"),
+	"tengu": ("a Tengu man (Japanese crow folk: black wings folded on the back, bird feet; {})", "a Tengu woman (Japanese crow folk: black wings folded on the back, bird-clawed feet; {})"),
+	"goblin": ("a Goblin man (small goblin folk: {})", "a Goblin woman (small goblin folk: {})"),
+	"orc": ("an Orc man (big orc folk: {})", "an Orc woman (strong orc folk: {})"),
+	"kobold": ("a Kobold man (small reptilian kobold folk: {}, a long tail)", "a Kobold woman (small reptilian kobold folk: {}, a long tail)"),
+	"lizardfolk": ("a Lizardfolk man (tall reptilian lizard folk: {}, a long tail)", "a Lizardfolk woman (tall reptilian lizard folk: {}, a long tail)"),
+	"gnome": ("a Gnome man (tiny gnome folk: {})", "a Gnome woman (tiny gnome folk: {})"),
+	"halfling": ("a Halfling man (small halfling folk: {}, slightly pointed ears and big bare hairy feet)", "a Halfling woman (small halfling folk: {}, slightly pointed ears and big bare hairy feet)"),
+	"android": ("an Android man, a self-aware mechanical citizen with {}", "an Android woman, a self-aware mechanical citizen with {}"),
+}
+EXTRA_LOOK_DETAILS = {
+	"minotaur": {
+		"fighter": ("a rust-red bull head with wide-set horns capped in brass, a torn ear and a thick scarred neck", "a cream bull head with short sharp horns, dark kohl-lined eyes and a long black braid"),
+		"ranger": ("a sandy-tan bull head with slender upswept horns, a wispy goatee and leaf-green feathers tied to one horn", "a dappled grey bull head with small horns, long ears with copper rings and windswept white hair"),
+		"engineer": ("a dark brown bull head with stubby horns, soot-smudged fur and round brass spectacles", "a chestnut bull head with curled horns, a red bandana and a spray of freckles across the snout"),
+		"scholar": ("an elderly white bull head with long drooping horns, a grey chin beard and half-moon spectacles", "a honey-gold bull head with elegant lyre-shaped horns, a silver circlet and long wavy black hair"),
+	},
+	"centaur": {
+		"fighter": ("a dun horse with a black dorsal stripe; a shaved head, a braided black beard and a scarred brow", "a chestnut horse with a white blaze; a long red ponytail and a determined jaw"),
+		"ranger": ("a grey dappled horse; long sandy hair tied back and stubble", "a palomino horse with a flaxen tail; short black hair with a braided fringe and freckles"),
+		"engineer": ("a black horse with white socks; grey mutton-chop whiskers and soot on the cheek", "a bay horse; a dark bob, goggles pushed up on the forehead and a small burn scar"),
+		"scholar": ("a white horse with grey flecks; a long white beard and a thin nose", "a roan horse; long silver-streaked brown hair in a bun and round spectacles"),
+	},
+	"harpy": {
+		"fighter": ("steel-grey and white eagle wings; a shaved head with a black crest of feathers and a fierce brow", "dark brown and gold hawk wings; long black feather hair in a high ponytail"),
+		"ranger": ("speckled brown owl wings; messy tawny feather hair and sharp amber eyes", "parrot-like green and yellow wings; short bright feather hair"),
+		"engineer": ("sooty black crow-like wings; grey feather hair and brass goggles", "rust-red and cream kestrel wings; short spiky orange feather hair and a smudge of oil on the cheek"),
+		"scholar": ("pure white heron wings; a long white feather ruff and calm grey eyes", "soft dove-grey and rose wings; long silver feather hair and a delicate circlet"),
+	},
+	"lamia": {
+		"fighter": ("a dark-green and black banded tail; a shaved head with scale tattoos and a scarred lip", "a crimson and gold tail; long black hair in a warrior's braid"),
+		"ranger": ("a mottled brown and tan tail; short spiky hair and green-gold eyes", "a jade-and-cream tail; a long red ponytail and freckled scaled cheeks"),
+		"engineer": ("a copper-brown tail with dark stripes; cropped grey hair and goggles pushed onto the forehead", "an emerald tail with black diamonds; pink hair in twin buns and oil-stained fingers"),
+		"scholar": ("a pale sand-and-white tail; a hooded cobra frill and a long white beard", "a plum and silver tail; very long white hair and a silver circlet"),
+	},
+	"oni": {
+		"fighter": ("crimson skin, one broken horn, a black topknot and a scarred chest", "deep red skin, two swept-back horns and a long black braid"),
+		"ranger": ("moss-green skin, two short horns, a wild grey mane and a bow-callused hand", "coral skin, a single horn, short black hair with a red headband and freckles"),
+		"engineer": ("ochre skin, two stubby horns, a bald head and soot-blackened tusks", "rosy skin, tiny horns, curly copper hair and a wide grin"),
+		"scholar": ("pale ash-grey skin, one long horn, a white moustache and a calm look", "warm brown skin, two golden horns and long white hair pinned up with sticks"),
+	},
+	"tengu": {
+		"fighter": ("a glossy black crow head with a strong beak and a red war mask painted on the brow", "a human face with a fierce stare, short black hair and a red stripe across the eyes"),
+		"ranger": ("a brown hawk head with a hooked beak and keen yellow eyes", "a human face with a long ponytail of black hair with brown feathers, and freckles"),
+		"engineer": ("a human face with a long red nose, soot smears and brass goggles", "a crow head with a short beak, goggles and oil-stained feathers"),
+		"scholar": ("a white-feathered crow head with a long thin beak and round spectacles", "a human face with very long white hair, a red brow mark and a calm smile"),
+	},
+	"goblin": {
+		"fighter": ("grey-green skin, huge notched ears, a broken tooth and a bandaged eye", "bright green skin, huge pointed ears with studs, a fierce grin and red war-paint stripes"),
+		"ranger": ("moss-green skin, huge droopy ears with feathers tied to them and a lean face", "lime-green skin, huge pointed ears, sharp eyes and a long black braid with beads"),
+		"engineer": ("yellow-green skin, huge ears, thick goggles pushed up and singed eyebrows", "olive skin, huge ears with tiny brass gears as earrings and messy pink hair"),
+		"scholar": ("pale sage skin, huge ears, a long thin white beard and a tiny monocle", "soft green skin, huge ears, big round glasses and a high purple bun"),
+	},
+	"orc": {
+		"fighter": ("dark grey-green skin, big tusks, a scarred bald head and a heavy jaw", "sage-green skin, small tusks, a long red braid and war paint"),
+		"ranger": ("olive skin, short tusks, a shaggy black mane with a feather tied in it", "grey-green skin, small tusks and short hair with a white streak"),
+		"engineer": ("moss-green skin, chipped tusks, soot-black beard stubble and goggles", "green skin, small tusks, a tight black bun and rolled sleeves stained with oil"),
+		"scholar": ("pale grey-green skin, worn tusks, a white braided beard and small round spectacles", "olive skin, tiny tusks, long silver hair and ink-stained fingers"),
+	},
+	"kobold": {
+		"fighter": ("dark red scales, two swept-back horns and a scarred snout", "brown scales with a cream belly, short thick horns and a defiant grin"),
+		"ranger": ("sandy-yellow scales, long slim horns and big alert eyes", "olive-green scales, small horns and a frilled crest"),
+		"engineer": ("grey scales with soot, stubby horns and goggles on the snout", "rust-orange scales, tiny horns with brass rings and a tool pouch"),
+		"scholar": ("pale cream scales, curled horns, tiny round spectacles and whisker barbels", "deep maroon scales with gold speckles, a small crown-like crest and long eyelashes"),
+	},
+	"lizardfolk": {
+		"fighter": ("dark green scales, a crest of spines, a scarred snout and a heavy jaw", "black-green scales with a red throat, a narrow frill and a fierce yellow stare"),
+		"ranger": ("sandy-brown striped scales and a lean head with a small crest", "bright leaf-green scales with orange spots and big amber eyes"),
+		"engineer": ("olive scales with soot, a blunt snout and goggles pushed onto the brow", "mottled green-and-tan scales, a small frill and a bandana"),
+		"scholar": ("pale grey-green scales, a long white crest-mane and small round glasses", "golden-olive scales with dark bands, a tall elegant crest and calm eyes"),
+	},
+	"gnome": {
+		"fighter": ("a bristly ginger beard, a bulbous red nose and a steel helmet with a tall pointed top", "a fierce frown, rosy cheeks, short grey hair and a steel helmet with a tall pointed top"),
+		"ranger": ("a bushy brown beard with twigs in it, a round nose and a tall pointed green hat", "freckles, a long chestnut braid and a tall pointed olive hat with a feather"),
+		"engineer": ("wild grey hair, a huge moustache, singed eyebrows and a tall pointed orange hat with goggles", "pink hair in two buns, a button nose, oil smudges and a tall pointed brown hat"),
+		"scholar": ("a very long white beard down to the belt, tiny spectacles and a tall pointed plum hat", "silver hair in a high knot, round glasses and a tall pointed dark-green hat"),
+	},
+	"halfling": {
+		"fighter": ("a square jaw, short black curls and a scar on the chin", "a round determined face with a short red braid"),
+		"ranger": ("tousled sandy hair, stubble and bright green eyes", "long straight dark hair with a leaf tucked behind the ear, and freckles"),
+		"engineer": ("thin brown curls, big round goggles and a smudged cheek", "a curly ginger bob, oil-stained cheeks and a wide smile"),
+		"scholar": ("a bald head with white side tufts and tiny spectacles", "long silver-blond hair in a low bun and cat-eye glasses"),
+	},
+	"android": {
+		"fighter": ("a heavy visored ivory helmet-head with a single amber slit, a notched brass crest and a reinforced neck ring", "a slim ivory head with two angular swept-back fins, narrow amber eyes and a brass circlet"),
+		"ranger": ("a lean ivory head with a long hooded brow shell, small amber eyes and antenna-like brass whiskers", "a rounded ivory head with tall antenna-like brass whiskers, large amber eyes and one open swept fin"),
+		"engineer": ("a boxy ivory head with a hinged brass eyepiece, small round amber eyes and exposed brass rivets", "a smooth ivory head with a pair of small brass gear ornaments at the temples and amber eyes"),
+		"scholar": ("a tall narrow ivory head with a domed crown, calm amber eyes and a fine brass ring across the brow", "a smooth ivory head shaped like a soft teardrop, thin amber eyes and a cascade of small brass petal plates at the back of the head"),
+	},
+}
+# Outfits are the original races' fourth-look clothes (V4_LOOKS, defined further down), so they differ from v1 and v2.
+ANDROID_LOOK_OUTFIT = {
+	"fighter": "wearing dark-lacquered ivory armour plates with a royal-blue tabard panel, carrying a longsword and a brass-edged tower shield; head shell fully visible",
+	"ranger": "wearing light ivory shell armour with a dark green half-cloak and a royal-blue arm band, carrying a recurve bow and quiver; head shell and hip plates visible",
+	"engineer": "wearing ivory armour with a rust-orange work apron panel, a royal-blue neck scarf and brass goggles, carrying a big brass spanner and a tool pouch",
+	"scholar": "wearing ivory armour with a long dark-green coat panel and a royal-blue stole, carrying a brass-tipped lantern staff; smooth faceplate unobscured",
+}
+EXTRA_LOOK_PAIRS = (("fighter", "ranger"), ("engineer", "scholar"))
+
+
+def extra_look_descriptions(race: str, look: str) -> tuple[str, str]:
+	man_stem, woman_stem = EXTRA_LOOK_STEMS[race]
+	man, woman = EXTRA_LOOK_DETAILS[race][look]
+	outfit = ANDROID_LOOK_OUTFIT[look] if race == "android" else V4_LOOKS[look]
+	return f"{man_stem.format(man)}, {outfit}", f"{woman_stem.format(woman)}, {outfit}"
+
+
+def extra_look_batch_chip(race: str, looks: tuple) -> dict:
+	frames = NEW_RACE_FRAMES.get(race, "walking frames: left foot forward, standing, right foot forward")
+	sheets = []
+	for slot, look in enumerate(looks):
+		left, right = extra_look_descriptions(race, look)
+		first = slot * 6
+		sheets.append(f"Columns {first + 1}-{first + 3}: {left}. Columns {first + 4}-{first + 6}: {right}.")
+	subject = ("FOUR RPG character sprite sheets in one wide image (character chips) for a cozy frontier fantasy game, "
+		"laid out as a single strict grid of 12 columns and 4 rows of equal cells. Rows from top to bottom: facing down toward "
+		"the viewer, facing left, facing right, facing up away from the viewer. Each character uses 3 adjacent columns for "
+		f"{frames}. " + " ".join(sheets) + " The four characters are four different people, none of them a character in the reference images. "
+		"All figures have identical size and chibi proportions, feet on the same baseline in each row, each centred in an equal cell "
+		"with empty space around it. IMPORTANT: draw exactly 12 columns x 4 rows = 48 figures, every column filled in all 4 rows, "
+		"with wide equal spacing between figures. " + NEW_RACE_REFERENCE + " " + NEW_RACE_BODY[race])
+	args = {"subject": subject, "style": CHIP_STYLE, "scene": BG,
+		"composition": "12 columns x 4 rows evenly spaced grid, whole figures fully visible, nothing touching the image edges",
+		"aspect_ratio": "3:2", "image_size": "1536x1024", "model": MODEL,
+		"input": [{"path": f"art_src/raw/chip_{race}_{look}.webp"} for look in looks]}
+	if race == "android":
+		args["model"] = "openai-codex/gpt-image-2"
+	return args
+
+
+def extra_look_batch_portrait(sheets: list) -> dict:
+	"""`sheets` is up to three (race, look) pairs; row 1 holds their men, row 2 their women."""
+	described = []
+	for i, (race, look) in enumerate(sheets, 1):
+		left, right = extra_look_descriptions(race, look)
+		described.append(f"Image {i}: the man is {left}; the woman is {right}.")
+	subject = ("Six character portraits in a grid of 3 columns and 2 rows for a fantasy strategy game UI. Images 1, 2 and 3 are "
+		"pixel-art sprite sheets, each with two characters (left half = a man, right half = a woman). TOP ROW, left to right: the "
+		"man from Image 1, the man from Image 2, the man from Image 3. BOTTOM ROW, left to right: the woman from Image 1, the woman "
+		"from Image 2, the woman from Image 3. " + " ".join(described) + " Keep each character's hair, ears, face, race features and "
+		"outfit colours exactly as in its sprites.")
+	args = {"subject": subject, "style": PORTRAIT_STYLE,
+		"scene": "each portrait on its own simple dark slate-blue vignette background",
+		"composition": "six equal square head-and-shoulders bust portraits in a 3x2 grid, faces slightly above the middle, whole heads visible with space above, no borders, no text",
+		"aspect_ratio": "3:2", "image_size": "1536x1024", "model": MODEL,
+		"input": [{"path": f"art_src/raw/chip_{race}_{look}_v3.webp"} for race, look in sheets]}
+	if any(race == "android" for race, _ in sheets):
+		args["model"] = "openai-codex/gpt-image-2"
+	return args
+
+
+def extra_look_batches() -> list:
+	out = []
+	for race in EXTRA_LOOK_STEMS:
+		for n, looks in enumerate(EXTRA_LOOK_PAIRS, 1):
+			out.append({"id": f"batch_chip_{race}_looks{n}", "kind": "chip_batch",
+				"args": extra_look_batch_chip(race, looks), "splits": [f"chip_{race}_{look}_v3" for look in looks]})
+	sheets = [(race, look) for race in EXTRA_LOOK_STEMS for pair in EXTRA_LOOK_PAIRS for look in pair]
+	for n in range(0, len(sheets), PORTRAITS_PER_BATCH):
+		group = sheets[n:n + PORTRAITS_PER_BATCH]
+		out.append({"id": f"batch_portrait_looks_{n // PORTRAITS_PER_BATCH + 1}", "kind": "portrait_batch",
+			"args": extra_look_batch_portrait(group), "splits": [f"portrait_{race}_{look}_v3" for race, look in group]})
+	return out
+
 # Fourth look for the non-worker outfits of the original races (the worker look already has v4/v5).
 
 NONWORKER_V4_APPEARANCE = {
@@ -669,6 +973,8 @@ def build() -> list:
 		if key in TOWN_BACK_FEATURES:
 			out.append({"id": f"b_t_{key}_back", "kind": "building_back",
 				"args": building_back_args(f"b_t_{key}", TOWN_BACK_FEATURES[key])})
+	out.extend(extra_worker_batches())
+	out.extend(extra_look_batches())
 	for entry in out:
 		if entry["id"].startswith(("chip_android_", "portrait_android_", "b_v_android_")):
 			entry["args"]["model"] = "openai-codex/gpt-image-2"
@@ -681,7 +987,7 @@ SITE_BUILDINGS = ("b_bandit", "b_campfire", "b_machine", "b_trade", "b_wanderer"
 def _priority(entry: dict) -> int:
 	"""Generation order: what the player sees first, and chips before the portraits that use them."""
 	i = entry["id"]
-	if i.startswith("chip_") and not i.startswith("chip_mach"):
+	if i.startswith("batch_chip_") or (i.startswith("chip_") and not i.startswith("chip_mach")):
 		return 0
 	if i.startswith("props_"):
 		return 1
@@ -691,7 +997,7 @@ def _priority(entry: dict) -> int:
 		return 3
 	if i.startswith("chip_mach") or i.startswith("air_"):
 		return 4
-	if i.startswith("portrait_"):
+	if i.startswith(("portrait_", "batch_portrait_")):
 		return 5
 	return 6
 

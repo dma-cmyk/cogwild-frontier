@@ -48,6 +48,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "android_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/android_engineer_f_v3.png",
+   "source": "chip_android_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "android_engineer_m",
    "texture": "res://assets/sprites/chars/android_engineer_m.png",
    "source": "chip_android_engineer",
@@ -74,6 +97,29 @@
    "id": "android_engineer_m@v2",
    "texture": "res://assets/sprites/chars/android_engineer_m_v2.png",
    "source": "chip_android_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "android_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/android_engineer_m_v3.png",
+   "source": "chip_android_engineer_v3",
    "cell": [
     128,
     128
@@ -140,6 +186,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "android_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/android_fighter_f_v3.png",
+   "source": "chip_android_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "android_fighter_m",
    "texture": "res://assets/sprites/chars/android_fighter_m.png",
    "source": "chip_android_fighter",
@@ -166,6 +235,29 @@
    "id": "android_fighter_m@v2",
    "texture": "res://assets/sprites/chars/android_fighter_m_v2.png",
    "source": "chip_android_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "android_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/android_fighter_m_v3.png",
+   "source": "chip_android_fighter_v3",
    "cell": [
     128,
     128
@@ -232,6 +324,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "android_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/android_ranger_f_v3.png",
+   "source": "chip_android_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "android_ranger_m",
    "texture": "res://assets/sprites/chars/android_ranger_m.png",
    "source": "chip_android_ranger",
@@ -258,6 +373,29 @@
    "id": "android_ranger_m@v2",
    "texture": "res://assets/sprites/chars/android_ranger_m_v2.png",
    "source": "chip_android_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "android_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/android_ranger_m_v3.png",
+   "source": "chip_android_ranger_v3",
    "cell": [
     128,
     128
@@ -324,6 +462,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "android_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/android_scholar_f_v3.png",
+   "source": "chip_android_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "android_scholar_m",
    "texture": "res://assets/sprites/chars/android_scholar_m.png",
    "source": "chip_android_scholar",
@@ -367,6 +528,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "android_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/android_scholar_m_v3.png",
+   "source": "chip_android_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
    "anchor_mode": "feet"
   },
   {
@@ -416,6 +600,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "android_worker_f@v3",
+   "texture": "res://assets/sprites/chars/android_worker_f_v3.png",
+   "source": "chip_android_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "android_worker_f@v4",
+   "texture": "res://assets/sprites/chars/android_worker_f_v4.png",
+   "source": "chip_android_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "android_worker_m",
    "texture": "res://assets/sprites/chars/android_worker_m.png",
    "source": "chip_android_worker",
@@ -459,6 +689,52 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "android_worker_m@v3",
+   "texture": "res://assets/sprites/chars/android_worker_m_v3.png",
+   "source": "chip_android_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "android_worker_m@v4",
+   "texture": "res://assets/sprites/chars/android_worker_m_v4.png",
+   "source": "chip_android_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
    "anchor_mode": "feet"
   },
   {
@@ -624,6 +900,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "centaur_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/centaur_engineer_f_v3.png",
+   "source": "chip_centaur_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "centaur_engineer_m",
    "texture": "res://assets/sprites/chars/centaur_engineer_m.png",
    "source": "chip_centaur_engineer",
@@ -650,6 +949,29 @@
    "id": "centaur_engineer_m@v2",
    "texture": "res://assets/sprites/chars/centaur_engineer_m_v2.png",
    "source": "chip_centaur_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "centaur_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/centaur_engineer_m_v3.png",
+   "source": "chip_centaur_engineer_v3",
    "cell": [
     128,
     128
@@ -716,6 +1038,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "centaur_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/centaur_fighter_f_v3.png",
+   "source": "chip_centaur_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "centaur_fighter_m",
    "texture": "res://assets/sprites/chars/centaur_fighter_m.png",
    "source": "chip_centaur_fighter",
@@ -742,6 +1087,29 @@
    "id": "centaur_fighter_m@v2",
    "texture": "res://assets/sprites/chars/centaur_fighter_m_v2.png",
    "source": "chip_centaur_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "centaur_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/centaur_fighter_m_v3.png",
+   "source": "chip_centaur_fighter_v3",
    "cell": [
     128,
     128
@@ -808,6 +1176,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "centaur_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/centaur_ranger_f_v3.png",
+   "source": "chip_centaur_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "centaur_ranger_m",
    "texture": "res://assets/sprites/chars/centaur_ranger_m.png",
    "source": "chip_centaur_ranger",
@@ -834,6 +1225,29 @@
    "id": "centaur_ranger_m@v2",
    "texture": "res://assets/sprites/chars/centaur_ranger_m_v2.png",
    "source": "chip_centaur_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "centaur_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/centaur_ranger_m_v3.png",
+   "source": "chip_centaur_ranger_v3",
    "cell": [
     128,
     128
@@ -900,6 +1314,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "centaur_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/centaur_scholar_f_v3.png",
+   "source": "chip_centaur_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "centaur_scholar_m",
    "texture": "res://assets/sprites/chars/centaur_scholar_m.png",
    "source": "chip_centaur_scholar",
@@ -926,6 +1363,29 @@
    "id": "centaur_scholar_m@v2",
    "texture": "res://assets/sprites/chars/centaur_scholar_m_v2.png",
    "source": "chip_centaur_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "centaur_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/centaur_scholar_m_v3.png",
+   "source": "chip_centaur_scholar_v3",
    "cell": [
     128,
     128
@@ -992,6 +1452,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "centaur_worker_f@v3",
+   "texture": "res://assets/sprites/chars/centaur_worker_f_v3.png",
+   "source": "chip_centaur_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "centaur_worker_f@v4",
+   "texture": "res://assets/sprites/chars/centaur_worker_f_v4.png",
+   "source": "chip_centaur_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "centaur_worker_m",
    "texture": "res://assets/sprites/chars/centaur_worker_m.png",
    "source": "chip_centaur_worker",
@@ -1018,6 +1524,52 @@
    "id": "centaur_worker_m@v2",
    "texture": "res://assets/sprites/chars/centaur_worker_m_v2.png",
    "source": "chip_centaur_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "centaur_worker_m@v3",
+   "texture": "res://assets/sprites/chars/centaur_worker_m_v3.png",
+   "source": "chip_centaur_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "centaur_worker_m@v4",
+   "texture": "res://assets/sprites/chars/centaur_worker_m_v4.png",
+   "source": "chip_centaur_worker_v4",
    "cell": [
     128,
     128
@@ -1084,6 +1636,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "gnome_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/gnome_engineer_f_v3.png",
+   "source": "chip_gnome_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "gnome_engineer_m",
    "texture": "res://assets/sprites/chars/gnome_engineer_m.png",
    "source": "chip_gnome_engineer",
@@ -1127,6 +1702,29 @@
     124
    ],
    "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/gnome_engineer_m_v3.png",
+   "source": "chip_gnome_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
    "anchor_mode": "feet"
   },
   {
@@ -1176,6 +1774,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "gnome_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/gnome_fighter_f_v3.png",
+   "source": "chip_gnome_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 101,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "gnome_fighter_m",
    "texture": "res://assets/sprites/chars/gnome_fighter_m.png",
    "source": "chip_gnome_fighter",
@@ -1219,6 +1840,29 @@
     124
    ],
    "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/gnome_fighter_m_v3.png",
+   "source": "chip_gnome_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 101,
    "anchor_mode": "feet"
   },
   {
@@ -1268,6 +1912,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "gnome_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/gnome_ranger_f_v3.png",
+   "source": "chip_gnome_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 101,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "gnome_ranger_m",
    "texture": "res://assets/sprites/chars/gnome_ranger_m.png",
    "source": "chip_gnome_ranger",
@@ -1311,6 +1978,29 @@
     124
    ],
    "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/gnome_ranger_m_v3.png",
+   "source": "chip_gnome_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 100,
    "anchor_mode": "feet"
   },
   {
@@ -1360,6 +2050,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "gnome_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/gnome_scholar_f_v3.png",
+   "source": "chip_gnome_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "gnome_scholar_m",
    "texture": "res://assets/sprites/chars/gnome_scholar_m.png",
    "source": "chip_gnome_scholar",
@@ -1403,6 +2116,29 @@
     124
    ],
    "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/gnome_scholar_m_v3.png",
+   "source": "chip_gnome_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
    "anchor_mode": "feet"
   },
   {
@@ -1452,6 +2188,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "gnome_worker_f@v3",
+   "texture": "res://assets/sprites/chars/gnome_worker_f_v3.png",
+   "source": "chip_gnome_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_worker_f@v4",
+   "texture": "res://assets/sprites/chars/gnome_worker_f_v4.png",
+   "source": "chip_gnome_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 105,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "gnome_worker_m",
    "texture": "res://assets/sprites/chars/gnome_worker_m.png",
    "source": "chip_gnome_worker",
@@ -1495,6 +2277,52 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_worker_m@v3",
+   "texture": "res://assets/sprites/chars/gnome_worker_m_v3.png",
+   "source": "chip_gnome_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "gnome_worker_m@v4",
+   "texture": "res://assets/sprites/chars/gnome_worker_m_v4.png",
+   "source": "chip_gnome_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 105,
    "anchor_mode": "feet"
   },
   {
@@ -1544,6 +2372,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "goblin_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/goblin_engineer_f_v3.png",
+   "source": "chip_goblin_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 100,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "goblin_engineer_m",
    "texture": "res://assets/sprites/chars/goblin_engineer_m.png",
    "source": "chip_goblin_engineer",
@@ -1587,6 +2438,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/goblin_engineer_m_v3.png",
+   "source": "chip_goblin_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 103,
    "anchor_mode": "feet"
   },
   {
@@ -1636,6 +2510,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "goblin_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/goblin_fighter_f_v3.png",
+   "source": "chip_goblin_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "goblin_fighter_m",
    "texture": "res://assets/sprites/chars/goblin_fighter_m.png",
    "source": "chip_goblin_fighter",
@@ -1679,6 +2576,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/goblin_fighter_m_v3.png",
+   "source": "chip_goblin_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
    "anchor_mode": "feet"
   },
   {
@@ -1728,6 +2648,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "goblin_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/goblin_ranger_f_v3.png",
+   "source": "chip_goblin_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "goblin_ranger_m",
    "texture": "res://assets/sprites/chars/goblin_ranger_m.png",
    "source": "chip_goblin_ranger",
@@ -1771,6 +2714,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/goblin_ranger_m_v3.png",
+   "source": "chip_goblin_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
    "anchor_mode": "feet"
   },
   {
@@ -1820,6 +2786,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "goblin_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/goblin_scholar_f_v3.png",
+   "source": "chip_goblin_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 99,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "goblin_scholar_m",
    "texture": "res://assets/sprites/chars/goblin_scholar_m.png",
    "source": "chip_goblin_scholar",
@@ -1866,6 +2855,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "goblin_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/goblin_scholar_m_v3.png",
+   "source": "chip_goblin_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 105,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "goblin_worker_f",
    "texture": "res://assets/sprites/chars/goblin_worker_f.png",
    "source": "chip_goblin_worker",
@@ -1892,6 +2904,52 @@
    "id": "goblin_worker_f@v2",
    "texture": "res://assets/sprites/chars/goblin_worker_f_v2.png",
    "source": "chip_goblin_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_worker_f@v3",
+   "texture": "res://assets/sprites/chars/goblin_worker_f_v3.png",
+   "source": "chip_goblin_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_worker_f@v4",
+   "texture": "res://assets/sprites/chars/goblin_worker_f_v4.png",
+   "source": "chip_goblin_worker_v4",
    "cell": [
     128,
     128
@@ -1958,6 +3016,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "goblin_worker_m@v3",
+   "texture": "res://assets/sprites/chars/goblin_worker_m_v3.png",
+   "source": "chip_goblin_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "goblin_worker_m@v4",
+   "texture": "res://assets/sprites/chars/goblin_worker_m_v4.png",
+   "source": "chip_goblin_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "halfling_engineer_f",
    "texture": "res://assets/sprites/chars/halfling_engineer_f.png",
    "source": "chip_halfling_engineer",
@@ -2001,6 +3105,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/halfling_engineer_f_v3.png",
+   "source": "chip_halfling_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 105,
    "anchor_mode": "feet"
   },
   {
@@ -2050,6 +3177,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "halfling_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/halfling_engineer_m_v3.png",
+   "source": "chip_halfling_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "halfling_fighter_f",
    "texture": "res://assets/sprites/chars/halfling_fighter_f.png",
    "source": "chip_halfling_fighter",
@@ -2076,6 +3226,29 @@
    "id": "halfling_fighter_f@v2",
    "texture": "res://assets/sprites/chars/halfling_fighter_f_v2.png",
    "source": "chip_halfling_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/halfling_fighter_f_v3.png",
+   "source": "chip_halfling_fighter_v3",
    "cell": [
     128,
     128
@@ -2142,6 +3315,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "halfling_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/halfling_fighter_m_v3.png",
+   "source": "chip_halfling_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "halfling_ranger_f",
    "texture": "res://assets/sprites/chars/halfling_ranger_f.png",
    "source": "chip_halfling_ranger",
@@ -2188,6 +3384,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "halfling_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/halfling_ranger_f_v3.png",
+   "source": "chip_halfling_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "halfling_ranger_m",
    "texture": "res://assets/sprites/chars/halfling_ranger_m.png",
    "source": "chip_halfling_ranger",
@@ -2214,6 +3433,29 @@
    "id": "halfling_ranger_m@v2",
    "texture": "res://assets/sprites/chars/halfling_ranger_m_v2.png",
    "source": "chip_halfling_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/halfling_ranger_m_v3.png",
+   "source": "chip_halfling_ranger_v3",
    "cell": [
     128,
     128
@@ -2280,6 +3522,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "halfling_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/halfling_scholar_f_v3.png",
+   "source": "chip_halfling_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "halfling_scholar_m",
    "texture": "res://assets/sprites/chars/halfling_scholar_m.png",
    "source": "chip_halfling_scholar",
@@ -2323,6 +3588,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/halfling_scholar_m_v3.png",
+   "source": "chip_halfling_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
    "anchor_mode": "feet"
   },
   {
@@ -2372,6 +3660,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "halfling_worker_f@v3",
+   "texture": "res://assets/sprites/chars/halfling_worker_f_v3.png",
+   "source": "chip_halfling_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_worker_f@v4",
+   "texture": "res://assets/sprites/chars/halfling_worker_f_v4.png",
+   "source": "chip_halfling_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "halfling_worker_m",
    "texture": "res://assets/sprites/chars/halfling_worker_m.png",
    "source": "chip_halfling_worker",
@@ -2418,6 +3752,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "halfling_worker_m@v3",
+   "texture": "res://assets/sprites/chars/halfling_worker_m_v3.png",
+   "source": "chip_halfling_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "halfling_worker_m@v4",
+   "texture": "res://assets/sprites/chars/halfling_worker_m_v4.png",
+   "source": "chip_halfling_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "harpy_engineer_f",
    "texture": "res://assets/sprites/chars/harpy_engineer_f.png",
    "source": "chip_harpy_engineer",
@@ -2444,6 +3824,29 @@
    "id": "harpy_engineer_f@v2",
    "texture": "res://assets/sprites/chars/harpy_engineer_f_v2.png",
    "source": "chip_harpy_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "harpy_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/harpy_engineer_f_v3.png",
+   "source": "chip_harpy_engineer_v3",
    "cell": [
     128,
     128
@@ -2510,6 +3913,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "harpy_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/harpy_engineer_m_v3.png",
+   "source": "chip_harpy_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "harpy_fighter_f",
    "texture": "res://assets/sprites/chars/harpy_fighter_f.png",
    "source": "chip_harpy_fighter",
@@ -2553,6 +3979,29 @@
     124
    ],
    "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "harpy_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/harpy_fighter_f_v3.png",
+   "source": "chip_harpy_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
    "anchor_mode": "feet"
   },
   {
@@ -2602,6 +4051,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "harpy_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/harpy_fighter_m_v3.png",
+   "source": "chip_harpy_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "harpy_ranger_f",
    "texture": "res://assets/sprites/chars/harpy_ranger_f.png",
    "source": "chip_harpy_ranger",
@@ -2628,6 +4100,29 @@
    "id": "harpy_ranger_f@v2",
    "texture": "res://assets/sprites/chars/harpy_ranger_f_v2.png",
    "source": "chip_harpy_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "harpy_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/harpy_ranger_f_v3.png",
+   "source": "chip_harpy_ranger_v3",
    "cell": [
     128,
     128
@@ -2694,6 +4189,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "harpy_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/harpy_ranger_m_v3.png",
+   "source": "chip_harpy_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "harpy_scholar_f",
    "texture": "res://assets/sprites/chars/harpy_scholar_f.png",
    "source": "chip_harpy_scholar",
@@ -2740,6 +4258,30 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "harpy_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/harpy_scholar_f_v3.png",
+   "source": "chip_harpy_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet",
+   "clipped_frames": 7
+  },
+  {
    "id": "harpy_scholar_m",
    "texture": "res://assets/sprites/chars/harpy_scholar_m.png",
    "source": "chip_harpy_scholar",
@@ -2766,6 +4308,29 @@
    "id": "harpy_scholar_m@v2",
    "texture": "res://assets/sprites/chars/harpy_scholar_m_v2.png",
    "source": "chip_harpy_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "harpy_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/harpy_scholar_m_v3.png",
+   "source": "chip_harpy_scholar_v3",
    "cell": [
     128,
     128
@@ -2832,6 +4397,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "harpy_worker_f@v3",
+   "texture": "res://assets/sprites/chars/harpy_worker_f_v3.png",
+   "source": "chip_harpy_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "harpy_worker_f@v4",
+   "texture": "res://assets/sprites/chars/harpy_worker_f_v4.png",
+   "source": "chip_harpy_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "harpy_worker_m",
    "texture": "res://assets/sprites/chars/harpy_worker_m.png",
    "source": "chip_harpy_worker",
@@ -2858,6 +4469,52 @@
    "id": "harpy_worker_m@v2",
    "texture": "res://assets/sprites/chars/harpy_worker_m_v2.png",
    "source": "chip_harpy_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "harpy_worker_m@v3",
+   "texture": "res://assets/sprites/chars/harpy_worker_m_v3.png",
+   "source": "chip_harpy_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "harpy_worker_m@v4",
+   "texture": "res://assets/sprites/chars/harpy_worker_m_v4.png",
+   "source": "chip_harpy_worker_v4",
    "cell": [
     128,
     128
@@ -3890,6 +5547,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "kobold_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/kobold_engineer_f_v3.png",
+   "source": "chip_kobold_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "kobold_engineer_m",
    "texture": "res://assets/sprites/chars/kobold_engineer_m.png",
    "source": "chip_kobold_engineer",
@@ -3933,6 +5613,29 @@
     124
    ],
    "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/kobold_engineer_m_v3.png",
+   "source": "chip_kobold_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
    "anchor_mode": "feet"
   },
   {
@@ -3982,6 +5685,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "kobold_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/kobold_fighter_f_v3.png",
+   "source": "chip_kobold_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "kobold_fighter_m",
    "texture": "res://assets/sprites/chars/kobold_fighter_m.png",
    "source": "chip_kobold_fighter",
@@ -4025,6 +5751,29 @@
     124
    ],
    "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/kobold_fighter_m_v3.png",
+   "source": "chip_kobold_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
    "anchor_mode": "feet"
   },
   {
@@ -4074,6 +5823,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "kobold_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/kobold_ranger_f_v3.png",
+   "source": "chip_kobold_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "kobold_ranger_m",
    "texture": "res://assets/sprites/chars/kobold_ranger_m.png",
    "source": "chip_kobold_ranger",
@@ -4117,6 +5889,29 @@
     124
    ],
    "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/kobold_ranger_m_v3.png",
+   "source": "chip_kobold_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
    "anchor_mode": "feet"
   },
   {
@@ -4166,6 +5961,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "kobold_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/kobold_scholar_f_v3.png",
+   "source": "chip_kobold_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "kobold_scholar_m",
    "texture": "res://assets/sprites/chars/kobold_scholar_m.png",
    "source": "chip_kobold_scholar",
@@ -4209,6 +6027,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/kobold_scholar_m_v3.png",
+   "source": "chip_kobold_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
    "anchor_mode": "feet"
   },
   {
@@ -4258,6 +6099,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "kobold_worker_f@v3",
+   "texture": "res://assets/sprites/chars/kobold_worker_f_v3.png",
+   "source": "chip_kobold_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_worker_f@v4",
+   "texture": "res://assets/sprites/chars/kobold_worker_f_v4.png",
+   "source": "chip_kobold_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "kobold_worker_m",
    "texture": "res://assets/sprites/chars/kobold_worker_m.png",
    "source": "chip_kobold_worker",
@@ -4301,6 +6188,52 @@
     124
    ],
    "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_worker_m@v3",
+   "texture": "res://assets/sprites/chars/kobold_worker_m_v3.png",
+   "source": "chip_kobold_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "kobold_worker_m@v4",
+   "texture": "res://assets/sprites/chars/kobold_worker_m_v4.png",
+   "source": "chip_kobold_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
    "anchor_mode": "feet"
   },
   {
@@ -4350,6 +6283,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "lamia_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/lamia_engineer_f_v3.png",
+   "source": "chip_lamia_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 105,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "lamia_engineer_m",
    "texture": "res://assets/sprites/chars/lamia_engineer_m.png",
    "source": "chip_lamia_engineer",
@@ -4396,6 +6352,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "lamia_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/lamia_engineer_m_v3.png",
+   "source": "chip_lamia_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "lamia_fighter_f",
    "texture": "res://assets/sprites/chars/lamia_fighter_f.png",
    "source": "chip_lamia_fighter",
@@ -4422,6 +6401,29 @@
    "id": "lamia_fighter_f@v2",
    "texture": "res://assets/sprites/chars/lamia_fighter_f_v2.png",
    "source": "chip_lamia_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lamia_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/lamia_fighter_f_v3.png",
+   "source": "chip_lamia_fighter_v3",
    "cell": [
     128,
     128
@@ -4488,6 +6490,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "lamia_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/lamia_fighter_m_v3.png",
+   "source": "chip_lamia_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "lamia_ranger_f",
    "texture": "res://assets/sprites/chars/lamia_ranger_f.png",
    "source": "chip_lamia_ranger",
@@ -4514,6 +6539,29 @@
    "id": "lamia_ranger_f@v2",
    "texture": "res://assets/sprites/chars/lamia_ranger_f_v2.png",
    "source": "chip_lamia_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lamia_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/lamia_ranger_f_v3.png",
+   "source": "chip_lamia_ranger_v3",
    "cell": [
     128,
     128
@@ -4580,6 +6628,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "lamia_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/lamia_ranger_m_v3.png",
+   "source": "chip_lamia_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "lamia_scholar_f",
    "texture": "res://assets/sprites/chars/lamia_scholar_f.png",
    "source": "chip_lamia_scholar",
@@ -4623,6 +6694,29 @@
     124
    ],
    "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lamia_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/lamia_scholar_f_v3.png",
+   "source": "chip_lamia_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
    "anchor_mode": "feet"
   },
   {
@@ -4673,6 +6767,29 @@
    "clipped_frames": 1
   },
   {
+   "id": "lamia_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/lamia_scholar_m_v3.png",
+   "source": "chip_lamia_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "lamia_worker_f",
    "texture": "res://assets/sprites/chars/lamia_worker_f.png",
    "source": "chip_lamia_worker",
@@ -4699,6 +6816,52 @@
    "id": "lamia_worker_f@v2",
    "texture": "res://assets/sprites/chars/lamia_worker_f_v2.png",
    "source": "chip_lamia_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lamia_worker_f@v3",
+   "texture": "res://assets/sprites/chars/lamia_worker_f_v3.png",
+   "source": "chip_lamia_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lamia_worker_f@v4",
+   "texture": "res://assets/sprites/chars/lamia_worker_f_v4.png",
+   "source": "chip_lamia_worker_v4",
    "cell": [
     128,
     128
@@ -4765,6 +6928,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "lamia_worker_m@v3",
+   "texture": "res://assets/sprites/chars/lamia_worker_m_v3.png",
+   "source": "chip_lamia_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lamia_worker_m@v4",
+   "texture": "res://assets/sprites/chars/lamia_worker_m_v4.png",
+   "source": "chip_lamia_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "lizardfolk_engineer_f",
    "texture": "res://assets/sprites/chars/lizardfolk_engineer_f.png",
    "source": "chip_lizardfolk_engineer",
@@ -4811,6 +7020,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "lizardfolk_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/lizardfolk_engineer_f_v3.png",
+   "source": "chip_lizardfolk_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 100,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "lizardfolk_engineer_m",
    "texture": "res://assets/sprites/chars/lizardfolk_engineer_m.png",
    "source": "chip_lizardfolk_engineer",
@@ -4854,6 +7086,29 @@
     124
    ],
    "height_px": 106,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/lizardfolk_engineer_m_v3.png",
+   "source": "chip_lizardfolk_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 100,
    "anchor_mode": "feet"
   },
   {
@@ -4904,6 +7159,29 @@
    "clipped_frames": 1
   },
   {
+   "id": "lizardfolk_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/lizardfolk_fighter_f_v3.png",
+   "source": "chip_lizardfolk_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "lizardfolk_fighter_m",
    "texture": "res://assets/sprites/chars/lizardfolk_fighter_m.png",
    "source": "chip_lizardfolk_fighter",
@@ -4951,6 +7229,29 @@
    "clipped_frames": 1
   },
   {
+   "id": "lizardfolk_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/lizardfolk_fighter_m_v3.png",
+   "source": "chip_lizardfolk_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "lizardfolk_ranger_f",
    "texture": "res://assets/sprites/chars/lizardfolk_ranger_f.png",
    "source": "chip_lizardfolk_ranger",
@@ -4994,6 +7295,29 @@
     124
    ],
    "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/lizardfolk_ranger_f_v3.png",
+   "source": "chip_lizardfolk_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
    "anchor_mode": "feet"
   },
   {
@@ -5043,6 +7367,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "lizardfolk_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/lizardfolk_ranger_m_v3.png",
+   "source": "chip_lizardfolk_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "lizardfolk_scholar_f",
    "texture": "res://assets/sprites/chars/lizardfolk_scholar_f.png",
    "source": "chip_lizardfolk_scholar",
@@ -5087,6 +7434,29 @@
     124
    ],
    "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/lizardfolk_scholar_f_v3.png",
+   "source": "chip_lizardfolk_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 103,
    "anchor_mode": "feet"
   },
   {
@@ -5138,6 +7508,29 @@
    "clipped_frames": 2
   },
   {
+   "id": "lizardfolk_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/lizardfolk_scholar_m_v3.png",
+   "source": "chip_lizardfolk_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 104,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "lizardfolk_worker_f",
    "texture": "res://assets/sprites/chars/lizardfolk_worker_f.png",
    "source": "chip_lizardfolk_worker",
@@ -5182,6 +7575,54 @@
    ],
    "height_px": 103,
    "anchor_mode": "feet"
+  },
+  {
+   "id": "lizardfolk_worker_f@v3",
+   "texture": "res://assets/sprites/chars/lizardfolk_worker_f_v3.png",
+   "source": "chip_lizardfolk_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet",
+   "clipped_frames": 3
+  },
+  {
+   "id": "lizardfolk_worker_f@v4",
+   "texture": "res://assets/sprites/chars/lizardfolk_worker_f_v4.png",
+   "source": "chip_lizardfolk_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet",
+   "clipped_frames": 2
   },
   {
    "id": "lizardfolk_worker_m",
@@ -5229,6 +7670,54 @@
    "height_px": 104,
    "anchor_mode": "feet",
    "clipped_frames": 1
+  },
+  {
+   "id": "lizardfolk_worker_m@v3",
+   "texture": "res://assets/sprites/chars/lizardfolk_worker_m_v3.png",
+   "source": "chip_lizardfolk_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet",
+   "clipped_frames": 1
+  },
+  {
+   "id": "lizardfolk_worker_m@v4",
+   "texture": "res://assets/sprites/chars/lizardfolk_worker_m_v4.png",
+   "source": "chip_lizardfolk_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet",
+   "clipped_frames": 4
   },
   {
    "id": "machine_warden",
@@ -5300,6 +7789,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "minotaur_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/minotaur_engineer_f_v3.png",
+   "source": "chip_minotaur_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "minotaur_engineer_m",
    "texture": "res://assets/sprites/chars/minotaur_engineer_m.png",
    "source": "chip_minotaur_engineer",
@@ -5326,6 +7838,29 @@
    "id": "minotaur_engineer_m@v2",
    "texture": "res://assets/sprites/chars/minotaur_engineer_m_v2.png",
    "source": "chip_minotaur_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "minotaur_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/minotaur_engineer_m_v3.png",
+   "source": "chip_minotaur_engineer_v3",
    "cell": [
     128,
     128
@@ -5392,6 +7927,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "minotaur_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/minotaur_fighter_f_v3.png",
+   "source": "chip_minotaur_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "minotaur_fighter_m",
    "texture": "res://assets/sprites/chars/minotaur_fighter_m.png",
    "source": "chip_minotaur_fighter",
@@ -5438,6 +7996,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "minotaur_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/minotaur_fighter_m_v3.png",
+   "source": "chip_minotaur_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "minotaur_ranger_f",
    "texture": "res://assets/sprites/chars/minotaur_ranger_f.png",
    "source": "chip_minotaur_ranger",
@@ -5464,6 +8045,29 @@
    "id": "minotaur_ranger_f@v2",
    "texture": "res://assets/sprites/chars/minotaur_ranger_f_v2.png",
    "source": "chip_minotaur_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "minotaur_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/minotaur_ranger_f_v3.png",
+   "source": "chip_minotaur_ranger_v3",
    "cell": [
     128,
     128
@@ -5530,6 +8134,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "minotaur_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/minotaur_ranger_m_v3.png",
+   "source": "chip_minotaur_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "minotaur_scholar_f",
    "texture": "res://assets/sprites/chars/minotaur_scholar_f.png",
    "source": "chip_minotaur_scholar",
@@ -5573,6 +8200,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "minotaur_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/minotaur_scholar_f_v3.png",
+   "source": "chip_minotaur_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
    "anchor_mode": "feet"
   },
   {
@@ -5622,6 +8272,30 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "minotaur_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/minotaur_scholar_m_v3.png",
+   "source": "chip_minotaur_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet",
+   "clipped_frames": 1
+  },
+  {
    "id": "minotaur_worker_f",
    "texture": "res://assets/sprites/chars/minotaur_worker_f.png",
    "source": "chip_minotaur_worker",
@@ -5665,6 +8339,52 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "minotaur_worker_f@v3",
+   "texture": "res://assets/sprites/chars/minotaur_worker_f_v3.png",
+   "source": "chip_minotaur_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "minotaur_worker_f@v4",
+   "texture": "res://assets/sprites/chars/minotaur_worker_f_v4.png",
+   "source": "chip_minotaur_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
    "anchor_mode": "feet"
   },
   {
@@ -5714,6 +8434,53 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "minotaur_worker_m@v3",
+   "texture": "res://assets/sprites/chars/minotaur_worker_m_v3.png",
+   "source": "chip_minotaur_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "minotaur_worker_m@v4",
+   "texture": "res://assets/sprites/chars/minotaur_worker_m_v4.png",
+   "source": "chip_minotaur_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet",
+   "clipped_frames": 1
+  },
+  {
    "id": "oni_engineer_f",
    "texture": "res://assets/sprites/chars/oni_engineer_f.png",
    "source": "chip_oni_engineer",
@@ -5740,6 +8507,29 @@
    "id": "oni_engineer_f@v2",
    "texture": "res://assets/sprites/chars/oni_engineer_f_v2.png",
    "source": "chip_oni_engineer_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "oni_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/oni_engineer_f_v3.png",
+   "source": "chip_oni_engineer_v3",
    "cell": [
     128,
     128
@@ -5806,6 +8596,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "oni_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/oni_engineer_m_v3.png",
+   "source": "chip_oni_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "oni_fighter_f",
    "texture": "res://assets/sprites/chars/oni_fighter_f.png",
    "source": "chip_oni_fighter",
@@ -5849,6 +8662,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "oni_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/oni_fighter_f_v3.png",
+   "source": "chip_oni_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
    "anchor_mode": "feet"
   },
   {
@@ -5898,6 +8734,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "oni_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/oni_fighter_m_v3.png",
+   "source": "chip_oni_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "oni_ranger_f",
    "texture": "res://assets/sprites/chars/oni_ranger_f.png",
    "source": "chip_oni_ranger",
@@ -5941,6 +8800,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "oni_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/oni_ranger_f_v3.png",
+   "source": "chip_oni_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
    "anchor_mode": "feet"
   },
   {
@@ -5990,6 +8872,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "oni_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/oni_ranger_m_v3.png",
+   "source": "chip_oni_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "oni_scholar_f",
    "texture": "res://assets/sprites/chars/oni_scholar_f.png",
    "source": "chip_oni_scholar",
@@ -6033,6 +8938,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "oni_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/oni_scholar_f_v3.png",
+   "source": "chip_oni_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
    "anchor_mode": "feet"
   },
   {
@@ -6082,6 +9010,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "oni_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/oni_scholar_m_v3.png",
+   "source": "chip_oni_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "oni_worker_f",
    "texture": "res://assets/sprites/chars/oni_worker_f.png",
    "source": "chip_oni_worker",
@@ -6125,6 +9076,52 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "oni_worker_f@v3",
+   "texture": "res://assets/sprites/chars/oni_worker_f_v3.png",
+   "source": "chip_oni_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "oni_worker_f@v4",
+   "texture": "res://assets/sprites/chars/oni_worker_f_v4.png",
+   "source": "chip_oni_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
    "anchor_mode": "feet"
   },
   {
@@ -6174,6 +9171,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "oni_worker_m@v3",
+   "texture": "res://assets/sprites/chars/oni_worker_m_v3.png",
+   "source": "chip_oni_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "oni_worker_m@v4",
+   "texture": "res://assets/sprites/chars/oni_worker_m_v4.png",
+   "source": "chip_oni_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "orc_engineer_f",
    "texture": "res://assets/sprites/chars/orc_engineer_f.png",
    "source": "chip_orc_engineer",
@@ -6217,6 +9260,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/orc_engineer_f_v3.png",
+   "source": "chip_orc_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 105,
    "anchor_mode": "feet"
   },
   {
@@ -6266,6 +9332,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "orc_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/orc_engineer_m_v3.png",
+   "source": "chip_orc_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "orc_fighter_f",
    "texture": "res://assets/sprites/chars/orc_fighter_f.png",
    "source": "chip_orc_fighter",
@@ -6312,6 +9401,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "orc_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/orc_fighter_f_v3.png",
+   "source": "chip_orc_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "orc_fighter_m",
    "texture": "res://assets/sprites/chars/orc_fighter_m.png",
    "source": "chip_orc_fighter",
@@ -6338,6 +9450,29 @@
    "id": "orc_fighter_m@v2",
    "texture": "res://assets/sprites/chars/orc_fighter_m_v2.png",
    "source": "chip_orc_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 111,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/orc_fighter_m_v3.png",
+   "source": "chip_orc_fighter_v3",
    "cell": [
     128,
     128
@@ -6404,6 +9539,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "orc_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/orc_ranger_f_v3.png",
+   "source": "chip_orc_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "orc_ranger_m",
    "texture": "res://assets/sprites/chars/orc_ranger_m.png",
    "source": "chip_orc_ranger",
@@ -6430,6 +9588,29 @@
    "id": "orc_ranger_m@v2",
    "texture": "res://assets/sprites/chars/orc_ranger_m_v2.png",
    "source": "chip_orc_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/orc_ranger_m_v3.png",
+   "source": "chip_orc_ranger_v3",
    "cell": [
     128,
     128
@@ -6496,6 +9677,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "orc_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/orc_scholar_f_v3.png",
+   "source": "chip_orc_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "orc_scholar_m",
    "texture": "res://assets/sprites/chars/orc_scholar_m.png",
    "source": "chip_orc_scholar",
@@ -6539,6 +9743,29 @@
     124
    ],
    "height_px": 112,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/orc_scholar_m_v3.png",
+   "source": "chip_orc_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
    "anchor_mode": "feet"
   },
   {
@@ -6588,6 +9815,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "orc_worker_f@v3",
+   "texture": "res://assets/sprites/chars/orc_worker_f_v3.png",
+   "source": "chip_orc_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_worker_f@v4",
+   "texture": "res://assets/sprites/chars/orc_worker_f_v4.png",
+   "source": "chip_orc_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "orc_worker_m",
    "texture": "res://assets/sprites/chars/orc_worker_m.png",
    "source": "chip_orc_worker",
@@ -6631,6 +9904,52 @@
     124
    ],
    "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_worker_m@v3",
+   "texture": "res://assets/sprites/chars/orc_worker_m_v3.png",
+   "source": "chip_orc_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 110,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "orc_worker_m@v4",
+   "texture": "res://assets/sprites/chars/orc_worker_m_v4.png",
+   "source": "chip_orc_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
    "anchor_mode": "feet"
   },
   {
@@ -8637,6 +11956,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "tengu_engineer_f@v3",
+   "texture": "res://assets/sprites/chars/tengu_engineer_f_v3.png",
+   "source": "chip_tengu_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "tengu_engineer_m",
    "texture": "res://assets/sprites/chars/tengu_engineer_m.png",
    "source": "chip_tengu_engineer",
@@ -8683,6 +12025,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "tengu_engineer_m@v3",
+   "texture": "res://assets/sprites/chars/tengu_engineer_m_v3.png",
+   "source": "chip_tengu_engineer_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "tengu_fighter_f",
    "texture": "res://assets/sprites/chars/tengu_fighter_f.png",
    "source": "chip_tengu_fighter",
@@ -8709,6 +12074,29 @@
    "id": "tengu_fighter_f@v2",
    "texture": "res://assets/sprites/chars/tengu_fighter_f_v2.png",
    "source": "chip_tengu_fighter_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "tengu_fighter_f@v3",
+   "texture": "res://assets/sprites/chars/tengu_fighter_f_v3.png",
+   "source": "chip_tengu_fighter_v3",
    "cell": [
     128,
     128
@@ -8775,6 +12163,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "tengu_fighter_m@v3",
+   "texture": "res://assets/sprites/chars/tengu_fighter_m_v3.png",
+   "source": "chip_tengu_fighter_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "tengu_ranger_f",
    "texture": "res://assets/sprites/chars/tengu_ranger_f.png",
    "source": "chip_tengu_ranger",
@@ -8821,6 +12232,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "tengu_ranger_f@v3",
+   "texture": "res://assets/sprites/chars/tengu_ranger_f_v3.png",
+   "source": "chip_tengu_ranger_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 107,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "tengu_ranger_m",
    "texture": "res://assets/sprites/chars/tengu_ranger_m.png",
    "source": "chip_tengu_ranger",
@@ -8847,6 +12281,29 @@
    "id": "tengu_ranger_m@v2",
    "texture": "res://assets/sprites/chars/tengu_ranger_m_v2.png",
    "source": "chip_tengu_ranger_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "tengu_ranger_m@v3",
+   "texture": "res://assets/sprites/chars/tengu_ranger_m_v3.png",
+   "source": "chip_tengu_ranger_v3",
    "cell": [
     128,
     128
@@ -8913,6 +12370,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "tengu_scholar_f@v3",
+   "texture": "res://assets/sprites/chars/tengu_scholar_f_v3.png",
+   "source": "chip_tengu_scholar_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "tengu_scholar_m",
    "texture": "res://assets/sprites/chars/tengu_scholar_m.png",
    "source": "chip_tengu_scholar",
@@ -8939,6 +12419,29 @@
    "id": "tengu_scholar_m@v2",
    "texture": "res://assets/sprites/chars/tengu_scholar_m_v2.png",
    "source": "chip_tengu_scholar_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "tengu_scholar_m@v3",
+   "texture": "res://assets/sprites/chars/tengu_scholar_m_v3.png",
+   "source": "chip_tengu_scholar_v3",
    "cell": [
     128,
     128
@@ -9005,6 +12508,52 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "tengu_worker_f@v3",
+   "texture": "res://assets/sprites/chars/tengu_worker_f_v3.png",
+   "source": "chip_tengu_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "tengu_worker_f@v4",
+   "texture": "res://assets/sprites/chars/tengu_worker_f_v4.png",
+   "source": "chip_tengu_worker_v4",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "tengu_worker_m",
    "texture": "res://assets/sprites/chars/tengu_worker_m.png",
    "source": "chip_tengu_worker",
@@ -9031,6 +12580,52 @@
    "id": "tengu_worker_m@v2",
    "texture": "res://assets/sprites/chars/tengu_worker_m_v2.png",
    "source": "chip_tengu_worker_v2",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "tengu_worker_m@v3",
+   "texture": "res://assets/sprites/chars/tengu_worker_m_v3.png",
+   "source": "chip_tengu_worker_v3",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 108,
+   "anchor_mode": "feet"
+  },
+  {
+   "id": "tengu_worker_m@v4",
+   "texture": "res://assets/sprites/chars/tengu_worker_m_v4.png",
+   "source": "chip_tengu_worker_v4",
    "cell": [
     128,
     128

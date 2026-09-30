@@ -7,14 +7,14 @@ const LOOKS := ["worker", "fighter", "ranger", "engineer", "scholar"]
 const ROLES := ["settler", "mercenary", "commander", "merchant", "engineer", "explorer", "scholar", "researcher",
 	"farmer", "woodcutter", "miner", "builder", "guard", "archer", "hunter", "medic", "cook", "tinkerer", "trader",
 	"bandit", "bandit_archer", "bandit_captain"]
-## Painted looks per race and look group. The mythic peoples were painted twice; the four founding
-## peoples have a third look everywhere and a fourth (workers: a fifth) on top.
+## Painted looks per race and look group. The later peoples were painted three times (workers four);
+## the four founding peoples have four everywhere (workers: a fifth on top).
 const OLD_RACES := ["human", "sylvan", "stoutkin", "vulpin"]
 
 
 func _expected_variants(race: String, look: String) -> int:
 	if not OLD_RACES.has(race):
-		return 2
+		return 4 if look == "worker" else 3
 	if look != "worker":
 		return 4
 	return 4 if race == "sylvan" else 5
@@ -142,6 +142,23 @@ func test_legacy_unit_save_keeps_its_two_variant_look() -> void:
 	var restored := Unit.from_dict(u.to_dict())
 	assert_false(restored.dna.has("art_variant"), "legacy save stays unbackfilled")
 	assert_eq(SpriteLibrary.art_variant(restored.dna), legacy_variant, "legacy two-variant painting remains unchanged")
+
+
+func test_villagers_draw_from_every_painted_look_but_colony_saves_keep_two() -> void:
+	for race: String in ["minotaur", "human", "android"]:
+		var seen := {}
+		var legacy_seen := {}
+		for seed_value in 80:
+			var dna := {"kind": "character", "race": race, "gender": "female", "seed": seed_value,
+				"hair": "braids", "hair_color": "#241c28", "skin": "#c58d70", "weapon": "none",
+				"armor": "none", "offhand": "none", "outfit": "tunic"}
+			legacy_seen[SpriteLibrary.art_variant(dna)] = true
+			dna["faction_style"] = "neutral"
+			seen[SpriteLibrary.art_variant(dna)] = true
+		assert_eq(seen.size(), SpriteLibrary.variant_count({"kind": "character", "race": race, "gender": "female",
+			"weapon": "none", "armor": "none", "offhand": "none", "outfit": "tunic"}),
+			"%s villagers show every worker painting" % race)
+		assert_eq(legacy_seen.size(), 2, "%s colony people without a saved choice keep the two-look mapping" % race)
 
 func test_every_machine_the_game_makes_is_painted() -> void:
 	var rng := _rng(7)

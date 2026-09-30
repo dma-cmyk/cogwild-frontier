@@ -216,7 +216,9 @@ static func art_variant(dna: Dictionary, hints: Dictionary = {}) -> int:
 		str(dna.get("seed", 0)), str(dna.get("hair", "")), str(dna.get("hair_color", "")),
 		str(dna.get("skin", "")), str(dna.get("gender", "")), base_id]
 	# People from saves predating explicit colony assignment retain their exact two-look mapping.
-	return posmod(hash(identity), mini(count, 2))
+	# Villagers and townsfolk were never saved with a choice, so they draw from every painted look.
+	var pool := count if str(dna.get("faction_style", "frontier")) in ["neutral", "merchant"] else mini(count, 2)
+	return posmod(hash(identity), pool)
 
 
 static func _variant_id(base_id: String, variant: int) -> String:

@@ -23,6 +23,9 @@ PRESETS = ROOT / "game" / "export_presets.cfg"
 
 ## Buildings that only ever stand at a world site (including the town, `t_*`), never in the player's colony.
 SITE_BUILDINGS = ("bandit", "machine", "ruin", "trade", "wanderer", "wreck", "t")
+## The later peoples' extra third/fourth paintings are optional art (the founding peoples' third look stays in the core pack).
+LATER_PEOPLES = ("minotaur", "centaur", "harpy", "lamia", "oni", "tengu", "goblin", "orc", "kobold",
+                 "lizardfolk", "gnome", "halfling", "android")
 
 EXTRA_PATTERNS: list[str] = [
     "assets/sprites/chars/*_v4.png",
@@ -32,7 +35,9 @@ EXTRA_PATTERNS: list[str] = [
     "assets/sprites/buildings/*_back.png",
     "assets/sprites/buildings/*_back_glow.png",
     "assets/sprites/buildings/v_*.png",
-] + [f"assets/sprites/buildings/{site}_*.png" for site in SITE_BUILDINGS]
+] + [f"assets/sprites/buildings/{site}_*.png" for site in SITE_BUILDINGS] + [
+    f"assets/{folder}/{race}_*_v3.png" for race in LATER_PEOPLES for folder in ("sprites/chars", "portraits")
+]
 
 ## Kept out of both packs.
 BASE_EXCLUDE = ["tests/*", "tools/*", "docs/*", "*.md"]

@@ -39,6 +39,9 @@ CHIP_SHEETS.update({f"chip_{r}_{l}_v2": (f"{r}_{l}_m@v2", f"{r}_{l}_f@v2", "feet
 CHIP_SHEETS.update({f"chip_{r}_{l}_v3": (f"{r}_{l}_m@v3", f"{r}_{l}_f@v3", "feet") for r in OLD_RACES for l in LOOKS})
 CHIP_SHEETS.update({f"chip_{r}_worker_v4": (f"{r}_worker_m@v4", f"{r}_worker_f@v4", "feet") for r in OLD_RACES})
 CHIP_SHEETS.update({f"chip_{r}_worker_v5": (f"{r}_worker_m@v5", f"{r}_worker_f@v5", "feet") for r in OLD_RACES if r != "sylvan"})
+# Later races: extra worker paintings (batched generation, see tools/art/split_batches.py).
+CHIP_SHEETS.update({f"chip_{r}_worker_v{v}": (f"{r}_worker_m@v{v}", f"{r}_worker_f@v{v}", "feet") for r in NEW_RACES for v in (3, 4)})
+CHIP_SHEETS.update({f"chip_{r}_{l}_v3": (f"{r}_{l}_m@v3", f"{r}_{l}_f@v3", "feet") for r in NEW_RACES for l in LOOKS if l != "worker"})
 CHIP_SHEETS.update({f"chip_{r}_{l}_v4": (f"{r}_{l}_m@v4", f"{r}_{l}_f@v4", "feet") for r in OLD_RACES for l in LOOKS if l != "worker"})
 CHIP_SHEETS.update({
 	"chip_bandit_a": ("bandit_m", "bandit_f", "feet"),
@@ -370,6 +373,31 @@ def build_chip(frames: list[list[np.ndarray]], anchor_mode: str, race_id: str = 
 	return bleed(sheet), meta
 
 
+def cut_touching(mask: np.ndarray, comps: list[dict]) -> np.ndarray:
+	"""Separates figures that touch a neighbour (tightly packed batch sheets): every over-wide or
+	over-tall part is cut at its narrowest column / row near each expected boundary."""
+	typical_w = float(np.median([c["x1"] - c["x0"] for c in comps[:24]]))
+	typical_h = float(np.median([c["y1"] - c["y0"] for c in comps[:24]]))
+	cut = mask.copy()
+	for c in comps:
+		width, height = c["x1"] - c["x0"], c["y1"] - c["y0"]
+		if width >= 1.5 * typical_w:
+			pieces = max(2, round(width / typical_w))
+			for k in range(1, pieces):
+				target = c["x0"] + width * k / pieces
+				lo, hi = max(c["x0"], int(target - typical_w * 0.3)), min(c["x1"], int(target + typical_w * 0.3))
+				profile = cut[c["y0"]:c["y1"], lo:hi].sum(0)
+				cut[c["y0"]:c["y1"], lo + int(profile.argmin())] = False
+		if height >= 1.5 * typical_h:
+			pieces = max(2, round(height / typical_h))
+			for k in range(1, pieces):
+				target = c["y0"] + height * k / pieces
+				lo, hi = max(c["y0"], int(target - typical_h * 0.3)), min(c["y1"], int(target + typical_h * 0.3))
+				profile = cut[lo:hi, c["x0"]:c["x1"]].sum(1)
+				cut[lo + int(profile.argmin()), c["x0"]:c["x1"]] = False
+	return cut
+
+
 def process_chips(only: set[str]) -> None:
 	entries = []
 	for sheet_id, (left_id, right_id, mode) in CHIP_SHEETS.items():
@@ -383,6 +411,8 @@ def process_chips(only: set[str]) -> None:
 		mask = foreground(img)
 		img = despill(img, mask)
 		comps = components(mask, min_area=40)
+		if len(comps) < 24:
+			comps = components(cut_touching(mask, comps), min_area=40)
 		cells = grid_assign(comps, 4, 6)
 		missing = [(r, c) for r in range(4) for c in range(6) if (r, c) not in cells]
 		if missing:
@@ -441,8 +471,10 @@ def process_portraits(only: set[str]) -> None:
 	pairs = {f"portrait_{r}_{l}": (f"{r}_{l}_m", f"{r}_{l}_f") for r in RACES for l in LOOKS}
 	pairs.update({f"portrait_{r}_{l}_v2": (f"{r}_{l}_m@v2", f"{r}_{l}_f@v2") for r in RACES for l in LOOKS})
 	pairs.update({f"portrait_{r}_{l}_v3": (f"{r}_{l}_m@v3", f"{r}_{l}_f@v3") for r in OLD_RACES for l in LOOKS})
+	pairs.update({f"portrait_{r}_{l}_v3": (f"{r}_{l}_m@v3", f"{r}_{l}_f@v3") for r in NEW_RACES for l in LOOKS if l != "worker"})
 	pairs.update({f"portrait_{r}_worker_v4": (f"{r}_worker_m@v4", f"{r}_worker_f@v4") for r in OLD_RACES})
 	pairs.update({f"portrait_{r}_worker_v5": (f"{r}_worker_m@v5", f"{r}_worker_f@v5") for r in OLD_RACES if r != "sylvan"})
+	pairs.update({f"portrait_{r}_worker_v{v}": (f"{r}_worker_m@v{v}", f"{r}_worker_f@v{v}") for r in NEW_RACES for v in (3, 4)})
 	pairs.update({f"portrait_{r}_{l}_v4": (f"{r}_{l}_m@v4", f"{r}_{l}_f@v4") for r in OLD_RACES for l in LOOKS if l != "worker"})
 	pairs.update({"portrait_bandit_a": ("bandit_m", "bandit_f"), "portrait_bandit_b": ("bandit_archer", "bandit_captain")})
 	for pid, (left_id, right_id) in pairs.items():
