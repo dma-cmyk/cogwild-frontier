@@ -30,7 +30,7 @@ func setup(game: Game, h: Hud) -> void:
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(sp)
-	var close := UiTheme.button("", "ui_close")
+	var close := UiTheme.button("", "ui_close", Loc.t("Close"))
 	close.pressed.connect(func() -> void: visible = false)
 	head.add_child(close)
 	v.add_child(head)

@@ -132,6 +132,8 @@ func setup(game: Game) -> void:
 	_build_quest_tracker()
 	_build_touch_controls()
 	get_viewport().size_changed.connect(_update_responsive)
+	squad_panel.minimum_size_changed.connect(_update_command_bar_height.call_deferred)
+	_command_panel.minimum_size_changed.connect(_update_command_bar_height.call_deferred)
 	_update_responsive()
 	_build_overlays()
 	pause_menu = PauseMenu.new()
@@ -1034,10 +1036,18 @@ func _update_command_bar_height() -> void:
 			var bar_top := _command_panel.anchor_top * get_viewport().get_visible_rect().size.y + _command_panel.offset_top
 			info_panel.offset_bottom = bar_top - 8.0
 		return
-	# Desktop: the panel grows upward to its two rows; the details panel ends above it.
+	# Desktop: keep both bottom panels reachable when their translated controls do not fit
+	# side by side. Use their content sizes so squad changes and resizing reflow them too.
 	_command_panel.offset_top = _command_panel.offset_bottom
-	var bar_height := _command_panel.get_combined_minimum_size().y
-	info_panel.offset_bottom = _command_panel.offset_bottom - bar_height - 10.0
+	var command_min := _command_panel.get_combined_minimum_size()
+	info_panel.offset_bottom = _command_panel.offset_bottom - command_min.y - 10.0
+	var command_left := get_viewport().get_visible_rect().size.x + _command_panel.offset_right - command_min.x
+	var squad_right := squad_panel.offset_left + squad_panel.get_combined_minimum_size().x
+	var squad_bottom := _command_panel.offset_bottom
+	if squad_right + 8.0 > command_left:
+		squad_bottom -= command_min.y + 10.0
+	squad_panel.offset_bottom = squad_bottom
+	squad_panel.offset_top = squad_bottom
 
 
 func _refresh_abilities(units: Array) -> void:
@@ -1266,6 +1276,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			build_menu.hide()
 		elif _help.visible:
 			_help.hide()
+		elif _trade_panel.visible:
+			_dismiss_trade()
+		elif roster.visible:
+			roster.hide()
 		elif info_panel.mobile_collapsed == false and (App.is_touch() or App.is_mobile_web()):
 			info_panel.mobile_collapsed = true
 			info_panel.visible = false
@@ -1291,12 +1305,17 @@ func _build_trade_panel() -> void:
 	t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(t)
 	var close := UiTheme.button("", "ui_close", Loc.t("Hide the wares until the next visit"))
-	close.pressed.connect(func() -> void: _trade_dismissed = g.world.factions.trader_id)
+	close.pressed.connect(_dismiss_trade)
 	head.add_child(close)
 	v.add_child(head)
 	_trade_list = UiTheme.vbox(4)
 	v.add_child(_trade_list)
 	_trade_panel.visible = false
+
+
+func _dismiss_trade() -> void:
+	_trade_dismissed = g.world.factions.trader_id
+	_trade_panel.hide()
 
 
 func _update_trade() -> void:

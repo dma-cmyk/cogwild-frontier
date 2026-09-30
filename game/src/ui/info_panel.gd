@@ -101,7 +101,7 @@ func _rebuild(u: Unit) -> void:
 func _update_dynamic(u: Unit) -> void:
 	if u and _hp:
 		_hp.value = u.hp_ratio()
-		_hp_l.text = "%d/%d" % [int(ceil(u.hp)), int(u.stats.get("max_hp", 100))]
+		_hp_l.text = "%d/%d" % [ceili(u.hp), ceili(float(u.stats.get("max_hp", 100)))]
 		if _en:
 			var mx := float(u.stats.get("energy_max", 100.0))
 			_en.value = clampf(u.energy / maxf(1.0, mx), 0.0, 1.0)

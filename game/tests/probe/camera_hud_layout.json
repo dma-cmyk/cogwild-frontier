@@ -1,10 +1,17 @@
 {
   "scene": "res://scenes/game.tscn",
-  "frames": 40,
+  "frames": 45,
   "events": [
     {"frame": 1, "do": "scene.set_speed(0)"},
     {"frame": 2, "do": "scene.select_squad(scene.world.squads[0].id)"},
-    {"frame": 30, "watch": "scene.hud._compact", "label": "compact layout state"},
-    {"frame": 30, "screenshot": "selected_squad_hud"}
+    {"frame": 30, "expect": "not scene.hud.squad_panel.get_global_rect().intersects(scene.hud._command_panel.get_global_rect())", "label": "squad controls are not covered by the command bar"},
+    {"frame": 30, "expect": "int(scene.hud.info_panel._hp_l.text.get_slice('/', 0)) <= int(scene.hud.info_panel._hp_l.text.get_slice('/', 1))", "label": "displayed health never exceeds its displayed maximum"},
+    {"frame": 30, "screenshot": "selected_squad_hud"},
+    {"frame": 31, "do": "scene.set_meta('layout_auto_before', scene.world.squads[0].auto_abilities)"},
+    {"frame": 32, "do": "scene.dbg_click(scene.hud.squad_panel._auto_toggle.get_global_rect().get_center())"},
+    {"frame": 35, "expect": "scene.world.squads[0].auto_abilities != scene.get_meta('layout_auto_before')", "label": "uncovered automatic ability control responds to a real click"},
+    {"frame": 36, "do": "scene.dbg_click(scene.hud.squad_panel._picker_btn.get_global_rect().get_center())"},
+    {"frame": 40, "expect": "scene.hud.squad_panel.picker_open()", "label": "uncovered member button opens the squad member picker"},
+    {"frame": 40, "screenshot": "member_picker"}
   ]
 }

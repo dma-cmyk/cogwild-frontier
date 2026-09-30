@@ -61,7 +61,8 @@ func refresh() -> void:
 	if not visible:
 		return
 	var villages := g.world.diplomacy.known_communities()
-	var signature := ""
+	# An empty community list must differ from the invalidated cache ("").
+	var signature := "communities:"
 	for st: Dictionary in villages:
 		signature += "%d:%d:%d;" % [int(st["id"]), int(st.get("relation", 0)),
 			int(bool(st.get("ruined", false)))]

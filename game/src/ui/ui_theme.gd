@@ -159,6 +159,10 @@ static func button(text: String, icon_id: String = "", tooltip: String = "") -> 
 	if icon_id != "":
 		b.icon = Icons.get_icon(icon_id)
 		b.expand_icon = true
+		# Expanded icons do not contribute to the Button's minimum size.
+		if text.is_empty():
+			b.custom_minimum_size = Vector2(36, 36)
+			b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	b.tooltip_text = tooltip
 	b.focus_mode = Control.FOCUS_NONE
 	b.mouse_filter = Control.MOUSE_FILTER_STOP
