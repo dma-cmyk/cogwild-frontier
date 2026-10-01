@@ -486,6 +486,7 @@ func resource_trade(sid: int, resource: String, amount: int, buying: bool) -> St
 	var st: Dictionary = w.sites[sid]
 	_refresh_stock(st)
 	var stock: Dictionary = st["stock"]
+	var gold_before := int(w.res.get("gold", 0))
 	if buying:
 		if int(stock.get(resource, 0)) < amount:
 			return "The village has no more to sell."
@@ -510,6 +511,10 @@ func resource_trade(sid: int, resource: String, amount: int, buying: bool) -> St
 		st["purse"] = int(st["purse"]) - payout
 		stock[resource] = int(stock[resource]) + amount
 		_record_trade(st, payout)
+	w.notify_key("sim.trade.resource_bought" if buying else "sim.trade.resource_sold",
+		{"site_name": st["name"], "resource_id": resource, "amount": amount,
+			"gold": absi(int(w.res.get("gold", 0)) - gold_before)},
+		"good", Vector2(st["center"]), {"site": sid})
 	w.site_changed.emit(sid)
 	return ""
 

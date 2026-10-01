@@ -402,8 +402,11 @@ Durability affects effective weapon damage/armor; the saved item's nominal stats
   clear, loot and descend; `retreat` climbs out. `locate(pos)` / `squad_location(squad)` return
   `{eid, floor}` or `{}` for the surface. `same_map(a, b)` compares slot and floor, not tile
   coordinates. Ordinary movement cannot transfer between maps.
-- Signals: `relocated(pos, eid, floor_index)` moves the camera; `floor_created(eid, floor_index)`
-  builds discovered stair markers; `World.site_removed(id)` releases site visuals.
+  Gate/stair stuck detection only runs after members have exhausted their live routes; a slow
+  route is not a blocked route.
+- Signals: `relocated(pos, eid, floor_index)` moves the camera and prioritizes destination
+  terrain in the serialized visual-build queue; `floor_created(eid, floor_index)` builds
+  discovered stair markers; `World.site_removed(id)` releases site visuals.
 - `Giants.make_master(theme, difficulty, level, pos)` and `spawn_beast(pos, level = 5)` create
   named large units. `Unit.body_radius()` drives giant-specific local navigation, attack reach,
   selection rings and HP-bar width. `Giants.fits` / `path` prevent squeezing through narrow doors.
@@ -421,3 +424,35 @@ Durability affects effective weapon damage/armor; the saved item's nominal stats
   Buttons capture item uid, never mutable list indices.
 - Loot over an obstacle lands on nearby ground on the same map. Auto collection chooses a
   reachable picker/bag; a partial route outside pickup distance is not progress.
+
+## 8. Management panels and persistent notification history
+
+- `Hud.open_management(kind)` opens `history`, `production`, `trade`, or `places`; it closes
+  competing management panels and target-picking mode without changing `Game.speed`.
+  Escape is handled in `Hud._input`, before a focused search `LineEdit` consumes it.
+- Each management panel implements `setup(game, hud)`, `open()`, `close_window()`,
+  `refresh(force = false)`, and `layout()`. The HUD refreshes visible panels on its existing tick.
+- `World.NOTIFICATION_LIMIT = 500` bounds both live notifications and their saved tail.
+  Loading trims oversized histories. Records retain localization key/params, day/time,
+  position and target IDs. Missing records from older saves cannot be reconstructed.
+- `HistoryPanel` snapshots records on open or explicit refresh. Incoming notifications only
+  increment its pending count; they do not shift the page being read. Search operates on the
+  localized message, and filtering/pagination do not mutate world history.
+- `ProductionPanel.building_text` and `build_controls` are shared with `InfoPanel`.
+  Worker, progress, cost, input/output and stop reasons read actual colony state. Queueing uses
+  the existing paid-up-front, five-item queue; no alternate production model or cancellation.
+  Resource rates are net change per simulated minute, including consumption and transactions.
+- `TradeOverviewPanel` separates community markets, own-airship dispatch and visiting merchants.
+  Dispatch names an explicitly discovered post and orders the selected own ship only.
+  `TradeWindow` displays transaction totals and refreshes on purse, stock, presence, relation,
+  quantity, day and language. `Diplomacy.resource_trade` records successful committed balances,
+  without duplicating failures or changing economic rules.
+  Merchant wares are positioned below the toolbar and automatic arrival popups defer while
+  a management panel is being read. The explicit merchant entry closes that panel first.
+- Airship/merchant result params use `{"resources": result}` as the value of `resources`.
+  `SaveGame` migrates the two legacy raw-map event payloads on load. `Loc` renders an empty
+  result explicitly as no resource changes, never an apparently missing outcome.
+- `PlacesPanel` reads discovered surface runtime sites and player facilities only; it does not
+  scan generation data or reveal unknown locations. Selecting a row focuses its real target
+  without issuing orders. `Minimap` shares names/types, distinguishes site/facility shapes,
+  and excludes other maps from markers. Marker clicks select/focus, drags pan, right clicks order.

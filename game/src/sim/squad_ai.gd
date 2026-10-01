@@ -1004,7 +1004,7 @@ func _airship_trade(u: Unit) -> void:
 			if not u.moving:
 				var r: Dictionary = o.get("result", {})
 				w.notify_key("sim.trade.run_returned", {"unit_name": u.name, "site_name": st.get("name", ""),
-					"resources": r}, "good", u.pos, {"unit": u.id})
+					"resources": {"resources": r}}, "good", u.pos, {"unit": u.id})
 				if str(o.get("type", "")) == "trade":
 					u.order = {"type": "dock"}
 				else:

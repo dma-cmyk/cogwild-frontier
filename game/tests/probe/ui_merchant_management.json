@@ -1,0 +1,31 @@
+{
+  "scene": "res://scenes/game.tscn",
+  "frames": 140,
+  "seed": 11,
+  "events": [
+    {"frame":1,"do":"scene.set_speed(0)"},
+    {"frame":2,"do":"scene.set_meta('trade_probe', ResourceLoader.load('res://tests/probe/trade_ui_observer.gd').new())"},
+    {"frame":3,"do":"scene.add_child(scene.get_meta('trade_probe'))"},
+    {"frame":4,"do":"scene.get_meta('trade_probe').setup(scene)"},
+    {"frame":10,"do":"scene.get_meta('trade_probe').click('Open_history')"},
+    {"frame":16,"do":"scene.get_meta('trade_probe').type_query('HistorySearch', 'Archive record 003')"},
+    {"frame":25,"do":"scene.get_meta('trade_probe').dock_merchant(false)"},
+    {"frame":36,"expect":"scene.hud.history.visible and not scene.hud._trade_panel.visible and scene.hud.history._records.size() == scene.get_meta('trade_probe').archive_count and scene.hud.history._pending_count == 2","label":"merchant arrival does not cover or shift the history being read"},
+    {"frame":38,"screenshot":"merchant_deferred_while_reading"},
+    {"frame":40,"key":"Escape"},
+    {"frame":48,"expect":"not scene.hud.history.visible and scene.hud._trade_panel.visible","label":"deferred available merchant shop appears after reading closes"},
+    {"frame":50,"do":"scene.get_meta('trade_probe').click('Open_production')"},
+    {"frame":57,"expect":"scene.hud.production.visible and not scene.hud._trade_panel.visible and scene.speed == 0","label":"toolbar remains clickable above merchant stock and switches to production"},
+    {"frame":60,"do":"scene.get_meta('trade_probe').click('Open_trade')"},
+    {"frame":67,"do":"scene.get_meta('trade_probe').click('TradeTab_merchant')"},
+    {"frame":75,"expect":"not scene.get_meta('trade_probe').disabled('OpenMerchantWares')","label":"dismissed docked merchant remains available from trade tab"},
+    {"frame":80,"do":"scene.get_meta('trade_probe').click('OpenMerchantWares')"},
+    {"frame":89,"expect":"scene.hud._trade_panel.visible and not scene.hud.trade_overview.visible","label":"explicit merchant entry closes competing management view"},
+    {"frame":95,"do":"scene.get_meta('trade_probe').buy_first_merchant_item()"},
+    {"frame":103,"expect":"scene.get_meta('trade_probe').merchant_purchase_succeeded()","label":"equipment purchase still exchanges exact gold and item"},
+    {"frame":110,"screenshot":"merchant_toolbar_clear"},
+    {"frame":118,"do":"scene.get_meta('trade_probe').click('Open_places')"},
+    {"frame":125,"expect":"scene.hud.places.visible and not scene.hud._trade_panel.visible","label":"actual toolbar click switches from merchant equipment to place directory"},
+    {"frame":130,"screenshot":"merchant_to_places"}
+  ]
+}

@@ -105,6 +105,8 @@ func _parameter(value: Dictionary) -> String:
 		return item_name(value)
 	if value.has("resources"):
 		var resources: Dictionary = value["resources"]
+		if resources.is_empty():
+			return t("resources.no_change")
 		var signed := false
 		for amount: Variant in resources.values():
 			if int(amount) < 0:

@@ -33,6 +33,7 @@ const S := ChunkData.S
 const SAVE_VERSION := 1
 const RESOURCES := ["wood", "stone", "ore", "metal", "food", "gold", "energy"]
 const MAX_SQUADS := 9
+const NOTIFICATION_LIMIT := 500  # retained both in memory and in saves
 
 
 var seed := 0
@@ -1179,7 +1180,7 @@ func notify_key(key: String, params: Dictionary = {}, kind: String = "info", pos
 	for k: String in extra:
 		n[k] = extra[k]
 	notifications.append(n)
-	if notifications.size() > 80:
+	if notifications.size() > NOTIFICATION_LIMIT:
 		notifications.pop_front()
 	notified.emit(n)
 
@@ -1191,7 +1192,7 @@ func notify(text: String, kind: String = "info", pos: Variant = null, extra: Dic
 	for k: String in extra:
 		n[k] = extra[k]
 	notifications.append(n)
-	if notifications.size() > 80:
+	if notifications.size() > NOTIFICATION_LIMIT:
 		notifications.pop_front()
 	notified.emit(n)
 

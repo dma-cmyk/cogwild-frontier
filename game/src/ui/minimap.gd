@@ -2,7 +2,7 @@ class_name Minimap
 extends PanelContainer
 ## Bottom-left minimap: terrain window around the camera (explored areas only), markers for your
 ## units, buildings, known sites, visible enemies and loot, the camera view outline, and quick
-## buttons (home, build, people, next site, menu). Click or drag on the map to move the camera.
+## buttons. Left-click a place for details; empty-map clicks and drags move the camera.
 
 const SIZE := 236.0
 const SPAN := 150.0  # world metres shown
@@ -16,8 +16,14 @@ var _painted: Dictionary = {}  # chunk key -> version painted
 var _pending_paints: Array[Vector2i] = []
 var _queued_paints: Dictionary = {}
 var _t := 0.0
-var _site_cycle := 0
+var _pressed_marker: Dictionary = {}
+var _press_pos := Vector2.ZERO
 var _dragging := false
+var _places_button: Button
+var _legend_button: Button
+var _legend: PanelContainer
+var _legend_labels: Dictionary = {}
+var _legend_close: Button
 
 
 func setup(game: Game) -> void:
@@ -54,6 +60,7 @@ func setup(game: Game) -> void:
 	overlay.draw.connect(_draw_markers.bind(overlay))
 	_map.add_child(overlay)
 	_map.set_meta("overlay", overlay)
+	_map.name = "MapSurface"
 	_map.gui_input.connect(_on_map_input)
 	var col := UiTheme.vbox(4)
 	h.add_child(col)
@@ -61,12 +68,25 @@ func setup(game: Game) -> void:
 			["ui_buildings", "Build menu (B)", func() -> void: g.hud.build_menu.toggle("build")],
 			["ui_people", "Your people and machines", func() -> void: g.hud.roster.toggle()],
 			["poi_village", "Neighbouring villages", func() -> void: g.hud.villages.diplomacy_panel.toggle()],
-			["ui_target", "Next discovered site", _next_site],
 			["ui_search", "Find an idle settler", _find_idle]]:
 		var btn := UiTheme.button("", str(b[0]), Loc.t(str(b[1])))
-		btn.custom_minimum_size = Vector2(44, 36)
+		btn.custom_minimum_size = Vector2(44, 30)
 		btn.pressed.connect(b[2])
 		col.add_child(btn)
+	_places_button = UiTheme.button(Loc.t("places.title"))
+	_places_button.name = "MinimapPlaces"
+	_places_button.add_theme_font_size_override("font_size", 12)
+	_places_button.custom_minimum_size = Vector2(44, 30)
+	_places_button.pressed.connect(func() -> void: g.hud.open_management("places"))
+	col.add_child(_places_button)
+	_legend_button = UiTheme.button(Loc.t("places.legend"))
+	_legend_button.name = "MinimapLegend"
+	_legend_button.add_theme_font_size_override("font_size", 12)
+	_legend_button.custom_minimum_size = Vector2(44, 30)
+	_legend_button.pressed.connect(func() -> void: _legend.visible = not _legend.visible)
+	col.add_child(_legend_button)
+	_build_legend()
+	Loc.language_changed.connect(_localize)
 	g.world.chunk_ready.connect(_queue_chunk)
 	g.world.chunk_changed.connect(func(k: Vector2i) -> void:
 		_painted.erase(k)
@@ -163,13 +183,15 @@ func _draw_markers(c: Control) -> void:
 	]), Color("#fff2cc"))
 	var w := g.world
 	for b: Building in w.buildings.values():
+		if b.faction != "player" or not _on_current_map(b.center()):
+			continue
 		var p := _w2m(b.center())
-		c.draw_rect(Rect2(p - Vector2(3, 3), Vector2(6, 6)), Color("#9fc4ff") if b.is_built() else Color("#9fc4ff", 0.5))
+		_draw_place_marker(c, p, "facility", Color("#9fc4ff") if b.is_built() else Color("#9fc4ff", 0.5))
 	for st: Dictionary in w.sites.values():
-		if not bool(st.get("discovered", false)):
+		if not PlacesPanel.known_surface(st) or not _on_current_map(Vector2(st["center"])):
 			continue
 		var p := _w2m(Vector2(st["center"]))
-		if str(st["kind"]) == "village":
+		if str(st["kind"]) in ["village", "town"]:
 			# villages get a house-shaped pip in their relation colour
 			var tint := VillagePanel.tier_color(Diplomacy.tier_for(int(st.get("relation", 0))))
 			if bool(st.get("ruined", false)):
@@ -180,12 +202,13 @@ func _draw_markers(c: Control) -> void:
 				p + Vector2(2.8, 4.4), p + Vector2(-2.8, 4.4), p + Vector2(-4.4, 0)]), tint)
 			continue
 		var col: Color = Color("#ff5a4a") if (st.get("hostile", false) and not st.get("cleared", false)) else ({"trade_post": Color("#7dff8a"), "ruins": Color("#c7a8ff"), "wreck": Color("#ffe07a"), "dungeon": Color("#d98cff")}.get(str(st["kind"]), Color("#e8e0c8")))
-		c.draw_circle(p, 5.0, Color(0, 0, 0, 0.6))
-		c.draw_circle(p, 3.6, col)
+		_draw_place_marker(c, p, str(st.get("kind", "")), col)
 	for bag: Dictionary in w.loot_bags.values():
+		if not _on_current_map(Vector2(bag["pos"])):
+			continue
 		c.draw_circle(_w2m(bag["pos"]), 2.2, UiTheme.GOLD)
 	for u: Unit in w.unit_list:
-		if not u.alive or u.hidden:
+		if not u.alive or u.hidden or not _on_current_map(u.pos):
 			continue
 		var p := _w2m(u.pos)
 		if p.x < -4 or p.y < -4 or p.x > SIZE + 4 or p.y > SIZE + 4:
@@ -264,15 +287,29 @@ func _goal_of(squad: Squad) -> Vector2:
 
 
 func _on_map_input(ev: InputEvent) -> void:
-	if ev is InputEventMouseButton and (ev as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
-		_dragging = (ev as InputEventMouseButton).pressed
+	if ev is InputEventMouseButton and ev.button_index == MOUSE_BUTTON_LEFT:
+		if ev.pressed:
+			_press_pos = ev.position
+			_pressed_marker = _marker_at(ev.position)
+			_dragging = _pressed_marker.is_empty()
+			if _dragging:
+				_jump(ev.position)
+		else:
+			if not _dragging and not _pressed_marker.is_empty():
+				_focus_marker(_pressed_marker)
+			_dragging = false
+			_pressed_marker = {}
+	elif ev is InputEventMouseMotion:
+		if not _pressed_marker.is_empty() and ev.position.distance_to(_press_pos) > 5.0:
+			_pressed_marker = {}
+			_dragging = true
 		if _dragging:
-			_jump((ev as InputEventMouseButton).position)
-	elif ev is InputEventMouseMotion and _dragging:
-		_jump((ev as InputEventMouseMotion).position)
-	elif ev is InputEventMouseButton and (ev as InputEventMouseButton).pressed and (ev as InputEventMouseButton).button_index == MOUSE_BUTTON_RIGHT:
+			_jump(ev.position)
+		var hit := _marker_at(ev.position)
+		_map.tooltip_text = str(hit.get("label", Loc.t("places.map.hint")))
+	elif ev is InputEventMouseButton and ev.pressed and ev.button_index == MOUSE_BUTTON_RIGHT:
 		var r := _view_rect()
-		var wp := r.position + (ev as InputEventMouseButton).position / SIZE * r.size
+		var wp: Vector2 = r.position + (ev as InputEventMouseButton).position / SIZE * r.size
 		if not g.selected_units().is_empty():
 			g.input_ctl.issue("move", {"pos": wp})
 
@@ -283,20 +320,6 @@ func _jump(mp: Vector2) -> void:
 	g.rig.focus(Vector3(wp.x, 0, wp.y), true)
 
 
-func _next_site() -> void:
-	var list: Array = []
-	for st: Dictionary in g.world.sites.values():
-		if bool(st.get("discovered", false)):
-			list.append(st)
-	if list.is_empty():
-		g.hud.add_note({"text": Loc.t("No sites discovered yet — send a squad or the drone exploring."), "kind": "info"}, 3.0)
-		return
-	_site_cycle = (_site_cycle + 1) % list.size()
-	var st: Dictionary = list[_site_cycle]
-	g.select_site(int(st["id"]))
-	g.focus_pos(Vector2(st["center"]))
-
-
 func _find_idle() -> void:
 	for u: Unit in g.world.unit_list:
 		if u.is_player() and u.alive and u.labor == "worker" and u.squad_id < 0 and str(u.job.get("type", "idle")) in ["idle", ""]:
@@ -304,3 +327,114 @@ func _find_idle() -> void:
 			g.focus_pos(u.pos)
 			return
 	g.hud.add_note({"text": Loc.t("Everyone is busy."), "kind": "good"}, 2.5)
+
+
+func _on_current_map(pos: Vector2) -> bool:
+	return g.world.dungeons.same_map(Vector2(g.rig.target.x, g.rig.target.z), pos)
+
+
+func _marker_at(mp: Vector2) -> Dictionary:
+	var best: Dictionary = {}
+	var distance := 8.0
+	var bounds := Rect2(Vector2.ZERO, Vector2(SIZE, SIZE))
+	for b: Building in g.world.buildings.values():
+		if b.faction != "player" or not _on_current_map(b.center()):
+			continue
+		var p := _w2m(b.center())
+		var d := p.distance_to(mp)
+		if bounds.has_point(p) and d < distance:
+			distance = d
+			best = {"building": b.id, "label": PlacesPanel.facility_name(b) + " · " + Loc.def_name("buildings", b.type)}
+	for st: Dictionary in g.world.sites.values():
+		if not PlacesPanel.known_surface(st) or not _on_current_map(Vector2(st["center"])):
+			continue
+		var p := _w2m(Vector2(st["center"]))
+		var d := p.distance_to(mp)
+		if bounds.has_point(p) and d < distance:
+			distance = d
+			best = {"site": int(st["id"]), "label": PlacesPanel.site_name(st) + " · " + PlacesPanel.site_type(st)}
+	return best
+
+
+func _focus_marker(hit: Dictionary) -> void:
+	if hit.has("building"):
+		var b: Building = g.world.buildings.get(int(hit["building"]))
+		if b == null or b.faction != "player":
+			return
+		g.select_building(b.id)
+		g.focus_pos(b.center())
+	else:
+		var st: Dictionary = g.world.sites.get(int(hit["site"]), {})
+		if not PlacesPanel.known_surface(st):
+			return
+		g.select_site(int(st["id"]))
+		g.focus_pos(Vector2(st["center"]))
+
+
+func _draw_place_marker(c: Control, p: Vector2, kind: String, color: Color) -> void:
+	c.draw_circle(p, 6.0, Color(0, 0, 0, 0.75))
+	match kind:
+		"ruins":
+			c.draw_colored_polygon(PackedVector2Array([p + Vector2(0, -5), p + Vector2(5, 4), p + Vector2(-5, 4)]), color)
+		"dungeon":
+			c.draw_colored_polygon(PackedVector2Array([p + Vector2(0, -5), p + Vector2(5, 0), p + Vector2(0, 5), p + Vector2(-5, 0)]), color)
+		"trade_post":
+			c.draw_line(p + Vector2(-5, 0), p + Vector2(5, 0), color, 3.0)
+			c.draw_line(p + Vector2(0, -5), p + Vector2(0, 5), color, 3.0)
+		"facility":
+			c.draw_rect(Rect2(p - Vector2(4, 4), Vector2(8, 8)), color)
+		"village", "town":
+			c.draw_colored_polygon(PackedVector2Array([p + Vector2(0, -5), p + Vector2(5, 0), p + Vector2(3, 5), p + Vector2(-3, 5), p + Vector2(-5, 0)]), color)
+		_:
+			c.draw_circle(p, 3.6, color)
+
+
+func _build_legend() -> void:
+	# A sibling overlay keeps the existing fixed minimap/HUD footprint intact.
+	_legend = UiTheme.panel()
+	_legend.name = "MinimapLegendPanel"
+	get_parent().add_child(_legend)
+	_legend.anchor_top = 1.0
+	_legend.anchor_bottom = 1.0
+	_legend.offset_left = 10
+	_legend.offset_right = 330
+	_legend.offset_top = -570
+	_legend.offset_bottom = -(SIZE + 40)
+	var body := UiTheme.vbox(5)
+	_legend.add_child(body)
+	var head := UiTheme.hbox(8)
+	var title := UiTheme.title(Loc.t("places.legend"), 18)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	head.add_child(title)
+	_legend_labels["places.legend"] = title
+	var close := UiTheme.button("", "ui_close", Loc.t("places.close"))
+	_legend_close = close
+	close.name = "MinimapLegendClose"
+	close.pressed.connect(func() -> void: _legend.hide())
+	head.add_child(close)
+	body.add_child(head)
+	for kind: String in ["ruins", "dungeon", "trade_post", "facility", "village", "other"]:
+		var line := UiTheme.hbox(8)
+		var swatch := Control.new()
+		swatch.custom_minimum_size = Vector2(18, 20)
+		swatch.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		swatch.draw.connect(_draw_place_marker.bind(swatch, Vector2(9, 10), kind, UiTheme.GOLD))
+		line.add_child(swatch)
+		var label := UiTheme.label(Loc.t("places.legend." + kind), 13)
+		_legend_labels["places.legend." + kind] = label
+		line.add_child(label)
+		body.add_child(line)
+	var hint := UiTheme.label(Loc.t("places.map.hint"), 12, UiTheme.TEXT_DIM)
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_legend_labels["places.map.hint"] = hint
+	body.add_child(hint)
+	_legend.hide()
+	tree_exiting.connect(func() -> void: _legend.queue_free())
+
+
+func _localize() -> void:
+	_places_button.text = Loc.t("places.title")
+	_legend_button.text = Loc.t("places.legend")
+	_legend_close.tooltip_text = Loc.t("places.close")
+	for key: String in _legend_labels:
+		(_legend_labels[key] as Label).text = Loc.t(key)

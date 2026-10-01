@@ -63,7 +63,7 @@ static func to_dict(w: World) -> Dictionary:
 		"explored": Marshalls.raw_to_base64(w.explored.compress(FileAccess.COMPRESSION_ZSTD)), "explored_count": w.explored_count,
 		"chunks": chunks, "chunk_queue": queue, "units": units, "buildings": buildings, "squads": squads,
 		"sites": _v(w.sites), "loot": _v(w.loot_bags), "zones": zones, "farm": farm,
-		"notifications": _v(w.notifications.slice(maxi(0, w.notifications.size() - 30))),
+		"notifications": _v(w.notifications.slice(maxi(0, w.notifications.size() - World.NOTIFICATION_LIMIT))),
 		"colony": {"reserved": reserved, "blacklist": w.colony._blacklist},
 		"combat": {"projectiles": _v(w.combat.projectiles)},
 		"economy": {"snapshots": w.economy._snapshots, "energy_frac": w.economy._energy_frac},
@@ -159,6 +159,15 @@ static func from_dict(d: Dictionary) -> World:
 		bag["id"] = int(bag["id"])
 		w.loot_bags[int(k)] = bag
 	w.notifications = _r(d.get("notifications", []))
+	if w.notifications.size() > World.NOTIFICATION_LIMIT:
+		w.notifications = w.notifications.slice(w.notifications.size() - World.NOTIFICATION_LIMIT)
+	# Old trade records stored a raw resource map, not the localized resource parameter.
+	for note: Dictionary in w.notifications:
+		if str(note.get("key", "")) in ["sim.trade.run_returned", "sim.trade.merchant_docked"]:
+			var params: Dictionary = note.get("params", {})
+			var resources: Variant = params.get("resources")
+			if resources is Dictionary and not resources.has("resources"):
+				params["resources"] = {"resources": resources}
 	var col: Dictionary = d.get("colony", {})
 	for pair: Array in col.get("reserved", []):
 		var key: Variant = _r(pair[0])

@@ -118,16 +118,7 @@ func _dynamic_text(u: Unit) -> String:
 		return Loc.t("Now: ") + _activity(u)
 	if g.sel_building >= 0 and g.world.buildings.has(g.sel_building):
 		var b: Building = g.world.buildings[g.sel_building]
-		if not b.is_built():
-			var needs := []
-			for k: String in b.needs:
-				needs.append("%d %s" % [int(b.needs[k]), Loc.t(k)])
-			return Loc.t("Construction %d%%%s") % [int(b.progress * 100), (Loc.t("  · waiting for ") + ", ".join(needs)) if not needs.is_empty() else ""]
-		if b.type == "workshop" and not b.queue.is_empty():
-			var ad := g.world.colony._archetype(str(b.queue[0]))
-			return Loc.t("Building %s: %d%%") % [Loc.t(str(ad.get("name", b.queue[0]))), int(b.prod_t / maxf(1.0, float(ad.get("build_time", 60))) * 100)]
-		if b.type == "smelter":
-			return Loc.t("Smelting (ore %d)") % int(g.world.res.get("ore", 0)) if b.active else Loc.t("Idle — needs ore and a worker")
+		return ProductionPanel.building_text(g.world, b)
 	return ""
 
 
@@ -136,6 +127,8 @@ func _activity(u: Unit) -> String:
 		return Loc.t("fallen")
 	if u.state == Unit.State.DOWNED:
 		return Loc.t("down! (recovering)")
+	if u.kind == "airship" and u.is_player():
+		return TradeOverviewPanel.airship_text(g.world, u)
 	if u.squad_id >= 0:
 		var s := g.world.get_squad(u.squad_id)
 		return "%s — %s" % [s.name, Loc.message(s.state_message) if not s.state_message.is_empty() else Loc.t(s.state)] if s else Loc.t("in squad")
@@ -548,21 +541,7 @@ func _build_building(b: Building) -> void:
 					_body.add_child(up)
 			_body.add_child(UiTheme.label(Loc.t("Population %d / housing %d") % [g.world.population(), g.world.housing()], 14))
 		"workshop":
-			_body.add_child(UiTheme.label(Loc.t("Queue machines (paid now, built by a worker):"), 14, UiTheme.GOLD))
-			for arch: String in d.get("produces", []):
-				var ad := g.world.colony._archetype(arch)
-				var cost: Dictionary = ad.get("cost", {})
-				var btn := UiTheme.button("%s  (%s)" % [Loc.def_name("robots" if str(ad.get("kind", "")) == "robot" else "units", arch), _cost_text(cost)], str(ad.get("class_icon", "")), Loc.t(str(ad.get("description", ""))))
-				btn.disabled = not g.world.economy.can_afford(cost) or b.queue.size() >= 5
-				var a := arch
-				btn.pressed.connect(func() -> void:
-					if g.world.economy.pay(cost):
-						b.queue.append(a)
-						Sfx.play(&"ui_confirm")
-						refresh(true))
-				_body.add_child(btn)
-			if not b.queue.is_empty():
-				_body.add_child(UiTheme.label(Loc.t("Queue: ") + ", ".join(PackedStringArray(b.queue.map(func(x: String) -> String: return Loc.t(str(g.world.colony._archetype(x).get("name", x)))))), 14))
+			ProductionPanel.build_controls(_body, g, hud, b, func() -> void: refresh(true))
 			GearworkPanel.build(_body, g, hud)
 		"sky_dock":
 			_body.add_child(UiTheme.label(Loc.t("Merchant airships visit docks every few days."), 14, UiTheme.TEXT_DIM))

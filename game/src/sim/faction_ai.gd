@@ -691,7 +691,7 @@ func _open_trade(u: Unit) -> void:
 		it["uid"] = w.new_id()
 		trade_offers.append({"item": it, "price": maxi(5, int(float(it.get("value", 10)) * 1.25))})
 	var result := trade(u)
-	w.notify_key("sim.trade.merchant_docked", {"unit_name": u.name, "resources": result}, "good", u.pos, {"trader": u.id})
+	w.notify_key("sim.trade.merchant_docked", {"unit_name": u.name, "resources": {"resources": result}}, "good", u.pos, {"trader": u.id})
 
 
 ## Buys an offered item with gold. Returns "" or a reason.

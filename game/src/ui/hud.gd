@@ -23,6 +23,12 @@ var build_menu: BuildMenu
 var pause_menu: PauseMenu
 var roster: RosterPanel
 var villages: VillageHud
+var history: HistoryPanel
+var production: ProductionPanel
+var trade_overview: TradeOverviewPanel
+var places: PlacesPanel
+var _management_panels: Dictionary = {}
+var _management_buttons: Dictionary = {}
 var _note_queue: Array[Dictionary] = []
 var _res_labels: Dictionary = {}
 var _rate_labels: Dictionary = {}
@@ -131,6 +137,7 @@ func setup(game: Game) -> void:
 	_build_trade_panel()
 	_build_quest_tracker()
 	_build_touch_controls()
+	_build_management()
 	get_viewport().size_changed.connect(_update_responsive)
 	squad_panel.minimum_size_changed.connect(_update_command_bar_height.call_deferred)
 	_command_panel.minimum_size_changed.connect(_update_command_bar_height.call_deferred)
@@ -157,6 +164,10 @@ func setup(game: Game) -> void:
 func _refresh_language() -> void:
 	_update_top()
 	_squad_toggle.text = Loc.t("Squad menu")
+	for kind: String in _management_buttons:
+		(_management_buttons[kind] as Button).text = Loc.t(_management_title(kind))
+	for panel: PanelContainer in _management_panels.values():
+		panel.call("refresh", true)
 	_on_mode(g.input_ctl.mode)
 	info_panel.refresh(true)
 	squad_panel.refresh(true)
@@ -189,6 +200,74 @@ func _refresh_language() -> void:
 func is_mouse_over_ui() -> bool:
 	var c := root.get_viewport().gui_get_hovered_control()
 	return c != null and c != root
+
+
+func _management_title(kind: String) -> String:
+	return {"history": "history.title", "production": "management.production",
+		"trade": "management.trade", "places": "management.places"}.get(kind, kind)
+
+
+func _build_management() -> void:
+	history = HistoryPanel.new()
+	production = ProductionPanel.new()
+	trade_overview = TradeOverviewPanel.new()
+	places = PlacesPanel.new()
+	_management_panels = {"history": history, "production": production, "trade": trade_overview, "places": places}
+	for panel: PanelContainer in _management_panels.values():
+		root.add_child(panel)
+		panel.call("setup", g, self)
+	var toolbar := UiTheme.panel()
+	toolbar.name = "ManagementToolbar"
+	root.add_child(toolbar)
+	toolbar.anchor_left = 0.5
+	toolbar.anchor_right = 0.5
+	toolbar.offset_left = -330
+	toolbar.offset_right = 330
+	toolbar.offset_top = 72
+	var row := UiTheme.hbox(8)
+	toolbar.add_child(row)
+	for entry: Array in [["history", "ui_scroll"], ["production", "bld_workshop"],
+			["trade", "cmd_trade"], ["places", "ui_search"]]:
+		var kind := str(entry[0])
+		var button := UiTheme.button(Loc.t(_management_title(kind)), str(entry[1]))
+		button.name = "Open_" + kind
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button.custom_minimum_size = Vector2(120, 36)
+		button.pressed.connect(func() -> void: open_management(kind))
+		row.add_child(button)
+		_management_buttons[kind] = button
+
+
+func open_management(kind: String) -> void:
+	if not _management_panels.has(kind):
+		return
+	var panel: PanelContainer = _management_panels[kind]
+	var was_open := panel.visible
+	_close_management()
+	if was_open:
+		return
+	g.input_ctl.set_mode("")
+	build_menu.hide()
+	roster.hide()
+	while villages.close_top():
+		pass
+	_help.hide()
+	if _trade_panel.visible:
+		_dismiss_trade()
+	root.move_child(panel, -1)
+	panel.call("open")
+	Sfx.play(&"ui_select")
+
+
+func _close_management() -> bool:
+	var closed := false
+	for panel: PanelContainer in _management_panels.values():
+		if panel.visible:
+			panel.call("close_window")
+			closed = true
+	return closed
+
+
 
 
 # --- top bar -----------------------------------------------------------------------------------
@@ -381,6 +460,8 @@ func _update_responsive() -> void:
 	var size := App.screen_size()
 	var layout_size := get_viewport().get_visible_rect().size
 	_compact = size.x < 950.0 or size.y < 560.0
+	for panel: PanelContainer in _management_panels.values():
+		panel.call("layout")
 	_recipient_label.custom_minimum_size = Vector2(100, 0) if _compact else Vector2(150, 0)
 	squad_panel.set_compact(_compact)
 	if is_instance_valid(_portrait_panel):
@@ -774,9 +855,16 @@ func _note_clicked(n: Dictionary) -> void:
 				g.select_units([u.id])
 			g.focus_pos(u.pos)
 			return
-	if n.has("site"):
+	if n.has("building") and g.world.buildings.has(int(n["building"])):
+		var building: Building = g.world.buildings[int(n["building"])]
+		g.select_building(building.id)
+		g.focus_pos(building.center())
+		return
+	if n.has("site") and g.world.sites.has(int(n["site"])):
+		var site: Dictionary = g.world.sites[int(n["site"])]
 		g.select_site(int(n["site"]))
-	if n.get("pos") is Vector2:
+		g.focus_pos(Vector2(site["center"]))
+	elif n.get("pos") is Vector2:
 		g.focus_pos(n["pos"])
 
 
@@ -1242,6 +1330,17 @@ func ability_button_for(ability_id: String) -> Button:
 	return null
 
 
+func _input(event: InputEvent) -> void:
+	# LineEdit consumes Escape before _unhandled_key_input; close the reading panel first.
+	if not event.is_action_pressed("cancel") or pause_menu.visible:
+		return
+	if _close_management():
+		get_viewport().set_input_as_handled()
+	elif minimap._legend.visible:
+		minimap._legend.hide()
+		get_viewport().set_input_as_handled()
+
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	if get_viewport().gui_get_focus_owner() is LineEdit:
 		return
@@ -1297,7 +1396,7 @@ func _build_trade_panel() -> void:
 	_trade_panel.anchor_right = 0.5
 	_trade_panel.offset_left = -300
 	_trade_panel.offset_right = 300
-	_trade_panel.offset_top = 76
+	_trade_panel.offset_top = 140
 	var v := UiTheme.vbox(6)
 	_trade_panel.add_child(v)
 	var head := UiTheme.hbox(8)
@@ -1317,10 +1416,23 @@ func _dismiss_trade() -> void:
 	_trade_dismissed = g.world.factions.trader_id
 	_trade_panel.hide()
 
+func show_merchant_wares() -> void:
+	_close_management()
+	_trade_dismissed = -2
+	_trade_count = -1
+	root.move_child(_trade_panel, -1)
+	_update_trade()
+
+
 
 func _update_trade() -> void:
 	var offers: Array = g.world.factions.trade_offers
-	_trade_panel.visible = not offers.is_empty() and _trade_dismissed != g.world.factions.trader_id
+	var reading := false
+	for kind: String in _management_panels:
+		if (_management_panels[kind] as PanelContainer).visible:
+			reading = true
+			break
+	_trade_panel.visible = not reading and not offers.is_empty() and _trade_dismissed != g.world.factions.trader_id
 	if offers.size() == _trade_count:
 		return
 	_trade_count = offers.size()
@@ -1374,7 +1486,7 @@ func _build_overlays() -> void:
 	_mode_hint.anchor_right = 0.5
 	_mode_hint.offset_left = -400
 	_mode_hint.offset_right = 400
-	_mode_hint.offset_top = 70
+	_mode_hint.offset_top = 124
 	_mode_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	root.add_child(_mode_hint)
 	_help = UiTheme.panel()
@@ -1459,6 +1571,8 @@ func _process(delta: float) -> void:
 		squad_panel.refresh(false)
 		roster.refresh()
 		villages.refresh()
+		for panel: PanelContainer in _management_panels.values():
+			panel.call("refresh")
 	var ic := g.input_ctl
 	_box.visible = ic.dragging
 	if ic.dragging:
