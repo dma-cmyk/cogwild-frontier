@@ -1584,7 +1584,12 @@ func _process(delta: float) -> void:
 	elif ic.mode.begins_with("zone:"):
 		var n := ic.zone_count(ic.mode.substr(5))
 		if n >= 0:
-			tip = Loc.t("%d %s") % [n, Loc.t("tiles" if ic.mode.ends_with("farm") else "resource nodes")]
+			if ic.mode.ends_with("farm"):
+				tip = Loc.t("zones.farm_preview", {"count": n})
+			elif ic.mode.ends_with("clear"):
+				tip = Loc.t("zones.erase_preview", {"count": n})
+			else:
+				tip = Loc.t("%d %s") % [n, Loc.t("resource nodes")]
 	var touch_ui := App.is_touch() or App.is_mobile_web()
 	if touch_ui and ic.mode == "" and not ic.is_long_pressing():
 		tip = ""  # no hover on touch screens: the tip shows while a finger is held down

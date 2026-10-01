@@ -241,9 +241,10 @@ func _draw_markers(c: Control) -> void:
 ## Gather zones: the minimap is the only view wide enough to hold them all at once.
 func _draw_zones(c: Control) -> void:
 	for z: Dictionary in g.world.zones:
-		var r: Rect2i = z["rect"]
+		var outline: PackedVector2Array = z.get("outline", PackedVector2Array())
 		var col: Color = WorldView.ZONE_COLORS.get(str(z["type"]), Color.WHITE)
-		c.draw_rect(Rect2(_w2m(Vector2(r.position)), _w2m(Vector2(r.end)) - _w2m(Vector2(r.position))), Color(col, 0.75), false, 1.5)
+		for i in range(0, outline.size() - 1, 2):
+			c.draw_line(_w2m(outline[i]), _w2m(outline[i + 1]), Color(col, 0.75), 1.5)
 
 
 ## Where the squads the command bar addresses were sent. An explore region is wider than the

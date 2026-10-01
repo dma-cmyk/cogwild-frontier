@@ -328,18 +328,16 @@ func _update_harvest(w: World) -> void:
 		if not zone_counts.has(type):
 			continue
 		zone_counts[type] = int(zone_counts[type]) + 1
-		var rect: Rect2i = zone["rect"]
-		for x in range(rect.position.x, rect.end.x):
-			for y in range(rect.position.y, rect.end.y):
-				var tile := Vector2i(x, y)
-				if visited.has(tile):
-					continue
-				var resource := w.res_at(tile)
-				if Tiles.zone_for(resource) != type or w.res_amount_at(tile) <= 0:
-					continue
-				visited[tile] = true
-				var output := str(Tiles.res_info(resource).get("yield", ""))
-				nodes[output] = int(nodes.get(output, 0)) + w.res_amount_at(tile)
+		var tiles: Dictionary = zone.get("tiles", {})
+		for tile: Vector2i in tiles:
+			if visited.has(tile):
+				continue
+			var resource := w.res_at(tile)
+			if Tiles.zone_for(resource) != type or w.res_amount_at(tile) <= 0:
+				continue
+			visited[tile] = true
+			var output := str(Tiles.res_info(resource).get("yield", ""))
+			nodes[output] = int(nodes.get(output, 0)) + w.res_amount_at(tile)
 	var harvest_lines := PackedStringArray([Loc.t("production.harvest")])
 	for type: String in zone_counts:
 		harvest_lines.append(Loc.t("production.zones", {"type": Loc.t("production.zone." + type), "count": zone_counts[type]}))

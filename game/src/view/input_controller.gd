@@ -485,6 +485,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _left_press(p: Vector2) -> void:
 	_left_down = true
 	drag_start = p
+	if mode.begins_with("zone:"):
+		hover_ground = g.rig.screen_to_ground(p)
 	if mode.begins_with("zone:") and hover_ground is Vector3:
 		zone_start = _tile_at(hover_ground)
 	if _is_line_build() and hover_ground is Vector3:
@@ -511,6 +513,7 @@ func _left_release(p: Vector2, shift: bool) -> void:
 		_place(mode.substr(6), shift)
 		return
 	if mode.begins_with("zone:"):
+		hover_ground = g.rig.screen_to_ground(p)
 		_finish_zone(mode.substr(5))
 		return
 	if was_drag:
@@ -940,11 +943,15 @@ func zone_count(type: String) -> int:
 	var n := 0
 	for x in range(r.position.x, r.end.x):
 		for z in range(r.position.y, r.end.y):
-			var rr := g.world.res_at(Vector2i(x, z))
+			var tile := Vector2i(x, z)
 			if type == "farm":
-				n += 1
-			elif rr != Tiles.Res.NONE and Tiles.zone_for(rr) == type:
-				n += 1
+				n += int(g.world.can_farm_at(tile))
+			elif type == "clear":
+				n += int(g.world.zone_type_at(tile) != "")
+			else:
+				var rr := g.world.res_at(tile)
+				if rr != Tiles.Res.NONE and Tiles.zone_for(rr) == type:
+					n += 1
 	return n
 
 
@@ -955,10 +962,11 @@ func _finish_zone(type: String) -> void:
 	zone_start = null
 	if type == "clear":
 		var n := g.world.remove_zones_in(r)
-		g.toast.emit(Loc.t("%d zone(s) removed.") % n, "info")
+		g.toast.emit(Loc.t("zones.erased", {"count": n}), "info")
+		Sfx.play(&"ui_confirm" if n > 0 else &"ui_error")
 		return
 	if r.size.x * r.size.y > 900:
-		g.toast.emit(Loc.t("Zone too large (max 30×30)."), "bad")
+		g.toast.emit(Loc.t("zones.too_large"), "bad")
 		return
 	var z := g.world.add_zone(type, r)
 	if z.is_empty():

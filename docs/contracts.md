@@ -456,3 +456,18 @@ Durability affects effective weapon damage/armor; the saved item's nominal stats
   scan generation data or reveal unknown locations. Selecting a row focuses its real target
   without issuing orders. `Minimap` shares names/types, distinguishes site/facility shapes,
   and excludes other maps from markers. Marker clicks select/focus, drags pan, right clicks order.
+
+## 9. Exact work-zone shapes
+
+- `World.zones` stores exact `tiles` plus derived `rect` and exterior `outline`; `rect` is never
+  a membership mask. `ZoneShape` uses four-neighbor connectivity, so same-kind edge-touching
+  paint merges transitively while diagonal-only contact remains separate. Holes and L-shapes stay
+  exact, including the worker candidate list.
+- `World.add_zone(type, rect)` preserves the public input API and merges only the painted tile
+  set. `remove_zones_in(rect)` removes only intersecting tiles, splits disconnected remnants,
+  preserves the first component's id, and cancels only unstarted affected jobs. Carried cargo is
+  not discarded. Farm state is not regenerated when repainting or loading.
+- Saves write exact tile pairs; legacy rectangle saves remain readable. Legacy farm zones are
+  reconstructed only from the saved farm mask, so loading cannot create new crops.
+- World and minimap render the cached exterior edge pairs, avoiding internal seams and keeping
+  holes visible. Production and ColonyAI enumerate exact tiles rather than bounding rectangles.

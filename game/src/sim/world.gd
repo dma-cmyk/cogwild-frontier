@@ -30,7 +30,7 @@ signal farm_changed(tile: Vector2i)
 const TICK := 0.1
 const DAY_TICKS := 2400  # 240 s per day at x1
 const S := ChunkData.S
-const SAVE_VERSION := 1
+const SAVE_VERSION := 2
 const RESOURCES := ["wood", "stone", "ore", "metal", "food", "gold", "energy"]
 const MAX_SQUADS := 9
 const NOTIFICATION_LIMIT := 500  # retained both in memory and in saves
@@ -56,7 +56,7 @@ var squads: Array[Squad] = []
 var _crossing_index: Dictionary = {}  # Vector2i tile -> bridge/stairs Building
 var sites: Dictionary = {}  # id -> runtime site state
 var loot_bags: Dictionary = {}
-var zones: Array = []  # {id, type, rect: Rect2i}
+var zones: Array = []  # {id, type, tiles: Vector2i->true, rect: derived bounds, outline: exterior edge pairs}
 var farm: Dictionary = {}  # Vector2i -> {stage, growth, crop}
 var res: Dictionary = {}
 var armory: Array = []  # unequipped items owned by the colony
@@ -995,50 +995,148 @@ func cancel_building(b: Building) -> void:
 # --- zones & farms -------------------------------------------------------------------------
 
 func add_zone(type: String, rect: Rect2i) -> Dictionary:
-	var z := {"id": new_id(), "type": type, "rect": rect}
+	var tiles: Dictionary = {}
 	if type == "farm":
-		var count := 0
 		for x in range(rect.position.x, rect.end.x):
-			for zz in range(rect.position.y, rect.end.y):
-				var t := Vector2i(x, zz)
-				if farm.has(t) or not is_explored(t) or blocked_at(t):
+			for y in range(rect.position.y, rect.end.y):
+				var tile := Vector2i(x, y)
+				if farm.has(tile):
+					tiles[tile] = true
 					continue
-				var tt := terrain_at(t)
-				if not (tt in [Tiles.GRASS, Tiles.MEADOW, Tiles.DIRT, Tiles.FOREST, Tiles.FARMLAND]):
+				if not can_farm_at(tile):
 					continue
-				var r := res_at(t)
-				if r != Tiles.Res.NONE and Tiles.res_info(r).get("solid", false):
-					continue
-				farm[t] = {"stage": 1 if tt == Tiles.FARMLAND else 0, "growth": 0.0, "crop": "wheat" if (x + zz) % 7 != 0 else "veg"}
-				count += 1
-		if count == 0:
-			return {}
-	zones.append(z)
-	zones_changed.emit()
-	return z
+				var terrain := terrain_at(tile)
+				farm[tile] = {"stage": 1 if terrain == Tiles.FARMLAND else 0, "growth": 0.0,
+					"crop": "wheat" if (x + y) % 7 != 0 else "veg"}
+				tiles[tile] = true
+				farm_changed.emit(tile)
+	else:
+		tiles = ZoneShape.tiles_from_rect(rect)
+	if tiles.is_empty():
+		return {}
+	return _upsert_zone_tiles(type, tiles)
+
+
+func can_farm_at(tile: Vector2i) -> bool:
+	if farm.has(tile) or not is_explored(tile) or blocked_at(tile):
+		return false
+	var terrain := terrain_at(tile)
+	if terrain not in [Tiles.GRASS, Tiles.MEADOW, Tiles.DIRT, Tiles.FOREST, Tiles.FARMLAND]:
+		return false
+	var resource := res_at(tile)
+	return resource == Tiles.Res.NONE or not bool(Tiles.res_info(resource).get("solid", false))
+
+
+## Rebuild one same-kind connected shape, preserving the earliest existing id and array precedence.
+## preferred_id is used only while restoring saved zones; it never creates farm state.
+func _upsert_zone_tiles(type: String, tiles: Dictionary, preferred_id: int = -1) -> Dictionary:
+	var components := ZoneShape.connected_components(tiles)
+	var primary: Dictionary = {}
+	var changed := false
+	var component_id := preferred_id
+	for component: Dictionary in components:
+		var result := _upsert_connected_zone_tiles(type, component, component_id)
+		if primary.is_empty():
+			primary = result["zone"]
+		changed = changed or bool(result["changed"])
+		component_id = -1
+	if changed:
+		zones_changed.emit()
+	return primary
+
+
+func _upsert_connected_zone_tiles(type: String, tiles: Dictionary, preferred_id: int) -> Dictionary:
+	var merged_tiles := tiles.duplicate()
+	var absorbed := {}
+	var first_index := zones.size()
+	var expanded := true
+	while expanded:
+		expanded = false
+		for index in zones.size():
+			var existing: Dictionary = zones[index]
+			var existing_id := int(existing["id"])
+			if str(existing["type"]) != type or absorbed.has(existing_id):
+				continue
+			var existing_tiles: Dictionary = existing["tiles"]
+			if not ZoneShape.touches(merged_tiles, existing_tiles):
+				continue
+			absorbed[existing_id] = existing
+			first_index = mini(first_index, index)
+			for tile: Variant in existing_tiles:
+				merged_tiles[tile] = true
+			expanded = true
+	var zone_id := preferred_id
+	for existing_id: int in absorbed:
+		zone_id = existing_id if zone_id < 0 else mini(zone_id, existing_id)
+	if absorbed.size() == 1:
+		var only: Dictionary = absorbed.values()[0]
+		if int(only["id"]) == zone_id and only["tiles"] == merged_tiles:
+			return {"zone": only, "changed": false}
+	if zone_id < 0:
+		zone_id = new_id()
+	var merged := ZoneShape.make_zone(zone_id, type, merged_tiles)
+	var replacement: Array = []
+	for index in zones.size():
+		var existing: Dictionary = zones[index]
+		if absorbed.has(int(existing["id"])):
+			if index == first_index:
+				replacement.append(merged)
+			continue
+		replacement.append(existing)
+	if absorbed.is_empty():
+		replacement.append(merged)
+	zones = replacement
+	return {"zone": merged, "changed": true}
+
+
+## Restores exact saved membership without applying current farm eligibility or changing farm state.
+func restore_zone(id: int, type: String, tiles: Dictionary) -> Dictionary:
+	return _upsert_zone_tiles(type, tiles, id)
 
 
 func remove_zones_in(rect: Rect2i) -> int:
-	var removed := 0
-	for z: Dictionary in zones.duplicate():
-		var zr: Rect2i = z["rect"]
-		if zr.intersects(rect):
-			zones.erase(z)
-			removed += 1
-	for t: Vector2i in farm.keys():
-		if rect.has_point(t):
-			farm.erase(t)
-			farm_changed.emit(t)
-	if removed > 0:
+	var removed_tiles := {}
+	var changed := false
+	var replacement: Array = []
+	for zone: Dictionary in zones:
+		var remaining := {}
+		for tile: Vector2i in zone["tiles"]:
+			if rect.has_point(tile):
+				removed_tiles[tile] = true
+			else:
+				remaining[tile] = true
+		if remaining.size() == zone["tiles"].size():
+			replacement.append(zone)
+			continue
+		changed = true
+		var components := ZoneShape.connected_components(remaining)
+		for index in components.size():
+			var component_id := int(zone["id"]) if index == 0 else new_id()
+			replacement.append(ZoneShape.make_zone(component_id, str(zone["type"]), components[index]))
+	zones = replacement
+	for tile: Vector2i in farm.keys():
+		if rect.has_point(tile):
+			farm.erase(tile)
+			farm_changed.emit(tile)
+	if changed:
 		zones_changed.emit()
-	return removed
+	colony.cancel_unstarted_zone_jobs()
+	return removed_tiles.size()
 
 
-func zone_type_at(t: Vector2i) -> String:
-	for z: Dictionary in zones:
-		if (z["rect"] as Rect2i).has_point(t):
-			return z["type"]
+func has_zone_tile(type: String, tile: Vector2i) -> bool:
+	for zone: Dictionary in zones:
+		if str(zone["type"]) == type and ZoneShape.contains(zone, tile):
+			return true
+	return false
+
+
+func zone_type_at(tile: Vector2i) -> String:
+	for zone: Dictionary in zones:
+		if ZoneShape.contains(zone, tile):
+			return str(zone["type"])
 	return ""
+
 
 
 # --- squads --------------------------------------------------------------------------------

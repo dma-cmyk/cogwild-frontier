@@ -43,6 +43,26 @@ func _finish(u: Unit) -> void:
 	u.ai_cd = 0.3
 
 
+## Cancel only workers still walking to a designation that was erased. Started work completes, and
+## release deliberately leaves any carried cargo available for the next delivery assignment.
+func cancel_unstarted_zone_jobs() -> void:
+	for u: Unit in w.unit_list:
+		var job := u.job
+		if job.is_empty() or str(job.get("phase", "")) != "go":
+			continue
+		var type := str(job.get("type", ""))
+		var tile: Vector2i = job.get("tile", Vector2i.ZERO)
+		var invalid := false
+		if type == "farm":
+			invalid = not w.farm.has(tile)
+		elif type == "gather" and bool(job.get("designated", false)):
+			invalid = not w.has_zone_tile(str(job.get("zone_type", "")), tile)
+		if invalid:
+			w.stop_unit(u)
+			u.state = Unit.State.IDLE
+			_finish(u)
+
+
 # --- assignment ----------------------------------------------------------------------------
 
 func tick() -> void:
@@ -210,15 +230,13 @@ func _collect() -> Array:
 			var zt: String = z["type"]
 			if zt == "farm":
 				continue
-			var rect: Rect2i = z["rect"]
-			for x in range(rect.position.x, rect.end.x):
-				for zz in range(rect.position.y, rect.end.y):
-					var t := Vector2i(x, zz)
-					var r := w.res_at(t)
-					if r == Tiles.Res.NONE or Tiles.zone_for(r) != zt or reserved.has(t) or w.res_amount_at(t) <= 0:
-						continue
-					var info := Tiles.res_info(r)
-					out.append({"type": "gather", "key": t, "tile": t, "pos": Vector2(t) + Vector2(0.5, 0.5), "base": gw, "skill": str(info["skill"])})
+			for zone_tile: Vector2i in z["tiles"]:
+				var r := w.res_at(zone_tile)
+				if r == Tiles.Res.NONE or Tiles.zone_for(r) != zt or reserved.has(zone_tile) or w.res_amount_at(zone_tile) <= 0:
+					continue
+				var info := Tiles.res_info(r)
+				out.append({"type": "gather", "key": zone_tile, "tile": zone_tile, "pos": Vector2(zone_tile) + Vector2(0.5, 0.5),
+					"base": gw, "skill": str(info["skill"]), "designated": true, "zone_type": zt})
 	return out
 
 

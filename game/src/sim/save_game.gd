@@ -41,8 +41,10 @@ static func to_dict(w: World) -> Dictionary:
 		squads.append(s.to_dict())
 	var zones: Array = []
 	for z: Dictionary in w.zones:
-		var r: Rect2i = z["rect"]
-		zones.append({"id": z["id"], "type": z["type"], "rect": [r.position.x, r.position.y, r.size.x, r.size.y]})
+		var saved_tiles: Array = []
+		for tile: Vector2i in ZoneShape.sorted_tiles(z["tiles"]):
+			saved_tiles.append([tile.x, tile.y])
+		zones.append({"id": int(z["id"]), "type": str(z["type"]), "tiles": saved_tiles})
 	var farm: Array = []
 	for t: Vector2i in w.farm:
 		var f: Dictionary = w.farm[t]
@@ -133,12 +135,30 @@ static func from_dict(d: Dictionary) -> World:
 	for bd: Dictionary in d.get("buildings", []):
 		var b := Building.from_dict(bd)
 		w.buildings[b.id] = b
-	w.rebuild_crossing_index()
-	for z: Dictionary in d.get("zones", []):
-		var r: Array = z["rect"]
-		w.zones.append({"id": int(z["id"]), "type": str(z["type"]), "rect": Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3]))})
+	var saved_zones: Array = d.get("zones", [])
 	for f: Array in d.get("farm", []):
 		w.farm[Vector2i(int(f[0]), int(f[1]))] = {"stage": int(f[2]), "growth": float(f[3]), "crop": str(f[4])}
+	# Old saves stored rectangles. Resolve farm rectangles against the loaded farm mask so migration
+	# never regenerates newly eligible crops or changes growth/stage/crop state.
+	for saved_zone: Dictionary in saved_zones:
+		var zone_type := str(saved_zone.get("type", ""))
+		var tiles := {}
+		if saved_zone.has("tiles"):
+			for pair: Array in saved_zone["tiles"]:
+				if pair.size() >= 2:
+					tiles[Vector2i(int(pair[0]), int(pair[1]))] = true
+		elif saved_zone.has("rect"):
+			var saved_rect: Array = saved_zone["rect"]
+			if saved_rect.size() >= 4:
+				var rect := Rect2i(int(saved_rect[0]), int(saved_rect[1]), int(saved_rect[2]), int(saved_rect[3]))
+				if zone_type == "farm":
+					for tile: Vector2i in w.farm:
+						if rect.has_point(tile):
+							tiles[tile] = true
+				else:
+					tiles = ZoneShape.tiles_from_rect(rect)
+		if not tiles.is_empty():
+			w.restore_zone(int(saved_zone.get("id", 0)), zone_type, tiles)
 	for key_str: String in d.get("chunks", {}):
 		var parts := key_str.split(",")
 		w._pending_mods[Vector2i(int(parts[0]), int(parts[1]))] = d["chunks"][key_str]
@@ -216,7 +236,8 @@ static func parse(text: String) -> Dictionary:
 	if json.parse(text) != OK or not (json.data is Dictionary):
 		return {"error": "Save file is damaged"}
 	var d: Dictionary = json.data
-	if int(d.get("version", 0)) != World.SAVE_VERSION:
+	var version := int(d.get("version", 0))
+	if version < 1 or version > World.SAVE_VERSION:
 		return {"error": "Unsupported save version %s" % str(d.get("version", "?"))}
 	for k: String in ["seed", "tick", "units", "buildings", "explored", "res"]:
 		if not d.has(k):

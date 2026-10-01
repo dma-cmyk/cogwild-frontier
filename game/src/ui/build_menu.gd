@@ -5,7 +5,7 @@ extends PanelContainer
 
 const ZONES := [["logging", "Logging", "zone_logging", "Fell trees for wood."], ["mining", "Mining", "zone_mining", "Quarry rocks, ore and aether crystals."],
 	["forage", "Forage", "zone_forage", "Pick berry bushes for food."], ["farm", "Farm", "zone_farm", "Till a field: plant, grow and harvest crops."],
-	["clear", "Clear zones", "zone_clear", "Remove zones in a rectangle."]]
+	["clear", "Clear zones", "zone_clear", "zones.erase_hint"]]
 const PRIORITIES := [["build", "Build"], ["haul", "Haul materials"], ["farm", "Farm"], ["gather", "Gather"], ["operate", "Operate workshops"]]
 const LEVEL_NAMES := ["Off", "Low", "Normal", "High"]
 
@@ -105,10 +105,14 @@ func _rebuild() -> void:
 			var b := UiTheme.button(Loc.t(str(z[1])), str(z[2]), Loc.t(str(z[3])))
 			b.custom_minimum_size = Vector2(0, 44)
 			var zid := str(z[0])
+			b.name = "ZoneTool_" + zid
 			b.pressed.connect(func() -> void:
 				visible = false
 				g.input_ctl.set_mode("zone:" + zid))
 			zones.add_child(b)
+		var zone_help := UiTheme.label(Loc.t("zones.paint_help"), 14, UiTheme.TEXT_DIM)
+		zone_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_box.add_child(zone_help)
 		_box.add_child(UiTheme.label(Loc.t("Work priorities"), 16, UiTheme.GOLD))
 		for p: Array in PRIORITIES:
 			var row := UiTheme.hbox(4)

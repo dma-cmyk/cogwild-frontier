@@ -469,7 +469,13 @@ const ZONE_COLORS := {"logging": Color("#7fd36b"), "mining": Color("#c9b7a0"), "
 ## zone tool is open.
 func _rebuild_zones() -> void:
 	_zones_dirty = false
-	if w.zones.is_empty():
+	var has_outline := false
+	for z: Dictionary in w.zones:
+		var outline: PackedVector2Array = z.get("outline", PackedVector2Array())
+		if outline.size() >= 2:
+			has_outline = true
+			break
+	if not has_outline:
 		_zone_mesh.mesh = null
 		return
 	var im := ImmediateMesh.new()
@@ -483,12 +489,13 @@ func _rebuild_zones() -> void:
 	var alpha := 1.0 if show_zones else 0.85
 	im.surface_begin(Mesh.PRIMITIVE_TRIANGLES, mat)
 	for z: Dictionary in w.zones:
-		var r: Rect2i = z["rect"]
+		var outline: PackedVector2Array = z.get("outline", PackedVector2Array())
+		if outline.size() < 2:
+			continue
 		var col: Color = ZONE_COLORS.get(str(z["type"]), Color.WHITE)
 		col.a = alpha
-		var pts := [Vector2(r.position), Vector2(r.end.x, r.position.y), Vector2(r.end), Vector2(r.position.x, r.end.y)]
-		for i in 4:
-			OrderMarkers.ribbon(im, w, pts[i], pts[(i + 1) % 4], col)
+		for i in range(0, outline.size() - 1, 2):
+			OrderMarkers.ribbon(im, w, outline[i], outline[i + 1], col)
 	im.surface_end()
 	_zone_mesh.mesh = im
 

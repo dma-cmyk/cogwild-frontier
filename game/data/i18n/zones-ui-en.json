@@ -1,0 +1,8 @@
+{
+  "zones.farm_preview": "{count} newly cultivable tiles",
+  "zones.erase_preview": "Erase designations from {count} tiles",
+  "zones.paint_help": "Same-kind zones merge when their edges touch. Diagonal contact stays separate. Erasing removes only the dragged area and keeps the rest. Farm preview counts newly cultivable tiles.",
+  "zones.erase_hint": "Erase only the dragged area. Remaining tiles stay designated; disconnected pieces become separate zones.",
+  "zones.erased": "Removed zone designations from {count} tiles.",
+  "zones.too_large": "Paint up to 900 tiles at once. Add a neighboring area to expand the zone."
+}
