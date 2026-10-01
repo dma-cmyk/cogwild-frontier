@@ -4,5 +4,7 @@
 	"bandit_archer": {"name": "盗賊弓兵"},
 	"bandit_captain": {"name": "盗賊隊長"},
 	"merchant": {"name": "商人"},
-	"wanderer": {"name": "放浪者", "description": "荒野で野営する旅人。親切に接してくれる入植地に加わる。"}
+	"wanderer": {"name": "放浪者", "description": "荒野で野営する旅人。親切に接してくれる入植地に加わる。"},
+	"dungeon_master": {"name": "地下庫の主", "description": "最下層を守る古代の巨人。予兆つきの大地砕きと守兵召喚を使い、体力が半分になると激怒する。"},
+	"wild_colossus": {"name": "苔背の巨獣", "description": "野外の縄張りを歩く巨獣。近づく者を追い、離れれば諦める。入植地の周囲には踏み込まない。"}
 }

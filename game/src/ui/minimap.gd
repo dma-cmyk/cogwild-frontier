@@ -179,7 +179,7 @@ func _draw_markers(c: Control) -> void:
 			c.draw_colored_polygon(PackedVector2Array([p + Vector2(0, -4.4), p + Vector2(4.4, 0),
 				p + Vector2(2.8, 4.4), p + Vector2(-2.8, 4.4), p + Vector2(-4.4, 0)]), tint)
 			continue
-		var col: Color = Color("#ff5a4a") if (st.get("hostile", false) and not st.get("cleared", false)) else ({"trade_post": Color("#7dff8a"), "ruins": Color("#c7a8ff"), "wreck": Color("#ffe07a")}.get(str(st["kind"]), Color("#e8e0c8")))
+		var col: Color = Color("#ff5a4a") if (st.get("hostile", false) and not st.get("cleared", false)) else ({"trade_post": Color("#7dff8a"), "ruins": Color("#c7a8ff"), "wreck": Color("#ffe07a"), "dungeon": Color("#d98cff")}.get(str(st["kind"]), Color("#e8e0c8")))
 		c.draw_circle(p, 5.0, Color(0, 0, 0, 0.6))
 		c.draw_circle(p, 3.6, col)
 	for bag: Dictionary in w.loot_bags.values():

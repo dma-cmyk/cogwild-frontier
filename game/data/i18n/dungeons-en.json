@@ -1,0 +1,17 @@
+{
+  "site_kind.dungeon": "Dungeon",
+  "site_kind.dungeon_floor": "Dungeon floor",
+  "sim.dungeon.appeared": "A dungeon has opened somewhere to the {direction}: {site_name}. Difficulty {difficulty}.",
+  "sim.dungeon.entered": "Entered {site_name} (floor {floor} of {floors}).",
+  "sim.dungeon.floor": "{site_name}: floor {floor} of {floors}.",
+  "sim.dungeon.floor_cleared": "Floor {floor} of {site_name} is clear.",
+  "sim.dungeon.cleared": "The master of {site_name} has fallen! The dungeon will close soon.",
+  "sim.dungeon.collapsed": "{site_name} has collapsed.",
+  "sim.squad.state.delving": "Delving",
+  "sim.squad.state.travelling": "Travelling",
+  "dungeon.theme.brigands": "Brigand hideout",
+  "dungeon.theme.goblins": "Goblin warren",
+  "dungeon.theme.reptiles": "Reptile nest",
+  "dungeon.theme.beastfolk": "Beastfolk den",
+  "dungeon.theme.machines": "Machine vault"
+}

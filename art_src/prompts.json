@@ -4691,6 +4691,16 @@
   ]
  },
  {
+  "id": "chip_giants",
+  "kind": "chip",
+  "args": {
+   "subject": "A clean game sprite sheet with exactly SIX equal columns and FOUR equal rows, 24 separate full-body figures on solid pure magenta #FF00FF. Columns 1-3 show one enormous ancient dungeon master: a towering dark stone and tarnished brass armored golem, horned helmet, orange furnace heart, heavy mace, broken chains. Columns 4-6 show one wild roaming giant beast: a massive moss-backed brown bear with ivory antlers, rocky shoulder plates, luminous amber eyes, no weapons or riders. Each creature repeats consistently in every row. Rows from top: facing down towards viewer, facing left, facing right, facing up away from viewer. In each group of three columns show step-left, standing, step-right walk poses. Exactly 6 columns x 4 rows. Entire bodies including feet, antlers and mace inside each cell with generous margins, figures do not touch. No text, labels, cell borders, ground, cast shadows or environment. Detailed painterly pixel-art RPG strategy sprites, crisp dark outlines, warm muted saturated colors, slight overhead 30-degree game camera. Same scale per figure in all frames.",
+   "image_size": "1536x1024",
+   "aspect_ratio": "3:2",
+   "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
   "id": "props_trees_a",
   "kind": "sheet",
   "args": {
@@ -6140,6 +6150,16 @@
    "aspect_ratio": "1:1",
    "image_size": "1024x1024",
    "model": "openai-codex/gpt-image-1"
+  }
+ },
+ {
+  "id": "b_dungeon_gate",
+  "kind": "building",
+  "args": {
+   "subject": "One isolated dungeon entrance building sprite for a painterly isometric fantasy strategy game. A squat ancient stone gate surrounding a clearly visible staircase descending into darkness. Jagged weathered pillars, two small amber lanterns, moss, a few brass gears, ominous turquoise runes around the arch. Diamond-shaped three-by-three-tile stone base. Entire building including base and lanterns centered with generous margin. View from above at 30 degrees, front doorway visible on the lower right-facing wall. Crisp dark outlines and richly textured painterly pixel-art compatible with modern high-resolution RPG sprites. Pure magenta #FF00FF solid background, or true transparent alpha; NO ground outside the diamond base, cast shadow, people, text, labels or interface.",
+   "image_size": "1024x1024",
+   "aspect_ratio": "1:1",
+   "model": "openai-codex/gpt-image-2"
   }
  },
  {

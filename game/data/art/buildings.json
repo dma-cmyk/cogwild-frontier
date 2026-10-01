@@ -99,6 +99,25 @@
    "back_symmetric": true
   },
   {
+   "id": "dungeon_gate",
+   "texture": "res://assets/sprites/buildings/dungeon_gate.png",
+   "size_px": [
+    640,
+    633
+   ],
+   "base_w_px": 640.0,
+   "base_cx_px": 319.5,
+   "base_bottom_px": 632.0,
+   "source": "b_dungeon_gate",
+   "footprint": [
+    3,
+    3
+   ],
+   "glow": "res://assets/sprites/buildings/dungeon_gate_glow.png",
+   "back_symmetric": true,
+   "back_pending": true
+  },
+  {
    "id": "hearth@1",
    "texture": "res://assets/sprites/buildings/hearth_1.png",
    "size_px": [

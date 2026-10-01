@@ -83,6 +83,10 @@ func tile() -> Vector2i:
 	return Vector2i(int(floor(pos.x)), int(floor(pos.y)))
 
 
+func body_radius() -> float:
+	return float(DB_archetype().get("radius", 0.35)) * float(dna.get("scale", 1.0))
+
+
 func equipment() -> Dictionary:
 	if is_person():
 		if not character.has("equipment"):
@@ -149,7 +153,7 @@ func recompute_stats() -> void:
 	var max_hp := (float(base["max_hp"]) + (lv - 1) * hp_per_level + float(m.get("max_hp", 0.0)) + float(armor_stats.get("max_hp", 0.0))) * (1.0 + float(m.get("max_hp_pct", 0.0)))
 	var s := {
 		"max_hp": maxf(10.0, max_hp),
-		"armor": float(base["armor"]) + float(m.get("armor", 0.0)) + float(armor_stats.get("armor", 0.0)),
+		"armor": float(base["armor"]) + float(m.get("armor", 0.0)) + float(armor_stats.get("armor", 0.0)) * (0.5 + 0.5 * clampf(float(armor_item.get("condition", 100.0)) / 100.0, 0.0, 1.0)),
 		"move_speed": float(base["move_speed"]) * maxf(0.3, 1.0 + float(m.get("move_speed_pct", 0.0))),
 		"vision": float(base["vision"]) + float(m.get("vision", 0.0)) + skill("scouting") * 0.03,
 		"night_vision": float(m.get("night_vision", 0.0)),
@@ -179,6 +183,8 @@ func recompute_stats() -> void:
 		var sm: Dictionary = named.get("stat_mult", {})
 		s["max_hp"] = float(s["max_hp"]) * float(sm.get("max_hp", 1.0))
 		s["damage_mult"] = float(s["damage_mult"]) * float(sm.get("damage", 1.0))
+		if int(named.get("phase", 1)) >= 2:
+			s["damage_mult"] = float(s["damage_mult"]) * 1.35
 	var was_max := float(stats.get("max_hp", s["max_hp"]))
 	stats = s
 	if was_max > 0.0 and absf(was_max - float(s["max_hp"])) > 0.01:
@@ -196,6 +202,7 @@ func weapon() -> Dictionary:
 			var out := FISTS.duplicate()
 			for k: String in st:
 				out[k] = st[k]
+			out["damage"] = float(out["damage"]) * (0.5 + 0.5 * clampf(float(w.get("condition", 100.0)) / 100.0, 0.0, 1.0))
 			return out
 	var arch := DB_archetype()
 	if arch.get("weapon") is Dictionary:

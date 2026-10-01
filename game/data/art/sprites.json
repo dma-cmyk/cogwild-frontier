@@ -1590,6 +1590,29 @@
    "anchor_mode": "feet"
   },
   {
+   "id": "dungeon_master",
+   "texture": "res://assets/sprites/chars/dungeon_master.png",
+   "source": "chip_giants",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 109,
+   "anchor_mode": "feet"
+  },
+  {
    "id": "gnome_engineer_f",
    "texture": "res://assets/sprites/chars/gnome_engineer_f.png",
    "source": "chip_gnome_engineer",
@@ -13705,6 +13728,29 @@
    "height_px": 112,
    "anchor_mode": "feet",
    "clipped_frames": 12
+  },
+  {
+   "id": "wild_colossus",
+   "texture": "res://assets/sprites/chars/wild_colossus.png",
+   "source": "chip_giants",
+   "cell": [
+    128,
+    128
+   ],
+   "cols": 3,
+   "rows": 4,
+   "rows_order": [
+    "down",
+    "left",
+    "right",
+    "up"
+   ],
+   "anchor": [
+    64.0,
+    124
+   ],
+   "height_px": 106,
+   "anchor_mode": "feet"
   },
   {
    "id": "work_bot",

@@ -140,10 +140,11 @@ func rebuild_visual() -> void:
 			r = 0.55 if u.archetype == "work_bot" else 1.1
 		"drone":
 			r = 0.5
+	r = maxf(r, u.body_radius())
 	ring.scale = Vector3.ONE * (r / 0.5)
 	if shadow:
 		shadow.scale = Vector3(r * 1.3, 1.0, r * (2.2 if u.kind == "airship" else 1.3)) / 0.5
-	bar.scale = Vector3.ONE * (1.9 if u.kind == "airship" else 1.0)
+	bar.scale = Vector3.ONE * maxf(1.9 if u.kind == "airship" else 1.0, u.body_radius() * 1.8)
 
 
 func refresh_after_web_extra_art() -> void:

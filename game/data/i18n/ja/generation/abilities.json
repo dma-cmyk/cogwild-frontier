@@ -6,5 +6,7 @@
 	"overclock": {"name": "オーバークロック"},
 	"hearthsong": {"name": "憩いの歌"},
 	"scatterfire": {"name": "乱れ撃ち"},
-	"iron_resolve": {"name": "鉄の意志"}
+	"iron_resolve": {"name": "鉄の意志"},
+	"earthshatter": {"name": "大地砕き"},
+	"call_guardians": {"name": "守兵召喚"}
 }

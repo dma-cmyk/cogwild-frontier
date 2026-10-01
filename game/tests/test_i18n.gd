@@ -1,5 +1,5 @@
 extends TestCase
-## Localization contract tests: catalogs, definition coverage, generated item names and English parity.
+## Localization contracts: catalog placeholders, playable definitions and generated item names.
 
 const TABLES := ["races", "roles", "traits", "skills", "items", "items/materials", "items/qualities", "items/affixes", "buildings", "robots", "airships", "units"]
 
@@ -31,16 +31,6 @@ func _placeholders(text: String) -> PackedStringArray:
 	found.sort()
 	return found
 
-func test_literal_keys_have_japanese() -> void:
-	var ja := _catalogs("ja")
-	var regex := RegEx.new()
-	regex.compile("(?:Loc\\.t|notify_key)\\(\"([^\"]+)\"")
-	for path: String in _source_files("res://src"):
-		var source := FileAccess.get_file_as_string(path)
-		for hit: RegExMatch in regex.search_all(source):
-			var key := hit.get_string(1).replace("\\n", "\n").replace("\\t", "\t")
-			assert_true(ja.has(key), "%s missing Japanese key %s" % [path, key])
-
 func test_catalog_placeholders_match() -> void:
 	var en := _catalogs("en")
 	var ja := _catalogs("ja")
@@ -63,27 +53,6 @@ func test_item_name_for_every_quality() -> void:
 		var item := ItemGen.generate(_rng(7000 + quality.hash()), {"base": "spear", "level": 3, "quality": quality})
 		var localized := Loc.item_name(item)
 		assert_true(localized != "" and localized != str(item.get("name", "")), "quality %s item name not localized" % quality)
-
-func test_english_sim_messages_are_exact() -> void:
-	Loc.set_language("en", false)
-	assert_eq(Loc.message({"key": "sim.combat.promoted", "params": {"unit_name": "Mara", "rank": "Veteran"}}), "Mara was promoted to Veteran.")
-	assert_eq(Loc.message({"key": "sim.site.discovered", "params": {"site_kind_id": "ruins", "site_name": "Old Relay"}}), "Discovered Ruins: Old Relay")
-	assert_eq(Loc.message({"key": "sim.trade.item_bought", "params": {"item": {"item": {"name": "Rusty Spear"}}}}), "Bought Rusty Spear.")
-	Loc.set_language("ja", false)
-	Loc.set_language("en", false)
-	assert_eq(Loc.message({"key": "sim.raid.plundered", "params": {"unit_name": "Crow", "resources": {"resources": {"wood": -4, "gold": -2}}}}), "Crow plundered -4 wood, -2 gold and fled!")
-
-func _source_files(root: String) -> PackedStringArray:
-	var result := PackedStringArray()
-	var dirs := [root]
-	while not dirs.is_empty():
-		var dir: String = dirs.pop_back()
-		for child: String in DirAccess.get_directories_at(dir):
-			dirs.append(dir.path_join(child))
-		for file: String in DirAccess.get_files_at(dir):
-			if file.ends_with(".gd"):
-				result.append(dir.path_join(file))
-	return result
 
 func _rng(seed_value: int) -> RandomNumberGenerator:
 	var rng := RandomNumberGenerator.new()

@@ -353,6 +353,8 @@ static func generate(rng, opts: Dictionary) -> Dictionary
 # opts: base (""), category (""), level (1), quality ("" = roll), luck (0.0), source ("loot"|"start"|"shop"|"boss")
 static func roll_quality(rng, luck: float) -> String
 static func loot(rng, level: int, luck: float, count: int) -> Array
+static func relic(rng, theme: String, level: int, difficulty: int) -> Dictionary
+static func trophy(base: String, level: int) -> Dictionary
 static func describe(item: Dictionary) -> PackedStringArray   # tooltip lines: quality/level, stats, mods, flavor
 
 class_name NamedEnemyGen
@@ -375,3 +377,47 @@ Item dictionary (ItemGen output; `uid` is assigned later by the simulation, use 
  value, flavor, unique: bool, visual, appearance: {§3.5}}
 ```
 Most loot must be junk/crude/common; the joy is the rare find among ordinary items.
+
+Power scaling applies only to damage, armor, max_hp, carry and power. Weapon range, cooldown and
+accuracy stay at their base values; quality must not slow a weapon or make accuracy exceed 1.
+Relics merge theme modifiers with generated base/affix modifiers, never replace them. Optional
+item fields: `relic_theme`, `upgrade` (0..3), `condition` (0..100, missing means pristine).
+Durability affects effective weapon damage/armor; the saved item's nominal stats remain intact.
+
+## 7. Dungeons, giants and gearwork
+
+- `World.setup(seed, generation_races = [], with_dungeons = false)` preserves the old map by
+  default. `NewGame` enables dungeons; saves persist this flag and restore runtime site records
+  before rebuilding chunks. Old saves without the flag do not reserve a dungeon zone.
+- `DungeonZone` reserves a 160×416 block at the far world edge: 4 slots × up to 10 floors,
+  36×36 tiles per floor, pitch 40. Pure floor generation uses seed + entrance ID + floor index.
+  Navigation treats rock walls as solid. Surface flight detours around the whole block.
+- `Dungeons` owns `World.sites` entries of kind `dungeon` / `dungeon_floor`. IDs start at
+  2,000,000 in blocks of 16. Entrance fields: difficulty, floors, slot, theme, spawn_day, state,
+  floor_sids. Floor fields: dungeon, floor, boss_id, cleared. `after_load()` restores integer
+  fields and `WorldGen.sites` records. Collapse removes owned units, loot and visuals, evacuates
+  occupants and frees the slot.
+- Travel: `enter(units, eid)`, `leave(units, eid)`, `use_stairs(units, eid, floor_index, direction)`.
+  Squad orders `enter` / `stairs` walk to the feature before transfer; indoor `auto` / `explore`
+  clear, loot and descend; `retreat` climbs out. `locate(pos)` / `squad_location(squad)` return
+  `{eid, floor}` or `{}` for the surface. `same_map(a, b)` compares slot and floor, not tile
+  coordinates. Ordinary movement cannot transfer between maps.
+- Signals: `relocated(pos, eid, floor_index)` moves the camera; `floor_created(eid, floor_index)`
+  builds discovered stair markers; `World.site_removed(id)` releases site visuals.
+- `Giants.make_master(theme, difficulty, level, pos)` and `spawn_beast(pos, level = 5)` create
+  named large units. `Unit.body_radius()` drives giant-specific local navigation, attack reach,
+  selection rings and HP-bar width. `Giants.fits` / `path` prevent squeezing through narrow doors.
+- Persistent giant state lives in `Unit.named`: giant, roaming, theme, phase, mood, abilities,
+  summoner, next_wander, and cast. `Combat` owns telegraph/summon execution. Cast contains id,
+  pos `[x,z]`, left, duration, radius, damage; death cancels it and loading resumes its remaining
+  windup exactly once. Half health enters phase 2. A roaming beast's paths and targets exclude
+  player buildings' 42m safety radius; the beast releases distant targets and returns home.
+- `Gearwork.available(sid = -1)` checks a built workshop or the existing town service gate.
+  `owned(uid)` resolves armory/equipped ownership. `forge(theme, sid = -1)` and
+  `act(uid, action, sid = -1)` return `""` on success or an i18n error key. Actions: repair,
+  upgrade, dismantle. Validate before spending; preserve uid when repairing/upgrading;
+  dismantle only unequipped owned items; recompute the wearer's stats immediately.
+- `GearworkPanel.build(body, game, hud, sid = -1)` is shared by workshop and town smith.
+  Buttons capture item uid, never mutable list indices.
+- Loot over an obstacle lands on nearby ground on the same map. Auto collection chooses a
+  reachable picker/bag; a partial route outside pickup distance is not progress.

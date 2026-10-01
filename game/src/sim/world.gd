@@ -16,6 +16,7 @@ signal building_added(b: Building)
 signal building_removed(b: Building)
 signal building_changed(b: Building)
 signal site_changed(site_id: int)
+signal site_removed(site_id: int)
 signal notified(n: Dictionary)
 signal fx(kind: StringName, pos: Vector3, color: Color)
 signal projectile_fired(from: Vector3, to: Vector3, kind: String, flight: float)
@@ -80,6 +81,9 @@ var economy: Economy
 var diplomacy: Diplomacy
 var quests: Quests
 var town: Town
+var dungeons: Dungeons
+var giants: Giants
+var gearwork: Gearwork
 
 var _grid: Dictionary = {}  # spatial hash of units: Vector2i cell -> Array[Unit]
 const GRID := 8.0
@@ -94,15 +98,19 @@ func _init() -> void:
 	diplomacy = Diplomacy.new(self)
 	quests = Quests.new(self)
 	town = Town.new(self)
+	dungeons = Dungeons.new(self)
+	giants = Giants.new(self)
+	gearwork = Gearwork.new(self)
 	for r: String in RESOURCES:
 		res[r] = 0
 
 
-## Sets up generation, navigation and fog for a seed (new game or load).
-func setup(p_seed: int, generation_races: Array = []) -> void:
+## Sets up generation, navigation and fog for a seed (new game or load). Worlds with dungeons
+## reserve a block of the grid for the floors (see DungeonZone); old saves keep their whole map.
+func setup(p_seed: int, generation_races: Array = [], with_dungeons: bool = false) -> void:
 	seed = p_seed
 	rng.seed = RngUtil.hash_parts([seed, "sim"])
-	gen = WorldGen.new(seed, {}, generation_races)
+	gen = WorldGen.new(seed, {}, generation_races, with_dungeons)
 	W = gen.max_tile - gen.min_tile
 	nav.region = Rect2i(gen.min_tile, gen.min_tile, W, W)
 	nav.cell_size = Vector2.ONE
@@ -118,7 +126,7 @@ func setup(p_seed: int, generation_races: Array = []) -> void:
 
 ## Breaks the reference cycles between the world and its systems so everything is freed.
 func dispose() -> void:
-	for sys: Variant in [colony, combat, squad_ai, factions, economy, diplomacy, quests, town]:
+	for sys: Variant in [colony, combat, squad_ai, factions, economy, diplomacy, quests, town, dungeons, giants, gearwork]:
 		if sys != null:
 			sys.set("w", null)
 	colony = null
@@ -129,6 +137,9 @@ func dispose() -> void:
 	diplomacy = null
 	quests = null
 	town = null
+	dungeons = null
+	giants = null
+	gearwork = null
 	units.clear()
 	unit_list.clear()
 	buildings.clear()
@@ -187,7 +198,12 @@ func ensure_chunk(key: Vector2i) -> ChunkData:
 	var profile := World.profile_chunks()
 	var total_start_usec: int = Time.get_ticks_usec() if profile else 0
 	var generation_start_usec: int = total_start_usec
-	var ch := gen.generate_chunk(key.x, key.y)
+	var ch: ChunkData
+	if gen.in_zone_chunk(key.x, key.y):
+		ch = ChunkData.new(key.x, key.y)
+		DungeonZone.fill_chunk(ch, gen.dungeon_zone, dungeons.floor_lookup())
+	else:
+		ch = gen.generate_chunk(key.x, key.y)
 	var generation_usec: int = Time.get_ticks_usec() - generation_start_usec if profile else 0
 	if _pending_mods.has(key):
 		var m: Dictionary = _pending_mods[key]
@@ -450,15 +466,25 @@ func find_path(a: Vector2, b: Vector2) -> PackedVector2Array:
 
 ## Orders a unit to walk (or fly) to p. Returns false if no route exists.
 func move_unit(u: Unit, p: Vector2) -> bool:
-	if u.is_static:
+	if u.is_static or not dungeons.same_map(u.pos, p):
 		return false
 	if u.flying:
-		u.path = PackedVector2Array([p])
+		u.path = PackedVector2Array()
+		# Surface flight goes around the reserved floor block, never through an interior.
+		var z := gen.dungeon_zone
+		if z.size != Vector2i.ZERO and not gen.in_zone_tile(u.tile()):
+			var left_side := z.position.x == gen.min_tile
+			var beside_start := u.pos.x >= z.end.x if left_side else u.pos.x < z.position.x
+			var beside_goal := p.x >= z.end.x if left_side else p.x < z.position.x
+			if not (beside_start and beside_goal) and not (u.pos.y >= z.end.y and p.y >= z.end.y):
+				var x := z.end.x + 0.5 if left_side else z.position.x - 0.5
+				u.path.append(Vector2(x, z.end.y + 0.5))
+		u.path.append(p)
 		u.path_i = 0
 		u.moving = true
 		u.goal = p
 		return true
-	var path := find_path(u.pos, p)
+	var path := giants.path(u, p) if u.body_radius() > 0.6 else find_path(u.pos, p)
 	if path.is_empty():
 		u.moving = false
 		return false
@@ -685,7 +711,7 @@ func units_near(p: Vector2, radius: float, filter: Callable = Callable()) -> Arr
 func hostile(a: String, b: String) -> bool:
 	if a == b:
 		return false
-	var hostile_factions := ["bandits", "machines"]
+	var hostile_factions := ["bandits", "machines", "beasts"]
 	if a == "player":
 		return b in hostile_factions or diplomacy.faction_hostile_to_player(b)
 	if b == "player":
@@ -838,6 +864,8 @@ func can_place(type: String, origin: Vector2i, check_cost: bool = true) -> Strin
 	if d.is_empty():
 		return "Unknown building"
 	var size := Vector2i(int(d["size"][0]), int(d["size"][1]))
+	if gen.in_zone_tile(origin) or gen.in_zone_tile(origin + size):
+		return "Cannot build inside a dungeon"
 	if type in ["bridge_segment", "cliff_stairs"]:
 		var t := origin
 		if not in_bounds(t) or chunk_at_tile(t) == null:
@@ -1097,6 +1125,13 @@ func drop_loot(p: Vector2, items: Array, gold: int = 0, metal: int = 0, resource
 			break
 	if items.is_empty() and gold <= 0 and metal <= 0 and not has_resources:
 		return {}
+	# Flying enemies can die over walls or water. Their loot lands on nearby ground.
+	var tile := Vector2i(floori(p.x), floori(p.y))
+	if not is_walkable(tile):
+		var ground := nearest_walkable(tile, 8)
+		var landing := Vector2(ground) + Vector2(0.5, 0.5)
+		if ground.x != -99999 and dungeons.same_map(p, landing):
+			p = landing
 	var best := -1
 	for it: Dictionary in items:
 		best = maxi(best, int(DB.get_def("items/qualities", str(it.get("quality", "common"))).get("tier", 2)))
@@ -1193,6 +1228,8 @@ func tick() -> void:
 		factions.on_new_day()
 		quests.on_new_day()
 		colony.on_new_day()
+		dungeons.on_new_day()
+		giants.on_new_day()
 	_cleanup()
 
 func _update_unit(u: Unit) -> void:

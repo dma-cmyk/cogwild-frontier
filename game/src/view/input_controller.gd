@@ -305,6 +305,8 @@ func pick_unit(sp: Vector2, prefer_hostile: bool = false, finger: bool = false) 
 		var h := v._bar_h * 0.45
 		var p := g.rig.world_to_screen(v.global_position + Vector3(0, h, 0))
 		var d := p.distance_to(sp)
+		if v.u.body_radius() > 0.6:
+			d /= maxf(1.0, v.u.body_radius() * 1.8)
 		if v.u.kind == "airship":
 			d *= 0.35
 		if prefer_hostile and g.world.hostile("player", v.u.faction):
@@ -325,7 +327,7 @@ func site_at(t: Vector2i) -> int:
 		if not g.world.is_explored(st["center"]):
 			continue
 		var c := Vector2(st["center"])
-		if Vector2(t).distance_to(c) <= maxf(3.0, float(g.world.gen.sites[sid].get("flat_radius", 4)) * 0.6):
+		if Vector2(t).distance_to(c) <= maxf(3.0, float((g.world.gen.sites.get(sid, {}) as Dictionary).get("flat_radius", 4)) * 0.6):
 			return sid
 	return -1
 func loot_at(t: Vector2i) -> int:
@@ -587,7 +589,33 @@ func _context_order(p: Vector2) -> void:
 	if not (hover_ground is Vector3):
 		return
 	var t := _tile_at(hover_ground)
+	var feature := g.world.dungeons.feature_near(Vector2(hover_ground.x, hover_ground.z), 2.2)
+	if not feature.is_empty():
+		var stair_squads: Dictionary = {}
+		for u: Unit in units:
+			if u.squad_id >= 0:
+				stair_squads[u.squad_id] = true
+		if not stair_squads.is_empty():
+			var dir := "down" if str(feature["type"]) == "down" else "up"
+			for squad_id: int in stair_squads:
+				g.world.squad_ai.order_squad(g.world.get_squad(squad_id),
+					g.world.dungeons.stairs_order(int(feature["eid"]), int(feature["floor"]), dir))
+			g.toast.emit(Loc.t("Heading for the stairs down.") if dir == "down" else Loc.t("Heading for the way up."), "info")
+			Sfx.play(&"ui_confirm")
+			return
 	var sid := site_at(t)
+	if sid >= 0 and str(g.world.sites[sid]["kind"]) == "dungeon" and str(g.world.sites[sid].get("state", "open")) == "open":
+		var gate_squads: Dictionary = {}
+		for u: Unit in units:
+			if u.squad_id >= 0:
+				gate_squads[u.squad_id] = true
+		if not gate_squads.is_empty():
+			for squad_id: int in gate_squads:
+				g.world.squad_ai.order_squad(g.world.get_squad(squad_id),
+					{"type": "enter", "site": sid, "pos": g.world.dungeons.gate_pos(g.world.sites[sid])})
+			g.toast.emit(Loc.t("Heading into the dungeon."), "info")
+			Sfx.play(&"ui_confirm")
+			return
 	if sid >= 0 and bool(g.world.sites[sid].get("hostile", false)) and not bool(g.world.sites[sid].get("cleared", false)):
 		issue("attack", {"site": sid, "pos": Vector2(g.world.sites[sid]["center"])})
 		return

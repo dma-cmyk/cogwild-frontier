@@ -30,6 +30,11 @@ var _zone_mesh: MeshInstance3D
 var _squad_markers: SquadMarkers
 var _zones_dirty := true
 var _fog_t := 0.0
+var _features_root: Node3D
+var _feature_nodes: Dictionary = {}  # "eid:floor" -> Array[Node3D] (stairs and exits)
+var _feature_t := 0.0
+var _indoor := 0.0  # 0 on the surface, 1 inside a dungeon (darker light)
+var _telegraphs: Dictionary = {}  # caster id -> floor warning ring
 var _projectiles: Array = []
 var _time_scale := 1.0
 var _pending_site_visuals: Array[int] = []
@@ -60,6 +65,9 @@ func setup(world: World) -> void:
 	_squad_markers = SquadMarkers.new()
 	add_child(_squad_markers)
 	_squad_markers.setup(w)
+	_features_root = Node3D.new()
+	_features_root.name = "DungeonFeatures"
+	add_child(_features_root)
 	fog_tex = ImageTexture.create_from_image(w.fog_image)
 	RenderingServer.global_shader_parameter_set("fog_tex", fog_tex)
 	RenderingServer.global_shader_parameter_set("fog_rect", Vector4(w.gen.min_tile, w.gen.min_tile, w.W, w.W))
@@ -76,6 +84,8 @@ func setup(world: World) -> void:
 	w.building_removed.connect(_remove_building)
 	w.building_changed.connect(_on_building_changed)
 	w.site_changed.connect(_on_site_changed)
+	w.site_removed.connect(_on_site_removed)
+	w.dungeons.floor_created.connect(_on_floor_created)
 	w.loot_added.connect(_add_loot)
 	w.loot_removed.connect(_remove_loot)
 	w.fx.connect(_on_fx)
@@ -100,6 +110,11 @@ func setup(world: World) -> void:
 		_add_building(b)
 	for sid: int in w.sites:
 		_on_site_changed(sid)
+	for st: Dictionary in w.dungeons.entrances():
+		var created: Array = st.get("floor_sids", [])
+		for floor_index in created.size():
+			if int(created[floor_index]) >= 0:
+				_on_floor_created(int(st["id"]), floor_index)
 	for u: Unit in w.unit_list:
 		_add_unit(u)
 	for bag: Dictionary in w.loot_bags.values():
@@ -239,6 +254,8 @@ func _build_next_site_visual() -> void:
 	var o: Vector2i = s["origin"]
 	var rot := int(s.get("rot", 0))
 	var v := BuildingVisuals.create(str(s["type"]), str(SITE_STYLE.get(str(st["kind"]), "neutral")), sid * 31 + i, 1)
+	if str(st["kind"]) == "dungeon" and str(s["type"]) == "ruin_vault":
+		v.set_sprite(SpriteLibrary.building("dungeon_gate"), SpriteLibrary.building("construction"), 0.0)
 	var c := Vector2(o) + Vector2(sz) * 0.5
 	v.position = Vector3(c.x, w.height_at(c), c.y)
 	v.rotation.y = rot * PI * 0.5
@@ -340,6 +357,9 @@ func _remove_loot(id: int) -> void:
 func _on_fx(kind: StringName, pos: Vector3, color: Color) -> void:
 	if not _visible_pos(Vector2(pos.x, pos.z)):
 		return
+	if kind == &"giant_warning":
+		Sfx.play(&"alert")
+		return
 	var kind_text := str(kind)
 	if kind_text.begins_with("combat_damage|") or kind_text.begins_with("combat_heal|") or kind_text.begins_with("combat_ability|") or kind_text.begins_with("combat_tactic|") or kind_text.begins_with("combat_miss|") or kind_text == "combat_miss":
 		Vfx.spawn_combat_text(self, kind, pos, color)
@@ -384,8 +404,10 @@ func _update_projectiles(delta: float) -> void:
 		var nxt := a.lerp(b, minf(1.0, k + 0.05)) + Vector3(0, sin(minf(1.0, k + 0.05) * PI) * float(p["arc"]), 0)
 		var node: Node3D = p["node"]
 		node.position = pos
-		if nxt.distance_to(pos) > 0.001:
-			node.look_at(nxt, Vector3.UP, true)
+		var direction := nxt - pos
+		if direction.length_squared() > 0.000001:
+			var up := Vector3.RIGHT if direction.cross(Vector3.UP).length_squared() < 0.000001 else Vector3.UP
+			node.look_at(nxt, up, true)
 		if k >= 1.0:
 			node.queue_free()
 			_projectiles.erase(p)
@@ -507,6 +529,8 @@ func _process(delta: float) -> void:
 	for id: int in loot_views:
 		var node: Node3D = loot_views[id]
 		node.rotation.y += delta * 1.5
+		var bag: Dictionary = w.loot_bags.get(id, {})
+		node.visible = not bag.is_empty() and w.is_explored(Vector2i(bag["pos"]))
 	_update_projectiles(delta)
 	_cull_t -= delta
 	if _cull_t <= 0.0:
@@ -524,6 +548,8 @@ func _process(delta: float) -> void:
 	if _squad_markers != null:
 		_squad_markers.refresh(w)
 	_update_light()
+	_refresh_features(delta)
+	_sync_telegraphs()
 
 var _cull_t := 0.0
 var cam_target := Vector3.ZERO
@@ -542,7 +568,9 @@ func _cull_chunks() -> void:
 
 
 func _update_light() -> void:
-	var night := w.night_amount()
+	var inside := w.gen.in_zone_tile(Vector2i(int(floor(cam_target.x)), int(floor(cam_target.z))))
+	_indoor = move_toward(_indoor, 1.0 if inside else 0.0, 0.04)
+	var night := lerpf(w.night_amount(), 0.82, _indoor)
 	var h := w.hour()
 	RenderingServer.global_shader_parameter_set("night_amount", night)
 	var day_col := Color("#fff0d4")
@@ -553,7 +581,7 @@ func _update_light() -> void:
 	var e := env.environment
 	e.ambient_light_color = Color("#b4c0d6").lerp(Color("#7080b0"), night)
 	e.ambient_light_energy = lerpf(0.62, 0.55, night)
-	e.background_color = Color("#8ea6bb").lerp(Color("#1c2438"), night)
+	e.background_color = Color("#8ea6bb").lerp(Color("#1c2438"), night).lerp(Color("#07090e"), _indoor)
 
 func _ready() -> void:
 	var cache_sweep_timer := Timer.new()
@@ -566,3 +594,146 @@ func _ready() -> void:
 
 func _prune_sprite_cache() -> void:
 	SpriteLibrary.prune_unused(get_tree().root)
+
+
+# --- dungeons ------------------------------------------------------------------------------
+
+func _on_site_removed(sid: int) -> void:
+	var root: Node3D = site_views.get(sid)
+	if root != null:
+		root.queue_free()
+		site_views.erase(sid)
+	_pending_site_visuals.erase(sid)
+	_queued_site_visuals.erase(sid)
+	for key: String in _feature_nodes.keys():
+		if key.begins_with("%d:" % sid):
+			for node: Node3D in _feature_nodes[key]:
+				node.queue_free()
+			_feature_nodes.erase(key)
+
+
+func _on_floor_created(eid: int, floor_index: int) -> void:
+	var key := "%d:%d" % [eid, floor_index]
+	if _feature_nodes.has(key):
+		return
+	var nodes: Array = []
+	for f: Dictionary in w.dungeons.features(eid, floor_index):
+		var marker := _make_stairs_marker(str(f["type"]))
+		var p: Vector2 = f["pos"]
+		marker.position = Vector3(p.x, w.height_at(p), p.y)
+		marker.set_meta("tile", Vector2i(int(floor(p.x)), int(floor(p.y))))
+		_features_root.add_child(marker)
+		nodes.append(marker)
+	_feature_nodes[key] = nodes
+
+
+## A glowing pad with an arrow: amber down, blue up, green out. Hidden until the tile is explored.
+func _make_stairs_marker(kind: String) -> Node3D:
+	var color := Color("#ffb347") if kind == "down" else (Color("#7dff8a") if kind == "exit" else Color("#8fd3ff"))
+	var root := Node3D.new()
+	var glow := StandardMaterial3D.new()
+	glow.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	glow.albedo_color = color
+	glow.emission_enabled = true
+	glow.emission = color
+	glow.emission_energy_multiplier = 1.4
+	var stone := StandardMaterial3D.new()
+	stone.albedo_color = Color("#3c3a44")
+	stone.roughness = 0.9
+	var base := MeshInstance3D.new()
+	var base_mesh := CylinderMesh.new()
+	base_mesh.top_radius = 1.0
+	base_mesh.bottom_radius = 1.1
+	base_mesh.height = 0.14
+	base.mesh = base_mesh
+	base.material_override = stone
+	base.position.y = 0.07
+	root.add_child(base)
+	var ring := MeshInstance3D.new()
+	var ring_mesh := CylinderMesh.new()
+	ring_mesh.top_radius = 0.82
+	ring_mesh.bottom_radius = 0.82
+	ring_mesh.height = 0.03
+	ring.mesh = ring_mesh
+	ring.material_override = glow
+	ring.position.y = 0.16
+	ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	root.add_child(ring)
+	var arrow := MeshInstance3D.new()
+	var arrow_mesh := CylinderMesh.new()
+	arrow_mesh.top_radius = 0.0 if kind != "down" else 0.3
+	arrow_mesh.bottom_radius = 0.3 if kind != "down" else 0.0
+	arrow_mesh.height = 0.75
+	arrow.mesh = arrow_mesh
+	arrow.material_override = glow
+	arrow.position.y = 1.15
+	arrow.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	root.add_child(arrow)
+	return root
+
+
+func _refresh_features(delta: float) -> void:
+	_feature_t -= delta
+	if _feature_t > 0.0:
+		return
+	_feature_t = 0.3
+	for key: String in _feature_nodes:
+		for node: Node3D in _feature_nodes[key]:
+			node.visible = w.is_explored(node.get_meta("tile"))
+
+
+func _sync_telegraphs() -> void:
+	for id: int in _telegraphs.keys():
+		var caster := w.get_unit(id)
+		if caster == null or not caster.alive or not caster.named.has("cast"):
+			(_telegraphs[id] as Node3D).queue_free()
+			_telegraphs.erase(id)
+	for u: Unit in w.unit_list:
+		if not u.named.has("cast"):
+			continue
+		var cast: Dictionary = u.named["cast"]
+		var p := Vector2(float(cast["pos"][0]), float(cast["pos"][1]))
+		if not _visible_pos(p):
+			continue
+		var root: Node3D = _telegraphs.get(u.id)
+		if root == null:
+			root = Node3D.new()
+			root.name = "EarthshatterWarning"
+			var disc := MeshInstance3D.new()
+			var mesh := CylinderMesh.new()
+			mesh.top_radius = 1.0
+			mesh.bottom_radius = 1.0
+			mesh.height = 0.025
+			mesh.radial_segments = 48
+			disc.mesh = mesh
+			var material := StandardMaterial3D.new()
+			material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+			material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			material.albedo_color = Color(1.0, 0.18, 0.04, 0.4)
+			material.render_priority = 5
+			disc.material_override = material
+			disc.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			root.add_child(disc)
+			var ring := MeshInstance3D.new()
+			var torus := TorusMesh.new()
+			torus.inner_radius = 0.94
+			torus.outer_radius = 1.0
+			ring.mesh = torus
+			ring.material_override = UnitView._unshaded(Color("#ff7a38"))
+			ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			root.add_child(ring)
+			var label := Label3D.new()
+			label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+			label.font = UiTheme.bold_font
+			label.font_size = 40
+			label.pixel_size = 0.006
+			label.position.y = 0.7
+			label.no_depth_test = true
+			root.add_child(label)
+			add_child(root)
+			_telegraphs[u.id] = root
+		root.position = Vector3(p.x, w.ground_y(p) + 0.08, p.y)
+		var radius := float(cast["radius"])
+		(root.get_child(0) as Node3D).scale = Vector3(radius, 1.0, radius)
+		(root.get_child(1) as Node3D).scale = Vector3(radius, 0.3, radius)
+		(root.get_child(2) as Label3D).text = "%s %.1f" % [Loc.t("Earthshatter"), float(cast["left"])]

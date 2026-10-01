@@ -9,5 +9,14 @@
 		"named": "bandit_captain", "level_hp": 14, "base": {"max_hp": 125}},
 	{"id": "merchant", "kind": "character", "name": "Merchant", "faction_type": "merchant", "role": "trader", "labor": "none"},
 	{"id": "wanderer", "kind": "character", "name": "Wanderer", "faction_type": "wanderer", "role": "", "labor": "none",
-		"description": "A traveller camping in the wilds. Will join a settlement that treats them well."}
+		"description": "A traveller camping in the wilds. Will join a settlement that treats them well."},
+	{"id": "dungeon_master", "kind": "robot", "name": "Vault Master", "radius": 1.05, "labor": "none",
+		"description": "An ancient guardian bound to the lowest vault. Its earthshatter is telegraphed; it calls defenders and enrages below half health.",
+		"level_hp": 14, "base": {"max_hp": 185, "armor": 5, "move_speed": 1.8, "vision": 12},
+		"weapon": {"damage": 16, "cooldown": 2.0, "range": 1.8, "kind": "melee"},
+		"drops": {"metal": [8, 16]}},
+	{"id": "wild_colossus", "kind": "beast", "name": "Mossback Colossus", "radius": 1.05, "labor": "none",
+		"description": "A territorial giant that wanders the wilds. It chases intruders, gives up at its boundary and never enters colony land.",
+		"level_hp": 20, "base": {"max_hp": 430, "armor": 4, "move_speed": 2.8, "vision": 11},
+		"weapon": {"damage": 24, "cooldown": 2.0, "range": 1.8, "kind": "melee"}}
 ]

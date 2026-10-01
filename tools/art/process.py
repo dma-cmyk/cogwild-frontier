@@ -50,6 +50,7 @@ CHIP_SHEETS.update({
 	"chip_mach_b": ("scout_drone", "repair_drone", "center"),
 	"chip_mach_c": ("sentry", "war_drone", "feet"),
 	"chip_mach_d": ("turret", "machine_warden", "feet"),
+	"chip_giants": ("dungeon_master", "wild_colossus", "feet"),
 })
 # drones hover: anchor at the middle of the figure (right half of chip_mach_c is a drone too)
 CENTER_ANCHOR = {"scout_drone", "repair_drone", "war_drone"}
@@ -644,6 +645,7 @@ BUILDING_IDS = {
 	"b_trade_mast": ["trade_mast@0"], "b_wanderer_tent": ["wanderer_tent@0"], "b_ruin_arch": ["ruin_arch@0"],
 	"b_ruin_pillar": ["ruin_pillar@0"], "b_ruin_wall": ["ruin_wall@0"], "b_ruin_statue": ["ruin_statue@0"],
 	"b_ruin_vault": ["ruin_vault@0"], "b_wreck_airship": ["wreck_airship@0"], "props_sails": ["windmill_sails@0"],
+	"b_dungeon_gate": ["dungeon_gate@0"],
 }
 BUILDING_IDS.update({
 	f"b_v_{race}_{kind}": [f"v_{race}_{kind}@0"] for race in RACES for kind in ["home", "hall"]
@@ -653,6 +655,7 @@ BUILDING_FOOTPRINTS.update({f"v_{race}_hall": [5, 5] for race in RACES})
 TOWN_BUILDINGS = {"guild_hall": 5, "tavern": 4, "general_store": 4, "smithy": 4, "inn": 4, "fountain": 3}
 BUILDING_IDS.update({f"b_t_{key}": [f"t_{key}@0"] for key in TOWN_BUILDINGS})
 BUILDING_FOOTPRINTS.update({f"t_{key}": [n, n] for key, n in TOWN_BUILDINGS.items()})
+BUILDING_FOOTPRINTS["dungeon_gate"] = [3, 3]
 BUILDING_MAX_W = 640
 
 

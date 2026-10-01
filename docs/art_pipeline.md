@@ -89,6 +89,14 @@
 - 使った回数: 作業着はチップ 13・肖像 9・作り直し 2 の計 24 回、ほかの見た目はチップ 26・作り直し 3・肖像 8 の計 37 回（1 リクエスト 1 シートの従来方式では合わせて 149 回）。
 - 肖像の残り 5 回分（`batch_portrait_looks_14`〜`18`）は、OMP の画像生成が利用上限に達したため、同じプロンプトと参照チップ画像を ChatGPT の画面に直接渡して作った。結果は `art_src/raw/batch_portrait_looks_14〜17.png` に置いて `split_batches.py` で切り、18（アンドロイドの学者 1 シート、男女 2 人）は切り分けずに `art_src/raw/portrait_android_scholar_v3.png` として `process.py portraits` へ渡した。帽子や触角の先端が上端でわずかに切れる絵があるので、背の高い帽子・冠の種族は「頭の上に余白を多く取る」を添えると切れにくい。
 
+### ダンジョン入口・主・巨獣
+
+- `chip_giants` は6列×4行の1枚に「地下庫の主」と「苔背の巨獣」を各3コマ×4方向で生成した。`process.py` の `CHIP_SHEETS` で2つのシートに分け、`assets/sprites/chars/dungeon_master.png` / `wild_colossus.png` を登録する。通常の機械より大きい実寸は `SpriteLibrary.MACHINE_HEIGHT` とユニットのDNAのscaleで決める。
+- 入口は `b_dungeon_gate` の単体画像。`process.py buildings --only b_dungeon_gate` で背景除去・足元3×3に合わせ、通常画像と glow mask を生成する。実行中に増えた入口も `WorldView` がこの建物を作る。
+- 使用モデルは gpt-image-2（ツール出力では gpt-image-2-codex）。raw は `art_src/raw/chip_giants.webp` / `b_dungeon_gate.webp`、プロンプトは `make_prompts.py` → `art_src/prompts.json` に保存する。要求と異なる画像サイズが返った回も、原寸から既存の切り出し・正規化を通す。
+- 地下の壁・床は既存の画像生成した岩・石畳テクスチャを使う。階段の矢印とボスの予兆円は、方向・発見状態・残り時間を読みやすくするコード生成のしるし。
+- 実画面の確認対象: 入口からの入退場、暗い地下の壁と通路、主の赤い予兆円、主と守兵の大きさの違い、野外の巨獣。画面は `docs/screenshots/dungeon_master_warning.png` など。
+
 ## 制約・注意
 
 - 生成は毎回結果が変わる。同じプロンプトでも別の絵になるので、良い結果の raw を残しておく。

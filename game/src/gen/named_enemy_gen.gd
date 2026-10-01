@@ -33,7 +33,8 @@ static func _abilities(rng: RandomNumberGenerator, tier: int) -> Array:
 	var rows := GenUtil.entries("generation/abilities")
 	var ids: Array = []
 	for value: Variant in rows:
-		ids.append(str((value as Dictionary).get("id", "")))
+		if not bool((value as Dictionary).get("giant_only", false)):
+			ids.append(str((value as Dictionary).get("id", "")))
 	GenUtil.shuffle(rng, ids)
 	return ids.slice(0, mini(tier + 1, ids.size()))
 

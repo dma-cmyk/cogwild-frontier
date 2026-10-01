@@ -17,11 +17,16 @@ RPG 要素のある自律型 RTS の **Playable Vertical Slice**（Godot 4.7 製
 - **しゃべる住民**: RimWorld のように吹き出しでしゃべります（仕事の一言、近くの仲間との雑談、戦闘中のかけ声、川を泳ぐ・崖を登るときの一言）。村人に話しかけると、その種族や仕事らしい一言や、まだ知らない場所の噂が聞けます。
 - **小隊で動かす**: 部隊は小隊単位で動かします。左下の **小隊パネル**（顔・体力・態勢・隊形・隊員の出し入れ・名前）で小隊を選び、右下の **命令バー**（建設・採集・移動・攻撃・技・停止など）で命令します。命令した範囲（守る円・探索する圏・巡回する線・目標の印）は地面とミニマップに出たままになり、**停止** でいつでも取り消せます。1 人だけ別に動かしたいときは、その人だけの小隊を作ります。小隊には態勢（攻勢・均衡・慎重・防衛）と隊形（横列・楔形・散開）があり、役割ごとの技（盾打ち・狙い撃ち・爆破チャージ・野戦手当・鼓舞の号令）は自動でも自分のタイミングでも使えます。側面攻撃、木や岩の遮蔽も戦闘に効きます。
 - **地形と昼夜**: 川は泳いで、崖はよじ登って越えられます（遅い）。住民に橋や崖の階段を建てさせると速く通れます。昼夜が巡り、夜は視界が狭くなります。
+- **ダンジョン遠征**: 2日目から、地上のランダムな場所に入口が現れます。難易度は5段階、地下は2〜10階。入口と階段で別マップへ移り、深い階ほど強い敵とよい戦利品が待ちます。部隊が潜っている間も地上の仕事は続きます。「ダンジョンを攻略」で掃討・回収・下降・帰還を任せられ、途中で撤退もできます。
+- **巨大な敵**: 最下層の「地下庫の主」は、赤い予兆範囲を出す大地砕き、守兵の召喚、体力半分からの激怒を使います。野外の「苔背の巨獣」は近づくと追い、離れると諦めて縄張りに戻ります。入植地は襲いません。
+- **戦利品を育てる**: ダンジョンの5テーマと巨獣に、それぞれ固有効果を持つ装備があります。主の核・巨獣の角を工房や町の鍛冶屋で鍛造し、拾った装備を+3まで強化、不要品を分解、摩耗した武器・防具を修理できます。
 - **日本語 / English**: UI は日本語と英語に対応しています。
 
 ![創設者の作成画面。17 種族から選べる](docs/screenshots/creation_races_17.png)
 
 ![アンドロイドの村（日本語 UI）](docs/screenshots/village_android.png)
+
+![地下庫の主の予兆攻撃](docs/screenshots/dungeon_master_warning.png)
 
 ## 起動
 
@@ -130,14 +135,18 @@ godot --path game -- --lang=en
    - **雑貨屋**: 5 種類の資源の売り買い。**鍛冶屋**: 武器と防具を買う・武器庫の品を売る（3 日ごとに品替え）。**宿屋**: 金貨で町にいる仲間を全回復し、けがを短くする。**酒場**: どの種族もいる傭兵を雇う・噂を買って知らない場所を明かす。**ギルド**: 村より多く報酬もよい依頼。
    - 町の評判（友好度）が上がるほど、値段・品物の質・傭兵の強さがよくなります。町も攻めて略奪できますが、見張りは強く、敵対中は施設が閉まります。
 
+8. **ダンジョン入口**を見つけたら選択し、難易度と階数を確認して小隊を送ります。地図上の入口を右クリックしても入れます。中では入口パネルの **ダンジョンを攻略 / 下の階へ / 上の階へ / ダンジョンから帰還**、または階段の右クリックで進めます。戦闘中でも移動命令で赤い予兆範囲から逃げられます。
+9. **主の核・巨獣の角**を拾ったら、完成した **工房**か、仲間を連れていった友好的な町の **鍛冶屋**へ。固有装備の鍛造は素材1個・金属18・金貨45。装備中の品も強化・修理でき、分解は武器庫にある未装備品だけです。
+10. ダンジョンは **新しく作った世界**で有効です。以前のセーブは地形を変えずに読み込むため、後からダンジョン区画を追加しません。
+
 ## 開発
 
 ```text
 game/
   data/          JSON のゲームデータ（種族・役割・特性・技能・アイテム・ユニット・建物・生成規則）
   src/core/      DB（データ）・App（入力と画面遷移）・Sfx（音）・RngUtil・Caches
-  src/world/     WorldGen（決定的なチャンク生成）・ChunkData・Tiles
-  src/sim/       World（10 Hz tick）・ColonyAI・SquadAI・Combat・FactionAI・Economy・SaveGame・NewGame
+  src/world/     WorldGen（決定的なチャンク生成）・ChunkData・Tiles・DungeonZone（地下の部屋と通路）
+  src/sim/       World（10 Hz tick）・ColonyAI・SquadAI・Combat・FactionAI・Economy・Dungeons・Giants・Gearwork・SaveGame・NewGame
   src/gen/       NpcGen・ItemGen・NameGen・NamedEnemyGen
   src/visual/    SpriteLibrary（画像生成の絵の検索）・SpriteUnitVisual・MeshKit（低ポリの代替表示）・LookDev・建物/小物/アイコン/VFX・シェーダー
   src/view/      Game（ループ・選択）・WorldView・ChunkView・UnitView・CameraRig・InputController
@@ -159,6 +168,8 @@ docs/            design.md（設計・仮定）、art_pipeline.md（画像生成
 godot --headless --path game --import
 godot --headless --path game res://tests/run_tests.tscn                          # 全部（長時間テスト含む）
 godot --headless --path game res://tests/run_tests.tscn -- --filter=sim          # 一部だけ
+godot --headless --path game res://tests/run_tests.tscn -- --filter=dungeons    # 出現・階移動・戦利品・保存・帰還
+godot --headless --path game res://tests/run_tests.tscn -- --filter=expedition  # 巨大な敵・予兆・鍛造・回収
 ```
 
 実際に動かしての確認（ウィンドウあり、`~/.omp/agent/skills/game-production/scripts/godot_probe.py`）:
@@ -204,7 +215,7 @@ COGWILD_AI_ENDPOINT=https://api.openai.com/v1/chat/completions COGWILD_AI_KEY=..
 
 ## クレジット
 
-- 人物・機械・建物・木や岩・地面・アイテムアイコン・タイトル画像は、画像生成モデル（OpenAI gpt-image-1。アンドロイドは gpt-image-2。OMP の画像生成ツール経由）で作った絵を `tools/art/process.py` で加工したもの。プロンプトは `art_src/prompts.json`。
+- 人物・機械・建物・木や岩・地面・アイテムアイコン・タイトル画像は、画像生成モデル（OpenAI gpt-image-1。アンドロイドと遠征の入口・主・巨獣は gpt-image-2。OMP の画像生成ツール経由）で作った絵を `tools/art/process.py` で加工したもの。プロンプトは `art_src/prompts.json`。
 - 絵がないものの代替表示・UI アイコン・エフェクトはコードで手続き生成。
 - 効果音・環境音は `audio_gen.py`、BGM 5 曲は `tools/audio/compose_bgm.py` による手続き生成（第三者素材なし、OGG Vorbis）。
 - フォント: Noto Sans / Noto Serif（`game/assets/fonts/LICENSE-Noto.txt`）、日本語は Noto Sans CJK JP のサブセット（`CogwildCJK-*.otf`、`LICENSE-NotoCJK.txt`、いずれも SIL OFL 1.1）。

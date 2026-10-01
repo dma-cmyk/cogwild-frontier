@@ -20,7 +20,8 @@ static func roll_quality(rng: RandomNumberGenerator, luck: float) -> String:
 		var row: Dictionary = value as Dictionary
 		var tier := float(row.get("tier", 0))
 		var shifted := row.duplicate()
-		shifted["weight"] = maxf(0.01, float(row.get("weight", 1.0)) * (1.0 + clamped_luck * tier * 0.22))
+		var shift := pow(1.0 + clamped_luck * 0.25, tier) if clamped_luck >= 0.0 else maxf(0.05, 1.0 + clamped_luck * tier * 0.22)
+		shifted["weight"] = maxf(0.001, float(row.get("weight", 1.0)) * shift)
 		weighted_rows.append(shifted)
 	return str(GenUtil.weighted(rng, weighted_rows).get("id", "common"))
 
@@ -116,7 +117,9 @@ static func generate(rng: RandomNumberGenerator, opts: Dictionary) -> Dictionary
 	for key: Variant in (base.get("base_stats", {}) as Dictionary).keys():
 		var value: Variant = (base.get("base_stats", {}) as Dictionary)[key]
 		if value is float or value is int:
-			stats[str(key)] = snappedf(float(value) * scale * variance, 0.01)
+			# Power scales; handling does not. Scaling cooldown made rare weapons slower.
+			var scaled := float(value) * scale * variance if str(key) in ["damage", "armor", "max_hp", "carry", "power"] else float(value)
+			stats[str(key)] = snappedf(scaled, 0.01)
 		else:
 			stats[str(key)] = value
 	var mods := GenUtil.valid_mods(base.get("mods", {}) as Dictionary)
@@ -178,9 +181,39 @@ static func loot(rng: RandomNumberGenerator, level: int, luck: float, count: int
 		result.append(generate(rng, {"level": level, "luck": luck, "source": "loot"}))
 	return result
 
+## Theme-specific relics have different build-defining effects, not just different names.
+static func relic(rng: RandomNumberGenerator, theme: String, level: int, difficulty: int) -> Dictionary:
+	var row: Dictionary = {
+		"brigands": {"name": "Chainbreaker's Edge", "base": "sword", "mods": {"melee_damage_pct": 0.18, "crit_chance": 0.06}},
+		"goblins": {"name": "Warrenrunner's Bow", "base": "bow", "mods": {"ranged_damage_pct": 0.18, "move_speed_pct": 0.08}},
+		"reptiles": {"name": "Scale of the Deep", "base": "chain_mail", "mods": {"armor": 6.0, "max_hp": 35.0}},
+		"beastfolk": {"name": "Horncaller's Maul", "base": "hammer", "mods": {"melee_damage_pct": 0.22, "max_hp": 25.0}},
+		"machines": {"name": "Heart of the Vault", "base": "sensor_array", "mods": {"energy_max": 35.0, "loot_luck": 0.25}},
+		"wilds": {"name": "Mossback Mantle", "base": "leather_vest", "mods": {"hp_regen_pct": 0.8, "move_speed_pct": 0.10}},
+	}[theme]
+	var quality: String = ["rare", "rare", "epic", "legendary", "anomalous"][clampi(difficulty - 1, 0, 4)]
+	var item := generate(rng, {"base": row["base"], "level": level, "quality": quality})
+	item["name"] = row["name"]
+	item["unique"] = true
+	item["relic_theme"] = theme
+	GenUtil.merge_mods(item["mods"], row["mods"])
+	item["flavor"] = "A trophy of a dangerous expedition. Reforge it with a master's core."
+	item["flavor_message"] = {"key": "item.relic.flavor"}
+	return item
+
+
+static func trophy(base: String, level: int) -> Dictionary:
+	return {"uid": 0, "base": base, "name": "Master's Core" if base == "master_core" else "Colossus Antler",
+		"unique": true, "category": "resource", "slot": "none", "quality": "rare", "level": level,
+		"value": 60 + 8 * level, "stats": {}, "mods": {}, "material": "ancient_alloy",
+		"flavor": "A rare component for forging expedition relics.", "flavor_message": {"key": "item.trophy.flavor"}}
+
+
 static func describe(item: Dictionary) -> PackedStringArray:
 	var lines := PackedStringArray()
 	lines.append(Loc.t("gen.item.describe.level", {"quality": {"table": "items/qualities", "id": str(item.get("quality", "common")), "en": str(item.get("quality", "common")).capitalize()}, "level": int(item.get("level", 1))}))
+	if str(item.get("category", "")) != "resource":
+		lines.append(Loc.t("gear.condition") % [roundi(float(item.get("condition", 100))), int(item.get("upgrade", 0))])
 	var stats: Dictionary = item.get("stats", {})
 	for key: Variant in stats.keys():
 		if key in ["kind", "projectile"]:

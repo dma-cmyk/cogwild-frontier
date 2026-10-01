@@ -94,6 +94,11 @@ func order_squad(s: Squad, order: Dictionary) -> void:
 	# progress counters or the "we are stuck" tally of the march it replaces
 	for key: String in ["corridor", "target", "patrol_i", "loot_site", "returning", "sub", "stuck", "last_c", "moving_to"]:
 		s.mem.erase(key)
+	if order.get("type", "") not in ["stairs", "retreat"]:
+		s.mem.erase("delve_exit")
+		s.mem.erase("delve_resume")
+	if order.get("type", "") == "enter":
+		_queue_corridor(center(s), order["pos"])
 	if order.get("type", "") in ["explore", "auto"]:
 		s.report.clear()
 		s.mem["mapped0"] = _mapped(s)
@@ -110,12 +115,16 @@ func order_squad(s: Squad, order: Dictionary) -> void:
 		"move":
 			_set_state(s, "moving")
 			_move_all(s, order["pos"])
-		"visit":
+		"visit", "enter", "stairs":
 			_set_state(s, "travelling")
 			_move_all(s, order["pos"])
 		"retreat":
 			_set_state(s, "retreating")
-			_move_all(s, w.home_pos())
+			var loc := w.dungeons.squad_location(s)
+			if loc.is_empty():
+				_move_all(s, w.home_pos())
+			else:
+				_move_all(s, w.dungeons.stairs_order(int(loc["eid"]), int(loc["floor"]), "up")["pos"])
 		"idle":
 			_set_state(s, "holding")
 			s.mem["hold"] = center(s)
@@ -257,6 +266,11 @@ func _think(s: Squad) -> void:
 	match s.stance:
 		"aggressive": retreat_at = minf(retreat_at, 0.2)
 		"cautious": retreat_at = maxf(retreat_at, 0.45)
+	if w.dungeons.enabled():
+		var loc := w.dungeons.squad_location(s)
+		if not loc.is_empty():
+			_think_dungeon(s, loc, otype, retreat_at)
+			return
 	if otype != "retreat" and hp_ratio(s) < retreat_at:
 		s.mem["resume"] = s.order.duplicate()
 		order_squad(s, {"type": "retreat"})
@@ -270,8 +284,8 @@ func _think(s: Squad) -> void:
 				s.mem["hold"] = s.order["pos"]
 				s.order = {"type": "idle"}
 				_set_state(s, "holding")
-			elif _engage(s, center(s), 5.0):
-				_set_state(s, "fighting")
+			else:
+				_set_state(s, "moving")
 		"attack":
 			_think_attack(s)
 		"defend":
@@ -296,6 +310,10 @@ func _think(s: Squad) -> void:
 				order_squad(s, resume if resume.get("type", "") != "retreat" else {"type": "idle"})
 		"visit":
 			_think_visit(s)
+		"enter":
+			_think_enter(s)
+		"stairs":
+			_think_stairs(s)
 		"auto":
 			_think_auto(s)
 
@@ -323,6 +341,115 @@ func _think_visit(s: Squad) -> void:
 		_move_all(s, anchor)
 		s.mem["moving_to"] = anchor
 	_set_state(s, "travelling")
+
+
+## Walk to a dungeon gate and go down; the first member to arrive is enough (units shuffle in).
+func _think_enter(s: Squad) -> void:
+	var sid := int(s.order.get("site", -1))
+	if not w.sites.has(sid):
+		order_squad(s, {"type": "idle"})
+		return
+	_walk_through(s, s.order["pos"], func() -> void: w.dungeons.transfer_squad(s, sid, -1, "down"))
+
+
+## Walk to stairs (or the way out) and use them.
+func _think_stairs(s: Squad) -> void:
+	var o := s.order
+	var sid := int(o.get("site", -1))
+	if not w.sites.has(sid) or not o.has("pos"):
+		order_squad(s, {"type": "idle"})
+		return
+	_walk_through(s, o["pos"], func() -> void: w.dungeons.transfer_squad(s, sid, int(o["floor"]), str(o["dir"])))
+
+
+func _walk_through(s: Squad, gate: Vector2, go: Callable) -> void:
+	if bool(s.mem.get("delve_exit", false)):
+		_clear_targets(s)
+	elif _engage(s, center(s), 4.0):
+		_set_state(s, "fighting")
+		return
+	for u: Unit in members(s):
+		if u.pos.distance_to(gate) <= 2.4:
+			go.call()
+			return
+	_chase_progress(s, gate)
+	if str(s.order.get("type", "")) == "idle":
+		return
+	if _all_arrived(s) or not s.mem.has("moving_to") or (s.mem["moving_to"] as Vector2).distance_to(gate) > 1.0:
+		_move_all(s, gate)
+		s.mem["moving_to"] = gate
+	_set_state(s, "travelling")
+
+
+## A squad on a dungeon floor. The surface has nothing for it: retreating means climbing out, and
+## explore / auto mean clearing the floor, taking the loot and going deeper.
+func _think_dungeon(s: Squad, loc: Dictionary, otype: String, retreat_at: float) -> void:
+	var eid := int(loc["eid"])
+	var floor_index := int(loc["floor"])
+	if otype == "retreat":
+		s.mem["delve_exit"] = true
+	elif not bool(s.mem.get("delve_exit", false)) and hp_ratio(s) < retreat_at:
+		s.mem["delve_exit"] = true
+		w.notify_key("sim.squad.retreating", {"squad_name": s.name}, "bad", center(s), {"squad": s.id})
+	if bool(s.mem.get("delve_exit", false)):
+		if otype != "stairs" or str(s.order.get("dir", "")) != "up":
+			order_squad(s, w.dungeons.stairs_order(eid, floor_index, "up"))
+		_think_stairs(s)
+		return
+	match otype:
+		"stairs":
+			_think_stairs(s)
+		"attack":
+			_think_attack(s)
+		"move":
+			if _all_arrived(s):
+				s.mem["hold"] = s.order["pos"]
+				s.order = {"type": "idle"}
+				_set_state(s, "holding")
+			else:
+				_set_state(s, "moving")
+		"explore", "auto":
+			_think_delve_auto(s, eid, floor_index)
+		"defend":
+			var p: Vector2 = s.order["pos"]
+			_set_state(s, "fighting" if _hold(s, p, float(s.order.get("radius", 10.0)) + 6.0) else "defending")
+		_:
+			_set_state(s, "fighting" if _hold(s, s.mem.get("hold", center(s)), 14.0) else "holding")
+
+
+func _think_delve_auto(s: Squad, eid: int, floor_index: int) -> void:
+	var c := center(s)
+	if _engage(s, c, 14.0):
+		_set_state(s, "fighting")
+		return
+	if _collect_loot(s, 20.0):
+		_set_state(s, "looting")
+		return
+	var fst := w.dungeons.floor_site(eid, floor_index)
+	if not fst.is_empty() and not bool(fst.get("cleared", false)):
+		var best: Unit = null
+		var best_d := INF
+		for u: Unit in w.factions.site_units(int(fst["id"])):
+			if not w.hostile("player", u.faction):
+				continue
+			var d := c.distance_to(u.pos)
+			if d < best_d:
+				best_d = d
+				best = u
+		if best != null:
+			if _all_arrived(s) or not s.mem.has("moving_to") or (s.mem["moving_to"] as Vector2).distance_to(best.pos) > 6.0:
+				_move_all(s, best.pos)
+				s.mem["moving_to"] = best.pos
+			_set_state(s, "delving")
+			return
+	var st: Dictionary = w.sites.get(eid, {})
+	var last := floor_index >= int(st.get("floors", 1)) - 1
+	if last:
+		s.mem["delve_exit"] = true
+		order_squad(s, w.dungeons.stairs_order(eid, floor_index, "up"))
+	else:
+		s.mem["delve_resume"] = s.order.duplicate()
+		order_squad(s, w.dungeons.stairs_order(eid, floor_index, "down"))
 
 
 func _think_attack(s: Squad) -> void:
@@ -467,26 +594,31 @@ func _think_escort(s: Squad) -> void:
 
 func _collect_loot(s: Squad, radius: float) -> bool:
 	var c := center(s)
-	var best := {}
-	var best_d := radius
+	var bags: Array[Dictionary] = []
 	for bag: Dictionary in w.loot_bags.values():
-		var d := c.distance_to(bag["pos"])
-		if d < best_d:
-			best_d = d
-			best = bag
-	if best.is_empty():
-		return false
+		if c.distance_to(bag["pos"]) < radius and w.dungeons.same_map(c, bag["pos"]):
+			bags.append(bag)
+	bags.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		return c.distance_squared_to(a["pos"]) < c.distance_squared_to(b["pos"]))
 	var ms := members(s)
-	var picker: Unit = null
-	var pd := INF
-	for u: Unit in ms:
-		var d := u.pos.distance_to(best["pos"])
-		if d < pd:
-			pd = d
-			picker = u
-	if picker and not picker.moving:
-		w.move_unit(picker, best["pos"])
-	return true
+	for bag: Dictionary in bags:
+		var pos: Vector2 = bag["pos"]
+		ms.sort_custom(func(a: Unit, b: Unit) -> bool:
+			return a.pos.distance_squared_to(pos) < b.pos.distance_squared_to(pos))
+		for picker: Unit in ms:
+			if picker.is_static or picker.kind == "airship":
+				continue
+			if picker.pos.distance_to(pos) <= 1.6:
+				w.pickup_loot(int(bag["id"]), picker)
+				return true
+			if picker.moving:
+				if picker.goal.distance_to(pos) <= 1.6:
+					return true
+				continue
+			if w.move_unit(picker, pos) and picker.goal.distance_to(pos) <= 1.6:
+				return true
+			w.stop_unit(picker)
+	return false
 
 
 ## Explore: walk to the nearest unexplored ground inside the region, fight what is weak, loot

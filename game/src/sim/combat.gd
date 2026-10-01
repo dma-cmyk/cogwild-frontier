@@ -17,7 +17,36 @@ func _init(world: World) -> void:
 	w = world
 
 
+func _wear(u: Unit, slot: String, amount: float) -> void:
+	if not u.is_player():
+		return
+	var item: Variant = u.equipment().get(slot)
+	if item is Dictionary and float(item.get("condition", 100.0)) > 0.0:
+		item["condition"] = maxf(0.0, float(item.get("condition", 100.0)) - amount)
+		u.recompute_stats()
+
+
+func _casts() -> void:
+	for u: Unit in w.unit_list:
+		if not u.named.has("cast"):
+			continue
+		if not u.alive or u.state == Unit.State.DOWNED or str(u.named.get("mood", "")) == "return":
+			u.named.erase("cast")
+			continue
+		var cast: Dictionary = u.named["cast"]
+		cast["left"] = float(cast["left"]) - World.TICK
+		if float(cast["left"]) > 0.0:
+			continue
+		u.named.erase("cast")
+		var pos := Vector2(float(cast["pos"][0]), float(cast["pos"][1]))
+		w.emit_fx(&"explosion_small", pos, 0.3)
+		for victim: Unit in w.units_near(pos, float(cast["radius"]) + 2.0):
+			if w.hostile(u.faction, victim.faction) and victim.pos.distance_to(pos) <= float(cast["radius"]) + victim.body_radius():
+				apply_damage(victim, float(cast["damage"]), u)
+
+
 func tick() -> void:
+	_casts()
 	for p: Dictionary in projectiles.duplicate():
 		p["t"] = float(p["t"]) - World.TICK
 		if float(p["t"]) <= 0.0:
@@ -42,7 +71,7 @@ func acquire(u: Unit, radius: float) -> Unit:
 	for o: Unit in w.units_near(u.pos, radius):
 		if o == u or not o.alive or o.state == Unit.State.DOWNED or o.hidden:
 			continue
-		if not w.hostile(u.faction, o.faction):
+		if not w.hostile(u.faction, o.faction) or not w.dungeons.same_map(u.pos, o.pos):
 			continue
 		if u.is_player() and not o.visible:
 			continue
@@ -64,6 +93,13 @@ func _engage(u: Unit) -> void:
 		return
 	if float(u.ability_cd.get("stunned", 0.0)) > 0.0:
 		return
+	if u.named.has("cast") or str(u.named.get("mood", "")) == "return":
+		return
+	if bool(u.named.get("roaming", false)) and w.giants.near_colony(t.pos):
+		u.target_id = -1
+		u.named["mood"] = "return"
+		w.stop_unit(u)
+		return
 	if u.squad_id >= 0:
 		var squad_order := w.get_squad(u.squad_id)
 		# A stance only shapes what the squad picks up by itself. An explicit attack order is the
@@ -82,6 +118,7 @@ func _engage(u: Unit) -> void:
 	var cautious := squad != null and squad.stance == "cautious"
 	var ranged_weapon := str(wpn.get("kind", "melee")) == "ranged"
 	var reach := float(wpn.get("range", 1.3)) + (0.6 if t.kind == "airship" or t.kind == "robot" else 0.2)
+	reach += maxf(0.0, u.body_radius() + t.body_radius() - 0.7)
 	if squad != null and squad.stance == "aggressive" and ranged_weapon:
 		reach *= 0.55
 	var distance_to_target := u.pos.distance_to(t.pos)
@@ -130,6 +167,7 @@ func _engage(u: Unit) -> void:
 		u.attack_cd = float(wpn.get("cooldown", 1.0)) / (maxf(0.2, float(u.stats.get("attack_speed", 1.0))) * stance_attack_speed)
 		attack(u, t, wpn)
 func attack(u: Unit, t: Unit, wpn: Dictionary) -> void:
+	_wear(u, "weapon", 0.5)
 	var ranged := str(wpn.get("kind", "melee")) == "ranged"
 	var flank := _is_flank(u, t)
 	var covered := ranged and _has_cover(t)
@@ -209,7 +247,7 @@ func _resolve(p: Dictionary) -> void:
 			w.fx.emit(StringName("combat_tactic|" + feedback), feedback_pos + Vector3(0, 1.0, 0), Color("#ffd36a"))
 		return
 	var t := w.get_unit(int(p["target"]))
-	if t and t.alive and t.state != Unit.State.DOWNED:
+	if t and t.alive and t.state != Unit.State.DOWNED and w.dungeons.same_map(p["pos"], t.pos):
 		apply_damage(t, float(p["damage"]), attacker, bool(p["crit"]), str(p.get("feedback", "")))
 
 
@@ -217,6 +255,7 @@ func apply_damage(t: Unit, amount: float, attacker: Unit, crit: bool = false, fe
 	if not t.alive or t.state == Unit.State.DOWNED:
 		return
 	var dmg := maxf(1.0, amount - float(t.stats.get("armor", 0.0)) * 0.6)
+	_wear(t, "armor", 0.5)
 	var squad := w.get_squad(t.squad_id) if t.is_player() and t.squad_id >= 0 else null
 	if squad:
 		if squad.stance == "cautious":
@@ -235,7 +274,10 @@ func apply_damage(t: Unit, amount: float, attacker: Unit, crit: bool = false, fe
 	var suffix := "|%s|%d" % [feedback, attacker.id if attacker else -1]
 	w.fx.emit(StringName("combat_damage|%d|%d%s" % [roundi(dmg), 1 if crit else 0, suffix]), impact + Vector3(0, 0.45, 0), Color.WHITE)
 	if attacker and t.target_id < 0 and t.is_armed() and w.hostile(t.faction, attacker.faction):
-		if not (t.is_player() and t.squad_id >= 0 and str(w.get_squad(t.squad_id).order.get("type", "")) == "retreat"):
+		# An explicit move is also how the player dodges a telegraphed attack.
+		# Retaliation must not replace that route (squads and individually commanded units).
+		var moving_order := t.is_player() and str((squad.order if squad else t.order).get("type", "")) in ["move", "retreat"]
+		if not moving_order:
 			t.target_id = attacker.id
 	if t.hp <= 0.0:
 		_fall(t, attacker)
@@ -245,6 +287,7 @@ func _fall(t: Unit, attacker: Unit) -> void:
 	t.hp = 0.0
 	w.stop_unit(t)
 	_cancel_pending_ability(t)
+	t.named.erase("cast")
 	t.target_id = -1
 	if t.is_player() and t.is_person():
 		t.state = Unit.State.DOWNED
@@ -326,6 +369,9 @@ func _drop_loot(t: Unit, attacker: Unit) -> void:
 		for it: Variant in t.named.get("loot", []):
 			if it is Dictionary:
 				items.append((it as Dictionary).duplicate(true))
+	if bool(t.named.get("roaming", false)):
+		items.append(ItemGen.relic(w.rng, "wilds", level, 3))
+		items.append(ItemGen.trophy("colossus_antler", level))
 	var gold := w.rng.randi_range(2, 8) * (3 if not t.named.is_empty() else 1) if t.is_person() else 0
 	var metal := 0
 	var drops: Dictionary = t.DB_archetype().get("drops", {})
@@ -420,7 +466,7 @@ func _heal_drones() -> void:
 
 
 func _abilities() -> void:
-	for u: Unit in w.unit_list:
+	for u: Unit in w.unit_list.duplicate():
 		for key: Variant in u.ability_cd.keys():
 			u.ability_cd[key] = maxf(0.0, float(u.ability_cd[key]) - 1.0)
 		if not u.alive or u.state == Unit.State.DOWNED:
@@ -443,6 +489,13 @@ func _abilities() -> void:
 		if not u.alive or u.state == Unit.State.DOWNED:
 			continue
 		var squad := w.get_squad(u.squad_id) if u.squad_id >= 0 else null
+		if bool(u.named.get("giant", false)) and int(u.named.get("phase", 1)) == 1 and u.hp_ratio() <= 0.5:
+			u.named["phase"] = 2
+			u.recompute_stats()
+			w.notify_key("sim.giant.enraged", {"unit_name": u.name}, "bad", u.pos)
+			w.fx.emit(&"giant_warning", w.world_pos(u), Color("#ff6040"))
+		if u.named.has("cast") or str(u.named.get("mood", "")) == "return":
+			continue
 		if squad and not squad.auto_abilities:
 			continue
 		if int(u.named.get("_manual_used_tick", -1)) == w.tick_count:
@@ -493,7 +546,7 @@ func ability_info(u: Unit, aid: String) -> Dictionary:
 	var target := "none"
 	if kind in ["stun", "aimed_shot", "multi_shot"]:
 		target = "enemy"
-	elif kind == "blast":
+	elif kind in ["blast", "telegraph"]:
 		target = "ground"
 	elif kind == "heal_ally":
 		target = "ally"
@@ -582,6 +635,34 @@ func _execute_ability(u: Unit, aid: String, target: Unit, target_pos: Vector2) -
 		return false
 	var used := false
 	match str(a.get("kind", "")):
+		"telegraph":
+			if u.named.has("cast"):
+				return false
+			var duration := float(a.get("windup", 2.4))
+			u.named["cast"] = {"id": aid, "pos": [target_pos.x, target_pos.y], "left": duration,
+				"duration": duration, "radius": float(a.get("radius", 3.5)),
+				"damage": float(a.get("damage", 30.0)) * float(u.stats.get("damage_mult", 1.0))}
+			w.stop_unit(u)
+			w.fx.emit(&"giant_warning", w.world_pos(u), Color("#ff6040"))
+			used = true
+		"summon":
+			var fst: Dictionary = w.sites.get(u.home_site, {})
+			if str(fst.get("kind", "")) != "dungeon_floor":
+				return false
+			var alive_summons := 0
+			for other: Unit in w.unit_list:
+				if other.alive and int(other.named.get("summoner", -1)) == u.id:
+					alive_summons += 1
+			var count := mini(int(a.get("count", 2)), int(a.get("cap", 4)) - alive_summons)
+			for index in maxi(0, count):
+				var tile := w.nearest_walkable(u.tile() + Vector2i(3 if index % 2 == 0 else -3, 2), 3)
+				if tile.x == -99999:
+					continue
+				var minion := w.dungeons._spawn_monster(fst, str(u.named.get("theme", "machines")), "melee",
+					maxi(1, u.char_level() - 2), Vector2(tile) + Vector2(0.5, 0.5), w.rng)
+				minion.named["summoner"] = u.id
+				minion.target_id = u.target_id
+				used = true
 		"stun":
 			if target == null:
 				return false
@@ -639,7 +720,7 @@ func _execute_ability(u: Unit, aid: String, target: Unit, target_pos: Vector2) -
 				attack(u, target, u.stats.get("weapon", Unit.FISTS))
 			used = true
 	if used:
-		u.ability_cd[aid] = float(a.get("cooldown", 18.0))
+		u.ability_cd[aid] = float(a.get("cooldown", 18.0)) * (0.7 if int(u.named.get("phase", 1)) >= 2 else 1.0)
 		_use_feedback(u, aid)
 	return used
 

@@ -22,6 +22,8 @@ var start_tile: Vector2i
 var start_height: float
 ## Ordered generation input: adding a species must not reroll a saved world's sites.
 var race_pool: Array[String] = []
+## Reserved block of the grid that holds dungeon floors (empty when the world has no dungeons).
+var dungeon_zone := Rect2i()
 ## All sites known so far (guaranteed + generated cells): id -> site Dictionary.
 var sites: Dictionary = {}
 var _guaranteed: Array = []
@@ -40,7 +42,7 @@ var _n_ore := FastNoiseLite.new()
 var _n_crystal := FastNoiseLite.new()
 
 
-func _init(p_seed: int, params: Dictionary = {}, generation_races: Array = []) -> void:
+func _init(p_seed: int, params: Dictionary = {}, generation_races: Array = [], with_dungeons: bool = false) -> void:
 	seed = p_seed
 	p = params if not params.is_empty() else (DB.raw("generation/world") as Dictionary)
 	t = p["terrain"]
@@ -58,6 +60,8 @@ func _init(p_seed: int, params: Dictionary = {}, generation_races: Array = []) -
 	max_tile = radius_chunks * S
 	_setup_noise()
 	_compute_start()
+	if with_dungeons:
+		dungeon_zone = DungeonZone.zone_rect(min_tile, max_tile, start_tile)
 	_place_guaranteed_sites()
 
 
@@ -219,6 +223,8 @@ func _site_ok(pos: Vector2, radius: float) -> bool:
 	var margin := radius + 12.0
 	if pos.x < min_tile + margin or pos.y < min_tile + margin or pos.x > max_tile - margin or pos.y > max_tile - margin:
 		return false
+	if dungeon_zone.size != Vector2i.ZERO and Rect2(dungeon_zone).grow(radius + 12.0).has_point(pos):
+		return false
 	var h := raw_height(pos.x, pos.y)
 	if h < 0.7:
 		return false
@@ -230,6 +236,17 @@ func _site_ok(pos: Vector2, radius: float) -> bool:
 		if raw_height(q.x, q.y) < 0.2:
 			return false
 	return river_value(pos.x, pos.y) > float(t["river_bank"]) * 1.4
+
+
+## Is the tile inside the block reserved for dungeon floors?
+func in_zone_tile(tile: Vector2i) -> bool:
+	return dungeon_zone.size != Vector2i.ZERO and dungeon_zone.has_point(tile)
+
+
+func in_zone_chunk(cx: int, cz: int) -> bool:
+	if dungeon_zone.size == Vector2i.ZERO:
+		return false
+	return in_zone_tile(Vector2i(cx * S, cz * S))
 
 
 func _kind_radius(kind: String) -> float:

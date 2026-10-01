@@ -68,6 +68,7 @@ func _build_scene() -> void:
 		get_tree().call_group(BuildingVisual.BACK_VIEW_GROUP, &"update_card_view"))
 	var home := world.home_pos()
 	rig.focus(Vector3(home.x, 0, home.y), true)
+	world.dungeons.relocated.connect(_on_relocated)
 	input_ctl = InputController.new()
 	input_ctl.name = "Input"
 	add_child(input_ctl)
@@ -584,6 +585,15 @@ func quick_save(slot: int) -> void:
 func focus_home() -> void:
 	var h := world.home_pos()
 	rig.focus(Vector3(h.x, 0, h.y))
+
+
+
+## Squads taking stairs jump to another part of the grid: refresh the camera limits, then follow.
+func _on_relocated(pos: Vector2, _eid: int, _floor_index: int) -> void:
+	_bounds_t = 0.0
+	_update_camera_bounds()
+	rig.focus(Vector3(pos.x, 0, pos.y), true)
+	Sfx.play(&"discover")
 
 
 func focus_pos(p: Vector2) -> void:

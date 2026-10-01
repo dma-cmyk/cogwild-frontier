@@ -18,6 +18,7 @@ static func race_height(race_id: String) -> float:
 ## Figure height (metres) for machines; airships use their side-view length instead.
 const MACHINE_HEIGHT := {"work_bot": 1.15, "walker": 2.5, "sentry": 1.7, "turret": 1.8, "machine_warden": 3.1,
 	"scout_drone": 0.75, "repair_drone": 0.75, "war_drone": 0.95}
+const GIANT_HEIGHT := {"dungeon_master": 4.0, "wild_colossus": 3.6}
 const AIRSHIP_LENGTH := 9.5
 
 static var _textures: Dictionary = {}
@@ -163,6 +164,8 @@ static func look_for(dna: Dictionary) -> String:
 static func chip_id(dna: Dictionary, hints: Dictionary = {}) -> String:
 	var kind := str(dna.get("kind", "character"))
 	var archetype := str(hints.get("archetype", dna.get("unit", dna.get("archetype", ""))))
+	if dna.has("art_id"):
+		return str(dna["art_id"])
 	match kind:
 		"robot":
 			if archetype in ["walker", "sentry", "turret", "machine_warden"]:
@@ -259,7 +262,7 @@ static func chip_cell_size(entry: Dictionary, dna: Dictionary, hints: Dictionary
 			if str(entry.get("id", "")) == "bandit_captain":
 				h *= 1.12
 		else:
-			h = float(MACHINE_HEIGHT.get(chip_id(dna, hints), 1.2)) * float(dna.get("scale", 1.0))
+			h = float(GIANT_HEIGHT.get(chip_id(dna, hints), MACHINE_HEIGHT.get(chip_id(dna, hints), 1.2))) * float(dna.get("scale", 1.0))
 		metres_per_px = h / maxf(1.0, float(entry.get("height_px", chh)))
 	return Vector2(cw, chh) * metres_per_px
 

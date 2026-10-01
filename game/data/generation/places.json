@@ -238,5 +238,37 @@
       "Hearth",
       "Post"
     ]
+  },
+  "dungeon": {
+    "prefix": [
+      "Sunken",
+      "Hollow",
+      "Drowned",
+      "Gloomy",
+      "Forgotten",
+      "Whispering",
+      "Ashen",
+      "Buried"
+    ],
+    "core": [
+      "Crypt",
+      "Warren",
+      "Vault",
+      "Halls",
+      "Delve",
+      "Catacombs",
+      "Burrow",
+      "Depths"
+    ],
+    "suffix": [
+      "of Echoes",
+      "Below",
+      "of the Hollow Bell",
+      "Undercroft",
+      "of Knives",
+      "of Rust",
+      "of Embers",
+      "of Silence"
+    ]
   }
 }

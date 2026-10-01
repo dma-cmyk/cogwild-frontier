@@ -12,7 +12,7 @@ const SETTLER_ROLES := ["farmer", "woodcutter", "builder", "miner", "engineer"]
 ## player: character record from the creation screen (NpcGen format + "appearance" DNA), may be {}.
 static func create(seed: int, player: Dictionary = {}, company: String = "", color: Color = Color("#3a5da8")) -> World:
 	var w := World.new()
-	w.setup(seed)
+	w.setup(seed, [], true)
 	w.faction_color = color
 	w.company_name = company if company != "" else "Frontier Company"
 	var sc := w.chunk_key(w.gen.start_tile)

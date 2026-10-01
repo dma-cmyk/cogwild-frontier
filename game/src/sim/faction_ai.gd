@@ -9,10 +9,10 @@ const ACTIVE_RANGE := 72.0
 const LEASH := 24.0
 const PLACE_KIND := {"ruins": "ruins", "bandit_camp": "bandit_camp", "machine_outpost": "machine_outpost",
 	"trade_post": "trade_post", "wanderer_camp": "wanderer_camp", "wreck": "wreck", "crystal_grove": "crystal",
-	"ore_field": "ore_field", "village": "settlement", "town": "town"}
+	"ore_field": "ore_field", "village": "settlement", "town": "town", "dungeon": "dungeon"}
 const KIND_LABEL := {"ruins": "Ruins", "bandit_camp": "Bandit camp", "machine_outpost": "Machine outpost",
 	"trade_post": "Trade post", "wanderer_camp": "Wanderer camp", "wreck": "Airship wreck", "crystal_grove": "Aether crystals",
-	"ore_field": "Ore field", "village": "Village", "town": "Town"}
+	"ore_field": "Ore field", "village": "Village", "town": "Town", "dungeon": "Dungeon", "dungeon_floor": "Dungeon floor"}
 const RESERVE := {"wood": 220, "stone": 160, "ore": 60, "metal": 80}
 const PRICE := {"wood": 0.5, "stone": 0.5, "ore": 1.0, "metal": 2.5}
 
@@ -226,6 +226,9 @@ func on_unit_killed(t: Unit, attacker: Unit) -> void:
 	if t.home_site < 0 or not w.sites.has(t.home_site):
 		return
 	var st: Dictionary = w.sites[t.home_site]
+	if str(st.get("kind", "")) == "dungeon_floor":
+		w.dungeons.on_unit_killed(st, t, attacker)
+		return
 	if w.diplomacy.is_community(st):
 		w.diplomacy.villager_killed(t.home_site, t, attacker)
 		if not bool(st.get("hostile", false)) or bool(st.get("subdued", false)):
@@ -297,7 +300,9 @@ func tick() -> void:
 		if not u.alive or u.is_player() or u.state == Unit.State.DOWNED:
 			continue
 		var o := str(u.order.get("type", ""))
-		if o == "raid":
+		if bool(u.named.get("giant", false)):
+			w.giants.think(u)
+		elif o == "raid":
 			_raider(u)
 		elif o == "trader":
 			_trader(u)

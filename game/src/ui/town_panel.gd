@@ -175,6 +175,7 @@ static func _smithy(body: VBoxContainer, g: Game, hud: Hud, sid: int, blocker: S
 		sell.pressed.connect(func() -> void: _report(hud, w.town.sell_item(sid, uid)))
 		row.add_child(sell)
 		body.add_child(row)
+	GearworkPanel.build(body, g, hud, sid)
 
 
 static func _inn(body: VBoxContainer, g: Game, hud: Hud, sid: int, blocker: String) -> void:

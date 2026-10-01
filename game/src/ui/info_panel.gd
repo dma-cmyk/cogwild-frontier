@@ -68,6 +68,9 @@ func refresh(force: bool) -> void:
 		var town_key := TownPanel.signature(g.world, g.sel_site, _town_tab) if str(st.get("kind", "")) == "town" else ""
 		key = "s%d:%s:%s:%s%s" % [g.sel_site, str(st.get("cleared", false)), str(st.get("looted", false)),
 			_community_key(st) if g.world.diplomacy.is_community(st) else "", town_key]
+		if str(st.get("kind", "")) == "dungeon":
+			for squad: Squad in g.world.squads:
+				key += str(g.world.dungeons.squad_location(squad)) + str(squad.order)
 	elif g.sel_loot >= 0 and g.world.loot_bags.has(g.sel_loot):
 		var bag: Dictionary = g.world.loot_bags[g.sel_loot]
 		key = "l%d:%d:%d:%d" % [g.sel_loot, (bag.get("items", []) as Array).size(), int(bag.get("gold", 0)), int(bag.get("metal", 0))]
@@ -560,6 +563,7 @@ func _build_building(b: Building) -> void:
 				_body.add_child(btn)
 			if not b.queue.is_empty():
 				_body.add_child(UiTheme.label(Loc.t("Queue: ") + ", ".join(PackedStringArray(b.queue.map(func(x: String) -> String: return Loc.t(str(g.world.colony._archetype(x).get("name", x)))))), 14))
+			GearworkPanel.build(_body, g, hud)
 		"sky_dock":
 			_body.add_child(UiTheme.label(Loc.t("Merchant airships visit docks every few days."), 14, UiTheme.TEXT_DIM))
 
@@ -584,6 +588,9 @@ func _build_site(st: Dictionary) -> void:
 		return
 	if str(st.get("kind", "")) == "village":
 		VillagePanel.build(_body, g, hud, st)
+		return
+	if str(st.get("kind", "")) == "dungeon":
+		_build_dungeon(st)
 		return
 	var head := UiTheme.hbox(8)
 	head.add_child(UiTheme.icon(str(st.get("icon", "poi_ruins")), 44))
@@ -626,6 +633,56 @@ func _build_site(st: Dictionary) -> void:
 			g.world.squad_ai.order_squad(g.world.get_squad(sid), {"type": "explore", "pos": Vector2(st["center"]), "radius": 40.0})
 			Sfx.play(&"ui_confirm"))
 		_body.add_child(b)
+	var f := UiTheme.button(Loc.t("Centre camera"), "ui_target")
+	f.pressed.connect(func() -> void: g.focus_pos(Vector2(st["center"])))
+	_body.add_child(f)
+
+
+func _build_dungeon(st: Dictionary) -> void:
+	var head := UiTheme.hbox(8)
+	head.add_child(UiTheme.icon(str(st.get("icon", "poi_ruins")), 44))
+	var hv := UiTheme.vbox(2)
+	var nm := UiTheme.title(str(st["name"]), 21)
+	nm.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	nm.custom_minimum_size = Vector2(230, 0)
+	hv.add_child(nm)
+	hv.add_child(UiTheme.label(Loc.t("Dungeon · difficulty %d of 5") % int(st["difficulty"]), 15, UiTheme.GOLD))
+	hv.add_child(UiTheme.label("%s · %s" % [Loc.t("dungeon.theme." + str(st["theme"])), Loc.t("%d floors below") % int(st["floors"])], 14, UiTheme.TEXT_DIM))
+	head.add_child(hv)
+	_body.add_child(head)
+	var state := str(st.get("state", "open"))
+	var cleared_floors := 0
+	for id: Variant in st.get("floor_sids", []):
+		if int(id) >= 0 and bool((g.world.sites.get(int(id), {}) as Dictionary).get("cleared", false)):
+			cleared_floors += 1
+	var text := Loc.t("The master has fallen. The dungeon is closing.") if state == "cleared" \
+		else Loc.t("Deeper floors are more dangerous, and harder dungeons pay better. Floors cleared: %d of %d.") % [cleared_floors, int(st["floors"])]
+	var l := UiTheme.label(text, 14, UiTheme.GOOD if state == "cleared" else UiTheme.TEXT)
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_body.add_child(l)
+	for s: Squad in g.world.squads:
+		var loc := g.world.dungeons.squad_location(s)
+		var sid := s.id
+		if not loc.is_empty() and int(loc["eid"]) == int(st["id"]):
+			var index := int(loc["floor"])
+			_body.add_child(UiTheme.label(Loc.t("%s · floor %d of %d") % [s.name, index + 1, int(st["floors"])], 15, UiTheme.ACCENT))
+			for action: String in ["auto", "down", "up", "retreat"]:
+				if action == "down" and index + 1 >= int(st["floors"]):
+					continue
+				var label := str({"auto": "Explore the dungeon", "down": "Descend stairs", "up": "Ascend stairs", "retreat": "Leave the dungeon"}[action])
+				var b := UiTheme.button(Loc.t(label), "cmd_explore" if action == "auto" else "cmd_move")
+				var order: Dictionary = {"type": action} if action in ["auto", "retreat"] else g.world.dungeons.stairs_order(int(st["id"]), index, action)
+				b.pressed.connect(func() -> void:
+					g.world.squad_ai.order_squad(g.world.get_squad(sid), order.duplicate())
+					Sfx.play(&"ui_confirm"))
+				_body.add_child(b)
+		elif loc.is_empty() and state == "open":
+			var b := UiTheme.button(Loc.t("Send %s into the dungeon") % s.name, "cmd_move")
+			b.disabled = g.world.squad_ai.members(s).is_empty()
+			b.pressed.connect(func() -> void:
+				g.world.squad_ai.order_squad(g.world.get_squad(sid), {"type": "enter", "site": int(st["id"]), "pos": g.world.dungeons.gate_pos(st)})
+				Sfx.play(&"ui_confirm"))
+			_body.add_child(b)
 	var f := UiTheme.button(Loc.t("Centre camera"), "ui_target")
 	f.pressed.connect(func() -> void: g.focus_pos(Vector2(st["center"])))
 	_body.add_child(f)

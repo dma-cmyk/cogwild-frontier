@@ -115,6 +115,14 @@
       "amount_pct": 0.0,
       "trigger_hp": 0.0,
       "shots": 0
+    },
+    {
+      "id": "earthshatter", "name": "Earthshatter", "kind": "telegraph", "giant_only": true,
+      "range": 8.0, "radius": 3.5, "windup": 2.4, "damage": 30.0, "cooldown": 12.0
+    },
+    {
+      "id": "call_guardians", "name": "Call Guardians", "kind": "summon", "giant_only": true,
+      "range": 12.0, "count": 2, "cap": 4, "cooldown": 24.0
     }
   ]
 }

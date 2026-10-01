@@ -56,7 +56,7 @@ static func to_dict(w: World) -> Dictionary:
 	return {
 		"version": World.SAVE_VERSION, "saved_at": Time.get_datetime_string_from_system(),
 		"seed": w.seed, "tick": w.tick_count, "day": w.day, "rng_state": str(w.rng.state), "next_id": w.next_id,
-		"generation_races": w.gen.race_pool,
+		"generation_races": w.gen.race_pool, "dungeons": w.dungeons.enabled(),
 		"company": w.company_name, "faction_color": w.faction_color.to_html(false),
 		"player_unit": w.player_unit_id, "hearth": w.hearth_id,
 		"res": w.res, "armory": w.armory, "priorities": w.priorities, "counters": w.counters, "hungry": w.hungry,
@@ -75,7 +75,7 @@ static func to_dict(w: World) -> Dictionary:
 
 static func from_dict(d: Dictionary) -> World:
 	var w := World.new()
-	w.setup(int(d["seed"]), d.get("generation_races", LEGACY_GENERATION_RACES))
+	w.setup(int(d["seed"]), d.get("generation_races", LEGACY_GENERATION_RACES), bool(d.get("dungeons", false)))
 	w.tick_count = int(d["tick"])
 	w.day = int(d["day"])
 	w.rng.state = int(str(d["rng_state"]))
@@ -123,6 +123,7 @@ static func from_dict(d: Dictionary) -> World:
 			for row: Dictionary in st.get("goods", []):
 				row["count"] = int(row.get("count", 0))
 	w.sites = fixed_sites
+	w.dungeons.after_load()
 	w.diplomacy.rebuild_hostile_cache()
 	w.quests.from_dict(_r(d.get("quests", {})))
 	# saves from before the quest board carried one `request` per village: keep the promise
