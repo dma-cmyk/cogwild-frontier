@@ -86,6 +86,7 @@ func setup(world: World) -> void:
 	w.site_changed.connect(_on_site_changed)
 	w.site_removed.connect(_on_site_removed)
 	w.dungeons.floor_created.connect(_on_floor_created)
+	w.dungeons.relocated.connect(_on_relocated)
 	w.loot_added.connect(_add_loot)
 	w.loot_removed.connect(_remove_loot)
 	w.fx.connect(_on_fx)
@@ -137,6 +138,14 @@ func _on_chunk_ready(key: Vector2i) -> void:
 func _on_chunk_changed(key: Vector2i) -> void:
 	if chunk_views.has(key) and not _chunk_queue.has(key):
 		_chunk_queue.append(key)
+
+
+func _on_relocated(pos: Vector2, _eid: int, _floor_index: int) -> void:
+	# A floor transfer can jump past a long queue of surface terrain. Build the destination
+	# first without running several chunk coroutines or blocking the whole frame.
+	var key := w.chunk_key(Vector2i(floori(pos.x), floori(pos.y)))
+	_chunk_queue.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		return (a - key).length_squared() < (b - key).length_squared())
 
 
 func _build_chunk(key: Vector2i, immediate: bool = false) -> void:

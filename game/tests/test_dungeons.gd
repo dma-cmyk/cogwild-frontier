@@ -305,3 +305,63 @@ func test_surface_flight_cannot_enter_or_cross_dungeon_floors() -> void:
 	w.dungeons.ensure_floor(eid, 0)
 	var interior := Vector2(w.dungeons.floor_origin(eid, 0)) + Vector2(8.5, 8.5)
 	assert_false(w.move_unit(drone, interior), "ordinary flight cannot replace entering through the gate")
+
+
+func _gate_world() -> World:
+	var w := World.new()
+	w.setup(SEED, [], true)
+	_worlds.append(w)
+	var origin := w.gen.start_tile
+	for z in range(-4, 40):
+		for x in range(-4, 5):
+			var tile := origin + Vector2i(x, z)
+			var ch := w.ensure_chunk(w.chunk_key(tile))
+			var i := w._li(tile)
+			ch.terrain[i] = Tiles.PAVED
+			ch.res_type[i] = Tiles.Res.NONE
+			ch.blocked[i] = 0
+			w._nav_update_tile(tile)
+	return w
+
+
+func test_slow_squad_reaches_gate_without_losing_entry_order() -> void:
+	var w := _gate_world()
+	var start := Vector2(w.gen.start_tile) + Vector2(0.5, 0.5)
+	var squad := w.create_squad()
+	var u := CharacterFactory.make_person(w, {"race": "human", "role": "guard"}, start)
+	w.assign_to_squad(u, squad)
+	u.stats["move_speed"] = 0.5
+	var eid := w.dungeons.spawn_entrance(RngUtil.make([SEED, "slow_gate"]),
+		{"pos": w.gen.start_tile + Vector2i(0, 30), "difficulty": 1, "floors": 2})
+	assert_true(eid >= 0, "the entrance is placed on clear ground")
+	w.squad_ai.order_squad(squad, {"type": "enter", "site": eid, "pos": w.dungeons.gate_pos(w.sites[eid])})
+	for step in 1000:
+		w.tick()
+		if not w.dungeons.squad_location(squad).is_empty() or str(squad.order.get("type", "")) != "enter":
+			break
+	assert_eq(int(w.dungeons.squad_location(squad).get("eid", -1)), eid,
+		"a slow but moving squad enters instead of being declared blocked")
+
+
+func test_unreachable_gate_still_cancels_entry_order() -> void:
+	var w := _gate_world()
+	var origin := w.gen.start_tile
+	for z in range(-2, 3):
+		for x in range(-2, 3):
+			if absi(x) != 2 and absi(z) != 2:
+				continue
+			var tile := origin + Vector2i(x, z)
+			w.chunk_at_tile(tile).blocked[w._li(tile)] = 1
+			w._nav_update_tile(tile)
+	var squad := w.create_squad()
+	var u := CharacterFactory.make_person(w, {"race": "human", "role": "guard"}, Vector2(origin) + Vector2(0.5, 0.5))
+	w.assign_to_squad(u, squad)
+	var eid := w.dungeons.spawn_entrance(RngUtil.make([SEED, "blocked_gate"]),
+		{"pos": origin + Vector2i(0, 30), "difficulty": 1, "floors": 2})
+	w.squad_ai.order_squad(squad, {"type": "enter", "site": eid, "pos": w.dungeons.gate_pos(w.sites[eid])})
+	for step in 500:
+		w.tick()
+		if str(squad.order.get("type", "")) == "idle":
+			break
+	assert_true(w.dungeons.squad_location(squad).is_empty(), "walls prevent entry")
+	assert_eq(str(squad.order.get("type", "")), "idle", "an unreachable gate does not leave a permanent travelling order")

@@ -372,7 +372,10 @@ func _walk_through(s: Squad, gate: Vector2, go: Callable) -> void:
 		if u.pos.distance_to(gate) <= 2.4:
 			go.call()
 			return
-	_chase_progress(s, gate)
+	# A live route is still making progress, even when a slow member moves under 0.5m per
+	# think. Only diagnose a blocked gate after every member has exhausted its path.
+	if _all_arrived(s):
+		_chase_progress(s, gate)
 	if str(s.order.get("type", "")) == "idle":
 		return
 	if _all_arrived(s) or not s.mem.has("moving_to") or (s.mem["moving_to"] as Vector2).distance_to(gate) > 1.0:
